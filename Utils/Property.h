@@ -1,22 +1,28 @@
 #pragma once
-template <class T>
-class Property
+//////////////////////////////////////////////////////////////////////////
+// this is a c++ standard implementation of a property
+// because this is a winAPI based project anyways it is better
+// to use __declspec(property), however I have included this
+// template for reference and funzies
+//////////////////////////////////////////////////////////////////////////
+template <class T, class D>
+class PropBase
 {
 public:
 	T propValue;
-	Property() {};
-	Property(T nv) {
+	PropBase() {};
+	PropBase(T nv) {
 		propValue = nv;
 	}
-	Property<T> &operator=(const Property<T> &rhs) {
+	PropBase<T,D> &operator=(const PropBase<T,D> &rhs) {
 		propValue = rhs.propValue;
 		return *this;
 	}
-	Property<T> &operator=(const T &rhs) {
+	virtual PropBase<T,D> &operator=(const T &rhs) {
 		propValue = rhs;
 		return *this;
 	}
-	bool operator==(const Property<T> &rhs) const {
+	bool operator==(const PropBase<T,D> &rhs) const {
 		if(propValue == rhs.propValue) {
 			return true;
 		} else {
@@ -30,8 +36,22 @@ public:
 			return false;
 		}
 	}
-	~Property() {};
+	~PropBase() {};
 };
-	
 
+template<class T>
+class Property : public PropBase<T, Property<T> >
+{
+public:
+	Property(T nv) : PropBase(nv) {}
+};
 
+#define PROPERTY(t, n) __declspec(property ( put = property_set_##n, get = property_get_##n) ) t n; \
+	typedef t property_tmp_type_##n
+#define READONLY_PROPERTY(t, n) __declspec(property (get = property_get_##n ) ) t n; \
+	typedef t property_tmp_type_##n
+#define WRITEONLY_PROPERTY(t, n) __declspec(property ( put = property_set_##n ) ) t n; \
+	typedef t property_tmp_type_##n
+
+#define GET(n) property_tmp_type_##n property_get_##n()
+#define SET(n) void property_set_##n(const property_tmp_type_##n& value)
