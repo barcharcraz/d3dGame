@@ -33,5 +33,10 @@ namespace WinLibTests
 			prop1 = 13;
 			Assert::AreEqual(prop1.propValue, 13);
 		}
+		TEST_METHOD(propPrimitiveEquality)
+		{
+			Property<int> prop1(12);
+			Assert::IsTrue(prop1 == 12);
+		}
 	};
 }
