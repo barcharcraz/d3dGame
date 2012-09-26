@@ -25,7 +25,7 @@ namespace WinLibTests
 		{
 			Property<int> prop1(12);
 			Property<int> prop2(12);
-			Assert::AreEqual(prop1,prop2);
+			Assert::AreEqual(prop1.propValue,prop2.propValue);
 		}
 		TEST_METHOD(propPrimitiveAssignment)
 		{
