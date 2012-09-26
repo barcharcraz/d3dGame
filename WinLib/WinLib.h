@@ -19,7 +19,7 @@ public:
 	Window();
 	Window(LIBSTRING name);
 	~Window();
-	void initWindow(int nCmdShow);
+	void initWindow(int nCmdShow, bool registerWin=true);
 	WPARAM libStartWindow();
 	ATOM WINAPI LibRegisterWindow();
 	HWND WINAPI LibCreateWindow();
@@ -29,14 +29,26 @@ public:
 	__declspec(property(put=setExStyle, get=getExStyle) ) DWORD ExStyle;
 	__declspec(property(put=setStyle, get=getStyle) ) DWORD WndStyle;
 	__declspec(property(put=setHwnd, get=getHwnd) ) HWND Hwnd;
+	__declspec(property(put=setParent, get=getParent) ) HWND Parent;
+	__declspec(property(put=setX, get=getX) ) int X;
+	__declspec(property(put=setY, get=getY) ) int Y;
+	__declspec(property(put=setWidth, get=getWidth) ) int Width;
+	__declspec(property(put=setHeight, get=getHeight) ) int Height;
+	
 	
 #pragma endregion
 
+#pragma region messagehandlers
+	std::function<void()> onDestroy;
+#pragma endregion
 
 #pragma region accessors
 	//window class
 	WNDCLASSEX getWindowClass();
 	void setWindowClass(WNDCLASSEX newClass);
+	//parent
+	void setParent(HWND newParent);
+	HWND getParent();
 	//dwExStyle
 	DWORD getExStyle();
 	void setExStyle(DWORD newStyle);
@@ -46,6 +58,15 @@ public:
 	//hwnd
 	HWND getHwnd();
 	void setHwnd(HWND newH);
+	//x and y
+	int getX();
+	int getY();
+	int getWidth();
+	int getHeight();
+	void setX(int newX);
+	void setY(int newY);
+	void setWidth(int newWidth);
+	void setHeight(int newHeight);
 
 #pragma endregion
 protected:
@@ -57,7 +78,12 @@ private:
 	WNDCLASSEX _windowClass;
 	DWORD _ExStyle;
 	DWORD _style;
+	HWND _parent;
 	HWND _hwnd;
+	int _x;
+	int _y;
+	int _width;
+	int _height;
 	static LRESULT CALLBACK wndProcThunk(__in HWND hWnd, __in UINT uMsg, __in WPARAM wParam, __in LPARAM lParam);
 	
 };

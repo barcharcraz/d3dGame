@@ -18,5 +18,8 @@
     <ClInclude Include="Property.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="fib.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
