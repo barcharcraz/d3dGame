@@ -67,11 +67,11 @@
     <ClCompile Include="ILib3DShader.cpp">
       <Filter>Source Files\L3DShaders</Filter>
     </ClCompile>
-    <ClCompile Include="Lib3DVertexSahader.cpp">
-      <Filter>Source Files\L3DShaders</Filter>
-    </ClCompile>
     <ClCompile Include="Lib3DPixelShader.cpp">
       <Filter>Source Files\L3DShaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Lib3DVertexShader.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
