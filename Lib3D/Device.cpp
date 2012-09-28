@@ -18,7 +18,7 @@ Device::Device(HWND target): _hwndTarget(target)
 	swapDesc.SampleDesc.Quality = 0;
 	swapDesc.Windowed = TRUE;
 
-	featureLevels.push_back(D3D_FEATURE_LEVEL_11_1);
+	//featureLevels.push_back(D3D_FEATURE_LEVEL_11_1);
 	featureLevels.push_back(D3D_FEATURE_LEVEL_11_0);
 	featureLevels.push_back(D3D_FEATURE_LEVEL_10_1);
 	featureLevels.push_back(D3D_FEATURE_LEVEL_10_0);

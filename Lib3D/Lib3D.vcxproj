@@ -92,6 +92,7 @@
     <ClInclude Include="Lib3DPixelShader.h" />
     <ClInclude Include="Lib3DVertexShader.h" />
     <ClInclude Include="MacroUtils.h" />
+    <ClInclude Include="Lib3DShaderCollection.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -109,6 +110,7 @@
     <ClCompile Include="Lib3D.cpp" />
     <ClCompile Include="Lib3DPixelShader.cpp" />
     <ClCompile Include="Lib3DVertexShader.cpp" />
+    <ClCompile Include="Lib3DShaderCollection.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
