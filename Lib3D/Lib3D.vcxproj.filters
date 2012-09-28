@@ -50,6 +50,9 @@
     <ClInclude Include="Lib3DPixelShader.h">
       <Filter>Header Files\L3DShaders</Filter>
     </ClInclude>
+    <ClInclude Include="Lib3DShaderCollection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -71,6 +74,9 @@
       <Filter>Source Files\L3DShaders</Filter>
     </ClCompile>
     <ClCompile Include="Lib3DVertexShader.cpp">
+      <Filter>Source Files\L3DShaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Lib3DShaderCollection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
