@@ -1,6 +1,7 @@
 #pragma once
 #include "Lib3DPixelShader.h"
 #include "Lib3DVertexShader.h"
+#include <vector>
 using namespace std;
 class Lib3DShaderCollection
 {
@@ -17,7 +18,9 @@ public:
 	void setVS(shared_ptr<Lib3DVertexShader> vs);
 #pragma endregion
 private:
-	std::shared_ptr<Lib3DPixelShader> m_ps;
-	std::shared_ptr<Lib3DVertexShader> m_vs;
+	vector<D3D11_INPUT_ELEMENT_DESC> m_inputLayoutDesc;
+	shared_ptr<Lib3DPixelShader> m_ps;
+	shared_ptr<Lib3DVertexShader> m_vs;
+	
 };
 

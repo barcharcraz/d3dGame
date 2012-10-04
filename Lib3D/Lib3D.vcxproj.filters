@@ -24,6 +24,9 @@
     <Filter Include="Source Files\L3DShaders">
       <UniqueIdentifier>{7496d732-e8e5-4605-a8a0-c15cc627fd9e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\DataDesc">
+      <UniqueIdentifier>{3883b500-a1d6-487e-bfe5-5d494c3f5d5e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -52,6 +55,12 @@
     </ClInclude>
     <ClInclude Include="Lib3DShaderCollection.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Lib3DVertex.h">
+      <Filter>Header Files\DataDesc</Filter>
+    </ClInclude>
+    <ClInclude Include="Lib3DVector3.h">
+      <Filter>Header Files\DataDesc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
