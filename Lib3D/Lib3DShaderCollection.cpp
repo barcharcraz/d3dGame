@@ -3,8 +3,8 @@
 
 Lib3DShaderCollection::Lib3DShaderCollection(void)
 {
-	D3D11_INPUT_ELEMENT_DESC def
-	m_inputLayoutDesc.push_back();
+	D3D11_INPUT_ELEMENT_DESC def;
+	//m_inputLayoutDesc.push_back();
 }
 
 
