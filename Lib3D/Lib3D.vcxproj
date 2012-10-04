@@ -24,6 +24,7 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -88,6 +89,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Device.h" />
+    <ClInclude Include="Lib3DVector3.h" />
+    <ClInclude Include="Lib3DVertex.h" />
     <ClInclude Include="ILib3DShader.h" />
     <ClInclude Include="Lib3DPixelShader.h" />
     <ClInclude Include="Lib3DVertexShader.h" />
