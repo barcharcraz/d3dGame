@@ -6,7 +6,7 @@
 #include <WinLib.h>
 #include <CommCtrl.h>
 #include <Device.h>
-
+//#pragma comment(lib,"Lib3D.lib")
 #pragma comment(lib,"Comctl32.lib")
 int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -35,6 +35,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	color[1]=0.0f;
 	color[2]=0.0f;
 	color[3]=1.0f;
+	
 	device.d3dDeviceContext->ClearRenderTargetView(device.pRenderTargetView,color);
 	device.swapChain->Present(0,0);
 	
