@@ -27,12 +27,24 @@
     <ClInclude Include="Lib2DFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Lib2DDevice.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Lib2DDeviceContext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Lib2DFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Lib2DDevice.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Lib2DDeviceContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
