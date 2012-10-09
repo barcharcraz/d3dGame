@@ -1,31 +1,32 @@
+#include "stdafx.h"
 #include "Lib2DFactory.h"
 
 Lib2DFactory::Lib2DFactory() {
 	D2D1_FACTORY_OPTIONS options;
 	options.debugLevel = D2D1_DEBUG_LEVEL_WARNING;
 	HRESULT hr;
-	hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, __uuidof(ID2D1Factory1), &options, &m_factory);
+	hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, options, &m_factory);
 	if(FAILED(hr)) {
 		throw hr;
 	}
-	m_device = createDevice().QueryInterface(__uuidof(IDXGIDevice), &m_device);
+	createDevice().QueryInterface(&m_device);
 }
 Lib2DFactory::Lib2DFactory(ID3D11Device *device) {
 	D2D1_FACTORY_OPTIONS options;
 	options.debugLevel = D2D1_DEBUG_LEVEL_WARNING;
 	HRESULT hr;
-	hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, __uuidof(ID2D1Factory1), &options, &m_factory);
+	hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, options, &m_factory);
 	if(FAILED(hr)) {
 		throw hr;
 	}
-	m_device = device;
+	device->QueryInterface(__uuidof(IDXGIDevice), (void**)&m_device);
 	
 }
 
-_com_ptr_t<ID3D11Device> Lib2DFactory::createDevice()
+CComPtr<ID3D11Device> Lib2DFactory::createDevice()
 {
-	_com_ptr_t<ID3D11Device> device;
-	_com_ptr_t<ID3D11DeviceContext> context;
+	CComPtr<ID3D11Device> device;
+	CComPtr<ID3D11DeviceContext> context;
 	UINT flags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 	D3D_FEATURE_LEVEL featureLevels[] =
 	{
@@ -52,22 +53,22 @@ _com_ptr_t<ID3D11Device> Lib2DFactory::createDevice()
 	return device;
 }
 
-_com_ptr_t<IDXGISwapChain1> Lib2DFactory::createSwapChain(HWND target)
+CComPtr<IDXGISwapChain1> Lib2DFactory::createSwapChain(HWND target)
 {
-	_com_ptr_t<IDXGISwapChain1> retval;
+	CComPtr<IDXGISwapChain1> retval;
 	HRESULT hr;
-	_com_ptr_t<IDXGIAdapter> dxgiAdapter;
+	CComPtr<IDXGIAdapter> dxgiAdapter;
 	hr = m_device->GetAdapter(&dxgiAdapter);
 	if(FAILED(hr)) {
 		throw hr;
 	}
 
-	_com_ptr_t<IDXGIFactory2> dxgiFactory;
-	hr = dxgiAdapter->GetParent(__uuidof(dxgiFactory), &dxgiFactory);
+	CComPtr<IDXGIFactory2> dxgiFactory;
+	hr = dxgiAdapter->GetParent(__uuidof(IDXGIFactory2), (void**)&dxgiFactory);
 	if(FAILED(hr)) {
 		throw hr;
 	}
-	dxgiFactory->CreateSwapChainForHwnd(m_device, target, getDefSwapChain(), NULL, NULL, &retval);
+	dxgiFactory->CreateSwapChainForHwnd(m_device, target, &getDefSwapChain(), NULL, NULL, &retval);
 	return retval;
 
 }
@@ -88,4 +89,14 @@ DXGI_SWAP_CHAIN_DESC1 Lib2DFactory::getDefSwapChain()
 	swapChainDesc.Flags = 0;
 
 	return swapChainDesc;
+}
+
+std::shared_ptr<Lib2DDevice> Lib2DFactory::createLib2DDevice()
+{
+	
+	ID2D1Device * device;
+	HRESULT hr;
+	hr = m_factory->CreateDevice(m_device, &device);
+	std::shared_ptr<Lib2DDevice> retval( new Lib2DDevice(device));
+	return retval;
 }
