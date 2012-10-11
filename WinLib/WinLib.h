@@ -40,6 +40,8 @@ public:
 
 #pragma region messagehandlers
 	std::function<void()> onDestroy;
+	std::function<void(WCHAR)> onKeyDown;
+	std::function<void()> onNoMessage;
 #pragma endregion
 
 #pragma region accessors

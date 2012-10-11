@@ -187,10 +187,21 @@ void Window::LibShowWindow(int nCmdShow)
 WPARAM Window::libStartWindow()
 {
 	MSG msg;
-	while(GetMessage(&msg, NULL, 0, 0) != 0)
-	{
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
+	if(onNoMessage) {
+		while(msg.message != WM_QUIT) {
+			if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE) != 0)
+			{
+				TranslateMessage(&msg);
+				DispatchMessage(&msg);
+			} else {
+				onNoMessage();
+			}
+		}
+	} else {
+		while(GetMessage(&msg, NULL, 0, 0) != 0) {
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
 	}
 	return msg.wParam;
 }
@@ -199,6 +210,12 @@ LRESULT CALLBACK Window::wndProc(__in HWND hWnd, __in UINT uMsg, __in WPARAM wPa
 	case WM_DESTROY:
 		if(onDestroy) {
 			onDestroy();
+			return 0;
+		}
+		break;
+	case WM_KEYDOWN:
+		if(onKeyDown) {
+			onKeyDown(wParam);
 			return 0;
 		}
 		break;

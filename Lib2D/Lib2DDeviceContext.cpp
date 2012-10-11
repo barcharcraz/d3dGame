@@ -6,7 +6,7 @@
 
 Lib2DDeviceContext::Lib2DDeviceContext(ID2D1DeviceContext * context)
 {
-	m_context = context;
+	m_context.Attach(context);
 }
 
 
@@ -26,4 +26,27 @@ void Lib2DDeviceContext::setTarget( IDXGISurface * target )
 		throw hr;
 	}
 	m_context->SetTarget(targetBitmap);
+}
+
+CComPtr<ID2D1SolidColorBrush> Lib2DDeviceContext::GetSolidColorBrush( D2D1::ColorF color )
+{
+	D2D1_BRUSH_PROPERTIES props;
+	props.opacity = 1.0f;
+	props.transform = D2D1::Matrix3x2F::Identity();
+	CComPtr<ID2D1SolidColorBrush> retval;
+	HRESULT hr;
+	hr = m_context->CreateSolidColorBrush(color, props, &retval);
+	if(FAILED(hr)) {
+		throw hr;
+	}
+	return retval;
+}
+
+void Lib2DDeviceContext::DrawShapes( std::vector<ILib2DShape*> shapes )
+{
+	m_context->BeginDraw();
+	for(int i = 0; i<shapes.size(); i++) {
+		shapes[i]->draw(m_context);
+	}
+	m_context->EndDraw();
 }

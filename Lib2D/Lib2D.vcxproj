@@ -74,9 +74,11 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ILib2DShape.h" />
     <ClInclude Include="Lib2DDevice.h" />
     <ClInclude Include="Lib2DDeviceContext.h" />
     <ClInclude Include="Lib2DFactory.h" />
+    <ClInclude Include="Lib2DRect.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -84,6 +86,7 @@
     <ClCompile Include="Lib2DDevice.cpp" />
     <ClCompile Include="Lib2DDeviceContext.cpp" />
     <ClCompile Include="Lib2DFactory.cpp" />
+    <ClCompile Include="Lib2DRect.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
