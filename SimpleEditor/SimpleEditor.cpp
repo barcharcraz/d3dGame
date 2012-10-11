@@ -5,7 +5,10 @@
 #include "SimpleEditor.h"
 #include <WinLib.h>
 #include <CommCtrl.h>
-#include <Device.h>
+#include <d2d1_1.h>
+#include <Lib2DDevice.h>
+#include <Lib2DFactory.h>
+#include <Lib2DFactory.h>
 //#pragma comment(lib,"Lib3D.lib")
 #pragma comment(lib,"Comctl32.lib")
 int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
@@ -27,7 +30,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	mywin.WndStyle = WS_OVERLAPPEDWINDOW;
 	mywin.initWindow(SW_SHOWNORMAL);
 	mywin.onDestroy = [](){PostQuitMessage(0);};
-
+	/*
 	Device device(mywin.Hwnd);
 	
 	float color[4];
@@ -38,7 +41,11 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	
 	device.d3dDeviceContext->ClearRenderTargetView(device.pRenderTargetView,color);
 	device.swapChain->Present(0,0);
-	
+	*/
+	Lib2DFactory factory(mywin.Hwnd);
+	Lib2DDevice * device = factory.createLib2DDevice().get();
+	Lib2DDeviceContext * context = device->getContext().get();
+
 
 	mywin.libStartWindow();
 	

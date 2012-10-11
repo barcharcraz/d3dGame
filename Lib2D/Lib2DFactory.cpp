@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Lib2DFactory.h"
 
-Lib2DFactory::Lib2DFactory() {
+Lib2DFactory::Lib2DFactory(HWND target) {
 	D2D1_FACTORY_OPTIONS options;
 	options.debugLevel = D2D1_DEBUG_LEVEL_WARNING;
 	HRESULT hr;
@@ -10,8 +10,9 @@ Lib2DFactory::Lib2DFactory() {
 		throw hr;
 	}
 	createDevice().QueryInterface(&m_device);
+	m_swapChain =createSwapChain(target);
 }
-Lib2DFactory::Lib2DFactory(ID3D11Device *device) {
+Lib2DFactory::Lib2DFactory(ID3D11Device *device, HWND target) {
 	D2D1_FACTORY_OPTIONS options;
 	options.debugLevel = D2D1_DEBUG_LEVEL_WARNING;
 	HRESULT hr;
@@ -20,6 +21,7 @@ Lib2DFactory::Lib2DFactory(ID3D11Device *device) {
 		throw hr;
 	}
 	device->QueryInterface(__uuidof(IDXGIDevice), (void**)&m_device);
+	m_swapChain = createSwapChain(target);
 	
 }
 
@@ -95,8 +97,26 @@ std::shared_ptr<Lib2DDevice> Lib2DFactory::createLib2DDevice()
 {
 	
 	ID2D1Device * device;
+	
 	HRESULT hr;
 	hr = m_factory->CreateDevice(m_device, &device);
-	std::shared_ptr<Lib2DDevice> retval( new Lib2DDevice(device));
+	
+	std::shared_ptr<Lib2DDevice> retval(new Lib2DDevice(device));
 	return retval;
+}
+
+CComPtr<IDXGISurface> Lib2DFactory::getBackBuffer()
+{
+	CComPtr<IDXGISurface> retval;
+	HRESULT hr;
+	hr = m_swapChain->GetBuffer(0, IID_PPV_ARGS(&retval));
+	if(FAILED(hr)) {
+		throw hr;
+	}
+	return retval;
+}
+
+Lib2DFactory::~Lib2DFactory()
+{
+
 }
