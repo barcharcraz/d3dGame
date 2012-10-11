@@ -100,7 +100,6 @@ std::shared_ptr<Lib2DDevice> Lib2DFactory::createLib2DDevice()
 	
 	HRESULT hr;
 	hr = m_factory->CreateDevice(m_device, &device);
-	
 	std::shared_ptr<Lib2DDevice> retval(new Lib2DDevice(device));
 	return retval;
 }
@@ -119,4 +118,9 @@ CComPtr<IDXGISurface> Lib2DFactory::getBackBuffer()
 Lib2DFactory::~Lib2DFactory()
 {
 
+}
+
+CComPtr<IDXGISwapChain1> Lib2DFactory::getSwapChain()
+{
+	return m_swapChain;
 }

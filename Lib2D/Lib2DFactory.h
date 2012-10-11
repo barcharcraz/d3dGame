@@ -19,6 +19,7 @@ public:
 	~Lib2DFactory();
 	std::shared_ptr<Lib2DDevice> createLib2DDevice();
 	CComPtr<IDXGISurface> getBackBuffer();
+	CComPtr<IDXGISwapChain1> getSwapChain();
 private:
 	CComPtr<ID2D1Factory1> m_factory;
 	CComPtr<IDXGIDevice> m_device;
