@@ -66,7 +66,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 		default:
 			break;
 		}
-	}
+	};
 	context.DrawShapes(commands);
 	factory.getSwapChain()->Present(1,0);
 	mywin.libStartWindow();
