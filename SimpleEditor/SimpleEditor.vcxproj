@@ -44,7 +44,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)WinLib;$(SolutionDir)Utils;$(SolutionDir)Lib3D;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)WinLib;$(SolutionDir)Utils;$(SolutionDir)Lib3D;$(SolutionDir)Lib2D;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -105,6 +105,9 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Lib2D\Lib2D.vcxproj">
+      <Project>{8ee622d1-2f45-4b52-a7f0-fa75fd8b083a}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Lib3D\Lib3D.vcxproj">
       <Project>{350cd284-cc0d-643f-dea3-d49785e9f2b4}</Project>
     </ProjectReference>
