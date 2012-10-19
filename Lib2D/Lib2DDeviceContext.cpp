@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Lib2DDeviceContext.h"
 #include <d2d1helper.h>
-
+#include <iostream>
 
 
 Lib2DDeviceContext::Lib2DDeviceContext(ID2D1DeviceContext * context)
@@ -45,8 +45,24 @@ CComPtr<ID2D1SolidColorBrush> Lib2DDeviceContext::GetSolidColorBrush( D2D1::Colo
 void Lib2DDeviceContext::DrawShapes( std::vector<ILib2DShape*> shapes )
 {
 	m_context->BeginDraw();
+	for(std::function<void()> f : preCommands) {
+		f();
+	}
 	for(int i = 0; i<shapes.size(); i++) {
 		shapes[i]->draw(m_context);
 	}
 	m_context->EndDraw();
+}
+
+void Lib2DDeviceContext::Clear( D2D1::ColorF color, bool immediate )
+{
+	if(immediate) {
+		m_context->BeginDraw();
+		m_context->Clear(color);
+		m_context->EndDraw();
+	} else {
+		const D2D1_COLOR_F* pColor = &color;
+		preCommands.push_back([&](){m_context->Clear(color);});
+		//decltype((void(ID2D1DeviceContext::*)(const D2D1_COLOR_F&)) &ID2D1DeviceContext::Clear); <void(ID2D1DeviceContext::*)(const D2D1_COLOR_F&)>
+	}
 }

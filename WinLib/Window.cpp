@@ -188,7 +188,7 @@ WPARAM Window::libStartWindow()
 {
 	MSG msg;
 	if(onNoMessage) {
-		while(msg.message != WM_QUIT) {
+		do {
 			if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE) != 0)
 			{
 				TranslateMessage(&msg);
@@ -196,7 +196,7 @@ WPARAM Window::libStartWindow()
 			} else {
 				onNoMessage();
 			}
-		}
+		} while (msg.message != WM_QUIT);
 	} else {
 		while(GetMessage(&msg, NULL, 0, 0) != 0) {
 			TranslateMessage(&msg);
