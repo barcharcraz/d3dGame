@@ -1,7 +1,7 @@
 #pragma once
-#include "ilib2dshape.h"
+#include "Lib2DShape.h"
 class Lib2DRect :
-	public ILib2DShape
+	public Lib2DShape
 {
 public:
 	Lib2DRect(D2D1_RECT_F rect, ID2D1Brush * brush, bool fill = false);

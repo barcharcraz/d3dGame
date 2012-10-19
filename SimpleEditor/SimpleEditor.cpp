@@ -58,17 +58,32 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	std::vector<ILib2DShape*> commands;
 	Lib2DRect rect(RectF(0.0,0.0,100.0,100.0),blackBrush, true);
 	commands.push_back(&rect);
-	mywin.onKeyDown = [rect](WCHAR key){
+	mywin.onKeyDown = [&rect](WCHAR key){
 		switch (key)
 		{
 		case VK_LEFT:
-			
+			rect.mulTransform(-50,0);
+			break;
+		case VK_RIGHT:
+			rect.mulTransform(5,0);
+			break;
+		case VK_UP:
+			rect.mulTransform(0,-5);
+			break;
+		case VK_DOWN:
+			rect.mulTransform(0,5);
+			break;
 		default:
 			break;
 		}
 	};
-	context.DrawShapes(commands);
-	factory.getSwapChain()->Present(1,0);
+	mywin.onNoMessage = [&context, commands, &factory](){
+		context.Clear();
+		context.DrawShapes(commands);
+		factory.getSwapChain()->Present(1,0);
+	};
+	//context.DrawShapes(commands);
+	//factory.getSwapChain()->Present(1,0);
 	mywin.libStartWindow();
 	
 	
