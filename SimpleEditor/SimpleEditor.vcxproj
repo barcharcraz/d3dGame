@@ -101,6 +101,7 @@
     <ResourceCompile Include="SimpleEditor.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="testBitmap.bmp" />
     <Image Include="SimpleEditor.ico" />
     <Image Include="small.ico" />
   </ItemGroup>

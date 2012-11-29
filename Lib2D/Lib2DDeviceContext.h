@@ -12,6 +12,7 @@ public:
 	CComPtr<ID2D1SolidColorBrush> GetSolidColorBrush(D2D1::ColorF color);
 	void DrawShapes(std::vector<ILib2DShape*> shapes);
 	void Clear(D2D1::ColorF color = D2D1::ColorF::Black, bool immediate = false);
+    CComPtr<ID2D1DeviceContext> getDeviceContext() const;
 	~Lib2DDeviceContext(void);
 private:
 	CComPtr<ID2D1DeviceContext> m_context;

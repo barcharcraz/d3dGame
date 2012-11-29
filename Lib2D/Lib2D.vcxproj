@@ -52,6 +52,10 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -74,21 +78,32 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ILib2DAnimation.h" />
+    <ClInclude Include="ILib2DBrush.h" />
+    <ClInclude Include="ILib2DEasing.h" />
     <ClInclude Include="ILib2DShape.h" />
+    <ClInclude Include="Lib2DBitmap.h" />
+    <ClInclude Include="Lib2DBitmapBrush.h" />
     <ClInclude Include="Lib2DDevice.h" />
     <ClInclude Include="Lib2DDeviceContext.h" />
     <ClInclude Include="Lib2DFactory.h" />
+    <ClInclude Include="Lib2DLinearAnimation.h" />
     <ClInclude Include="Lib2DRect.h" />
     <ClInclude Include="Lib2DShape.h" />
+    <ClInclude Include="Lib2DSolidBrush.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Lib2DBitmap.cpp" />
+    <ClCompile Include="Lib2DBitmapBrush.cpp" />
     <ClCompile Include="Lib2DDevice.cpp" />
     <ClCompile Include="Lib2DDeviceContext.cpp" />
     <ClCompile Include="Lib2DFactory.cpp" />
+    <ClCompile Include="Lib2DLinearAnimation.cpp" />
     <ClCompile Include="Lib2DRect.cpp" />
     <ClCompile Include="Lib2DShape.cpp" />
+    <ClCompile Include="Lib2DSolidBrush.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
