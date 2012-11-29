@@ -19,6 +19,24 @@
     <Filter Include="Source Files\Shapes">
       <UniqueIdentifier>{bb7a024f-1fdd-46d1-8986-78c590d1dba0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Resources">
+      <UniqueIdentifier>{d0b51f75-b9c6-4a6c-ac90-0a7146f5b362}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Resources">
+      <UniqueIdentifier>{b4cc4111-966f-4094-aab0-b212a8c3fc3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Brushes">
+      <UniqueIdentifier>{4a96fe22-912e-4b26-84b7-06d8ad5b6c8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Brushes">
+      <UniqueIdentifier>{4baae54e-588e-4bfe-a37f-0bbab237d8fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Animation">
+      <UniqueIdentifier>{c18f9948-50fa-484d-8bfa-7073461f28b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Animation">
+      <UniqueIdentifier>{d1eaee09-0e38-45f1-8978-8fbb49c74eb9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -48,6 +66,27 @@
     <ClInclude Include="Lib2DShape.h">
       <Filter>Header Files\Shapes</Filter>
     </ClInclude>
+    <ClInclude Include="Lib2DBitmap.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ILib2DBrush.h">
+      <Filter>Header Files\Brushes</Filter>
+    </ClInclude>
+    <ClInclude Include="Lib2DSolidBrush.h">
+      <Filter>Header Files\Brushes</Filter>
+    </ClInclude>
+    <ClInclude Include="Lib2DBitmapBrush.h">
+      <Filter>Header Files\Brushes</Filter>
+    </ClInclude>
+    <ClInclude Include="ILib2DAnimation.h">
+      <Filter>Header Files\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="ILib2DEasing.h">
+      <Filter>Header Files\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Lib2DLinearAnimation.h">
+      <Filter>Header Files\Animation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -67,6 +106,18 @@
     </ClCompile>
     <ClCompile Include="Lib2DShape.cpp">
       <Filter>Source Files\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="Lib2DBitmap.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Lib2DSolidBrush.cpp">
+      <Filter>Source Files\Brushes</Filter>
+    </ClCompile>
+    <ClCompile Include="Lib2DBitmapBrush.cpp">
+      <Filter>Source Files\Brushes</Filter>
+    </ClCompile>
+    <ClCompile Include="Lib2DLinearAnimation.cpp">
+      <Filter>Source Files\Animation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

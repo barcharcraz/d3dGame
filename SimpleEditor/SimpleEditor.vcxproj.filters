@@ -51,5 +51,8 @@
     <Image Include="SimpleEditor.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="testBitmap.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

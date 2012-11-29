@@ -14,6 +14,10 @@ Lib2DDeviceContext::~Lib2DDeviceContext(void)
 {
 }
 
+CComPtr<ID2D1DeviceContext> Lib2DDeviceContext::getDeviceContext() const {
+    return m_context;
+}
+
 void Lib2DDeviceContext::setTarget( IDXGISurface * target )
 {
 	CComPtr<ID2D1Bitmap1> targetBitmap;
