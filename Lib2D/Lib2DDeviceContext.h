@@ -7,15 +7,15 @@
 class Lib2DDeviceContext
 {
 public:
-	Lib2DDeviceContext(ID2D1DeviceContext * context);
-	void setTarget(IDXGISurface * target);
-	CComPtr<ID2D1SolidColorBrush> GetSolidColorBrush(D2D1::ColorF color);
-	void DrawShapes(std::vector<ILib2DShape*> shapes);
-	void Clear(D2D1::ColorF color = D2D1::ColorF::Black, bool immediate = false);
+    Lib2DDeviceContext(ID2D1DeviceContext * context);
+    void setTarget(IDXGISurface * target);
+    CComPtr<ID2D1SolidColorBrush> GetSolidColorBrush(D2D1::ColorF color);
+    void DrawShapes(std::vector<ILib2DShape*> shapes);
+    void Clear(D2D1::ColorF color = D2D1::ColorF::Black, bool immediate = false);
     CComPtr<ID2D1DeviceContext> getDeviceContext() const;
-	~Lib2DDeviceContext(void);
+    ~Lib2DDeviceContext(void);
 private:
-	CComPtr<ID2D1DeviceContext> m_context;
-	std::vector<std::function<void()> > preCommands;
+    CComPtr<ID2D1DeviceContext> m_context;
+    std::vector<std::function<void()> > preCommands;
 };
 
