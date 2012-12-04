@@ -87,6 +87,12 @@
     <ClInclude Include="Lib2DLinearAnimation.h">
       <Filter>Header Files\Animation</Filter>
     </ClInclude>
+    <ClInclude Include="Lib2DAnimatedShape.h">
+      <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="ILib2DTransformableObject.h">
+      <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
