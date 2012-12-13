@@ -83,6 +83,7 @@
     <ClInclude Include="ILib2DEasing.h" />
     <ClInclude Include="ILib2DShape.h" />
     <ClInclude Include="ILib2DTransformableObject.h" />
+    <ClInclude Include="ILib2DTransformableShape.h" />
     <ClInclude Include="Lib2DAnimatedShape.h" />
     <ClInclude Include="Lib2DBitmap.h" />
     <ClInclude Include="Lib2DBitmapBrush.h" />
@@ -97,6 +98,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Lib2DAnimatedShape.cpp" />
     <ClCompile Include="Lib2DBitmap.cpp" />
     <ClCompile Include="Lib2DBitmapBrush.cpp" />
     <ClCompile Include="Lib2DDevice.cpp" />
