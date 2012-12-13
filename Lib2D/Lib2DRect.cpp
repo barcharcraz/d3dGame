@@ -4,7 +4,7 @@
 
 Lib2DRect::Lib2DRect(D2D1_RECT_F rect, CComPtr<ID2D1Brush> brush, bool fill) : m_rect(rect), m_brush(brush), m_fill(fill)
 {
-	Transform = D2D1::Matrix3x2F::Identity();
+	setTransform(D2D1::Matrix3x2F::Identity());
 }
 
 

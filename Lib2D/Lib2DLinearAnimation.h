@@ -3,10 +3,13 @@
 #include <d2d1_1.h>
 class Lib2DLinearAnimation : public ILib2DAnimation {
 public:
-    Lib2DLinearAnimation(D2D1::Matrix3x2F end, double time);
-    Lib2DLinearAnimation(double x, double y, double time);
+    Lib2DLinearAnimation(D2D1::Matrix3x2F trans, double length);
+    Lib2DLinearAnimation(double x, double y, double length);
     virtual D2D1::Matrix3x2F getTransform(double deltat) override;
+
 private:
     D2D1::Matrix3x2F m_endTransform;
-    double length;
+
+    double m_length;
+
 };

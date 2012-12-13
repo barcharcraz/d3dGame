@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "SimpleEditor.h"
 #include <WinLib.h>
+#include <Windows.h>
 #include <CommCtrl.h>
 #include <d2d1_1.h>
 #include <d2d1_1helper.h>
@@ -15,9 +16,12 @@
 #include <Lib2DRect.h>
 #include <Lib2DLinearAnimation.h>
 #include <vector>
+#include <Lib2DAnimatedShape.h>
+#include <Lib2DLinearAnimation.h>
 //#pragma comment(lib,"Lib3D.lib")
 #pragma comment(lib,"Comctl32.lib")
 #pragma comment(lib, "windowscodecs.lib")
+#pragma comment(lib, "winmm.lib")
 #include <d2d1helper.h>
 int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -56,37 +60,45 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
     Lib2DFactory factory(mywin.Hwnd);
     Lib2DDevice device = *factory.createLib2DDevice();
     Lib2DDeviceContext context = *device.getContext();
+    Lib2DLinearAnimation anim(0.0,0.0);
     context.setTarget(factory.getBackBuffer());
     Lib2DBitmap bmp;
     bmp.LoadBitmapFromFile("testBitmap.bmp");
     bmp.BindToRenderTarget(context.getDeviceContext());
     Lib2DBitmapBrush bmpBrush(bmp.getBitmap(),context.getDeviceContext());
     std::vector<ILib2DShape*> commands;
-    Lib2DRect rect(D2D1::RectF(0.0,0.0,bmp.getBitmap()->GetSize().height,bmp.getBitmap()->GetSize().width),bmpBrush.getBrush(), true);
+    Lib2DRect rect(D2D1::RectF(100.0,100.0,bmp.getBitmap()->GetSize().height,bmp.getBitmap()->GetSize().width),bmpBrush.getBrush(), true);
+    Lib2DAnimatedShape animShape(&anim, &rect);
     commands.push_back(&rect);
-    mywin.onKeyDown = [&rect](WCHAR key){
+    DWORD initialTime = GetTickCount();
+    DWORD dt = 0;
+    mywin.onKeyDown = [&dt, &anim, &rect](WCHAR key){
         switch (key)
         {
         case VK_LEFT:
-            rect.mulTransform(-5,0);
+            anim = Lib2DLinearAnimation(-50,0,dt,dt+10000);
             break;
         case VK_RIGHT:
-            rect.mulTransform(5,0);
+            anim = Lib2DLinearAnimation(50,0,dt,dt+10000);
             break;
         case VK_UP:
-            rect.mulTransform(0,-5);
+            anim = Lib2DLinearAnimation(0,-50,dt,dt+10000);
             break;
         case VK_DOWN:
-            rect.mulTransform(0,5);
+            anim = Lib2DLinearAnimation(0,50,dt,dt+10000);
             break;
         default:
             break;
         }
     };
-    mywin.onNoMessage = [&context, &commands, &factory](){
+    
+    mywin.onNoMessage = [&animShape, &initialTime, &dt, &context, &commands, &factory](){
+        
+        animShape.update(dt);
         context.Clear();
         context.DrawShapes(commands);
         factory.getSwapChain()->Present(1,0);
+        dt = GetTickCount() - dt;
     };
     //context.DrawShapes(commands);
     //factory.getSwapChain()->Present(1,0);

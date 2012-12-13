@@ -1,7 +1,8 @@
 #pragma once
 #include "ILib2DShape.h"
 #include "ILib2DTransformableObject.h"
-class Lib2DShape : public ILib2DShape, public ILib2DTransformableObject {
+#include "ILib2DTransformableShape.h"
+class Lib2DShape : public ILib2DTransformableShape {
 public:
 	
 #pragma region accessors
