@@ -87,14 +87,14 @@
     <ClInclude Include="Lib2DLinearAnimation.h">
       <Filter>Header Files\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="Lib2DAnimatedShape.h">
-      <Filter>Header Files\Shapes</Filter>
-    </ClInclude>
     <ClInclude Include="ILib2DTransformableObject.h">
       <Filter>Header Files\Shapes</Filter>
     </ClInclude>
     <ClInclude Include="ILib2DTransformableShape.h">
       <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Lib2DAnimationManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -128,8 +128,8 @@
     <ClCompile Include="Lib2DLinearAnimation.cpp">
       <Filter>Source Files\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="Lib2DAnimatedShape.cpp">
-      <Filter>Source Files\Shapes</Filter>
+    <ClCompile Include="Lib2DAnimationManager.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
