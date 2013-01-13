@@ -37,6 +37,9 @@
     <Filter Include="Source Files\Animation">
       <UniqueIdentifier>{d1eaee09-0e38-45f1-8978-8fbb49c74eb9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Physics">
+      <UniqueIdentifier>{31393a84-9e8e-4e84-aab4-557527f3229a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -95,6 +98,15 @@
     </ClInclude>
     <ClInclude Include="ILib2DTransformableShape.h">
       <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Lib2DCollision.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Lib2DBoundingBox.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Lib2DHitInfo.h">
+      <Filter>Header Files\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
