@@ -7,9 +7,13 @@ Lib2DLinearAnimation::Lib2DLinearAnimation(double x, double y, double length) : 
 }
 
 D2D1::Matrix3x2F Lib2DLinearAnimation::getTransform(double dt) {
-    D2D1::Matrix3x2F retval = D2D1::Matrix3x2F::Identity();
+	D2D1::Matrix3x2F retval = m_endTransform;
     double endx = m_endTransform._31;
     double endy = m_endTransform._32;
-    retval = D2D1::Matrix3x2F::Translation(endx*dt, endy*dt);
+	double normx = endx/(m_length/dt);
+	double normy = endy/(m_length/dt);
+	if(dt < m_length) {
+		retval = D2D1::Matrix3x2F::Translation(normx, normy);
+	}
     return retval;
 }

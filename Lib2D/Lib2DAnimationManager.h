@@ -4,15 +4,16 @@
 #include "Lib2DShape.h"
 #include "ILib2DTransformableShape.h"
 #include <memory>
-class Lib2DAnimatedShape : public ILib2DShape {
+class Lib2DAnimationManager{
 public:
-    Lib2DAnimatedShape(ILib2DAnimation *animation, ILib2DTransformableShape *shape);
-    virtual void draw(ID2D1DeviceContext* pContext) override;
+    Lib2DAnimationManager(ILib2DAnimation *animation, ILib2DTransformableShape *shape);
+    Lib2DAnimationManager(ILib2DAnimation *animation, ILib2DTransformableShape *shape, double start);
+	void resetTime(double start);
     void update(double dt);
 private:
     double m_time;
     double m_start;
-    const D2D1::Matrix3x2F m_initial;
+	D2D1::Matrix3x2F m_initialTransform;
     ILib2DAnimation* m_animation;
     ILib2DTransformableShape* m_shape;
 };
