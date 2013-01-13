@@ -87,9 +87,12 @@
     <ClInclude Include="Lib2DAnimatedShape.h" />
     <ClInclude Include="Lib2DBitmap.h" />
     <ClInclude Include="Lib2DBitmapBrush.h" />
+    <ClInclude Include="Lib2DCollision.h" />
+    <ClInclude Include="Lib2DBoundingBox.h" />
     <ClInclude Include="Lib2DDevice.h" />
     <ClInclude Include="Lib2DDeviceContext.h" />
     <ClInclude Include="Lib2DFactory.h" />
+    <ClInclude Include="Lib2DHitInfo.h" />
     <ClInclude Include="Lib2DLinearAnimation.h" />
     <ClInclude Include="Lib2DRect.h" />
     <ClInclude Include="Lib2DShape.h" />
