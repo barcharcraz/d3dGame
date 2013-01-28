@@ -1,38 +1,122 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Lib2DDevice">
-    <Position X="6" Y="0.5" Width="1.5" />
+  <Class Name="ILib2DAnimation" Collapsed="true">
+    <Position X="3.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ILib2DAnimation.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ILib2DBrush" Collapsed="true">
+    <Position X="4.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>ILib2DBrush.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ILib2DEasing" Collapsed="true">
+    <Position X="8.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>ILib2DEasing.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ILib2DShape" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ILib2DShape.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ILib2DTransformableObject" Collapsed="true">
+    <Position X="3.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAQAAAAAAAAABAAAAAAAAAA=</HashCode>
+      <FileName>ILib2DTransformableObject.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ILib2DTransformableShape" Collapsed="true">
+    <Position X="0.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ILib2DTransformableShape.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lib2DAnimationManager" Collapsed="true">
+    <Position X="10" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAACAAAAAAAAAAAEAAAAAAAAAMAAAAAAggAAEAAA=</HashCode>
+      <FileName>Lib2DAnimationManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lib2DBitmap" Collapsed="true">
+    <Position X="11.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACEAAAAACAAAIgIAAAAQCAAAAAAAAAAA=</HashCode>
+      <FileName>Lib2DBitmap.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lib2DBitmapBrush" Collapsed="true">
+    <Position X="5.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABIAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>Lib2DBitmapBrush.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lib2DCollider" Collapsed="true">
+    <Position X="8.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>Lib2DCollider.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lib2DDevice" Collapsed="true">
+    <Position X="10" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAEAAACCAgAAA=</HashCode>
-      <FileName>lib2ddevice.h</FileName>
+      <FileName>Lib2DDevice.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Lib2DDeviceContext">
-    <Position X="8" Y="0.5" Width="1.75" />
+  <Class Name="Lib2DDeviceContext" Collapsed="true">
+    <Position X="11.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAgABAAAEAAABAAAAAAAAAAAABAAAAAAAAAAAAEA=</HashCode>
-      <FileName>lib2ddevicecontext.h</FileName>
+      <HashCode>AAAAAgABAAAEgAABAAAAAAAAAAAABAAAAAAAAABAAEE=</HashCode>
+      <FileName>Lib2DDeviceContext.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Lib2DFactory">
-    <Position X="3.75" Y="0.5" Width="1.5" />
+  <Class Name="Lib2DFactory" Collapsed="true">
+    <Position X="8.25" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>CAAABAAAAAgAAAAICAABAAABAAAQwAAAAAAACAAAAAA=</HashCode>
       <FileName>Lib2DFactory.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ILib2DShape">
-    <Position X="2" Y="0.5" Width="1.5" />
+  <Class Name="Lib2DLinearAnimation" Collapsed="true">
+    <Position X="3.5" Y="6.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAIAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ILib2DShape.h</FileName>
+      <HashCode>AAAAAAAAAAIAAEAAAAAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Lib2DLinearAnimation.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Lib2DRect">
-    <Position X="0.5" Y="2.25" Width="1.5" />
+  <Class Name="Lib2DRect" Collapsed="true">
+    <Position X="0.5" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAIAAIAAAAAAIAAACAAAAAAAAAAAwAAAAAAAA=</HashCode>
       <FileName>Lib2DRect.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lib2DShape" Collapsed="true">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIEAAAAEAAAAAAAAAAAAAAAAAABAAAAAAAAAA=</HashCode>
+      <FileName>Lib2DShape.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lib2DSolidBrush" Collapsed="true">
+    <Position X="3.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAQAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>Lib2DSolidBrush.h</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
