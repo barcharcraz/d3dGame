@@ -3,9 +3,10 @@
 #include "Lib2DShape.h"
 
 
-void Lib2DShape::setTransform( const D2D1::Matrix3x2F newTransform )
+bool Lib2DShape::setTransform( const D2D1::Matrix3x2F newTransform )
 {
 	m_transform = newTransform;
+	return true;
 }
 
 D2D1::Matrix3x2F Lib2DShape::getTransform() const
