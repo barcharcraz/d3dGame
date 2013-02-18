@@ -3,6 +3,7 @@
 
 
 bool Lib2DMovableObject::setTransform( D2D1::Matrix3x2F newTransform ) {
+	
 	m_transform = newTransform;
 }
 
@@ -17,5 +18,6 @@ const Lib2DCollider & Lib2DMovableObject::getCollider() const  {
 void Lib2DMovableObject::setCollider( const Lib2DCollider &collider ) {
 	m_collider = collider;
 }
+
 
 

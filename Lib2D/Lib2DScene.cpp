@@ -59,5 +59,11 @@ bool Lib2DScene::checkCollision( const ILib2DPhysicalObject *pObj ) {
 	return retval;
 }
 bool Lib2DScene::checkCollision(const ILib2DPhysicalObject *pObj, const D2D1::Matrix3x2F &pTransform) {
-
+	bool retval = false;
+	for(int i=0; i<m_physicalCache.size(); ++i) {
+		if(m_physicalCache[i] != pObj) {
+			retval = pObj->Collider.CollisionTest(m_physicalCache[i]->Collider, pTransform);
+		}
+	}
+	return retval;
 }
