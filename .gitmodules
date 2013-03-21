@@ -1,0 +1,3 @@
+[submodule "libsigc++2"]
+	path = libsigc++2
+	url = git://git.gnome.org/libsigc++2

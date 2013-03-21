@@ -1,9 +1,9 @@
 d3dGame
 =======
 
-This project is a 2D and eventually 3D engein written using Direct2D/Direct3D.
+This project is a 2D and eventually 3D engine written using Direct2D/Direct3D.
 
-Game entites are represented in a deep class hierarchy and not by composition and multiple inheratance is used in an
-effort to avoid blob/god objects.
+Composition is used to encourage code reuse among various game components and interfaces are used wherever possible to facilitate testing (like dependency injection but without a framework beyond constructors and preprocessor things).
 
 As of now this is a side project as I am spending most of my time on RTSGame made in unity
+

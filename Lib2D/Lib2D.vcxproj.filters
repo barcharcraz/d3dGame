@@ -54,9 +54,6 @@
     <ClInclude Include="ILib2DEasing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ILib2DShape.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ILib2DTransformableObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -90,9 +87,6 @@
     <ClInclude Include="Lib2DRect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Lib2DShape.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Lib2DSolidBrush.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -105,17 +99,23 @@
     <ClInclude Include="Lib2DCollider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ILib2DScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Lib2DScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ILib2DPhysicalObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Lib2DMovableObject.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ILib2DShape.h">
+      <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="ILib2DScene.h">
+      <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Lib2DScene.h">
+      <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Lib2DShape.h">
+      <Filter>Header Files\Shapes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +130,12 @@
     </Filter>
     <Filter Include="Source Files">
       <UniqueIdentifier>{45c9614e-ac83-434c-a138-f4bd7f501662}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Shapes">
+      <UniqueIdentifier>{60de4632-94ea-474f-9077-09ea3bb871b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components">
+      <UniqueIdentifier>{7172bc3f-84e5-4ba9-9a26-8d2a88cda89c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
