@@ -22,6 +22,9 @@
     <Filter Include="Header Files\Messages">
       <UniqueIdentifier>{719c9370-5d40-4e53-a4ed-6bdc1f9e3593}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Messages\Rendering">
+      <UniqueIdentifier>{627d4ba5-a732-4eae-8b8b-2c462502eb42}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -36,22 +39,13 @@
     <ClInclude Include="IComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="IShape.h">
-      <Filter>Header Files\Shapes</Filter>
-    </ClInclude>
     <ClInclude Include="Entity.h">
       <Filter>Header Files\Shapes</Filter>
     </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Header Files\Shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="IMessageHeader.h">
-      <Filter>Header Files\Messages</Filter>
-    </ClInclude>
-    <ClInclude Include="IMessageBase.h">
-      <Filter>Header Files\Messages</Filter>
-    </ClInclude>
     <ClInclude Include="Messages.h">
+      <Filter>Header Files\Messages</Filter>
+    </ClInclude>
+    <ClInclude Include="IMessage.h">
       <Filter>Header Files\Messages</Filter>
     </ClInclude>
   </ItemGroup>

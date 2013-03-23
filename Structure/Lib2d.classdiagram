@@ -5,17 +5,32 @@
       <Interface Id="1dacbcc4-54c5-494f-ab49-8ba83e9e386f" name="IComponent" isAbstract="false" isLeaf="false">
         <elementDefinition Id="2d345e91-7bc4-474e-a1cc-05c25ea87540" />
         <ownedOperations>
-          <operation Id="e381302d-401b-471e-9db5-3a8e2a14f250" name="Message&lt;void" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+          <operation Id="e381302d-401b-471e-9db5-3a8e2a14f250" name="Send&lt;void" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
             <elementDefinition Id="fe1798f9-9af6-4d95-a9bf-bd26d80d852f" />
             <ownedParameters>
               <operationHasOwnedParameters>
-                <parameter Id="896fc2f5-085f-4dcc-9797-6c8b94b5f5c3" name="IMessageHeader" direction="In" isUnique="false">
-                  <elementDefinition Id="525ce514-27df-4f2e-9977-4a32ed0a2208" />
+                <parameter Id="102b3035-08ab-42b1-88b6-b1f47e3a7a2f" name="IMessageHeader" direction="In" isUnique="false">
+                  <elementDefinition Id="e368e16b-3c9c-477b-b662-bf5488d6f7dc" />
                 </parameter>
               </operationHasOwnedParameters>
               <operationHasOwnedParameters>
-                <parameter Id="51285ab2-be5b-4dce-b95d-bb52168a8eab" name="IMessageBody&gt;(" direction="In" isUnique="false">
-                  <elementDefinition Id="4ec12652-c0e9-4445-b6b4-56f58b04ae08" />
+                <parameter Id="47a66a91-6bdb-4a17-9ab0-5a8a44403173" name="IMessageBody&gt;(" direction="In" isUnique="false">
+                  <elementDefinition Id="05ff2e45-7619-4e63-a252-dc38997ab710" />
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation Id="f4384dda-409c-479d-9e03-ed37b99601ad" name="receive&lt;void" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="29006b13-0f70-4180-8b79-a71013e29dc4" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="18051c74-e07e-4c89-8786-1a211376e617" name="ImessageHeader&amp;" direction="In" isUnique="false">
+                  <elementDefinition Id="2583d381-b4ab-4dbc-b489-9c120197c936" />
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="3eda8074-c40e-48eb-9262-c4ecd3863f65" name="IMessageBody&amp;)&gt;(" direction="In" isUnique="false">
+                  <elementDefinition Id="30c93ac6-bcd9-455c-bb7b-c40ca74fea92" />
                 </parameter>
               </operationHasOwnedParameters>
             </ownedParameters>
@@ -24,22 +39,12 @@
       </Interface>
     </logicalClassDesignerModelHasTypes>
     <logicalClassDesignerModelHasTypes>
-      <Interface Id="df91c582-3686-4c74-bf1a-b208318f3c8b" name="IShape" isAbstract="false" isLeaf="false">
-        <elementDefinition Id="a6b9bae3-42f2-4cc3-b283-9aae8dda7a35" />
-        <ownedOperations>
-          <operation Id="b0e879de-89c8-4640-82e4-ab8aef0ad497" name="Draw" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
-            <elementDefinition Id="f17ce836-76a6-4da8-8151-2d92cfe96bc4" />
-          </operation>
-        </ownedOperations>
-      </Interface>
-    </logicalClassDesignerModelHasTypes>
-    <logicalClassDesignerModelHasTypes>
       <class Id="fe08d8ce-49bc-4f8c-b9df-fa0e74a63bf3" name="Entity" isAbstract="false" isLeaf="false" isActiveClass="false">
         <elementDefinition Id="b0f14f67-3e0f-47c3-a4e9-4d74ab9e0609" />
         <suppliersInternal>
-          <interfaceRealization Id="86540281-344d-4074-8dab-0e1ca545a7ac">
-            <interfaceMoniker Id="df91c582-3686-4c74-bf1a-b208318f3c8b" LastKnownName="IShape" />
-            <elementDefinition Id="d21085bd-3655-4ba8-b6d4-ab69790b40ff" />
+          <interfaceRealization Id="d8866893-55e4-466b-a21a-fc9caa10ff97">
+            <interfaceMoniker Id="1dacbcc4-54c5-494f-ab49-8ba83e9e386f" LastKnownName="IComponent" />
+            <elementDefinition Id="79a17857-223b-462b-8bc1-c04bf59d9412" />
           </interfaceRealization>
         </suppliersInternal>
         <targetEnds>
@@ -71,23 +76,32 @@
           </association>
         </targetEnds>
         <ownedOperationsInternal>
-          <operation Id="5e071797-5e44-4880-9c3d-58504b6f9aad" name="Draw" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
-            <elementDefinition Id="e7f31d77-728a-4964-97d6-7a11f3469111" />
-          </operation>
-          <operation Id="c5aa3ca3-4c55-444c-bcda-10f1db3a67c4" name="Message" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
-            <elementDefinition Id="91e01305-56dc-40cf-b4b6-7620d1ae0d7f" />
+          <operation Id="39e6889a-f95c-4582-98c2-5d42bebfd40a" name="Send&lt;void" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="8922092e-4fcf-4654-89e0-359f44d89fd1" />
             <ownedParameters>
               <operationHasOwnedParameters>
-                <parameter Id="0d534748-1b0b-4f57-8f73-95a975187c77" name="IMessage" direction="In" isUnique="false">
-                  <elementDefinition Id="665949cc-582c-45ce-b90d-90d483c40189" />
+                <parameter Id="21afdbd5-cee6-4794-bf69-9cbc4a2dfdc3" name="IMessageHeader" direction="In" isUnique="false">
+                  <elementDefinition Id="7e34b110-9fa5-4497-b101-962da6b6bd10" />
                 </parameter>
               </operationHasOwnedParameters>
               <operationHasOwnedParameters>
-                <parameter Id="7dd70d6f-a4bc-45e8-961e-07e6374a0cf3" direction="Return" isUnique="false">
-                  <elementDefinition Id="efd02f31-19e6-4e55-b449-0f23d4846414" />
-                  <type_NamedElement>
-                    <referencedTypeMoniker Id="0122c4e2-3d9d-477b-9ecb-8407fea9297c" LastKnownName="Signal" />
-                  </type_NamedElement>
+                <parameter Id="a9547644-a10f-4e82-b09c-acdc554f80bb" name="IMessageBody&gt;(" direction="In" isUnique="false">
+                  <elementDefinition Id="b6d1b6b4-7928-47c1-8585-1594c3293c60" />
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation Id="4b0a1598-a345-4557-9ebe-ee952ddacf37" name="receive&lt;void" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="b6a7c860-e4c6-49b7-82f1-eb8779af8f45" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="406a4fd0-29fc-42b1-8805-41e115de46e2" name="ImessageHeader&amp;" direction="In" isUnique="false">
+                  <elementDefinition Id="7718368c-f506-4905-bee1-0c4474d1e6c5" />
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="650fa6e4-73b7-4992-9633-0cd597cc8825" name="IMessageBody&amp;)&gt;(" direction="In" isUnique="false">
+                  <elementDefinition Id="a3ec8ff5-1866-4a1d-8f01-2dd55a57b2d5" />
                 </parameter>
               </operationHasOwnedParameters>
             </ownedParameters>
@@ -154,7 +168,7 @@
               </operationHasOwnedParameters>
             </ownedParameters>
           </operation>
-          <operation Id="d07b43e0-4918-4a4e-b555-2b83a3cbc0d0" name="Message&lt;void" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+          <operation Id="d07b43e0-4918-4a4e-b555-2b83a3cbc0d0" name="Send&lt;void" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
             <elementDefinition Id="9ab42e78-daea-418c-a7c7-50f774401a67" />
             <ownedParameters>
               <operationHasOwnedParameters>
@@ -169,6 +183,21 @@
               </operationHasOwnedParameters>
             </ownedParameters>
           </operation>
+          <operation Id="ed04c917-9bf6-4e3e-aaff-df7f2b0040f3" name="receive&lt;void" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="b93893c4-7ffe-4381-9b0b-5eb6887144be" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="31c11f52-28f3-4fed-912c-ff6b09774620" name="ImessageHeader&amp;" direction="In" isUnique="false">
+                  <elementDefinition Id="e82cc658-142b-48d8-836f-2a360d126b8b" />
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="281da2c7-be53-413d-b6b5-f92aac10f02c" name="IMessageBody&amp;)&gt;(" direction="In" isUnique="false">
+                  <elementDefinition Id="06420c88-d505-4eea-b4f6-c4eaa544f2a5" />
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
         </ownedOperationsInternal>
       </class>
     </logicalClassDesignerModelHasTypes>
@@ -177,50 +206,6 @@
         <elementDefinition Id="d8a65e9e-84d9-47a2-8bd0-35a0e3371af3" />
       </referencedType>
     </packageHasNamedElement>
-    <logicalClassDesignerModelHasTypes>
-      <class Id="8fbcd35a-8f76-43c3-b583-93f0911f01f4" name="Scene" isAbstract="false" isLeaf="false" isActiveClass="false">
-        <elementDefinition Id="d890f580-8d42-4b1f-9e7c-32f5124ec334" />
-        <suppliersInternal>
-          <interfaceRealization Id="73c256ad-aeef-42c6-b5ae-79a7df4bd5a7">
-            <interfaceMoniker Id="df91c582-3686-4c74-bf1a-b208318f3c8b" LastKnownName="IShape" />
-            <elementDefinition Id="cccaa38f-8363-45a6-9817-85f6380aec1a" />
-          </interfaceRealization>
-        </suppliersInternal>
-        <targetEnds>
-          <association Id="2793a8c0-f8d0-484d-af11-8b1d9ecf2632" isDerived="false" sourceEndRoleName="Scene" targetEndRoleName="IShape" isLeaf="false" isAbstract="false">
-            <interfaceMoniker Id="df91c582-3686-4c74-bf1a-b208318f3c8b" LastKnownName="IShape" />
-            <relationshipOwnedElementsInternal>
-              <associationHasOwnedEnds>
-                <memberEnd Id="4b5430a3-67d4-4eb6-8338-ba06f5352205" name="Scene" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="Composite" isComposite="false" isNavigableOwned="false">
-                  <elementDefinition Id="02b3d3cd-6818-4102-a225-e7dde8140c92" />
-                </memberEnd>
-              </associationHasOwnedEnds>
-              <associationHasOwnedEnds>
-                <memberEnd Id="f8c6de7a-cd80-4980-a8ab-f5cde12d6e5f" name="IShape" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="true">
-                  <lowerValueInternal>
-                    <literalString Id="1518ccc5-8869-4191-bc29-8408ac08b809" name="Lower" value="*">
-                      <elementDefinition Id="f651896c-1ac8-4e3d-ac93-c2a85f45e0aa" />
-                    </literalString>
-                  </lowerValueInternal>
-                  <upperValueInternal>
-                    <literalString Id="6634592a-982a-43dd-8c62-be9a79140598" name="Upper" value="*">
-                      <elementDefinition Id="3ad116e5-8c11-4c28-966b-b52c1de99d1a" />
-                    </literalString>
-                  </upperValueInternal>
-                  <elementDefinition Id="8399f139-8b8a-4c47-aacc-2438aed7550a" />
-                </memberEnd>
-              </associationHasOwnedEnds>
-            </relationshipOwnedElementsInternal>
-            <elementDefinition Id="df178d01-bc86-44b4-9487-37e5427b0ac8" />
-          </association>
-        </targetEnds>
-        <ownedOperationsInternal>
-          <operation Id="53749f3c-c96d-4339-b610-9c3388705905" name="Draw" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
-            <elementDefinition Id="944aab08-5410-4636-a984-f92fbcd6a75f" />
-          </operation>
-        </ownedOperationsInternal>
-      </class>
-    </logicalClassDesignerModelHasTypes>
     <logicalClassDesignerModelHasTypes>
       <class Id="e84104aa-6a08-47cf-b7b0-22cb0e0d3061" name="Character" isAbstract="false" isLeaf="false" isActiveClass="false">
         <elementDefinition Id="9a5b920a-a870-4911-a221-f215e7a48df2" />
@@ -252,7 +237,7 @@
               </operationHasOwnedParameters>
             </ownedParameters>
           </operation>
-          <operation Id="1c726176-32b8-4616-8027-500cc7dd195e" name="Message&lt;void" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+          <operation Id="1c726176-32b8-4616-8027-500cc7dd195e" name="Send&lt;void" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
             <elementDefinition Id="0c849dfa-8511-4f17-8f32-f4db335638e9" />
             <ownedParameters>
               <operationHasOwnedParameters>
@@ -263,6 +248,21 @@
               <operationHasOwnedParameters>
                 <parameter Id="50e0fde1-09e2-4a31-bcb9-b829e2150e2f" name="IMessageBody)(" direction="In" isUnique="false">
                   <elementDefinition Id="17f28661-a1ec-4e6e-8fdb-8e4331b8bdff" />
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation Id="4a021bdb-d117-4291-89bc-e6e722288503" name="receive&lt;void" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="b60738b1-98d0-4f67-9af7-1341f3075df2" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="4dd15c28-b22e-44ef-99d2-b07cf6586068" name="ImessageHeader&amp;" direction="In" isUnique="false">
+                  <elementDefinition Id="53eb2326-97b8-408d-abfb-ba4efcffbfc2" />
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="e66872a9-80cb-462a-a982-0f8080210ac9" name="IMessageBody&amp;)&gt;(" direction="In" isUnique="false">
+                  <elementDefinition Id="19eb3668-dcdf-4ee8-94ed-0f59b7702339" />
                 </parameter>
               </operationHasOwnedParameters>
             </ownedParameters>
@@ -290,7 +290,7 @@
           </interfaceRealization>
         </suppliersInternal>
         <ownedOperationsInternal>
-          <operation Id="586e3ddf-fced-400c-a610-d573abebec7f" name="Message&lt;void" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+          <operation Id="586e3ddf-fced-400c-a610-d573abebec7f" name="Send&lt;void" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
             <elementDefinition Id="3b14ca91-de7b-4f05-ad57-37c9ce9b8a7d" />
             <ownedParameters>
               <operationHasOwnedParameters>
@@ -301,6 +301,21 @@
               <operationHasOwnedParameters>
                 <parameter Id="a49ee71a-98d8-4498-9634-ba6c6d4c5e23" name="IMessageBody)(" direction="In" isUnique="false">
                   <elementDefinition Id="49f6895f-0cad-41fc-b8fa-43763a077731" />
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation Id="fedf079f-affc-4ab2-8575-32039bba15a2" name="receive&lt;void" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="9f4945f0-42e0-43e1-a9fe-8053bc2c990b" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="e38aac67-13bc-4ab8-b931-815d25f52805" name="ImessageHeader&amp;" direction="In" isUnique="false">
+                  <elementDefinition Id="924d3a6d-3637-4535-b16e-204c6d240699" />
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="d64820e8-973e-44a5-a52a-7430e3556a7d" name="IMessageBody&amp;)&gt;(" direction="In" isUnique="false">
+                  <elementDefinition Id="f0e2b7cd-4f6b-4e2e-bd64-26657b1f9cd9" />
                 </parameter>
               </operationHasOwnedParameters>
             </ownedParameters>
@@ -354,15 +369,52 @@
         <elementDefinition Id="17fb0347-d087-4e0f-8f52-ff032a330103" />
       </referencedType>
     </packageHasNamedElement>
-    <packageHasNamedElement>
-      <referencedType Id="0122c4e2-3d9d-477b-9ecb-8407fea9297c" name="Signal" isAbstract="false" isLeaf="false" cachedFullName="Signal">
-        <elementDefinition Id="4840ed1f-2e01-415d-b037-a8222dfc0750" />
-      </referencedType>
-    </packageHasNamedElement>
     <logicalClassDesignerModelHasTypes>
       <Interface Id="3d2353cb-4d52-437f-b125-9d96ce71f9f5" name="IMessageBody" isAbstract="false" isLeaf="false">
         <elementDefinition Id="65ae7b72-6b8f-4e70-b172-df602a567363" />
       </Interface>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="86496d0c-4338-4552-a4dc-6af37d13f144" name="RenderingHeader" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="6b4d8784-d70c-4e1d-879d-5686a2a8d327" />
+        <suppliersInternal>
+          <interfaceRealization Id="d6e19a28-4c6b-4d36-b6ac-3e2c8db6688c">
+            <interfaceMoniker Id="c1956127-abd9-41e5-ac1f-85432774959f" LastKnownName="IMessageHeader" />
+            <elementDefinition Id="1f1f7f8f-9de1-4401-9ec3-8af90ccdc27e" />
+          </interfaceRealization>
+        </suppliersInternal>
+        <ownedOperationsInternal>
+          <operation Id="3d7275f3-00ed-41ee-95fe-95fac304151c" name="Source" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="c9bd7ba8-066d-4863-9704-b279b1a98b4a" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="05a1a772-511b-48a6-a7af-3ffde8711cd5" direction="Return" isUnique="false">
+                  <elementDefinition Id="3b985736-894a-4ee7-bedb-63a2ac1a13e9" />
+                  <type_NamedElement>
+                    <referencedTypeMoniker Id="759a9d1b-dd1d-4b41-9318-864dfa500514" LastKnownName="IComponent" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="98c4ef0e-af2f-40ff-9b5e-68e8af19ca13" name="RenderingBody" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="708643f8-a218-4714-b7c9-c93c93913101" />
+        <suppliersInternal>
+          <interfaceRealization Id="2d206e32-12ad-4399-be0b-2209889fe68d">
+            <interfaceMoniker Id="3d2353cb-4d52-437f-b125-9d96ce71f9f5" LastKnownName="IMessageBody" />
+            <elementDefinition Id="c016c25f-b2ac-4825-8d9e-9483c1e5f488" />
+          </interfaceRealization>
+        </suppliersInternal>
+        <ownedAttributesInternal>
+          <property Id="3b6c07f0-89e9-472a-ba83-d1f7236f78ad" name="Context" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="9130de5d-15d9-4fdb-ba32-5427d77c7cae" />
+          </property>
+        </ownedAttributesInternal>
+      </class>
     </logicalClassDesignerModelHasTypes>
   </packagedElements>
   <package Id="f22f1606-f93b-47ec-8d4b-f2659ab49809" name="Structure">
