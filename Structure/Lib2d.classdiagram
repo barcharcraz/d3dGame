@@ -5,8 +5,20 @@
       <Interface Id="1dacbcc4-54c5-494f-ab49-8ba83e9e386f" name="IComponent" isAbstract="false" isLeaf="false">
         <elementDefinition Id="2d345e91-7bc4-474e-a1cc-05c25ea87540" />
         <ownedOperations>
-          <operation Id="8373e81b-8c3d-4098-b74e-518083a84019" name="Update" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
-            <elementDefinition Id="a96f18f7-54f2-46e2-820f-cea670d88497" />
+          <operation Id="e381302d-401b-471e-9db5-3a8e2a14f250" name="Message&lt;void" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="fe1798f9-9af6-4d95-a9bf-bd26d80d852f" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="896fc2f5-085f-4dcc-9797-6c8b94b5f5c3" name="IMessageHeader" direction="In" isUnique="false">
+                  <elementDefinition Id="525ce514-27df-4f2e-9977-4a32ed0a2208" />
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="51285ab2-be5b-4dce-b95d-bb52168a8eab" name="IMessageBody&gt;(" direction="In" isUnique="false">
+                  <elementDefinition Id="4ec12652-c0e9-4445-b6b4-56f58b04ae08" />
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
           </operation>
         </ownedOperations>
       </Interface>
@@ -142,8 +154,20 @@
               </operationHasOwnedParameters>
             </ownedParameters>
           </operation>
-          <operation Id="7e8da24a-d1be-42a2-a89c-1aa33deec146" name="Update" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
-            <elementDefinition Id="acbfb521-87e9-4f3f-a75e-90a93ccfc413" />
+          <operation Id="d07b43e0-4918-4a4e-b555-2b83a3cbc0d0" name="Message&lt;void" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="9ab42e78-daea-418c-a7c7-50f774401a67" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="6ff32ec2-d687-4388-a919-927e7b7c0e07" name="IMessageHeader" direction="In" isUnique="false">
+                  <elementDefinition Id="03f3456d-7d26-47be-a775-c8e425e0ee24" />
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="cb97f1aa-1a7f-466a-941d-f0a358cdaed6" name="IMessageBody)(" direction="In" isUnique="false">
+                  <elementDefinition Id="e2803b94-0796-43e8-a9bc-97bb6298e121" />
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
           </operation>
         </ownedOperationsInternal>
       </class>
@@ -228,8 +252,20 @@
               </operationHasOwnedParameters>
             </ownedParameters>
           </operation>
-          <operation Id="5fdb79d9-0237-4281-a9cc-d4c533d5160f" name="Update" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
-            <elementDefinition Id="3d87a7bf-8431-402a-aebd-a918d36a24bc" />
+          <operation Id="1c726176-32b8-4616-8027-500cc7dd195e" name="Message&lt;void" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="0c849dfa-8511-4f17-8f32-f4db335638e9" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="3e87cacb-d8a1-48e1-9694-950e9b33b408" name="IMessageHeader" direction="In" isUnique="false">
+                  <elementDefinition Id="a9f7e01e-9722-428d-9e13-118b5b0c26f1" />
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="50e0fde1-09e2-4a31-bcb9-b829e2150e2f" name="IMessageBody)(" direction="In" isUnique="false">
+                  <elementDefinition Id="17f28661-a1ec-4e6e-8fdb-8e4331b8bdff" />
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
           </operation>
         </ownedOperationsInternal>
       </class>
@@ -254,8 +290,20 @@
           </interfaceRealization>
         </suppliersInternal>
         <ownedOperationsInternal>
-          <operation Id="1a84c98b-5cb1-40fd-9858-49edc39b3acc" name="Update" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
-            <elementDefinition Id="a28693d7-cc09-49a0-aad3-456358e5b458" />
+          <operation Id="586e3ddf-fced-400c-a610-d573abebec7f" name="Message&lt;void" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="3b14ca91-de7b-4f05-ad57-37c9ce9b8a7d" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="5e41a1d0-8193-420e-a1c2-c4215d56e1eb" name="IMessageHeader" direction="In" isUnique="false">
+                  <elementDefinition Id="e6312ea6-5058-4afe-aa71-85628d104f43" />
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="a49ee71a-98d8-4498-9634-ba6c6d4c5e23" name="IMessageBody)(" direction="In" isUnique="false">
+                  <elementDefinition Id="49f6895f-0cad-41fc-b8fa-43763a077731" />
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
           </operation>
         </ownedOperationsInternal>
       </class>
@@ -277,7 +325,7 @@
       </class>
     </logicalClassDesignerModelHasTypes>
     <logicalClassDesignerModelHasTypes>
-      <Interface Id="c1956127-abd9-41e5-ac1f-85432774959f" name="IMessage" isAbstract="false" isLeaf="false">
+      <Interface Id="c1956127-abd9-41e5-ac1f-85432774959f" name="IMessageHeader" isAbstract="false" isLeaf="false">
         <elementDefinition Id="a5809ff9-a101-40eb-b02a-76e6e891a82b" />
         <ownedOperations>
           <operation Id="c364817e-fb00-4a8e-afde-cef7335ed28b" name="Source" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
@@ -293,30 +341,12 @@
               </operationHasOwnedParameters>
             </ownedParameters>
           </operation>
-          <operation Id="1afd0011-82f7-4b35-ab52-cbf3b09e756f" name="MessageType" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
-            <elementDefinition Id="857134d5-354b-49a1-a2ff-aedefd0d8b13" />
-            <ownedParameters>
-              <operationHasOwnedParameters>
-                <parameter Id="51152bee-e2fe-4a34-895e-33727b88704c" direction="Return" isUnique="false">
-                  <elementDefinition Id="828ea4e1-20c9-451d-983f-1404dc8091b3" />
-                  <type_NamedElement>
-                    <referencedTypeMoniker Id="5d92ae1c-6bc2-4566-9f7b-475307ff40ab" LastKnownName="MessageTypes" />
-                  </type_NamedElement>
-                </parameter>
-              </operationHasOwnedParameters>
-            </ownedParameters>
-          </operation>
         </ownedOperations>
       </Interface>
     </logicalClassDesignerModelHasTypes>
     <packageHasNamedElement>
       <referencedType Id="759a9d1b-dd1d-4b41-9318-864dfa500514" name="IComponent" isAbstract="false" isLeaf="false" cachedFullName="Structure::IComponent">
         <elementDefinition Id="2d345e91-7bc4-474e-a1cc-05c25ea87540" />
-      </referencedType>
-    </packageHasNamedElement>
-    <packageHasNamedElement>
-      <referencedType Id="5d92ae1c-6bc2-4566-9f7b-475307ff40ab" name="MessageTypes" isAbstract="false" isLeaf="false" cachedFullName="Structure::MessageTypes">
-        <elementDefinition Id="17fb0347-d087-4e0f-8f52-ff032a330103" />
       </referencedType>
     </packageHasNamedElement>
     <packageHasNamedElement>
@@ -329,6 +359,11 @@
         <elementDefinition Id="4840ed1f-2e01-415d-b037-a8222dfc0750" />
       </referencedType>
     </packageHasNamedElement>
+    <logicalClassDesignerModelHasTypes>
+      <Interface Id="3d2353cb-4d52-437f-b125-9d96ce71f9f5" name="IMessageBody" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="65ae7b72-6b8f-4e70-b172-df602a567363" />
+      </Interface>
+    </logicalClassDesignerModelHasTypes>
   </packagedElements>
   <package Id="f22f1606-f93b-47ec-8d4b-f2659ab49809" name="Structure">
     <elementDefinition Id="a58803f3-0658-40a1-acc0-3f573986d81f" />

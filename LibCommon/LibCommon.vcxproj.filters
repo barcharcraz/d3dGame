@@ -19,6 +19,9 @@
     <Filter Include="Header Files\Shapes">
       <UniqueIdentifier>{62acc51a-5303-4301-8970-c6f72752f83b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Messages">
+      <UniqueIdentifier>{719c9370-5d40-4e53-a4ed-6bdc1f9e3593}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -41,6 +44,15 @@
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="IMessageHeader.h">
+      <Filter>Header Files\Messages</Filter>
+    </ClInclude>
+    <ClInclude Include="IMessageBase.h">
+      <Filter>Header Files\Messages</Filter>
+    </ClInclude>
+    <ClInclude Include="Messages.h">
+      <Filter>Header Files\Messages</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

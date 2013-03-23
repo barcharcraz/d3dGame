@@ -19,8 +19,6 @@ Project("{F088123C-0E9E-452A-89E6-6BA2F21D5CAC}") = "Structure", "Structure\Stru
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibCommon", "LibCommon\LibCommon.vcxproj", "{ABFBC7B2-F7AC-4AE2-9958-3390ED49AB87}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libsigc++", "libsigc++2\MSVC_Net2010\libsigc++2.vcxproj", "{83997EF6-02D6-4CDB-8B3C-DBCA3018CC72}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -151,20 +149,6 @@ Global
 		{ABFBC7B2-F7AC-4AE2-9958-3390ED49AB87}.Release|Win32.ActiveCfg = Release|Win32
 		{ABFBC7B2-F7AC-4AE2-9958-3390ED49AB87}.Release|Win32.Build.0 = Release|Win32
 		{ABFBC7B2-F7AC-4AE2-9958-3390ED49AB87}.Release|x64.ActiveCfg = Release|Win32
-		{83997EF6-02D6-4CDB-8B3C-DBCA3018CC72}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{83997EF6-02D6-4CDB-8B3C-DBCA3018CC72}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
-		{83997EF6-02D6-4CDB-8B3C-DBCA3018CC72}.Debug|Mixed Platforms.Build.0 = Debug|Win32
-		{83997EF6-02D6-4CDB-8B3C-DBCA3018CC72}.Debug|Win32.ActiveCfg = Debug|Win32
-		{83997EF6-02D6-4CDB-8B3C-DBCA3018CC72}.Debug|Win32.Build.0 = Debug|Win32
-		{83997EF6-02D6-4CDB-8B3C-DBCA3018CC72}.Debug|x64.ActiveCfg = Debug|x64
-		{83997EF6-02D6-4CDB-8B3C-DBCA3018CC72}.Debug|x64.Build.0 = Debug|x64
-		{83997EF6-02D6-4CDB-8B3C-DBCA3018CC72}.Release|Any CPU.ActiveCfg = Release|Win32
-		{83997EF6-02D6-4CDB-8B3C-DBCA3018CC72}.Release|Mixed Platforms.ActiveCfg = Release|Win32
-		{83997EF6-02D6-4CDB-8B3C-DBCA3018CC72}.Release|Mixed Platforms.Build.0 = Release|Win32
-		{83997EF6-02D6-4CDB-8B3C-DBCA3018CC72}.Release|Win32.ActiveCfg = Release|Win32
-		{83997EF6-02D6-4CDB-8B3C-DBCA3018CC72}.Release|Win32.Build.0 = Release|Win32
-		{83997EF6-02D6-4CDB-8B3C-DBCA3018CC72}.Release|x64.ActiveCfg = Release|x64
-		{83997EF6-02D6-4CDB-8B3C-DBCA3018CC72}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
