@@ -1,0 +1,3 @@
+[submodule "WinLib"]
+	path = WinLib
+	url = git@github.com:barcharcraz/WinLib.git

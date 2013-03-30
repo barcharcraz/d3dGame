@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
-#include <MacroUtils.h>
-#include <WinLib.h>
+#include <Winlib/MacroUtils.h>
+#include <Winlib/WinLib.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

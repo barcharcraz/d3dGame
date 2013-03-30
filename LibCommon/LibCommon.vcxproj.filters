@@ -25,15 +25,24 @@
     <Filter Include="Header Files\Messages\Rendering">
       <UniqueIdentifier>{627d4ba5-a732-4eae-8b8b-2c462502eb42}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Rendering">
+      <UniqueIdentifier>{90559100-5e07-44ab-be88-1979c63d846c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Rendering">
+      <UniqueIdentifier>{180cc574-45fb-47ab-8d2d-14f13886a2ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Messages">
+      <UniqueIdentifier>{12dc54cb-c9f9-439f-a992-1bbf7a30794e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Messages\Rendering">
+      <UniqueIdentifier>{e136714a-c59e-40a9-abd1-3cf59c04825d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IComponent.h">
@@ -48,6 +57,15 @@
     <ClInclude Include="IMessage.h">
       <Filter>Header Files\Messages</Filter>
     </ClInclude>
+    <ClInclude Include="IRenderer.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderingMessage.h">
+      <Filter>Header Files\Messages\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -55,6 +73,9 @@
     </ClCompile>
     <ClCompile Include="Entity.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

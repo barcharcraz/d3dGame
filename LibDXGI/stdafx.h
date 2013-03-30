@@ -5,9 +5,14 @@
 
 #pragma once
 
+#include "targetver.h"
 
-#define _SCL_SECURE_NO_WARNINGS			//disable errors for using "unsafe" standard library functions
-										//signals2 needs this
+#define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
+// Windows Header Files:
+#include <windows.h>
+#include <dxgi1_2.h>
+#include <atlbase.h>
+
 
 
 // TODO: reference additional headers your program requires here

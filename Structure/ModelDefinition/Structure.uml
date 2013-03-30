@@ -696,7 +696,7 @@
     <packageHasNamedElement>
       <Interface
         Id="a5809ff9-a101-40eb-b02a-76e6e891a82b"
-        name="IMessageHeader"
+        name="IMessage"
         isAbstract="false"
         isLeaf="false">
         <ownedOperations>
@@ -749,7 +749,7 @@
     <packageHasNamedElement>
       <class
         Id="6b4d8784-d70c-4e1d-879d-5686a2a8d327"
-        name="RenderingHeader"
+        name="RenderingMessage"
         isAbstract="false"
         isLeaf="false"
         isActiveClass="false">
@@ -758,7 +758,7 @@
             Id="1f1f7f8f-9de1-4401-9ec3-8af90ccdc27e">
             <interfaceMoniker
               Id="a5809ff9-a101-40eb-b02a-76e6e891a82b"
-              LastKnownName="IMessageHeader"
+              LastKnownName="IMessage"
               LastKnownLocation="Structure.uml" />
           </interfaceRealization>
         </suppliersInternal>
@@ -820,6 +820,109 @@
             isComposite="false" />
         </ownedAttributesInternal>
       </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="c83cebb0-ddad-4a41-96a5-715ad3b62142"
+        name="Direct2DRenderingMessage"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <generalsInternal>
+          <generalization
+            Id="c6a835b3-2516-4bd7-b237-60e5b7d9ab08"
+            isSubstitutable="false">
+            <classMoniker
+              Id="6b4d8784-d70c-4e1d-879d-5686a2a8d327"
+              LastKnownName="RenderingMessage"
+              LastKnownLocation="Structure.uml" />
+          </generalization>
+        </generalsInternal>
+        <ownedAttributesInternal>
+          <property
+            Id="fd54973f-bf18-4881-ad2f-20b33e09ecd1"
+            name="Context"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <type_NamedElement>
+              <undefinedTypeMoniker
+                Id="598ac462-678c-438c-b8cc-b4eb49a6203c"
+                LastKnownName="ID2D1DeviceContext"
+                LastKnownLocation="Structure.uml" />
+            </type_NamedElement>
+          </property>
+        </ownedAttributesInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <undefinedType
+        Id="598ac462-678c-438c-b8cc-b4eb49a6203c"
+        name="ID2D1DeviceContext" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <Interface
+        Id="1db8dd68-ce5c-47af-89ae-3eb0e8dc7aa2"
+        name="IRenderingManager"
+        isAbstract="false"
+        isLeaf="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="75cdac33-d4bb-4194-8fc5-4a5e648f0e1e"
+        name="Direct2DRenderingManager"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <ownedAttributesInternal>
+          <property
+            Id="27208839-010b-4f2b-8c2e-30476bbf0beb"
+            name="Device"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <type_NamedElement>
+              <undefinedTypeMoniker
+                Id="4ddb72fd-208b-4a6f-a3d8-a500f9ef9314"
+                LastKnownName="ID2D1Device"
+                LastKnownLocation="Structure.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="64a19a40-88d7-48b3-81d6-561149630583"
+            name="Context"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <type_NamedElement>
+              <undefinedTypeMoniker
+                Id="598ac462-678c-438c-b8cc-b4eb49a6203c"
+                LastKnownName="ID2D1DeviceContext"
+                LastKnownLocation="Structure.uml" />
+            </type_NamedElement>
+          </property>
+        </ownedAttributesInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <undefinedType
+        Id="4ddb72fd-208b-4a6f-a3d8-a500f9ef9314"
+        name="ID2D1Device" />
     </packageHasNamedElement>
   </packagedElements>
   <primitiveType

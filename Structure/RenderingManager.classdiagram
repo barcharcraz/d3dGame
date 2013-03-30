@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<logicalClassDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" dslVersion="1.0.0.0" Id="85fdfa89-1af3-4e4c-893e-19d0a6aadb60" name="RenderingManager" linkedPackageId="ecd0d475-813d-42c1-94c4-8edeefec26a6" xmlns="http://schemas.microsoft.com/dsltools/LogicalClassDesigner">
+  <profileInstances>
+    <packageHasProfileInstances Id="f408a804-fc72-419d-bbff-251de90d3ea7">
+      <profileInstance Id="2a55af6e-7509-4925-9d11-6888a1fdd929" name="StandardProfileL2">
+        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+      </profileInstance>
+      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="dfb546b2-60a5-423a-bc86-b76889626920">
+      <profileInstance Id="205def59-2552-4aaf-8529-9f566e9e3d5f" name="StandardProfileL3">
+        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+      </profileInstance>
+      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <logicalClassDesignerModelHasTypes>
+      <Interface Id="4ab97597-5b47-4dc9-a8b6-3ac65bdc9a2e" name="IRenderingManager" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="1db8dd68-ce5c-47af-89ae-3eb0e8dc7aa2" />
+      </Interface>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="71c99dfb-f23c-4f46-9dba-b39c92f36a96" name="Direct2DRenderingManager" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="75cdac33-d4bb-4194-8fc5-4a5e648f0e1e" />
+        <ownedAttributesInternal>
+          <property Id="5b9b3ba8-1754-4fa0-98cd-f8afc9e74681" name="Device" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="27208839-010b-4f2b-8c2e-30476bbf0beb" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="c8b5f744-693d-4035-a4f8-e72b052c85d8" LastKnownName="ID2D1Device" />
+            </type_NamedElement>
+          </property>
+          <property Id="6fe7cb27-b466-454f-9c72-0ad21c302395" name="Context" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="64a19a40-88d7-48b3-81d6-561149630583" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="73f639aa-69f1-43a4-b604-2d6df0604781" LastKnownName="ID2D1DeviceContext" />
+            </type_NamedElement>
+          </property>
+        </ownedAttributesInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <packageHasNamedElement>
+      <referencedType Id="c8b5f744-693d-4035-a4f8-e72b052c85d8" name="ID2D1Device" isAbstract="false" isLeaf="false" cachedFullName="ID2D1Device">
+        <elementDefinition Id="4ddb72fd-208b-4a6f-a3d8-a500f9ef9314" />
+      </referencedType>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <referencedType Id="73f639aa-69f1-43a4-b604-2d6df0604781" name="ID2D1DeviceContext" isAbstract="false" isLeaf="false" cachedFullName="ID2D1DeviceContext">
+        <elementDefinition Id="598ac462-678c-438c-b8cc-b4eb49a6203c" />
+      </referencedType>
+    </packageHasNamedElement>
+  </packagedElements>
+  <package Id="ecd0d475-813d-42c1-94c4-8edeefec26a6" name="Structure">
+    <elementDefinition Id="a58803f3-0658-40a1-acc0-3f573986d81f" />
+  </package>
+</logicalClassDesignerModel>

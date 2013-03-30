@@ -340,7 +340,7 @@
       </class>
     </logicalClassDesignerModelHasTypes>
     <logicalClassDesignerModelHasTypes>
-      <Interface Id="c1956127-abd9-41e5-ac1f-85432774959f" name="IMessageHeader" isAbstract="false" isLeaf="false">
+      <Interface Id="c1956127-abd9-41e5-ac1f-85432774959f" name="IMessage" isAbstract="false" isLeaf="false">
         <elementDefinition Id="a5809ff9-a101-40eb-b02a-76e6e891a82b" />
         <ownedOperations>
           <operation Id="c364817e-fb00-4a8e-afde-cef7335ed28b" name="Source" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
@@ -370,16 +370,11 @@
       </referencedType>
     </packageHasNamedElement>
     <logicalClassDesignerModelHasTypes>
-      <Interface Id="3d2353cb-4d52-437f-b125-9d96ce71f9f5" name="IMessageBody" isAbstract="false" isLeaf="false">
-        <elementDefinition Id="65ae7b72-6b8f-4e70-b172-df602a567363" />
-      </Interface>
-    </logicalClassDesignerModelHasTypes>
-    <logicalClassDesignerModelHasTypes>
-      <class Id="86496d0c-4338-4552-a4dc-6af37d13f144" name="RenderingHeader" isAbstract="false" isLeaf="false" isActiveClass="false">
+      <class Id="86496d0c-4338-4552-a4dc-6af37d13f144" name="RenderingMessage" isAbstract="false" isLeaf="false" isActiveClass="false">
         <elementDefinition Id="6b4d8784-d70c-4e1d-879d-5686a2a8d327" />
         <suppliersInternal>
           <interfaceRealization Id="d6e19a28-4c6b-4d36-b6ac-3e2c8db6688c">
-            <interfaceMoniker Id="c1956127-abd9-41e5-ac1f-85432774959f" LastKnownName="IMessageHeader" />
+            <interfaceMoniker Id="c1956127-abd9-41e5-ac1f-85432774959f" LastKnownName="IMessage" />
             <elementDefinition Id="1f1f7f8f-9de1-4401-9ec3-8af90ccdc27e" />
           </interfaceRealization>
         </suppliersInternal>
@@ -401,21 +396,29 @@
       </class>
     </logicalClassDesignerModelHasTypes>
     <logicalClassDesignerModelHasTypes>
-      <class Id="98c4ef0e-af2f-40ff-9b5e-68e8af19ca13" name="RenderingBody" isAbstract="false" isLeaf="false" isActiveClass="false">
-        <elementDefinition Id="708643f8-a218-4714-b7c9-c93c93913101" />
-        <suppliersInternal>
-          <interfaceRealization Id="2d206e32-12ad-4399-be0b-2209889fe68d">
-            <interfaceMoniker Id="3d2353cb-4d52-437f-b125-9d96ce71f9f5" LastKnownName="IMessageBody" />
-            <elementDefinition Id="c016c25f-b2ac-4825-8d9e-9483c1e5f488" />
-          </interfaceRealization>
-        </suppliersInternal>
+      <class Id="9347b9bd-9272-4b04-b66d-13f17bf9e424" name="Direct2DRenderingMessage" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="c83cebb0-ddad-4a41-96a5-715ad3b62142" />
+        <generalsInternal>
+          <generalization Id="1b5d83f7-ca48-4a5c-8b80-10887286b538" isSubstitutable="false">
+            <classMoniker Id="86496d0c-4338-4552-a4dc-6af37d13f144" LastKnownName="RenderingMessage" />
+            <elementDefinition Id="c6a835b3-2516-4bd7-b237-60e5b7d9ab08" />
+          </generalization>
+        </generalsInternal>
         <ownedAttributesInternal>
-          <property Id="3b6c07f0-89e9-472a-ba83-d1f7236f78ad" name="Context" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
-            <elementDefinition Id="9130de5d-15d9-4fdb-ba32-5427d77c7cae" />
+          <property Id="39889901-df6f-4a55-a685-8473be18bd36" name="Context" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="fd54973f-bf18-4881-ad2f-20b33e09ecd1" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="ff53be7c-72b4-4495-8ae7-1bda7fa16165" LastKnownName="ID2D1DeviceContext" />
+            </type_NamedElement>
           </property>
         </ownedAttributesInternal>
       </class>
     </logicalClassDesignerModelHasTypes>
+    <packageHasNamedElement>
+      <referencedType Id="ff53be7c-72b4-4495-8ae7-1bda7fa16165" name="ID2D1DeviceContext" isAbstract="false" isLeaf="false" cachedFullName="ID2D1DeviceContext">
+        <elementDefinition Id="598ac462-678c-438c-b8cc-b4eb49a6203c" />
+      </referencedType>
+    </packageHasNamedElement>
   </packagedElements>
   <package Id="f22f1606-f93b-47ec-8d4b-f2659ab49809" name="Structure">
     <elementDefinition Id="a58803f3-0658-40a1-acc0-3f573986d81f" />

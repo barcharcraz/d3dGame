@@ -180,9 +180,6 @@
     <ProjectReference Include="..\Lib3D\Lib3D.vcxproj">
       <Project>{350cd284-cc0d-643f-dea3-d49785e9f2b4}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\WinLib\WinLib.vcxproj">
-      <Project>{e7a91e74-ba9c-854b-2be7-bb4c0e897def}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

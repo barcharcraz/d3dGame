@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "SimpleEditor.h"
-#include <WinLib.h>
+#include <WinLib\WinLib.h>
 #include <Windows.h>
 #include <CommCtrl.h>
 #include <d2d1_1.h>

@@ -6,7 +6,7 @@ namespace LibCommon {
 	class IComponent;
 	class IMessage {
 	public:
-		IComponent& src;
+		IComponent* src;
 		virtual ~IMessage() = 0;
 	};
 }
