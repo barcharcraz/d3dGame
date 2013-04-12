@@ -2,27 +2,30 @@
 //
 
 #include "stdafx.h"
+
 #include "SimpleEditor.h"
-#include <WinLib\WinLib.h>
+#include <WinLib.h>
 #include <Windows.h>
 #include <CommCtrl.h>
-#include <d2d1_1.h>
-#include <d2d1_1helper.h>
-#include <Lib2DDevice.h>
-#include <Lib2DFactory.h>
-#include <Lib2DBitmap.h>
-#include <Lib2DBitmapBrush.h>
-#include <Lib2DFactory.h>
-#include <Lib2DRect.h>
-#include <Lib2DLinearAnimation.h>
 #include <vector>
-#include <Lib2DAnimationManager.h>
-#include <Lib2DLinearAnimation.h>
+#include <LibDirect2D\Direct2DRenderer.h>
+#include <LibCommon\Entity.h>
+#include <LibCommon\Scene.h>
+#include <LibDirect2D\Direct2DRectRenderer.h>
+#include <LibCommon\Scene.h>
+#include <LibDirect3D\Direct3DRenderer.h>
+#include <initguid.h>
+#include <dxgidebug.h>
 //#pragma comment(lib,"Lib3D.lib")
 #pragma comment(lib,"Comctl32.lib")
 #pragma comment(lib, "windowscodecs.lib")
 #pragma comment(lib, "winmm.lib")
+#pragma comment(lib, "LibDXGI.lib")
+#pragma comment(lib, "LibDirect2D.lib")
+#pragma comment(lib, "WinLib.lib")
 #include <d2d1helper.h>
+using namespace LibDirect2D;
+using namespace LibCommon;
 int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
                      _In_ LPTSTR    lpCmdLine,
@@ -55,6 +58,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
     device.d3dDeviceContext->ClearRenderTargetView(device.pRenderTargetView,color);
     device.swapChain->Present(0,0);
     */
+	/*
     DWORD initialTime = GetTickCount();
     DWORD dt = 0;
 
@@ -106,8 +110,25 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
         factory.getSwapChain()->Present(1,0);
         
     };
+	*/
+	
+	CComPtr<IDXGIDebug> debug = LibDXGI::getDebugInterface();
+	//debug->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_ALL);
+	Direct3DRenderer d3dRender;
+	Direct2DRenderer render(d3dRender.getDeviceAsDXGI(), mywin.getHwnd());
+	Entity square;
+	Direct2DRectRenderer rendererComp(D2D1::RectF(1.0f, 1.0f, 100.0f, 100.0f));
+	square.addComponent(&rendererComp);
+	Scene sce(&render);
+	sce.AddEntity(&square);
+	
     //context.DrawShapes(commands);
     //factory.getSwapChain()->Present(1,0);
+    
+	mywin.onNoMessage = [&](){
+		sce.Update();
+		render.Present();
+	};
     mywin.libStartWindow();
     
 

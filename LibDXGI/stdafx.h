@@ -11,8 +11,12 @@
 // Windows Header Files:
 #include <windows.h>
 #include <dxgi1_2.h>
+#ifdef _DEBUG
+#include <initguid.h>
+#include <dxgidebug.h>
+#endif
 #include <atlbase.h>
 
-
+#pragma comment(lib, "LibCommon.lib")
 
 // TODO: reference additional headers your program requires here

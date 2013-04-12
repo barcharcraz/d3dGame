@@ -15,6 +15,7 @@ Direct2DRenderer::Direct2DRenderer(IDXGIDevice* pdxgidevice, HWND target) {
 		throw hr;
 	}
 	m_pSwapChain = LibDXGI::CreateSwapChain(pdxgidevice, target);
+	pContext->SetTarget(getBackBufferBitmap());
 	
 }
 CComPtr<ID2D1Bitmap1> Direct2DRenderer::getBackBufferBitmap() {
@@ -35,12 +36,18 @@ CComPtr<ID2D1Bitmap1> Direct2DRenderer::getBackBufferBitmap(ID2D1DeviceContext* 
 	return retval;
 
 }
-Direct2DRenderingMessage Direct2DRenderer::getRenderingMessage() {
+const Direct2DRenderingMessage* const Direct2DRenderer::getRenderingMessage() {
 	//lots of copying here but I am not convinced the object is big enough to
 	//justify passing it around by reference
-	Direct2DRenderingMessage retval = Direct2DRenderingMessage(pContext);
+	const Direct2DRenderingMessage* const retval = new Direct2DRenderingMessage(*pContext);
 	return retval;
 }
+void Direct2DRenderer::Present() {
+	m_pSwapChain->Present(1,0);
+}
 
+ID2D1DeviceContext& Direct2DRenderer::getContext() {
+	return *pContext;
+}
 
 

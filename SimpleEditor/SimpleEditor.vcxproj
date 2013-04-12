@@ -75,7 +75,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)WinLib;$(SolutionDir)Utils;$(SolutionDir)Lib3D;$(SolutionDir)Lib2D;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)WinLib;$(SolutionDir)Utils;$(SolutionDir);C:\Users\Charlie\Source\Include\boost_1_53_0;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -174,11 +174,20 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Lib2D\Lib2D.vcxproj">
-      <Project>{8ee622d1-2f45-4b52-a7f0-fa75fd8b083a}</Project>
+    <ProjectReference Include="..\LibCommon\LibCommon.vcxproj">
+      <Project>{abfbc7b2-f7ac-4ae2-9958-3390ed49ab87}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Lib3D\Lib3D.vcxproj">
-      <Project>{350cd284-cc0d-643f-dea3-d49785e9f2b4}</Project>
+    <ProjectReference Include="..\LibDirect2D\LibDirect2D.vcxproj">
+      <Project>{412c9bf5-d364-4d12-ab88-3bc6019c7c4d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\LibDirect3D\LibDirect3D.vcxproj">
+      <Project>{94fee298-c376-411f-bb8b-01735af5da3f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\LibDXGI\LibDXGI.vcxproj">
+      <Project>{34a82703-f92e-4ff4-a3a2-637c27e7d449}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\WinLib\WinLib.vcxproj">
+      <Project>{e7a91e74-ba9c-854b-2be7-bb4c0e897def}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

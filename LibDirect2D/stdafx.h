@@ -11,8 +11,12 @@
 #define LIBDIRECT2D_API __declspec(dllimport)
 #endif
 
-
 #pragma comment(lib, "LibDXGI.lib")
+#pragma comment(lib, "LibCommon.lib")
+#pragma comment(lib, "d2d1.lib")
+#pragma comment(lib, "d3d11.lib")
+
+
 #include "targetver.h"
 #include <atlbase.h>
 #include <d2d1_1.h>

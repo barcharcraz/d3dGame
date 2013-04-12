@@ -21,4 +21,7 @@ namespace LibCommon {
 			c->receive(message);
 		}
 	}
+	void Entity::handleMessage(const IMessage * const message) {
+		handleMessage(*message);
+	}
 }

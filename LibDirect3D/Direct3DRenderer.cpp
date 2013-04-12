@@ -2,7 +2,11 @@
 #include "Direct3DRenderer.h"
 using namespace LibCommon;
 Direct3DRenderer::Direct3DRenderer() {
-	init(nullptr, D3D_DRIVER_TYPE_HARDWARE, 0, D3D11_CREATE_DEVICE_BGRA_SUPPORT, nullptr, 0, D3D11_SDK_VERSION, &m_pDevice, nullptr, &m_pContect);
+	UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
+#ifdef _DEBUG
+	creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif
+	init(nullptr, D3D_DRIVER_TYPE_HARDWARE, 0, creationFlags, nullptr, 0, D3D11_SDK_VERSION, &m_pDevice, nullptr, &m_pContect);
 }
 
 void Direct3DRenderer::init(IDXGIAdapter* pAdapter,

@@ -37,6 +37,9 @@
     <Filter Include="Source Files\Messages\Rendering">
       <UniqueIdentifier>{e136714a-c59e-40a9-abd1-3cf59c04825d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Events">
+      <UniqueIdentifier>{ec7b5c93-a553-43dc-b8bf-34f4472f2f69}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -65,6 +68,9 @@
     </ClInclude>
     <ClInclude Include="RenderingMessage.h">
       <Filter>Header Files\Messages\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.hpp">
+      <Filter>Header Files\Events</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

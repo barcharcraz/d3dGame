@@ -8,6 +8,12 @@ namespace LibCommon {
 		m_entities.push_back(std::unique_ptr<Entity>(pEntity));
 	}
 	void Scene::Update() {
-
+		const IMessage * message;
+		for(std::unique_ptr<Entity> &e : m_entities) {
+			message = m_pRenderer->getRenderingMessage();
+			e->handleMessage(*message);
+			delete message;
+			
+		}
 	}
 }

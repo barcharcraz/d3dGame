@@ -18,6 +18,7 @@ DXGI_SWAP_CHAIN_DESC1 LibDXGI::GetDefaultSwapChain() {
 	retval.Scaling = DXGI_SCALING_NONE;
 	retval.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
 	retval.Flags = 0;
+	retval.AlphaMode = DXGI_ALPHA_MODE_IGNORE;
 	return retval;
 }
 CComPtr<IDXGIFactory2> LibDXGI::GetFactory(IDXGIDevice* pDevice) {
@@ -41,4 +42,13 @@ CComPtr<IDXGISwapChain1> LibDXGI::CreateSwapChain(IDXGIDevice* pDevice, HWND tar
 		throw hr;
 	}
 	return retval;
+}
+
+CComPtr<IDXGIDebug> LibDXGI::getDebugInterface() {
+	CComPtr<IDXGIDebug> debug;
+	HMODULE debugHandle = GetModuleHandle(L"dxgidebug.dll");
+	DWORD error = GetLastError();
+	HRESULT (WINAPI *getDebugInterface)(REFIID, void**) = (HRESULT (WINAPI *)(REFIID, void**))GetProcAddress(debugHandle, "DXGIGetDebugInterface");
+	getDebugInterface(IID_PPV_ARGS(&debug));
+	return debug;
 }

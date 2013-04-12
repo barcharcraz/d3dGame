@@ -30,7 +30,7 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -69,7 +69,7 @@
     <IncludePath>$(SolutionDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir);$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir);C:\Users\Charlie\Source\Include\boost_1_53_0;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -124,13 +124,23 @@
   <ItemGroup>
     <ClCompile Include="Direct2DRenderer.cpp" />
     <ClCompile Include="Direct2DRenderingMessage.cpp" />
+    <ClCompile Include="Direct2DRectRenderer.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Direct2DRenderer.h" />
     <ClInclude Include="Direct2DRenderingMessage.h" />
+    <ClInclude Include="Direct2DRectRenderer.h" />
     <ClInclude Include="targetver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LibCommon\LibCommon.vcxproj">
+      <Project>{abfbc7b2-f7ac-4ae2-9958-3390ed49ab87}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\LibDXGI\LibDXGI.vcxproj">
+      <Project>{34a82703-f92e-4ff4-a3a2-637c27e7d449}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
