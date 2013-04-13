@@ -23,6 +23,7 @@ Thumbs.db
 *.opensdf
 [Bb]in
 [Dd]ebug*/
+ipch
 *.lib
 *.sbr
 obj/
