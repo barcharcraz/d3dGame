@@ -31,5 +31,5 @@ obj/
 _ReSharper*/
 [Tt]est[Rr]esult*
 #kate files
-.kateproject
-.kateproject.d
+#.kateproject
+#.kateproject.d
