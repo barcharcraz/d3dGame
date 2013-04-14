@@ -5,7 +5,8 @@
 namespace LibCommon {
 	class RenderingMessage : public IMessage {
 	public:
-		virtual ~RenderingMessage() = 0{};
+		virtual ~RenderingMessage() = 0;
 	};
+	RenderingMessage::~RenderingMessage() {}
 }
 #endif

@@ -6,7 +6,10 @@ namespace LibCommon {
 	class IRenderer {
 	public:
 		virtual const IMessage* const getRenderingMessage() = 0;
-		virtual ~IRenderer()= 0 {};
+		virtual ~IRenderer()= 0;
 	};
+	
+	//need this for GCC and standards complience
+	IRenderer::~IRenderer() {}
 }
 #endif
