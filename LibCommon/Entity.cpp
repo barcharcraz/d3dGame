@@ -5,12 +5,12 @@ namespace LibCommon {
 		m_handler = [&](const IMessage& msg){handleMessage(msg);};
 	}
 	void Entity::addComponent(IComponent* c) {
-		c->send.connect(m_handler);
+		_mConnection = c->send.connect(m_handler);
 		Components.push_back(c);
 	}
 	void Entity::removeComponent(IComponent* c) {
 		//we dont want the component receving our messages any more
-		c->send.disconnect(m_handler);
+		_mConnection.disconnect();
 		//remove the component by memory location
 		Components.remove(c);
 

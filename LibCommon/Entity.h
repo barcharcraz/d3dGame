@@ -3,6 +3,7 @@
 #include "IComponent.h"
 #include <list>
 #include <functional>
+#include <boost/signals2.hpp>
 #include "Messages.h"
 
 namespace LibCommon {
@@ -35,6 +36,7 @@ namespace LibCommon {
 
 	private:
 		std::function<void(const IMessage&)> m_handler;
+		boost::signals2::connection _mConnection;
 		list<IComponent*> Components;
 
 	};
