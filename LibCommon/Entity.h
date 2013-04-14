@@ -38,7 +38,6 @@ namespace LibCommon {
 		std::function<void(const IMessage&)> m_handler;
 		boost::signals2::connection _mConnection;
 		list<IComponent*> Components;
-
 	};
 }
 #endif
