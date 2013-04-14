@@ -36,7 +36,6 @@ namespace LibCommon {
 	private:
 		std::function<void(const IMessage&)> m_handler;
 		list<IComponent*> Components;
-
 	};
 }
 #endif
