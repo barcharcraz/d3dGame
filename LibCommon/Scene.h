@@ -12,7 +12,7 @@ namespace LibCommon {
 		void AddEntity(Entity* pEntity);
 	private:
 		std::unique_ptr<IRenderer> m_pRenderer;
-		std::vector<std::unique_ptr<Entity> > m_entities;
+		std::vector<std::shared_ptr<Entity> > m_entities;
 	};
 }
 #endif

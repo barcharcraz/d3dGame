@@ -12,6 +12,6 @@ namespace LibCommon {
 		virtual ~IComponent() = 0;
 	};
 	
-	IComponent::~IComponent() {}
+	inline IComponent::~IComponent() {}
 }
 #endif

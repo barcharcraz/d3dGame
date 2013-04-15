@@ -40,6 +40,9 @@
     <Filter Include="Header Files\Events">
       <UniqueIdentifier>{ec7b5c93-a553-43dc-b8bf-34f4472f2f69}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Messages\Informational">
+      <UniqueIdentifier>{169835c2-c8ed-49c3-a9bb-cb59def43908}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -71,6 +74,12 @@
     </ClInclude>
     <ClInclude Include="Event.hpp">
       <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="GetMessage.hpp">
+      <Filter>Header Files\Messages\Informational</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

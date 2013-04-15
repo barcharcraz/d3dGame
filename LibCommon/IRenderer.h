@@ -10,6 +10,6 @@ namespace LibCommon {
 	};
 	
 	//need this for GCC and standards complience
-	IRenderer::~IRenderer() {}
+	inline IRenderer::~IRenderer() {}
 }
 #endif

@@ -11,7 +11,8 @@ public:
 	LIBDIRECT2D_API virtual const Direct2DRenderingMessage* const getRenderingMessage() override;
 	void Present();
 
-	ID2D1DeviceContext& getContext();
+	CComPtr<ID2D1DeviceContext> getContext();
+	~Direct2DRenderer();
 private:
 	CComPtr<ID2D1Factory1> pFactory;
 	CComPtr<ID2D1Device> pDevice;

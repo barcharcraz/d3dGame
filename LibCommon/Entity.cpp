@@ -5,19 +5,23 @@ namespace LibCommon {
 		m_handler = [&](const IMessage& msg){handleMessage(msg);};
 	}
 	void Entity::addComponent(IComponent* c) {
-		_mConnection = c->send.connect(m_handler);
-		Components.push_back(c);
+		c->send.connect(m_handler);
+		Components.push_back(std::shared_ptr<IComponent>(c));
 	}
-	void Entity::removeComponent(IComponent* c) {
+	std::shared_ptr<IComponent> Entity::removeComponent(int index) {
+		std::shared_ptr<IComponent> retval = nullptr;
+		retval = std::move(Components[index]);
 		//we dont want the component receving our messages any more
-		_mConnection.disconnect();
+		retval->send.disconnect(m_handler);
 		//remove the component by memory location
-		Components.remove(c);
+		
+		Components.erase(Components.cbegin()+=index);
+		return retval;
 
 	}
 	void Entity::handleMessage(const IMessage& message) {
 		//forward the message to all the attached components
-		for(IComponent* c : Components) {
+		for(std::shared_ptr<IComponent> &c : Components) {
 			c->receive(message);
 		}
 	}

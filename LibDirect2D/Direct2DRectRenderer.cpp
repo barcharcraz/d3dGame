@@ -11,16 +11,17 @@ void Direct2DRectRenderer::init() {
 	{this->HandleDraw(dynamic_cast<const Direct2DRenderingMessage&>(msg));});
 }
 void Direct2DRectRenderer::HandleDraw(const Direct2DRenderingMessage &message) {
-	message.pContext.BeginDraw();
-	if(!_mpBrush) {
+	message.pContext->BeginDraw();
+	HRESULT hr;
+	if(nullptr == _mpBrush) {
 		//make a new solid brush if we dont have one already
 		// TODO: make this lookup for existing brushes
-		message.pContext.CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Red), &_mpBrush);
+		hr = message.pContext->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Red), &_mpBrush);
 	}
 	//ID2D1Factory* pTempFactory;
 	//message.pContext->GetFactory(&pTempFactory);
 	//ID2D1DeviceContext* test = &message.pContext;
-	message.pContext.Clear(D2D1::ColorF::ColorF(D2D1::ColorF::Red));
-	message.pContext.FillRectangle(_mRect, _mpBrush);
-	message.pContext.EndDraw();
+	//message.pContext->Clear(D2D1::ColorF(D2D1::ColorF::Black));
+	message.pContext->FillRectangle(_mRect, _mpBrush);
+	message.pContext->EndDraw();
 }

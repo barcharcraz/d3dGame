@@ -4,26 +4,26 @@
 #include "stdafx.h"
 
 #include "SimpleEditor.h"
-#include <WinLib.h>
 #include <Windows.h>
+#include <WinLib.h>
 #include <CommCtrl.h>
 #include <vector>
+#include <d2d1helper.h>
 #include <LibDirect2D\Direct2DRenderer.h>
 #include <LibCommon\Entity.h>
 #include <LibCommon\Scene.h>
 #include <LibDirect2D\Direct2DRectRenderer.h>
 #include <LibCommon\Scene.h>
 #include <LibDirect3D\Direct3DRenderer.h>
-#include <initguid.h>
-#include <dxgidebug.h>
 //#pragma comment(lib,"Lib3D.lib")
 #pragma comment(lib,"Comctl32.lib")
 #pragma comment(lib, "windowscodecs.lib")
 #pragma comment(lib, "winmm.lib")
 #pragma comment(lib, "LibDXGI.lib")
 #pragma comment(lib, "LibDirect2D.lib")
+#pragma comment(lib, "LibDirect3D.lib")
 #pragma comment(lib, "WinLib.lib")
-#include <d2d1helper.h>
+
 using namespace LibDirect2D;
 using namespace LibCommon;
 int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
@@ -112,25 +112,26 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
     };
 	*/
 	
-	CComPtr<IDXGIDebug> debug = LibDXGI::getDebugInterface();
-	//debug->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_ALL);
 	Direct3DRenderer d3dRender;
-	Direct2DRenderer render(d3dRender.getDeviceAsDXGI(), mywin.getHwnd());
-	Entity square;
-	Direct2DRectRenderer rendererComp(D2D1::RectF(1.0f, 1.0f, 100.0f, 100.0f));
-	square.addComponent(&rendererComp);
-	Scene sce(&render);
-	sce.AddEntity(&square);
+	//CComPtr<ID3D11Debug> pDebug;
+	//d3dRender.getDevice()->QueryInterface(IID_PPV_ARGS(&pDebug));
+	Direct2DRenderer * render = new Direct2DRenderer(d3dRender.getDeviceAsDXGI(), mywin.getHwnd());
+	Entity * square = new Entity();
+	Direct2DRectRenderer * renderComp = new Direct2DRectRenderer(D2D1::RectF(1.0f,1.0f,100.0f,100.0f));
+	square->addComponent(renderComp);
+	Scene sce(render);
+	sce.AddEntity(square);
 	
     //context.DrawShapes(commands);
     //factory.getSwapChain()->Present(1,0);
     
 	mywin.onNoMessage = [&](){
+		//render->getContext()->Clear(D2D1::ColorF(D2D1::ColorF::Black));
 		sce.Update();
-		render.Present();
+		render->Present();
 	};
     mywin.libStartWindow();
-    
+	//pDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 
     
     

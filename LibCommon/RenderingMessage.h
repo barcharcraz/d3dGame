@@ -7,6 +7,6 @@ namespace LibCommon {
 	public:
 		virtual ~RenderingMessage() = 0;
 	};
-	RenderingMessage::~RenderingMessage() {}
+	inline RenderingMessage::~RenderingMessage() {}
 }
 #endif

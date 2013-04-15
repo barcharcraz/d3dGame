@@ -11,7 +11,7 @@ namespace LibCommon {
 	};
 	//body for the virtual destructor, must be outside class
 	//for standards complience and in order to compile with g++
-	IMessage::~IMessage() {}
+	inline IMessage::~IMessage() {}
 }
 
 #endif

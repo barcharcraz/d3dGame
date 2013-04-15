@@ -47,4 +47,7 @@ CComPtr<IDXGIDevice> Direct3DRenderer::getDeviceAsDXGI() {
 	}
 	return retval;
 }
+CComPtr<ID3D11Device> Direct3DRenderer::getDevice() {
+	return m_pDevice;
+}
 

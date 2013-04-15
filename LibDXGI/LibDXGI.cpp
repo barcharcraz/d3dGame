@@ -43,7 +43,7 @@ CComPtr<IDXGISwapChain1> LibDXGI::CreateSwapChain(IDXGIDevice* pDevice, HWND tar
 	}
 	return retval;
 }
-
+#ifdef _DEBUG
 CComPtr<IDXGIDebug> LibDXGI::getDebugInterface() {
 	CComPtr<IDXGIDebug> debug;
 	HMODULE debugHandle = GetModuleHandle(L"dxgidebug.dll");
@@ -52,3 +52,5 @@ CComPtr<IDXGIDebug> LibDXGI::getDebugInterface() {
 	getDebugInterface(IID_PPV_ARGS(&debug));
 	return debug;
 }
+#endif
+

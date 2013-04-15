@@ -5,8 +5,8 @@
 namespace LibDirect2D {
 	class Direct2DRenderingMessage : public LibCommon::RenderingMessage {
 	public:
-		Direct2DRenderingMessage(ID2D1DeviceContext &context);
+		Direct2DRenderingMessage(CComPtr<ID2D1DeviceContext> context);
 		
-		ID2D1DeviceContext &pContext;
+		CComPtr<ID2D1DeviceContext> pContext;
 	};
 }

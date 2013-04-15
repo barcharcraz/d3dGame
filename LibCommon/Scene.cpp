@@ -9,9 +9,10 @@ namespace LibCommon {
 	}
 	void Scene::Update() {
 		const IMessage * message;
-		for(std::unique_ptr<Entity> &e : m_entities) {
+
+		for(int i = 0; i<m_entities.size(); ++i) {
 			message = m_pRenderer->getRenderingMessage();
-			e->handleMessage(*message);
+			m_entities[i]->handleMessage(*message);
 			delete message;
 			
 		}

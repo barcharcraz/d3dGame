@@ -1,7 +1,8 @@
 #ifndef LIBCOMMON_ENTITY_H
 #define LIBCOMMON_ENTITY_H
 #include "IComponent.h"
-#include <list>
+#include <vector>
+#include <memory>
 #include <functional>
 #include <boost/signals2.hpp>
 #include "Messages.h"
@@ -11,7 +12,7 @@ namespace LibCommon {
 	class Entity : public IComponent {
 	public:
 		Entity();
-		virtual void removeComponent(IComponent* c);
+		virtual std::shared_ptr<IComponent> removeComponent(int index);
 		virtual void addComponent(IComponent* c);
 		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Handles a message, called both when a component sends messages
@@ -36,8 +37,7 @@ namespace LibCommon {
 
 	private:
 		std::function<void(const IMessage&)> m_handler;
-		boost::signals2::connection _mConnection;
-		list<IComponent*> Components;
+		vector<std::shared_ptr<IComponent> > Components;
 	};
 }
 #endif

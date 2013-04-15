@@ -18,6 +18,7 @@ namespace LibCommon {
 			ID3D11DeviceContext** ppContext
 			);
 		CComPtr<IDXGIDevice> getDeviceAsDXGI();
+		CComPtr<ID3D11Device> getDevice();
 	private:
 		void init(IDXGIAdapter* pAdapter,
 			D3D_DRIVER_TYPE type,
