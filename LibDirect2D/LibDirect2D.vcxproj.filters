@@ -19,6 +19,12 @@
     <Filter Include="Source Files\Components">
       <UniqueIdentifier>{718408ec-9c20-42c9-994e-b5c0ad336804}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Math">
+      <UniqueIdentifier>{df392a62-2e67-448c-a155-f04504c77ebc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Math">
+      <UniqueIdentifier>{f09b4745-46fb-4cfe-892e-567d27b6c159}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.h">
@@ -49,6 +55,9 @@
     </ClInclude>
     <ClInclude Include="Direct2DRectRenderer.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Conversions.h">
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

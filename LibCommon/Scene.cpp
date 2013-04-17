@@ -12,7 +12,7 @@ namespace LibCommon {
 
 		for(int i = 0; i<m_entities.size(); ++i) {
 			message = m_pRenderer->getRenderingMessage();
-			m_entities[i]->handleMessage(*message);
+			m_entities[i]->handleMessage(message);
 			delete message;
 			
 		}

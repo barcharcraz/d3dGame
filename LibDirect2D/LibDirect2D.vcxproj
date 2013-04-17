@@ -69,7 +69,7 @@
     <IncludePath>$(SolutionDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir);C:\Users\Charlie\Source\Include\boost_1_53_0;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir);C:\Users\Charlie\Source\Include\boost_1_53_0;C:\Users\Charlie\Source\Include\eigen;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -129,6 +129,7 @@
     <ClCompile Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Conversions.h" />
     <ClInclude Include="Direct2DRenderer.h" />
     <ClInclude Include="Direct2DRenderingMessage.h" />
     <ClInclude Include="Direct2DRectRenderer.h" />

@@ -36,11 +36,11 @@ CComPtr<ID2D1Bitmap1> Direct2DRenderer::getBackBufferBitmap(ID2D1DeviceContext* 
 	return retval;
 
 }
-const Direct2DRenderingMessage* const Direct2DRenderer::getRenderingMessage() {
-	//lots of copying here but I am not convinced the object is big enough to
-	//justify passing it around by reference
-	const Direct2DRenderingMessage* const retval = new Direct2DRenderingMessage(pContext);
-	return retval;
+Direct2DRenderingMessage* Direct2DRenderer::getRenderingMessage() {
+	if(lazyMessage == nullptr) {
+		lazyMessage.reset( new Direct2DRenderingMessage(pContext) );
+	}
+	return lazyMessage.get();
 }
 void Direct2DRenderer::Present() {
 	m_pSwapChain->Present(1,0);

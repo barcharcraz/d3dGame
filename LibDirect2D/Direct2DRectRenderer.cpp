@@ -7,10 +7,12 @@ Direct2DRectRenderer::Direct2DRectRenderer(D2D1_RECT_F rect)
 	init();
 }
 void Direct2DRectRenderer::init() {
-	receive.connect([this](const LibCommon::IMessage& msg)
-	{this->HandleDraw(dynamic_cast<const Direct2DRenderingMessage&>(msg));});
+	receive.connect([this](LibCommon::IMessage& msg)
+	{this->HandleDraw(dynamic_cast<Direct2DRenderingMessage&>(msg));});
 }
-void Direct2DRectRenderer::HandleDraw(const Direct2DRenderingMessage &message) {
+void Direct2DRectRenderer::HandleDraw(Direct2DRenderingMessage &message) {
+	Eigen::Affine2f * transform;
+
 	message.pContext->BeginDraw();
 	HRESULT hr;
 	if(nullptr == _mpBrush) {

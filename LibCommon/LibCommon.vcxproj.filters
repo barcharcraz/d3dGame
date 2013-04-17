@@ -43,6 +43,12 @@
     <Filter Include="Header Files\Messages\Informational">
       <UniqueIdentifier>{169835c2-c8ed-49c3-a9bb-cb59def43908}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Math">
+      <UniqueIdentifier>{9ccc13d2-0a61-43f2-919d-bdab888182d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{c709ce0d-3c75-4a0d-9442-20ca5688f27c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -75,11 +81,17 @@
     <ClInclude Include="Event.hpp">
       <Filter>Header Files\Events</Filter>
     </ClInclude>
-    <ClInclude Include="GetMessage.hpp">
-      <Filter>Header Files\Messages\Informational</Filter>
+    <ClInclude Include="Vector.h">
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Transform.h">
+    <ClInclude Include="Matrix.h">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform2D.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Get.hpp">
+      <Filter>Header Files\Messages\Informational</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +103,9 @@
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform2D.cpp">
+      <Filter>Source Files\Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

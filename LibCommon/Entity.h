@@ -5,6 +5,9 @@
 #include <memory>
 #include <functional>
 #include <boost/signals2.hpp>
+#include <Eigen/Core>
+#include <Eigen/Geometry>
+#include "Get.hpp"
 #include "Messages.h"
 
 namespace LibCommon {
@@ -22,7 +25,7 @@ namespace LibCommon {
 		///
 		/// <param name="message">	The message to handle. </param>
 		///-------------------------------------------------------------------------------------------------
-		virtual void handleMessage(const IMessage& message);
+		virtual void handleMessage(IMessage& message);
 		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Handles a message, called both when a component sends messages
 		/// 			up as well as when messages are sent from outside 
@@ -33,7 +36,7 @@ namespace LibCommon {
 		///
 		/// <param name="message">	The message to handle. </param>
 		///-------------------------------------------------------------------------------------------------
-		virtual void handleMessage(const IMessage * const message);
+		virtual void handleMessage(IMessage * message);
 
 	private:
 		std::function<void(const IMessage&)> m_handler;

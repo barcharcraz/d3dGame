@@ -67,7 +67,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);$(SolutionDir);C:\Users\Charlie\Source\Include\boost_1_53_0</IncludePath>
+    <IncludePath>$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);$(SolutionDir);C:\Users\Charlie\Source\Include\boost_1_53_0;C:\Users\Charlie\Source\Include\eigen</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -136,15 +136,17 @@
   <ItemGroup>
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Event.hpp" />
-    <ClInclude Include="GetMessage.hpp" />
+    <ClInclude Include="Get.hpp" />
     <ClInclude Include="IComponent.h" />
     <ClInclude Include="IMessage.h" />
     <ClInclude Include="IRenderer.h" />
+    <ClInclude Include="Matrix.h" />
     <ClInclude Include="Messages.h" />
     <ClInclude Include="RenderingMessage.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="Transform.h" />
+    <ClInclude Include="Transform2D.h" />
+    <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entity.cpp" />
@@ -155,6 +157,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Transform2D.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,8 +1,9 @@
 #include "stdafx.h"
 #include "Entity.h"
+
 namespace LibCommon {
 	Entity::Entity() {
-		m_handler = [&](const IMessage& msg){handleMessage(msg);};
+		m_handler = [&](IMessage& msg){handleMessage(dynamic_cast<Get<Eigen::Affine2f>& >(msg));};
 	}
 	void Entity::addComponent(IComponent* c) {
 		c->send.connect(m_handler);
@@ -19,13 +20,13 @@ namespace LibCommon {
 		return retval;
 
 	}
-	void Entity::handleMessage(const IMessage& message) {
+	void Entity::handleMessage(IMessage& message) {
 		//forward the message to all the attached components
 		for(std::shared_ptr<IComponent> &c : Components) {
 			c->receive(message);
 		}
 	}
-	void Entity::handleMessage(const IMessage * const message) {
+	void Entity::handleMessage(IMessage * message) {
 		handleMessage(*message);
 	}
 }
