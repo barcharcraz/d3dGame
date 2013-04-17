@@ -5,7 +5,9 @@
 #include <LibCommon/RenderingMessage.h>
 namespace LibXLib {
 	class XLibRenderingMessage : public RenderingMessage {
+		XLibRenderingMessage(Display &display);
 		Display &pXDisplay;
+		
 	}
 }
 
