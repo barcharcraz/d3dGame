@@ -4,7 +4,7 @@
 #include <LibCommon/IRenderer.h>
 namespace LibXLib {
 	class XLibRenderer : public IRenderer {
-		virtual const I
+		virtual const XLibRenderingMessage* const getRenderingMessage() override;
 	} 
 }
 
