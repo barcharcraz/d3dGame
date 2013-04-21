@@ -19,6 +19,7 @@ namespace LibCommon {
 
 	private:
 		void getTransform(Get<Eigen::Affine2f> &msg);
+		void getTransform(Get<Eigen::Affine2f> *msg);
 		Eigen::Affine2f _mtransform;
 		void init();
 	};

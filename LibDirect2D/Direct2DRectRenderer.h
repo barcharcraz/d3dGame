@@ -14,7 +14,7 @@ namespace LibDirect2D {
 	private:
 		D2D1_RECT_F _mRect;
 		CComPtr<ID2D1SolidColorBrush> _mpBrush;
-		void HandleDraw(Direct2DRenderingMessage &message);
+		void HandleDraw(Direct2DRenderingMessage *message);
 		void init(); //do our handler init stuff
 	};
 }

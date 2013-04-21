@@ -16,6 +16,7 @@
 #pragma comment(lib, "d2d1.lib")
 #pragma comment(lib, "d3d11.lib")
 
+#define _SCL_SECURE_NO_WARNINGS	
 
 #include "targetver.h"
 #include <atlbase.h>

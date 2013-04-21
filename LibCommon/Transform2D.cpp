@@ -19,7 +19,9 @@ const Eigen::Affine2f& Transform2D::getTransform() const {
 }
 
 void Transform2D::init() {
-	receive.connect([&](Get<Eigen::Affine2f> &msg){getTransform(msg);});
+	receive.connect([&](IMessage* msg) {
+		getTransform(dynamic_cast<Get<Eigen::Affine2f>* >(msg));
+	});
 }
 
 Eigen::Affine2f& Transform2D::getTransform() {
@@ -33,4 +35,7 @@ void Transform2D::setTransform(Eigen::Affine2f &transform) {
 
 void Transform2D::getTransform(Get<Eigen::Affine2f> &msg) {
 	msg.value = &_mtransform;
+}
+void Transform2D::getTransform(Get<Eigen::Affine2f> *msg) {
+	msg->value = &_mtransform;
 }

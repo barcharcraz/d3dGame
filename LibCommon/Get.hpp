@@ -14,9 +14,8 @@ namespace LibCommon {
 
 	template<typename T>
 	Get<T>::Get(IComponent* component)
-		: src(component)
 	{
-
+		src = component;
 	}
 }
 #endif

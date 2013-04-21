@@ -8,7 +8,7 @@ namespace LibCommon {
 		m_entities.push_back(std::unique_ptr<Entity>(pEntity));
 	}
 	void Scene::Update() {
-		const IMessage * message;
+		IMessage * message;
 
 		for(int i = 0; i<m_entities.size(); ++i) {
 			message = m_pRenderer->getRenderingMessage();

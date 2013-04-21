@@ -3,7 +3,7 @@
 
 namespace LibCommon {
 	Entity::Entity() {
-		m_handler = [&](IMessage& msg){handleMessage(dynamic_cast<Get<Eigen::Affine2f>& >(msg));};
+		m_handler = [this](IMessage *msg){this->handleMessage(msg);};
 	}
 	void Entity::addComponent(IComponent* c) {
 		c->send.connect(m_handler);
@@ -20,13 +20,13 @@ namespace LibCommon {
 		return retval;
 
 	}
-	void Entity::handleMessage(IMessage& message) {
+	void Entity::handleMessage(IMessage* message) {
 		//forward the message to all the attached components
 		for(std::shared_ptr<IComponent> &c : Components) {
 			c->receive(message);
 		}
 	}
-	void Entity::handleMessage(IMessage * message) {
-		handleMessage(*message);
+	void Entity::handleMessage(IMessage &message) {
+		handleMessage(&message);
 	}
 }

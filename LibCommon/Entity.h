@@ -39,7 +39,7 @@ namespace LibCommon {
 		virtual void handleMessage(IMessage * message);
 
 	private:
-		std::function<void(const IMessage&)> m_handler;
+		std::function<void(IMessage*)> m_handler;
 		vector<std::shared_ptr<IComponent> > Components;
 	};
 }
