@@ -1,0 +1,52 @@
+# depslib dependency file v1.0
+1366839842 source:/home/charlie/code/d3dGame/LibCommon/Entity.cpp
+	"stdafx.h"
+	"Entity.h"
+
+1365840177 /home/charlie/code/d3dGame/LibCommon/stdafx.h
+
+1366839019 /home/charlie/code/d3dGame/LibCommon/Entity.h
+	"IComponent.h"
+	<vector>
+	<memory>
+	<functional>
+	<boost/signals2.hpp>
+	<Eigen/Core>
+	<Eigen/Geometry>
+	"Get.hpp"
+	"Messages.h"
+
+1366839772 /home/charlie/code/d3dGame/LibCommon/IComponent.h
+	"IMessage.h"
+	<boost/signals2.hpp>
+
+1366216274 /home/charlie/code/d3dGame/LibCommon/IMessage.h
+	"IComponent.h"
+
+1366526796 /home/charlie/code/d3dGame/LibCommon/Get.hpp
+	"IMessage.h"
+	"IComponent.h"
+
+1365928881 /home/charlie/code/d3dGame/LibCommon/Messages.h
+	"IMessage.h"
+
+1366526796 source:/home/charlie/code/d3dGame/LibCommon/Scene.cpp
+	"stdafx.h"
+	"Scene.h"
+
+1366216274 /home/charlie/code/d3dGame/LibCommon/Scene.h
+	"IRenderer.h"
+	"Entity.h"
+	<memory>
+	<vector>
+
+1366216274 /home/charlie/code/d3dGame/LibCommon/IRenderer.h
+	"RenderingMessage.h"
+
+1366216274 /home/charlie/code/d3dGame/LibCommon/RenderingMessage.h
+	"stdafx.h"
+	"IMessage.h"
+
+1365840177 source:/home/charlie/code/d3dGame/LibCommon/stdafx.cpp
+	"stdafx.h"
+

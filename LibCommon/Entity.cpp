@@ -6,17 +6,16 @@ namespace LibCommon {
 		m_handler = [this](IMessage *msg){this->handleMessage(msg);};
 	}
 	void Entity::addComponent(IComponent* c) {
-		c->send.connect(m_handler);
+		c->sendConnection = c->send.connect(m_handler);
 		Components.push_back(std::shared_ptr<IComponent>(c));
 	}
 	std::shared_ptr<IComponent> Entity::removeComponent(int index) {
 		std::shared_ptr<IComponent> retval = nullptr;
 		retval = std::move(Components[index]);
 		//we dont want the component receving our messages any more
-		retval->send.disconnect(m_handler);
+		retval->send.disconnect(retval->sendConnection);
 		//remove the component by memory location
-		
-		Components.erase(Components.cbegin()+=index);
+		Components.erase(Components.begin()+=index);
 		return retval;
 
 	}

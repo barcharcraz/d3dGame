@@ -15,6 +15,7 @@ namespace LibCommon {
 		//is a good idea
 		boost::signals2::signal<void(IMessage*)> send;
 		boost::signals2::signal<void(IMessage*)> receive;
+		boost::signals2::connection sendConnection;
 		virtual ~IComponent() = 0;
 
 		template<typename T, typename U>
@@ -28,7 +29,7 @@ namespace LibCommon {
 			});
 		}
 	};
-	
+
 	inline IComponent::~IComponent() {}
 }
 #endif

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="LibCommon" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/d3dGame" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/Debug/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-std=c++11" />
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/d3dGame" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/Release/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-std=c++11" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="../../../LibCommon/Entity.cpp" />
+		<Unit filename="../../../LibCommon/Entity.h" />
+		<Unit filename="../../../LibCommon/Event.hpp" />
+		<Unit filename="../../../LibCommon/Get.hpp" />
+		<Unit filename="../../../LibCommon/IComponent.h" />
+		<Unit filename="../../../LibCommon/IMessage.h" />
+		<Unit filename="../../../LibCommon/IRenderer.h" />
+		<Unit filename="../../../LibCommon/Matrix.h" />
+		<Unit filename="../../../LibCommon/Messages.h" />
+		<Unit filename="../../../LibCommon/RenderingMessage.h" />
+		<Unit filename="../../../LibCommon/Scene.cpp" />
+		<Unit filename="../../../LibCommon/Scene.h" />
+		<Unit filename="../../../LibCommon/Transform2D.cpp" />
+		<Unit filename="../../../LibCommon/Transform2D.h" />
+		<Unit filename="../../../LibCommon/Vector.h" />
+		<Unit filename="../../../LibCommon/stdafx.cpp" />
+		<Unit filename="../../../LibCommon/stdafx.h" />
+		<Unit filename="../../../LibCommon/targetver.h" />
+		<Extensions>
+			<envvars />
+			<code_completion />
+			<debugger />
+			<lib_finder disable_auto="1">
+				<lib name="eigen2" />
+			</lib_finder>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
