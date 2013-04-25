@@ -18,12 +18,12 @@ namespace LibCommon {
 		virtual ~IComponent() = 0;
 
 		template<typename T, typename U>
-		inline void BindFunction(void (U::*fun)(T)) {
+		inline void BindFunction(void (U::*fun)(T*)) {
 			//yes this is kinda smelly but it is the best I can do right now
 			receive.connect(
 				[&](IMessage* msg) {
-					if(dynamic_cast<T>(msg)) {
-						dynamic_cast<U>(this)->*fun(dynamic_cast<T>(msg));
+					if(dynamic_cast<T*>(msg)) {
+						this->*fun(dynamic_cast<T>(msg));
 					}
 			});
 		}
