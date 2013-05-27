@@ -2,6 +2,7 @@
 #define LIBCOMMON_ENTITY_H
 #include "IComponent.h"
 #include <vector>
+#include <list>
 #include <memory>
 #include <functional>
 #include <boost/signals2.hpp>
@@ -41,6 +42,7 @@ namespace LibCommon {
 	private:
 		std::function<void(IMessage*)> m_handler;
 		vector<std::shared_ptr<IComponent> > Components;
+		vector<boost::signals2::connection> Connections;
 	};
 }
 #endif

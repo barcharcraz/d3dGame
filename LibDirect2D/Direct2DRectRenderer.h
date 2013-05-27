@@ -2,11 +2,13 @@
 #include "stdafx.h"
 #include <LibCommon/IComponent.h>
 #include <LibCommon/Get.hpp>
+#include <LibCommon/IMessage.h>
 #include <d2d1_1.h>
 #include <d2d1_1helper.h>
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 #include "Direct2DRenderingMessage.h"
+#include "Conversions.h"
 namespace LibDirect2D {
 	class Direct2DRectRenderer : public LibCommon::IComponent {
 	public:
@@ -15,6 +17,10 @@ namespace LibDirect2D {
 		D2D1_RECT_F _mRect;
 		CComPtr<ID2D1SolidColorBrush> _mpBrush;
 		void HandleDraw(Direct2DRenderingMessage *message);
+		void HandleDrawThunk(LibCommon::IMessage * msg);
 		void init(); //do our handler init stuff
+
+		
+		
 	};
 }

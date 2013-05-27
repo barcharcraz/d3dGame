@@ -122,6 +122,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Conversions.cpp" />
     <ClCompile Include="Direct2DRenderer.cpp" />
     <ClCompile Include="Direct2DRenderingMessage.cpp" />
     <ClCompile Include="Direct2DRectRenderer.cpp" />

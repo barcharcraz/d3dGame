@@ -1,9 +1,12 @@
 #ifndef LIBCOMMON_ICOMPONENT_H
 #define LIBCOMMON_ICOMPONENT_H
-
+#include "stdafx.h"
 #include "IMessage.h"
+#include <functional>
 #include <boost/signals2.hpp>
+
 namespace LibCommon {
+#define BIND(fun,type) receive.connect([&](LibCommon::IMessage* msg){if(dynamic_cast<type*>(msg)){fun(dynamic_cast<type*>(msg));}})
 	class IMessage;
 	class IComponent {
 	public:
@@ -15,18 +18,16 @@ namespace LibCommon {
 		//is a good idea
 		boost::signals2::signal<void(IMessage*)> send;
 		boost::signals2::signal<void(IMessage*)> receive;
-		boost::signals2::connection sendConnection;
 		virtual ~IComponent() = 0;
 
-		template<typename T, typename U>
-		inline void BindFunction(void (U::*fun)(T*)) {
-			//yes this is kinda smelly but it is the best I can do right now
-			receive.connect(
-				[&](IMessage* msg) {
-					if(dynamic_cast<T*>(msg)) {
-						this->*fun(dynamic_cast<T>(msg));
-					}
+		template<typename T>
+		void BindThunk(std::function<void(T)> fun) {
+			receive.connect( [&](IMessage* msg){
+				if(dynamic_cast<T>(msg)) {
+					fun(dynamic_cast<T>(msg));
+				}
 			});
+			
 		}
 	};
 

@@ -120,7 +120,9 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	Entity * square = new Entity();
 	Direct2DRectRenderer * renderComp = new Direct2DRectRenderer(D2D1::RectF(1.0f,1.0f,100.0f,100.0f));
 	LibCommon::Transform2D * trans = new LibCommon::Transform2D();
+	trans->getTransform().translate(Eigen::Vector2f(80.0f,20.0f));
 	square->addComponent(renderComp);
+	square->addComponent(trans);
 	Scene sce(render);
 	sce.AddEntity(square);
 	
