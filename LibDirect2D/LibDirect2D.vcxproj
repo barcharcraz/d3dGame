@@ -122,6 +122,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BitmapLoader.cpp" />
+    <ClCompile Include="BitmapLoader.h" />
     <ClCompile Include="Conversions.cpp" />
     <ClCompile Include="Direct2DRenderer.cpp" />
     <ClCompile Include="Direct2DRenderingMessage.cpp" />

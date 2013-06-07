@@ -15,6 +15,7 @@
 #pragma comment(lib, "LibCommon.lib")
 #pragma comment(lib, "d2d1.lib")
 #pragma comment(lib, "d3d11.lib")
+#pragma comment(lib, "WindowsCodecs.lib")
 
 #define _SCL_SECURE_NO_WARNINGS	
 

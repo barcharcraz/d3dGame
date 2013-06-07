@@ -13,7 +13,7 @@ namespace LibCommon {
 		//the reason that these take pointers is because
 		//we want to be able to check if casts succeded without
 		//handling the std::bad_cast excetpion, this exception
-		//will likely get thrown >50% of the time so it is reallyt
+		//will likely get thrown >50% of the time so it is really
 		//not that exceptional and avoiding it with pointers (which can equal 0)
 		//is a good idea
 		boost::signals2::signal<void(IMessage*)> send;

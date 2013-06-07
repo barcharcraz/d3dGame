@@ -25,6 +25,12 @@
     <Filter Include="Source Files\Math">
       <UniqueIdentifier>{f09b4745-46fb-4cfe-892e-567d27b6c159}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Bitmaps">
+      <UniqueIdentifier>{545e92ef-a5ae-411d-8828-529bfe267296}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\bitmaps">
+      <UniqueIdentifier>{9e51b4fc-4506-4485-aca1-6761579abcf9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.h">
@@ -44,6 +50,12 @@
     </ClCompile>
     <ClCompile Include="Conversions.cpp">
       <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="BitmapLoader.h">
+      <Filter>Header Files\Bitmaps</Filter>
+    </ClCompile>
+    <ClCompile Include="BitmapLoader.cpp">
+      <Filter>Source Files\bitmaps</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
