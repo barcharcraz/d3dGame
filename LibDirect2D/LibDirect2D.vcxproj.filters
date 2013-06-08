@@ -57,6 +57,9 @@
     <ClCompile Include="BitmapLoader.cpp">
       <Filter>Source Files\bitmaps</Filter>
     </ClCompile>
+    <ClCompile Include="Direct2DBitmap.cpp">
+      <Filter>Source Files\bitmaps</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -73,6 +76,9 @@
     </ClInclude>
     <ClInclude Include="Conversions.h">
       <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Direct2DBitmap.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

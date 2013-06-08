@@ -125,6 +125,7 @@
     <ClCompile Include="BitmapLoader.cpp" />
     <ClCompile Include="BitmapLoader.h" />
     <ClCompile Include="Conversions.cpp" />
+    <ClCompile Include="Direct2DBitmap.cpp" />
     <ClCompile Include="Direct2DRenderer.cpp" />
     <ClCompile Include="Direct2DRenderingMessage.cpp" />
     <ClCompile Include="Direct2DRectRenderer.cpp" />
@@ -133,6 +134,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Conversions.h" />
+    <ClInclude Include="Direct2DBitmap.h" />
     <ClInclude Include="Direct2DRenderer.h" />
     <ClInclude Include="Direct2DRenderingMessage.h" />
     <ClInclude Include="Direct2DRectRenderer.h" />
