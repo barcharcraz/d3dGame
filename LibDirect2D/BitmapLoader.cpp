@@ -24,9 +24,7 @@ namespace LibDirect2D {
 			HRESULT hr = S_OK;
 			IWICBitmapDecoder *pDecoder = nullptr;
 			IWICBitmapFrameDecode *pSource = nullptr;
-			IWICStream *pStream = nullptr;
 			IWICFormatConverter *pConverter = nullptr;
-			IWICBitmapScaler *pScaler = nullptr;
 			hr = pFactory->CreateDecoderFromFilename(file.c_str(), NULL, GENERIC_READ, WICDecodeMetadataCacheOnLoad, &pDecoder);
 			if(FAILED(hr)) {
 				return hr;
@@ -43,11 +41,11 @@ namespace LibDirect2D {
 			if(FAILED(hr)) {
 				return hr;
 			}
-			ppBitmap = &pConverter;
+			*ppBitmap = pConverter;
 			pDecoder->Release();
 			pSource->Release();
-			pStream->Release();
-			pScaler->Release();
+			pDecoder = nullptr;
+			pSource = nullptr;
 			return hr;
 		
 		}
@@ -65,6 +63,7 @@ namespace LibDirect2D {
 			}
 
 			pconv->Release();
+			pconv = nullptr;
 			return hr;
 
 		}

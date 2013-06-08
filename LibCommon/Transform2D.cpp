@@ -13,7 +13,11 @@ Transform2D::Transform2D(Eigen::Affine2f *transform)
 	init();
 	//no body, just init list
 }
-
+Transform2D::Transform2D(float x, float y) {
+	_mtransform = std::unique_ptr<Eigen::Affine2f>(new Eigen::Affine2f(Eigen::Affine2f::Identity()));
+	_mtransform->translate(Eigen::Vector2f(x,y));
+	init();
+}
 
 #pragma region accessors
 

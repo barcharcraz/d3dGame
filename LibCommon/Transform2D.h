@@ -11,6 +11,7 @@ namespace LibCommon {
 	public:
 		Transform2D();
 		Transform2D(Eigen::Affine2f* transform);
+		Transform2D(float x, float y);
 		const Eigen::Affine2f& getTransform() const;
 		Eigen::Affine2f& getTransform();
 		void setTransform(Eigen::Affine2f &transform);

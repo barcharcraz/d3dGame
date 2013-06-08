@@ -16,9 +16,6 @@
     <Filter Include="Header Files\Components">
       <UniqueIdentifier>{947f480e-c657-4afe-ad93-01394241b5e0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Shapes">
-      <UniqueIdentifier>{62acc51a-5303-4301-8970-c6f72752f83b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Messages">
       <UniqueIdentifier>{719c9370-5d40-4e53-a4ed-6bdc1f9e3593}</UniqueIdentifier>
     </Filter>
@@ -60,9 +57,6 @@
     <ClInclude Include="IComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Header Files\Shapes</Filter>
-    </ClInclude>
     <ClInclude Include="Messages.h">
       <Filter>Header Files\Messages</Filter>
     </ClInclude>
@@ -92,6 +86,9 @@
     </ClInclude>
     <ClInclude Include="Get.hpp">
       <Filter>Header Files\Messages\Informational</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

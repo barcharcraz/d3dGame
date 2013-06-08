@@ -13,6 +13,7 @@
 #include <LibCommon\Entity.h>
 #include <LibCommon\Scene.h>
 #include <LibDirect2D\Direct2DRectRenderer.h>
+#include <LibDirect2D\Direct2DBitmap.h>
 #include <LibCommon\Scene.h>
 #include <LibDirect3D\Direct3DRenderer.h>
 #include <LibCommon/Transform2D.h>
@@ -112,29 +113,30 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 		
 	};
 	*/
-	
+	CoInitialize(NULL);
 	Direct3DRenderer d3dRender;
 	//CComPtr<ID3D11Debug> pDebug;
 	//d3dRender.getDevice()->QueryInterface(IID_PPV_ARGS(&pDebug));
 	Direct2DRenderer * render = new Direct2DRenderer(d3dRender.getDeviceAsDXGI(), mywin.getHwnd());
 	Entity * square = new Entity();
-	Direct2DRectRenderer * renderComp = new Direct2DRectRenderer(D2D1::RectF(1.0f,1.0f,100.0f,100.0f));
-	LibCommon::Transform2D * trans = new LibCommon::Transform2D();
-	trans->getTransform().translate(Eigen::Vector2f(80.0f,20.0f));
+	Direct2DBitmap * renderComp = new LibDirect2D::Direct2DBitmap(L"testBitmap.bmp");
+	LibCommon::Transform2D * trans = new LibCommon::Transform2D(80.0f, 20.0f);
 	square->addComponent(renderComp);
 	square->addComponent(trans);
-	Scene sce(render);
-	sce.AddEntity(square);
+	Scene * sce = new Scene(render);
+	sce->AddEntity(square);
 	
 	//context.DrawShapes(commands);
 	//factory.getSwapChain()->Present(1,0);
 	
 	mywin.onNoMessage = [&](){
 		//render->getContext()->Clear(D2D1::ColorF(D2D1::ColorF::Black));
-		sce.Update();
+		sce->Update();
 		render->Present();
 	};
 	mywin.libStartWindow();
+	delete sce;
+	CoUninitialize();
 	//pDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 
 	

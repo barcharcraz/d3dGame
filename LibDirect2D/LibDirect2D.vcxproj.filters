@@ -33,9 +33,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -50,9 +47,6 @@
     </ClCompile>
     <ClCompile Include="Conversions.cpp">
       <Filter>Source Files\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="BitmapLoader.h">
-      <Filter>Header Files\Bitmaps</Filter>
     </ClCompile>
     <ClCompile Include="BitmapLoader.cpp">
       <Filter>Source Files\bitmaps</Filter>
@@ -79,6 +73,12 @@
     </ClInclude>
     <ClInclude Include="Direct2DBitmap.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BitmapLoader.h">
+      <Filter>Header Files\Bitmaps</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

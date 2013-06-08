@@ -14,6 +14,7 @@ namespace LibDirect2D {
 			if(FAILED(hr)) {
 				throw hr;
 			}
+			BitmapLoader::unInitialize();
 		}
 		LibCommon::Get<Eigen::Affine2f> * msg = new LibCommon::Get<Eigen::Affine2f>(this);
 		this->send(msg);

@@ -75,7 +75,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)WinLib;$(SolutionDir)Utils;$(SolutionDir);C:\Users\Charlie\Source\Include\boost_1_53_0;C:\Users\Charlie\Source\Include\eigen;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)WinLib;$(SolutionDir)Utils;$(SolutionDir);C:\Users\charlie\Source\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
