@@ -4,7 +4,11 @@
 // that uses this DLL. This way any other project whose source files include this file see 
 // LIBDXGI_API functions as being imported from a DLL, whereas this DLL sees symbols
 // defined with this macro as being exported.
-#include "stdafx.h"
+#include <atlbase.h>
+#ifdef _DEBUG
+#include <initguid.h>
+#include <dxgidebug.h>
+#endif
 #ifdef LIBDXGI_EXPORTS
 #define LIBDXGI_API __declspec(dllexport)
 #else

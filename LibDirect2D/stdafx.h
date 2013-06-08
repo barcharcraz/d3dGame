@@ -25,5 +25,6 @@
 #include <d2d1_1helper.h>
 #include <dxgi1_2.h>
 #include <LibDXGI\LibDXGI.h>
+#include <string>
 
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers

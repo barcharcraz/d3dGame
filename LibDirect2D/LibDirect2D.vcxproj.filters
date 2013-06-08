@@ -58,7 +58,7 @@
       <Filter>Source Files\bitmaps</Filter>
     </ClCompile>
     <ClCompile Include="Direct2DBitmap.cpp">
-      <Filter>Source Files\bitmaps</Filter>
+      <Filter>Source Files\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
