@@ -10,6 +10,7 @@ namespace LibCommon {
 		Velocity(Eigen::Vector2f vel);
 		Eigen::Vector2f velocity;
 	private:
+		void init();
 		void HandleUpdate(UpdateMessage * msg);
 	};
 }
