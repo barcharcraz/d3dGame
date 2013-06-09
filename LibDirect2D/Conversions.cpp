@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Conversions.h"
 namespace LibDirect2D {
 	D2D1_MATRIX_3X2_F Affine2f_to_D2D1Matrix3x2f(const Eigen::Affine2f &in) {

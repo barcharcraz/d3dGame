@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Direct2DBitmap.h"
 namespace LibDirect2D {
 	Direct2DBitmap::Direct2DBitmap(std::wstring file) 

@@ -1,5 +1,6 @@
 #ifndef LIBCOMMON_IMESSAGE_H
 #define LIBCOMMON_IMESSAGE_H
+#include "stdafx.h"
 #include "IComponent.h"
 
 namespace LibCommon {

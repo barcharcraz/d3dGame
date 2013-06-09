@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Direct2DRectRenderer.h"
 using namespace LibDirect2D;
 
