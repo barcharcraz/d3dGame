@@ -6,6 +6,7 @@
 #include <boost/signals2.hpp>
 
 namespace LibCommon {
+#define COM , //this is horrendus but needed to pas in multiple template parameters to BIND
 #define BIND(fun,type) receive.connect([&](LibCommon::IMessage* msg){if(dynamic_cast<type*>(msg)){fun(dynamic_cast<type*>(msg));}})
 	class IMessage;
 	class IComponent {

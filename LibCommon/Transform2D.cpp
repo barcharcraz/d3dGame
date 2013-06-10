@@ -26,7 +26,7 @@ const Eigen::Affine2f& Transform2D::getTransform() const {
 }
 
 void Transform2D::init() {
-	BIND(getTransform, Get<Eigen::Affine2f>);
+	BIND(getTransform, Get<LibCommon::Transform2D COM Eigen::Affine2f>);
 }
 
 Eigen::Affine2f& Transform2D::getTransform() {
@@ -38,9 +38,9 @@ void Transform2D::setTransform(Eigen::Affine2f &transform) {
 }
 #pragma endregion
 
-void Transform2D::getTransform(Get<Eigen::Affine2f> &msg) {
+void Transform2D::getTransform(Get<Transform2D, Eigen::Affine2f> &msg) {
 	msg.value = _mtransform.get();
 }
-void Transform2D::getTransform(Get<Eigen::Affine2f> *msg) {
+void Transform2D::getTransform(Get<Transform2D, Eigen::Affine2f> *msg) {
 	msg->value = _mtransform.get();
 }

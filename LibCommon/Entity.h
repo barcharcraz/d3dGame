@@ -10,6 +10,7 @@
 #include <Eigen/Geometry>
 #include "Get.hpp"
 #include "Messages.h"
+#include "Bubbly.h"
 
 namespace LibCommon {
 	using namespace std;

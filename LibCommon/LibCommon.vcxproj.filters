@@ -96,6 +96,12 @@
     <ClInclude Include="Velocity.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
+    <ClInclude Include="Bubbly.h">
+      <Filter>Header Files\Messages</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -115,6 +121,9 @@
     </ClCompile>
     <ClCompile Include="Velocity.cpp">
       <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Bubbly.cpp">
+      <Filter>Source Files\Messages</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

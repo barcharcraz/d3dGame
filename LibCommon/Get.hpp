@@ -3,17 +3,17 @@
 #include "IMessage.h"
 #include "IComponent.h"
 namespace LibCommon {
-	template<class T>
+	template<typename T, typename V>
 	class Get : public IMessage {
 	public:
 		Get(IComponent* component);
 		//the value that we got if any.
 		//could be null
-		T * value;
+		V * value;
 	};
 
-	template<typename T>
-	Get<T>::Get(IComponent* component)
+	template<typename T, typename V>
+	Get<T, V>::Get(IComponent* component)
 	{
 		src = component;
 	}
