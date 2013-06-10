@@ -2,10 +2,11 @@
 #define LIBCOMMON_INPUT_H
 #include "Entity.h"
 #include "IComponent.h"
+#include "InputMessage.h"
 #include <map>
 #include <string>
 namespace LibCommon {
-	class Input : Entity {
+	class Input : public Entity {
 	public:
 		//names of keys in no particular order
 		enum Keys {
@@ -61,7 +62,8 @@ namespace LibCommon {
 			Right,
 			Count
 		};
-		void HandleKeypress(Keys key);
+		bool HandleKeypress(Keys key);
+		bool AddAction(Keys key, std::wstring action);
 	private:
 		std::map<Keys, std::wstring> actions;
 	};

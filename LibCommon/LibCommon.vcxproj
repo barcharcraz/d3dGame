@@ -138,6 +138,7 @@
   <ItemGroup>
     <ClInclude Include="Bubbly.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="InputMessage.h" />
     <ClInclude Include="Velocity.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Event.hpp" />
@@ -157,6 +158,8 @@
   <ItemGroup>
     <ClCompile Include="Bubbly.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="InputMessage.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

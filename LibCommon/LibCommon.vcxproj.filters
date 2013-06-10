@@ -102,6 +102,9 @@
     <ClInclude Include="Input.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
+    <ClInclude Include="InputMessage.h">
+      <Filter>Header Files\Messages</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -123,6 +126,12 @@
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="Bubbly.cpp">
+      <Filter>Source Files\Messages</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="InputMessage.cpp">
       <Filter>Source Files\Messages</Filter>
     </ClCompile>
   </ItemGroup>
