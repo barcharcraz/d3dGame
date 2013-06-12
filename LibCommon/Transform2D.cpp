@@ -26,7 +26,7 @@ const Eigen::Affine2f& Transform2D::getTransform() const {
 }
 
 void Transform2D::init() {
-	BIND(getTransform, Get<LibCommon::Transform2D COM Eigen::Affine2f>);
+	receive.connect<Get<Transform2D, Eigen::Affine2f>* >([this](Get<Transform2D, Eigen::Affine2f> * msg){this->getTransform(msg);});
 }
 
 Eigen::Affine2f& Transform2D::getTransform() {

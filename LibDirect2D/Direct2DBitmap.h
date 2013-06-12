@@ -6,6 +6,7 @@
 #include <LibCommon/IComponent.h>
 #include <LibCommon/IMessage.h>
 #include <LibCommon/Get.hpp>
+#include <LibCommon/Transform2D.h>
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 namespace LibDirect2D {

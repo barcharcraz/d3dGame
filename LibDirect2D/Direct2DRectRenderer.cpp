@@ -8,7 +8,7 @@ Direct2DRectRenderer::Direct2DRectRenderer(D2D1_RECT_F rect)
 	init();
 }
 void Direct2DRectRenderer::init() {
-	BIND(HandleDraw, Direct2DRenderingMessage);
+	receive.connect<Direct2DRenderingMessage *>([this](Direct2DRenderingMessage* msg){this->HandleDraw(msg);});
 	
 }
 void Direct2DRectRenderer::HandleDrawThunk(LibCommon::IMessage * msg) {
@@ -18,7 +18,7 @@ void Direct2DRectRenderer::HandleDrawThunk(LibCommon::IMessage * msg) {
 }
 void Direct2DRectRenderer::HandleDraw(Direct2DRenderingMessage *message) {
 	
-	LibCommon::Get<Eigen::Affine2f> * msg = new LibCommon::Get<Eigen::Affine2f>(this);
+	LibCommon::Get<LibCommon::Transform2D, Eigen::Affine2f> * msg = new LibCommon::Get<LibCommon::Transform2D, Eigen::Affine2f>(this);
 	this->send(msg);
 	Eigen::Affine2f transform = *msg->value;
 	D2D1_MATRIX_3X2_F d2dTransform = Affine2f_to_D2D1Matrix3x2f(transform);

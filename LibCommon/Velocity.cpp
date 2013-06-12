@@ -14,8 +14,8 @@ namespace LibCommon {
 	}
 
 	void Velocity::init() {
-		BIND(HandleUpdate, UpdateMessage);
-		BIND(HandleGetVelocity, Get<Velocity COM Eigen::Vector2f>);
+		receive.connect<UpdateMessage*>([this](UpdateMessage* msg){this->HandleUpdate(msg);});
+		receive.connect<Get<Velocity, Eigen::Vector2f>* >([this](Get<Velocity, Eigen::Vector2f>* msg){this->HandleGetVelocity(msg);});
 	}
 
 	void Velocity::HandleUpdate(UpdateMessage * msg) {

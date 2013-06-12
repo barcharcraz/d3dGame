@@ -13,4 +13,3 @@
 // TODO: reference additional headers your program requires here
 #include <Eigen/Core>
 #include <Eigen/Geometry>
-#include <boost/signals2.hpp>

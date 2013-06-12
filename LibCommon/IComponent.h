@@ -2,6 +2,7 @@
 #define LIBCOMMON_ICOMPONENT_H
 #include "stdafx.h"
 #include "IMessage.h"
+#include "Event.hpp"
 #include <functional>
 #include <boost/signals2.hpp>
 
@@ -17,8 +18,8 @@ namespace LibCommon {
 		//will likely get thrown >50% of the time so it is really
 		//not that exceptional and avoiding it with pointers (which can equal 0)
 		//is a good idea
-		boost::signals2::signal<void(IMessage*)> send;
-		boost::signals2::signal<void(IMessage*)> receive;
+		Event<IMessage*> send;
+		Event<IMessage*> receive;
 		virtual ~IComponent() = 0;
 
 		template<typename T>

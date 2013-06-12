@@ -64,8 +64,19 @@ namespace LibCommon {
 		};
 		bool HandleKeypress(Keys key);
 		bool AddAction(Keys key, std::wstring action);
+		bool RemoveAction(std::wstring action);
+		bool RemoveAction(Keys key);
 	private:
 		std::map<Keys, std::wstring> actions;
+
+		
+		/// finds the key bound to a given action if there is
+		/// one, if not it returns false
+		///
+		///\param action the action to search for
+		///\param boundKey the return value
+		///\return true if it found a key, false otherwise
+		bool findAction(std::wstring action, Keys &boundKey);
 	};
 }
 #endif

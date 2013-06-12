@@ -4,7 +4,7 @@
 namespace LibCommon {
 	Entity::Entity() {
 		m_handler = [this](IMessage *msg){this->handleMessage(msg);};
-		receive.connect(this->handleMessage);
+		receive.connect<IMessage*>([this](IMessage* msg){this->handleMessage(msg);});
 	}
 	void Entity::addComponent(IComponent* c) {
 		Connections.push_back(c->send.connect(m_handler));

@@ -4,8 +4,8 @@ namespace LibDirect2D {
 	Direct2DBitmap::Direct2DBitmap(std::wstring file) 
 		: filename(file) 
 	{
+		receive.connect<Direct2DRenderingMessage*>([this](Direct2DRenderingMessage* msg){this->HandleDraw(msg);});
 		
-		BIND(HandleDraw, Direct2DRenderingMessage);
 	}
 	void Direct2DBitmap::HandleDraw(Direct2DRenderingMessage *message) {
 		HRESULT hr = S_OK;
@@ -17,7 +17,7 @@ namespace LibDirect2D {
 			}
 			BitmapLoader::unInitialize();
 		}
-		LibCommon::Get<Eigen::Affine2f> * msg = new LibCommon::Get<Eigen::Affine2f>(this);
+		LibCommon::Get<LibCommon::Transform2D, Eigen::Affine2f> * msg = new LibCommon::Get<LibCommon::Transform2D, Eigen::Affine2f>(this);
 		this->send(msg);
 		Eigen::Affine2f transform = *msg->value;
 		D2D1_MATRIX_3X2_F d2dTransform = Affine2f_to_D2D1Matrix3x2f(transform);

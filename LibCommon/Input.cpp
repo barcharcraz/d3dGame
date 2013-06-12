@@ -19,4 +19,29 @@ namespace LibCommon {
 			return true;
 		}
 	}
+
+	bool Input::RemoveAction(std::wstring action) {
+		Keys key = Keys::Count;
+		if(findAction(action, key))
+			return RemoveAction(key);
+		else 
+			return false;
+	}
+
+	bool Input::RemoveAction(Keys key) {
+		int num = actions.erase(key);
+		if(num)
+			return true;
+		else
+			return false;
+	}
+	bool Input::findAction(std::wstring action, Keys &boundKey) {
+		for(std::pair<Keys, std::wstring> p : actions) {
+			if(p.second == action) {
+				boundKey = p.first;
+				return true;
+			}
+		}
+		return false;
+	}
 }

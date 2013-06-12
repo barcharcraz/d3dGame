@@ -1,24 +1,37 @@
 #ifndef LIBCOMMON_EVENTS_HPP
 #define LIBCOMMON_EVENTS_HPP
 #include "stdafx.h"
-#include <vector>
+#include <list>
 #include <functional>
 namespace LibCommon {
-template<typename T>
-	class Event<T> {
+	template<typename T>
+	class Event {
+		
 	public:
+		typedef typename std::list<std::function<void(T)> >::const_iterator connection;
+
 		template<typename U>
-		int connect<U>(std::function<void(U)> func) {
-			int retval = callbacks.size();
-			callbacks.push_back([](T v){
+		connection connect(std::function<void(U)> func) {
+			callbacks.push_front([func](T v){
 				if(dynamic_cast<U>(v)) {
 					func(dynamic_cast<U>(v));
 				}
 			});
-			return retval;
+			
+			return callbacks.cbegin();
 		}
+		void disconnect(connection index) {
+			callbacks.erase(index);
+		}
+		void operator()(T v) {
+			for(std::function<void(T)> val : callbacks) {
+				val(v);
+			}
+		}
+		
+
 	private:
-		std::vector<std::function<void(T)> > callbacks;
+		std::list<std::function<void(T)> > callbacks;
 	};
 }
 
