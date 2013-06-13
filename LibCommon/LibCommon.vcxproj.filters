@@ -105,6 +105,9 @@
     <ClInclude Include="InputMessage.h">
       <Filter>Header Files\Messages</Filter>
     </ClInclude>
+    <ClInclude Include="Keys.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

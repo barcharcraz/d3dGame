@@ -139,6 +139,7 @@
     <ClInclude Include="Bubbly.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="InputMessage.h" />
+    <ClInclude Include="Keys.h" />
     <ClInclude Include="Velocity.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Event.hpp" />

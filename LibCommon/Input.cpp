@@ -1,6 +1,11 @@
 #include "stdafx.h"
 #include "Input.h"
 namespace LibCommon {
+	Input::Input(const std::map<int, Keys> &kmap)
+		: keymap(kmap)
+	{
+	}
+
 	bool Input::HandleKeypress(Keys key) {
 		if(actions.count(key)) {
 			InputMessage msg(actions.at(key));
@@ -10,7 +15,13 @@ namespace LibCommon {
 			return false;
 		}
 	}
-
+	bool Input::HandleKeypress(int systemKeyCode) {
+		if(keymap.count(systemKeyCode)) {
+			return HandleKeypress(keymap.at(systemKeyCode));
+		} else {
+			return false;
+		}
+	}
 	bool Input::AddAction(Keys key, std::wstring action) {
 		if(actions.count(key)) {
 			return false;
