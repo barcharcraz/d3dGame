@@ -114,10 +114,10 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	};
 	*/
 	CoInitialize(NULL);
-	Direct3DRenderer d3dRender;
+	//Direct3DRenderer d3dRender;
 	//CComPtr<ID3D11Debug> pDebug;
 	//d3dRender.getDevice()->QueryInterface(IID_PPV_ARGS(&pDebug));
-	Direct2DRenderer * render = new Direct2DRenderer(d3dRender.getDeviceAsDXGI(), mywin.getHwnd());
+	Direct2DRenderer * render = new Direct2DRenderer(mywin.getHwnd());
 	Entity * square = new Entity();
 	Direct2DBitmap * renderComp = new LibDirect2D::Direct2DBitmap(L"testBitmap.bmp");
 	LibCommon::Transform2D * trans = new LibCommon::Transform2D(80.0f, 20.0f);

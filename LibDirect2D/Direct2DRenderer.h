@@ -1,5 +1,6 @@
 #pragma once
 #include "stdafx.h"
+#include <d3d11_1.h>
 #include "Direct2DRenderingMessage.h"
 #include <atlbase.h>
 #include <LibCommon\IRenderer.h>
@@ -14,6 +15,11 @@ public:
 	CComPtr<ID2D1DeviceContext> getContext();
 	~Direct2DRenderer();
 private:
+	void init(IDXGIDevice* pdxgidevice, HWND target);
+
+	CComPtr<ID3D11Device> p3Device;
+	CComPtr<IDXGIDevice> pDxgiDevice;
+	CComPtr<ID3D11DeviceContext> pD3DContext;
 	CComPtr<ID2D1Factory1> pFactory;
 	CComPtr<ID2D1Device> pDevice;
 	CComPtr<ID2D1DeviceContext> pContext;

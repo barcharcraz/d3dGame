@@ -136,11 +136,14 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BasicController2D.h" />
     <ClInclude Include="Bubbly.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="InputMessage.h" />
+    <ClInclude Include="KeyDownMessage.h" />
     <ClInclude Include="Keys.h" />
-    <ClInclude Include="Velocity.h" />
+    <ClInclude Include="KeyUpMessage.h" />
+    <ClInclude Include="Velocity2D.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Event.hpp" />
     <ClInclude Include="Get.hpp" />
@@ -161,6 +164,8 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="InputMessage.cpp" />
+    <ClCompile Include="KeyDownMessage.cpp" />
+    <ClCompile Include="KeyUpMessage.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -170,7 +175,7 @@
     </ClCompile>
     <ClCompile Include="Transform2D.cpp" />
     <ClCompile Include="UpdateMessage.cpp" />
-    <ClCompile Include="Velocity.cpp" />
+    <ClCompile Include="Velocity2D.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

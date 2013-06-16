@@ -1,8 +1,32 @@
 #include "stdafx.h"
+#include <d3d11_1.h>
 #include "Direct2DRenderer.h"
 using namespace LibDirect2D;
 
+Direct2DRenderer::Direct2DRenderer(HWND target) {
+	UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
+#ifdef _DEBUG
+	creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif
+	HRESULT hr = S_OK;
+	hr = D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, 0, creationFlags, nullptr, 0, D3D11_SDK_VERSION,
+		&p3Device, nullptr, &pD3DContext);
+	if(FAILED(hr)) {
+		//this is an OMGWTFBBQ panic
+		throw hr;
+	}
+	hr = p3Device.QueryInterface(&pDxgiDevice);
+	if(FAILED(hr)) {
+		throw hr;
+	}
+	init(pDxgiDevice, target);
+}
+
 Direct2DRenderer::Direct2DRenderer(IDXGIDevice* pdxgidevice, HWND target) {
+	init(pdxgidevice, target);
+	
+}
+void Direct2DRenderer::init(IDXGIDevice* pdxgidevice, HWND target) {
 	HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &pFactory);
 	if(FAILED(hr)) {
 		throw hr;
@@ -17,7 +41,6 @@ Direct2DRenderer::Direct2DRenderer(IDXGIDevice* pdxgidevice, HWND target) {
 	}
 	m_pSwapChain = LibDXGI::CreateSwapChain(pdxgidevice, target);
 	pContext->SetTarget(getBackBufferBitmap());
-	
 }
 CComPtr<ID2D1Bitmap1> Direct2DRenderer::getBackBufferBitmap() {
 	return getBackBufferBitmap(pContext, m_pSwapChain);

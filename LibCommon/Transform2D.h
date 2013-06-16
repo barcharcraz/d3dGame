@@ -1,5 +1,5 @@
-#ifndef H_LIBCOMMON_TRANSFORM2D
-#define H_LIBCOMMON_TRANSFORM2D
+#ifndef H_LIBCOMMON_TRANSFORM2D_H
+#define H_LIBCOMMON_TRANSFORM2D_H
 #include "stdafx.h"
 #include "Get.hpp"
 #include "IComponent.h"

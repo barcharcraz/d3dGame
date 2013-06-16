@@ -29,6 +29,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibDXGI", "LibDXGI\LibDXGI.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WinLib", "WinLib\WinLib.vcxproj", "{E7A91E74-BA9C-854B-2BE7-BB4C0E897DEF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "windows", "windows\windows.vcxproj", "{A7473C40-2C9B-4793-8727-80FB52891CC3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -195,6 +197,18 @@ Global
 		{E7A91E74-BA9C-854B-2BE7-BB4C0E897DEF}.Release|Win32.Build.0 = Release|Win32
 		{E7A91E74-BA9C-854B-2BE7-BB4C0E897DEF}.Release|x64.ActiveCfg = Release|x64
 		{E7A91E74-BA9C-854B-2BE7-BB4C0E897DEF}.Release|x64.Build.0 = Release|x64
+		{A7473C40-2C9B-4793-8727-80FB52891CC3}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{A7473C40-2C9B-4793-8727-80FB52891CC3}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{A7473C40-2C9B-4793-8727-80FB52891CC3}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{A7473C40-2C9B-4793-8727-80FB52891CC3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A7473C40-2C9B-4793-8727-80FB52891CC3}.Debug|Win32.Build.0 = Debug|Win32
+		{A7473C40-2C9B-4793-8727-80FB52891CC3}.Debug|x64.ActiveCfg = Debug|Win32
+		{A7473C40-2C9B-4793-8727-80FB52891CC3}.Release|Any CPU.ActiveCfg = Release|Win32
+		{A7473C40-2C9B-4793-8727-80FB52891CC3}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{A7473C40-2C9B-4793-8727-80FB52891CC3}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{A7473C40-2C9B-4793-8727-80FB52891CC3}.Release|Win32.ActiveCfg = Release|Win32
+		{A7473C40-2C9B-4793-8727-80FB52891CC3}.Release|Win32.Build.0 = Release|Win32
+		{A7473C40-2C9B-4793-8727-80FB52891CC3}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

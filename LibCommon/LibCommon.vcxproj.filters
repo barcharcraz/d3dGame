@@ -46,6 +46,12 @@
     <Filter Include="Source Files\Components">
       <UniqueIdentifier>{c709ce0d-3c75-4a0d-9442-20ca5688f27c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Messages\Input">
+      <UniqueIdentifier>{b6f4e4a5-8cbe-4825-b0a2-065c4bbe9b34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Input">
+      <UniqueIdentifier>{49731671-2331-48a1-80bb-6eec2e987780}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -93,20 +99,29 @@
     <ClInclude Include="UpdateMessage.h">
       <Filter>Header Files\Messages</Filter>
     </ClInclude>
-    <ClInclude Include="Velocity.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="Bubbly.h">
       <Filter>Header Files\Messages</Filter>
     </ClInclude>
     <ClInclude Include="Input.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="InputMessage.h">
-      <Filter>Header Files\Messages</Filter>
-    </ClInclude>
     <ClInclude Include="Keys.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Velocity2D.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicController2D.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="InputMessage.h">
+      <Filter>Header Files\Messages\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyDownMessage.h">
+      <Filter>Header Files\Messages\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyUpMessage.h">
+      <Filter>Header Files\Messages\Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -125,17 +140,23 @@
     <ClCompile Include="UpdateMessage.cpp">
       <Filter>Source Files\Messages</Filter>
     </ClCompile>
-    <ClCompile Include="Velocity.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
     <ClCompile Include="Bubbly.cpp">
       <Filter>Source Files\Messages</Filter>
     </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
     <ClCompile Include="InputMessage.cpp">
       <Filter>Source Files\Messages</Filter>
+    </ClCompile>
+    <ClCompile Include="Velocity2D.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Source Files\Components\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyDownMessage.cpp">
+      <Filter>Source Files\Components\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyUpMessage.cpp">
+      <Filter>Source Files\Components\Input</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
