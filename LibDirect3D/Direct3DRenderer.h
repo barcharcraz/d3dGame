@@ -1,25 +1,16 @@
 #pragma once
 #include "stdafx.h"
+#include <LibDXGI/LibDXGI.h>
 #include <memory>
-namespace LibCommon {
-	class Direct3DRenderer {
+#include <LibCommon/IRenderer.h>
+#include "Direct3DRenderingMessage.h"
+namespace LibDirect3D {
+	class Direct3DRenderer : public LibCommon::IRenderer {
 	public:
 		Direct3DRenderer();
-		Direct3DRenderer(
-			IDXGIAdapter* pAdapter,
-			D3D_DRIVER_TYPE type,
-			HMODULE software,
-			UINT flags,
-			const D3D_FEATURE_LEVEL* plevels,
-			UINT numLevels,
-			UINT sdkVersion,
-			ID3D11Device** ppDevice,
-			D3D_FEATURE_LEVEL* outLevel,
-			ID3D11DeviceContext** ppContext
-			);
-		CComPtr<IDXGIDevice> getDeviceAsDXGI();
-		CComPtr<ID3D11Device> getDevice();
+		virtual LibCommon::IMessage * getRenderingMessage() override;
 	private:
+		
 		void init(IDXGIAdapter* pAdapter,
 			D3D_DRIVER_TYPE type,
 			HMODULE software,
@@ -27,10 +18,17 @@ namespace LibCommon {
 			const D3D_FEATURE_LEVEL* plevels,
 			UINT numLevels,
 			UINT sdkVersion,
-			ID3D11Device** ppDevice,
-			D3D_FEATURE_LEVEL* outLevel,
-			ID3D11DeviceContext** ppContext);
-		CComPtr<ID3D11Device> m_pDevice;
-		CComPtr<ID3D11DeviceContext> m_pContect;
+			D3D_FEATURE_LEVEL* outLevel);
+		
+		void bindToHwnd(HWND target);
+
+
+		CComPtr<ID3D11Device1> m_pDevice;
+		CComPtr<ID3D11DeviceContext1> m_pContext;
+		CComPtr<IDXGISwapChain1> m_pSwapChain;
+		CComPtr<IDXGIFactory2> m_pDXGIFactory;
+		CComPtr<IDXGIDevice2> m_pDXGIDevice;
+
+		std::unique_ptr<Direct3DRenderingMessage> lazyMessage;
 	};
 }

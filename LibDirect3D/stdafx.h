@@ -27,6 +27,7 @@
 #include <d3d11_1.h>
 #include <atlbase.h>
 
-
+//standard libraries
+#include <memory>
 
 // TODO: reference additional headers your program requires here
