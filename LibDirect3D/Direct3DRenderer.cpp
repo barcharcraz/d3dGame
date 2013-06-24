@@ -37,5 +37,9 @@ void Direct3DRenderer::bindToHwnd(HWND target) {
 	
 }
 LibCommon::IMessage * Direct3DRenderer::getRenderingMessage() {
-
+	if(lazyMessage == nullptr) {
+		lazyMessage.reset(new Direct3DRenderingMessage(m_pDevice, m_pContext));
+	}
+	//return a non-owning raw pointer
+	return lazyMessage.get();
 }

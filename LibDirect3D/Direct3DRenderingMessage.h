@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include <LibCommon/RenderingMessage.h>
+#include <DirectXMath.h>
 namespace LibDirect3D {
 	class Direct3DRenderingMessage : public LibCommon::RenderingMessage {
 	public:

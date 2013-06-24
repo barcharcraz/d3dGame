@@ -4,7 +4,6 @@
 #include "IMessage.h"
 #include "Event.hpp"
 #include <functional>
-#include <boost/signals2.hpp>
 
 namespace LibCommon {
 #define COM , //this is horrendus but needed to pas in multiple template parameters to BIND
