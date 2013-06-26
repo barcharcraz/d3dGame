@@ -128,7 +128,6 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	
 	//context.DrawShapes(commands);
 	//factory.getSwapChain()->Present(1,0);
-	
 	mywin.onNoMessage = [&](){
 		//render->getContext()->Clear(D2D1::ColorF(D2D1::ColorF::Black));
 		sce->Update();

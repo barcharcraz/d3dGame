@@ -58,5 +58,7 @@ namespace LibDirect3D {
 		if(_pIndexBuffer == nullptr) {
 			initIndexBuffer(msg->pDevice);
 		}
+		msg->pContext->IASetInputLayout(
+		msg->pContext->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	}
 }

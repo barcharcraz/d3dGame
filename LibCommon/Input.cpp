@@ -40,7 +40,7 @@ namespace LibCommon {
 	}
 
 	bool Input::RemoveAction(Keys key) {
-		int num = actions.erase(key);
+		size_t num = actions.erase(key);
 		if(num)
 			return true;
 		else
