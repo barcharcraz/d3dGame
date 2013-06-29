@@ -22,12 +22,11 @@ namespace LibDirect3D {
 		
 		void bindToHwnd(HWND target);
 
-
-		CComPtr<ID3D11Device1> m_pDevice;
-		CComPtr<ID3D11DeviceContext1> m_pContext;
-		CComPtr<IDXGISwapChain1> m_pSwapChain;
+		CComPtr<ID3D11Device2> m_pDevice;
+		CComPtr<ID3D11DeviceContext2> m_pContext;
+		CComPtr<IDXGISwapChain2> m_pSwapChain;
 		CComPtr<IDXGIFactory2> m_pDXGIFactory;
-		CComPtr<IDXGIDevice2> m_pDXGIDevice;
+		CComPtr<IDXGIDevice3> m_pDXGIDevice;
 
 		std::unique_ptr<Direct3DRenderingMessage> lazyMessage;
 	};
