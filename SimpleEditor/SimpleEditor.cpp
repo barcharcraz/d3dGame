@@ -15,7 +15,6 @@
 #include <LibDirect2D\Direct2DRectRenderer.h>
 #include <LibDirect2D\Direct2DBitmap.h>
 #include <LibCommon\Scene.h>
-#include <LibDirect3D\Direct3DRenderer.h>
 #include <LibCommon/Transform2D.h>
 //#pragma comment(lib,"Lib3D.lib")
 #pragma comment(lib,"Comctl32.lib")
@@ -23,7 +22,6 @@
 #pragma comment(lib, "winmm.lib")
 #pragma comment(lib, "LibDXGI.lib")
 #pragma comment(lib, "LibDirect2D.lib")
-#pragma comment(lib, "LibDirect3D.lib")
 #pragma comment(lib, "WinLib.lib")
 
 using namespace LibDirect2D;

@@ -138,6 +138,7 @@
   <ItemGroup>
     <ClInclude Include="BasicController2D.h" />
     <ClInclude Include="Bubbly.h" />
+    <ClInclude Include="errors.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="InputMessage.h" />
     <ClInclude Include="KeyDownMessage.h" />

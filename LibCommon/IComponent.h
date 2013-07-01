@@ -11,6 +11,7 @@ namespace LibCommon {
 	class IMessage;
 	class IComponent {
 	public:
+
 		//the reason that these take pointers is because
 		//we want to be able to check if casts succeded without
 		//handling the std::bad_cast excetpion, this exception
@@ -32,6 +33,6 @@ namespace LibCommon {
 		}
 	};
 
-	inline IComponent::~IComponent() {}
+	inline IComponent::~IComponent() {};
 }
 #endif

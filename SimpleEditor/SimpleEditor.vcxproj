@@ -180,9 +180,6 @@
     <ProjectReference Include="..\LibDirect2D\LibDirect2D.vcxproj">
       <Project>{412c9bf5-d364-4d12-ab88-3bc6019c7c4d}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\LibDirect3D\LibDirect3D.vcxproj">
-      <Project>{94fee298-c376-411f-bb8b-01735af5da3f}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\LibDXGI\LibDXGI.vcxproj">
       <Project>{34a82703-f92e-4ff4-a3a2-637c27e7d449}</Project>
     </ProjectReference>
