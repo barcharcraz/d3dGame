@@ -22,7 +22,7 @@ namespace LibDirect3D {
 		PSmap[name] = pPS;
 
 		CComPtr<ID3D11InputLayout> pIL;
-		hr = pDev->CreateInputLayout(desc.data, desc.size(), shaderBlob, sizeof(shaderBlob), &pIL);
+		hr = pDev->CreateInputLayout(desc.data(), desc.size(), shaderBlob, sizeof(shaderBlob), &pIL);
 		if (FAILED(hr)) {
 			throw hr;
 		}
@@ -40,7 +40,7 @@ namespace LibDirect3D {
 		VSmap[name] = pVS;
 
 		CComPtr<ID3D11InputLayout> pIL;
-		hr = pDev->CreateInputLayout(desc.data, desc.size(), shaderBlob, sizeof(shaderBlob), &pIL);
+		hr = pDev->CreateInputLayout(desc.data(), desc.size(), shaderBlob, sizeof(shaderBlob), &pIL);
 		if (FAILED(hr)) {
 			throw hr;
 		}

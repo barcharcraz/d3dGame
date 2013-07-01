@@ -6,13 +6,13 @@
 namespace LibDirect3D {
 	class Direct3DRenderingMessage : public LibCommon::RenderingMessage {
 	public:
-		Direct3DRenderingMessage(ID3D11Device1 *device, ID3D11DeviceContext1 *context);
+		Direct3DRenderingMessage(ID3D11Device2 *device, ID3D11DeviceContext2 *context);
 
 		Shaders * pShaders;
 
 		//these pointers are not owning /please/ do not delete them
-		ID3D11Device1 * pDevice;
-		ID3D11DeviceContext1 * pContext;
+		ID3D11Device2 * pDevice;
+		ID3D11DeviceContext2 * pContext;
 	
 	};
 }

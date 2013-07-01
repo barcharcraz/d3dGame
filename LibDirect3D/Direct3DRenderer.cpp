@@ -17,24 +17,44 @@ void Direct3DRenderer::init(IDXGIAdapter* pAdapter,
 			UINT numLevels,
 			UINT sdkVersion,
 			D3D_FEATURE_LEVEL* outLevel) {
-				HRESULT hr =  D3D11CreateDevice(pAdapter, type, software, flags, plevels, numLevels, sdkVersion, &m_pDevice, outLevel, &m_pContext);
+
+				CComPtr<ID3D11Device> pDevice;
+				CComPtr<ID3D11DeviceContext> pContext;
+				HRESULT hr =  D3D11CreateDevice(pAdapter, type, software, flags, plevels, numLevels, sdkVersion, &pDevice, outLevel, &pContext);
 				if(FAILED(hr)) {
 					throw hr;
 				}
+
+				//set the dxgi device
 				hr = m_pDevice.QueryInterface(&m_pDXGIDevice);
 				if(FAILED(hr)) {
 					throw hr;
 				}
 				m_pDXGIFactory = LibDXGI::GetFactory(m_pDXGIDevice);
+
+				hr = pDevice.QueryInterface(&m_pDevice);
+				if (FAILED(hr)) {
+					throw hr;
+				}
+				hr = pContext.QueryInterface(&m_pSwapChain);
+				if (FAILED(hr)) {
+					throw hr;
+				}
 }
 
 void Direct3DRenderer::bindToHwnd(HWND target) {
 	DXGI_SWAP_CHAIN_DESC1 defChain = LibDXGI::GetDefaultSwapChain();
-	HRESULT hr = m_pDXGIFactory->CreateSwapChainForHwnd(m_pDXGIDevice, target, &defChain, nullptr, nullptr, &m_pSwapChain);
-	if(FAILED(hr)) {
+	CComPtr<IDXGISwapChain1> pSwapChain;
+	HRESULT hr = m_pDXGIFactory->CreateSwapChainForHwnd(m_pDXGIDevice, target, &defChain, nullptr, nullptr, &pSwapChain);
+	//at this point we have not actually changed the state of the object
+	if (FAILED(hr)) {
 		throw hr;
 	}
-	
+	//and now we change the state of the object
+	hr = pSwapChain.QueryInterface(&m_pSwapChain);
+	if (FAILED(hr)) {
+		throw hr;
+	}
 }
 LibCommon::IMessage * Direct3DRenderer::getRenderingMessage() {
 	if(lazyMessage == nullptr) {

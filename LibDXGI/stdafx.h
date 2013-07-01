@@ -8,7 +8,7 @@
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
 // Windows Header Files:
 #include <windows.h>
-#include <dxgi1_2.h>
+#include <dxgi1_3.h>
 #include <atlbase.h>
 
 #pragma comment(lib, "LibCommon.lib")
