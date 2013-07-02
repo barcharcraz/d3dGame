@@ -32,6 +32,7 @@ void Direct3DRenderer::init(IDXGIAdapter* pAdapter,
 				}
 				m_pDXGIFactory = LibDXGI::GetFactory(m_pDXGIDevice);
 
+				//and assign contexts
 				hr = pDevice.QueryInterface(&m_pDevice);
 				if (FAILED(hr)) {
 					throw hr;
@@ -58,8 +59,15 @@ void Direct3DRenderer::bindToHwnd(HWND target) {
 }
 LibCommon::IMessage * Direct3DRenderer::getRenderingMessage() {
 	if(lazyMessage == nullptr) {
-		lazyMessage.reset(new Direct3DRenderingMessage(m_pDevice, m_pContext));
+		lazyMessage.reset(new Direct3DRenderingMessage(m_pDevice, m_pContext, m_pShaders.get()));
 	}
 	//return a non-owning raw pointer
 	return lazyMessage.get();
+}
+
+void Direct3DRenderer::addPixelShader(ID3D11Device * pDev, const std::string &name, const BYTE shaderBlob[], const std::vector<D3D11_INPUT_ELEMENT_DESC> &desc) {
+	m_pShaders->addPS(pDev, name, shaderBlob, desc);
+}
+void Direct3DRenderer::addVertexShader(ID3D11Device * pDev, const std::string &name, const BYTE shaderBlob [], const std::vector<D3D11_INPUT_ELEMENT_DESC> &desc) {
+	m_pShaders->addVS(pDev, name, shaderBlob, desc);
 }

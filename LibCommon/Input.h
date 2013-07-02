@@ -18,7 +18,7 @@ namespace LibCommon {
 	private:
 		std::map<Keys, std::wstring> actions;
 		const std::map<int, Keys> &keymap;
-		
+		Input& operator=(const Input& other); //get rid of default operator=
 		/// finds the key bound to a given action if there is
 		/// one, if not it returns false
 		///

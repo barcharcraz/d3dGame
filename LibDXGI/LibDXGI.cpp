@@ -37,7 +37,8 @@ CComPtr<IDXGIFactory2> LibDXGI::GetFactory(IDXGIDevice* pDevice) {
 CComPtr<IDXGISwapChain1> LibDXGI::CreateSwapChain(IDXGIDevice* pDevice, HWND target) {
 	CComPtr<IDXGIFactory2> pFactory = GetFactory(pDevice);
 	CComPtr<IDXGISwapChain1> retval;
-	HRESULT hr = pFactory->CreateSwapChainForHwnd(pDevice, target, &GetDefaultSwapChain(), nullptr, nullptr, &retval);
+	DXGI_SWAP_CHAIN_DESC1 swap = GetDefaultSwapChain();
+	HRESULT hr = pFactory->CreateSwapChainForHwnd(pDevice, target, &swap, nullptr, nullptr, &retval);
 	if(FAILED(hr)) {
 		throw hr;
 	}
@@ -48,6 +49,9 @@ CComPtr<IDXGIDebug> LibDXGI::getDebugInterface() {
 	CComPtr<IDXGIDebug> debug;
 	HMODULE debugHandle = GetModuleHandle(L"dxgidebug.dll");
 	DWORD error = GetLastError();
+	if (FAILED(HRESULT_FROM_WIN32(error))) {
+		throw HRESULT_FROM_WIN32(error);
+	}
 	HRESULT (WINAPI *getDebugInterface)(REFIID, void**) = (HRESULT (WINAPI *)(REFIID, void**))GetProcAddress(debugHandle, "DXGIGetDebugInterface");
 	getDebugInterface(IID_PPV_ARGS(&debug));
 	return debug;

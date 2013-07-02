@@ -1,7 +1,6 @@
 #pragma once
 #include "stdafx.h"
 #include <LibDXGI/LibDXGI.h>
-#include <memory>
 #include <LibCommon/IRenderer.h>
 #include "Direct3DRenderingMessage.h"
 namespace LibDirect3D {
@@ -9,6 +8,9 @@ namespace LibDirect3D {
 	public:
 		Direct3DRenderer();
 		virtual LibCommon::IMessage * getRenderingMessage() override;
+
+		void addPixelShader(ID3D11Device * pDev, const std::string &name, const BYTE shaderBlob[], const std::vector<D3D11_INPUT_ELEMENT_DESC> &desc);
+		void addVertexShader(ID3D11Device * pDev, const std::string &name, const BYTE shaderBlob[], const std::vector<D3D11_INPUT_ELEMENT_DESC> &desc);
 	private:
 		
 		void init(IDXGIAdapter* pAdapter,
@@ -28,6 +30,9 @@ namespace LibDirect3D {
 		CComPtr<IDXGIFactory2> m_pDXGIFactory;
 		CComPtr<IDXGIDevice3> m_pDXGIDevice;
 
+		
+
+		std::unique_ptr<Shaders> m_pShaders;
 		std::unique_ptr<Direct3DRenderingMessage> lazyMessage;
 	};
 }

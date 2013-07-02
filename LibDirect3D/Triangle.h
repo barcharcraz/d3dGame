@@ -17,6 +17,7 @@ namespace LibDirect3D {
 
 		void handleDraw(Direct3DRenderingMessage * msg);
 
+		shaderSet* _pActiveShaders;
 		CComPtr<ID3D11Buffer> _pVertexBuffer;
 		CComPtr<ID3D11Buffer> _pIndexBuffer;
 		unsigned int indices[3];

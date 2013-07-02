@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.20617.1 PREVIEW
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WinLibTests", "WinLibTests\WinLibTests.vcxproj", "{C0BD3B55-913E-CC78-C57D-69246ABDF4EA}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Utils", "Utils\Utils.vcxproj", "{396C8BB6-4420-677C-FD95-4374F7618D71}"
@@ -204,7 +206,7 @@ Global
 		{A7473C40-2C9B-4793-8727-80FB52891CC3}.Debug|Mixed Platforms.Build.0 = Debug|Win32
 		{A7473C40-2C9B-4793-8727-80FB52891CC3}.Debug|Win32.ActiveCfg = Debug|Win32
 		{A7473C40-2C9B-4793-8727-80FB52891CC3}.Debug|Win32.Build.0 = Debug|Win32
-		{A7473C40-2C9B-4793-8727-80FB52891CC3}.Debug|x64.ActiveCfg = Debug|Win32
+		{A7473C40-2C9B-4793-8727-80FB52891CC3}.Debug|x64.ActiveCfg = Debug|x64
 		{A7473C40-2C9B-4793-8727-80FB52891CC3}.Release|Any CPU.ActiveCfg = Release|Win32
 		{A7473C40-2C9B-4793-8727-80FB52891CC3}.Release|Mixed Platforms.ActiveCfg = Release|Win32
 		{A7473C40-2C9B-4793-8727-80FB52891CC3}.Release|Mixed Platforms.Build.0 = Release|Win32
@@ -216,7 +218,7 @@ Global
 		{849F1FD9-AD15-4E4D-8C20-4AFC779959D1}.Debug|Mixed Platforms.Build.0 = Debug|Win32
 		{849F1FD9-AD15-4E4D-8C20-4AFC779959D1}.Debug|Win32.ActiveCfg = Debug|Win32
 		{849F1FD9-AD15-4E4D-8C20-4AFC779959D1}.Debug|Win32.Build.0 = Debug|Win32
-		{849F1FD9-AD15-4E4D-8C20-4AFC779959D1}.Debug|x64.ActiveCfg = Debug|Win32
+		{849F1FD9-AD15-4E4D-8C20-4AFC779959D1}.Debug|x64.ActiveCfg = Debug|x64
 		{849F1FD9-AD15-4E4D-8C20-4AFC779959D1}.Release|Any CPU.ActiveCfg = Release|Win32
 		{849F1FD9-AD15-4E4D-8C20-4AFC779959D1}.Release|Mixed Platforms.ActiveCfg = Release|Win32
 		{849F1FD9-AD15-4E4D-8C20-4AFC779959D1}.Release|Mixed Platforms.Build.0 = Release|Win32

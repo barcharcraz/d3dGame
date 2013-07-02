@@ -6,7 +6,7 @@ namespace LibDirect3D {
 	Triangle::Triangle(Eigen::Vector3f center, float scale) {
 		
 		float halfLength = (scale / 2);
-		float innerLength = halfLength * sqrt(2);
+		float innerLength = halfLength * static_cast<float>(sqrt(2));
 		verts[0].Pos = center + Eigen::Vector3f(0, innerLength, 0);
 		verts[1].Pos = center + Eigen::Vector3f(-halfLength, -innerLength, 0);
 		verts[2].Pos = center + Eigen::Vector3f(halfLength, -innerLength, 0);
@@ -58,7 +58,15 @@ namespace LibDirect3D {
 		if(_pIndexBuffer == nullptr) {
 			initIndexBuffer(msg->pDevice);
 		}
-		
+		if (_pActiveShaders == nullptr) {
+			_pActiveShaders = msg->pShaders->getDefaultSet();
+		}
+		msg->pContext->IASetInputLayout(_pActiveShaders->layout);
 		msg->pContext->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		unsigned int stride = sizeof(VertexData);
+		unsigned int offset = 0;
+		msg->pContext->IASetVertexBuffers(0, 1, &_pVertexBuffer, &stride, &offset);
+		msg->pContext->IASetIndexBuffer(_pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+		msg->pContext->DrawIndexed(3, 0, 0);
 	}
 }
