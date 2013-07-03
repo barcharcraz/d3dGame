@@ -16,7 +16,9 @@
 #include <LibDirect2D\Direct2DBitmap.h>
 #include <LibCommon\Scene.h>
 #include <LibCommon/Transform2D.h>
-//#pragma comment(lib,"Lib3D.lib")
+#include <LibDirect3D\Direct3DRenderer.h>
+#include <LibDirect3D\Triangle.h>
+#pragma comment(lib, "LibDirect3D.lib")
 #pragma comment(lib,"Comctl32.lib")
 #pragma comment(lib, "windowscodecs.lib")
 #pragma comment(lib, "winmm.lib")
@@ -115,12 +117,15 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	//Direct3DRenderer d3dRender;
 	//CComPtr<ID3D11Debug> pDebug;
 	//d3dRender.getDevice()->QueryInterface(IID_PPV_ARGS(&pDebug));
-	Direct2DRenderer * render = new Direct2DRenderer(mywin.getHwnd());
+	wchar_t cd[256];
+	GetCurrentDirectory(256, cd);
+	LibDirect3D::Direct3DRenderer * render = new LibDirect3D::Direct3DRenderer(mywin.getHwnd());
+	render->addVertexShader("DefaultVS.cso");
+	render->addPixelShader("DefaultPS.cso");
+	
 	Entity * square = new Entity();
-	Direct2DBitmap * renderComp = new LibDirect2D::Direct2DBitmap(L"testBitmap.bmp");
-	LibCommon::Transform2D * trans = new LibCommon::Transform2D(80.0f, 20.0f);
+	LibDirect3D::Triangle * renderComp = new LibDirect3D::Triangle(Eigen::Vector3f(0, 0, 0), 10);
 	square->addComponent(renderComp);
-	square->addComponent(trans);
 	Scene * sce = new Scene(render);
 	sce->AddEntity(square);
 	
@@ -128,6 +133,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	//factory.getSwapChain()->Present(1,0);
 	mywin.onNoMessage = [&](){
 		//render->getContext()->Clear(D2D1::ColorF(D2D1::ColorF::Black));
+		
 		sce->Update();
 		render->Present();
 	};

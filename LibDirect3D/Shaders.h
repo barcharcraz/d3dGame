@@ -1,5 +1,6 @@
 #pragma once
 #include "stdafx.h"
+#include <fstream>
 #include <LibCommon\errors.h>
 
 namespace LibDirect3D {
@@ -25,14 +26,21 @@ namespace LibDirect3D {
 		//!			want to use with it. LibDirect3D does not yet implement the Function Linking
 		//!			graph, when it does you will be able to piece together shaders
 		//!			with much more granularity
-		void addPS(ID3D11Device * pDev, const std::string& name, const BYTE shaderBlob [], const std::vector<D3D11_INPUT_ELEMENT_DESC> &desc);
+		void addPS(ID3D11Device * pDev, const std::string& name, const BYTE shaderBlob [], size_t shaderSize, const std::vector<D3D11_INPUT_ELEMENT_DESC> &desc);
 
 		//!\brief this function adds a vertex shader to the shaders collection.
 		//!			as with addPS this function takes a shader blob and a vector
 		//!			of ID3D11_INPUT_ELEMENT_DESCs
-		void addVS(ID3D11Device * pDev, const std::string& name, const BYTE shaderBlob [], const std::vector<D3D11_INPUT_ELEMENT_DESC> &desc);
+		void addVS(ID3D11Device * pDev, const std::string& name, const BYTE shaderBlob [], size_t shaderSize, const std::vector<D3D11_INPUT_ELEMENT_DESC> &desc);
 
-
+		//! \brief addes a shader from a compiled cso shader file
+		//! \exception strong if this function throws the internal state of the object
+		//!            will not change
+		void addPS(ID3D11Device * pDev, const std::string& filename, const std::vector<D3D11_INPUT_ELEMENT_DESC>& desc);
+		//! \brief adds a shader from a compiled cso file
+		//! \exception strong if this function throws the internal stat of the object
+		//!            will not change
+		void addVS(ID3D11Device * pDev, const std::string& filename, const std::vector<D3D11_INPUT_ELEMENT_DESC>& desc);
 		//! \brief gets the default shader set if one exists
 		//!		   if one does not exist it throws and exception
 		//! \exception strong

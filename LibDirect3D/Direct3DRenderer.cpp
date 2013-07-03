@@ -1,14 +1,21 @@
 #include "stdafx.h"
 #include "Direct3DRenderer.h"
 using namespace LibDirect3D;
-Direct3DRenderer::Direct3DRenderer() {
+Direct3DRenderer::Direct3DRenderer() : m_pShaders(std::make_unique<Shaders>()) {
 	UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 #ifdef _DEBUG
 	creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
-	init(nullptr, D3D_DRIVER_TYPE_HARDWARE, 0, creationFlags, nullptr, 0, D3D11_SDK_VERSION, nullptr);
+	init(nullptr, D3D_DRIVER_TYPE_HARDWARE, 0, creationFlags, defaultFeatureLevels, defaultNumFeatureLevels, D3D11_SDK_VERSION, nullptr);
 }
-
+Direct3DRenderer::Direct3DRenderer(HWND target) : m_pShaders(std::make_unique<Shaders>()) {
+	UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
+#ifdef _DEBUG
+	creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif
+	init(nullptr, D3D_DRIVER_TYPE_HARDWARE, 0, creationFlags, defaultFeatureLevels, defaultNumFeatureLevels, D3D11_SDK_VERSION, nullptr);
+	bindToHwnd(target);
+}
 void Direct3DRenderer::init(IDXGIAdapter* pAdapter,
 			D3D_DRIVER_TYPE type,
 			HMODULE software,
@@ -25,6 +32,16 @@ void Direct3DRenderer::init(IDXGIAdapter* pAdapter,
 					throw hr;
 				}
 
+				//and assign contexts
+				hr = pDevice.QueryInterface(&m_pDevice);
+				if (FAILED(hr)) {
+					throw hr;
+				}
+				hr = pContext.QueryInterface(&m_pContext);
+				if (FAILED(hr)) {
+					throw hr;
+				}
+
 				//set the dxgi device
 				hr = m_pDevice.QueryInterface(&m_pDXGIDevice);
 				if(FAILED(hr)) {
@@ -32,15 +49,7 @@ void Direct3DRenderer::init(IDXGIAdapter* pAdapter,
 				}
 				m_pDXGIFactory = LibDXGI::GetFactory(m_pDXGIDevice);
 
-				//and assign contexts
-				hr = pDevice.QueryInterface(&m_pDevice);
-				if (FAILED(hr)) {
-					throw hr;
-				}
-				hr = pContext.QueryInterface(&m_pSwapChain);
-				if (FAILED(hr)) {
-					throw hr;
-				}
+				
 }
 
 void Direct3DRenderer::bindToHwnd(HWND target) {
@@ -65,9 +74,37 @@ LibCommon::IMessage * Direct3DRenderer::getRenderingMessage() {
 	return lazyMessage.get();
 }
 
-void Direct3DRenderer::addPixelShader(ID3D11Device * pDev, const std::string &name, const BYTE shaderBlob[], const std::vector<D3D11_INPUT_ELEMENT_DESC> &desc) {
-	m_pShaders->addPS(pDev, name, shaderBlob, desc);
+void Direct3DRenderer::addPixelShader(const std::string &name, const BYTE shaderBlob[], size_t shaderSize, const std::vector<D3D11_INPUT_ELEMENT_DESC> &desc) {
+	m_pShaders->addPS(m_pDevice, name, shaderBlob, shaderSize, desc);
 }
-void Direct3DRenderer::addVertexShader(ID3D11Device * pDev, const std::string &name, const BYTE shaderBlob [], const std::vector<D3D11_INPUT_ELEMENT_DESC> &desc) {
-	m_pShaders->addVS(pDev, name, shaderBlob, desc);
+void Direct3DRenderer::addVertexShader(const std::string &name, const BYTE shaderBlob [], size_t shaderSize, const std::vector<D3D11_INPUT_ELEMENT_DESC> &desc) {
+	m_pShaders->addVS(m_pDevice, name, shaderBlob, shaderSize, desc);
+}
+void Direct3DRenderer::addPixelShader(const std::string& filename, const std::vector<D3D11_INPUT_ELEMENT_DESC>& desc) {
+	m_pShaders->addVS(m_pDevice, filename, desc);
+}
+void Direct3DRenderer::addVertexShader(const std::string& filename, const std::vector<D3D11_INPUT_ELEMENT_DESC>& desc) {
+	m_pShaders->addPS(m_pDevice, filename, desc);
+}
+void Direct3DRenderer::addPixelShader(const std::string& filename) {
+	m_pShaders->addPS(m_pDevice, filename, defaultLayout);
+}
+void Direct3DRenderer::addVertexShader(const std::string& filename) {
+	m_pShaders->addVS(m_pDevice, filename, defaultLayout);
+}
+
+void Direct3DRenderer::Present() {
+	
+	DXGI_PRESENT_PARAMETERS params;
+	params.DirtyRectsCount = 0;
+	params.pDirtyRects = nullptr;
+	params.pScrollRect = nullptr;
+	params.pScrollOffset = nullptr;
+	m_pSwapChain->Present1(0, 0, &params);
+	DXGI_RGBA clearColor;
+	clearColor.r = 1.0f;
+	clearColor.g = 0;
+	clearColor.b = 0;
+	clearColor.a = 1.0f;
+	//m_pSwapChain->SetBackgroundColor(&clearColor);
 }

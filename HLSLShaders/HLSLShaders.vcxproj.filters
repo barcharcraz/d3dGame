@@ -18,5 +18,8 @@
     <FxCompile Include="DefaultVS.hlsl">
       <Filter>Source Files</Filter>
     </FxCompile>
+    <FxCompile Include="DefaultPS.hlsl">
+      <Filter>Source Files</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
