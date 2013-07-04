@@ -15,9 +15,9 @@ namespace LibDirect3D {
 	//!			with relevant structures
 	class Shaders {
 	public:
+		Shaders();
 		void addPS(const std::string& name, CComPtr<ID3D11PixelShader> shader, CComPtr<ID3D11InputLayout> layout);
 		void addVS(const std::string& name, CComPtr<ID3D11VertexShader> shader, CComPtr<ID3D11InputLayout> layout);
-
 
 		//!\brief this function adds a pixel shader to the shaders collection
 		//!			using the passed in compiled shader blob. Note that you
@@ -45,9 +45,9 @@ namespace LibDirect3D {
 		//!		   if one does not exist it throws and exception
 		//! \exception strong
 		//! \exception std::exception if no default shader exists
-		shaderSet* getDefaultSet();
+		shaderSet getDefaultSet();
 		shaderSet getSetWith(const std::string& vs, const std::string& ps);
-		shaderSet* getNamedSet(const std::string& name);
+		shaderSet getNamedSet(const std::string& name);
 
 		//! \brief This function creates a named shader set and stores that set
 		//!        in an internal mpa
@@ -55,10 +55,21 @@ namespace LibDirect3D {
 		//!            will remain consistant
 		bool createNamedSet(const std::string& name, const std::string& vs, const std::string& ps);
 	private:
-		std::unique_ptr<std::string> defaultSetName;
-		std::map<std::string, std::unique_ptr<shaderSet> > namedSets;
-		std::map<std::string, CComPtr<ID3D11PixelShader> > PSmap;
-		std::map<std::string, CComPtr<ID3D11VertexShader> > VSmap;
-		std::map<std::string, CComPtr<ID3D11InputLayout> > ILmap;
+		//! \brief checks to see if we have one element in all of the maps, and
+		//!        thus can return a default set
+		//! \exception strong
+		bool defaultSetExists();
+
+		std::string defaultSetName;
+		std::map<std::string, shaderSet > namedSets;
+		typedef std::map<std::string, CComPtr<ID3D11PixelShader>> PSmap_t;
+		typedef std::map<std::string, CComPtr<ID3D11VertexShader>> VSmap_t;
+		typedef std::map<std::string, CComPtr<ID3D11InputLayout>> ILmap_t;
+		PSmap_t PSmap;
+		VSmap_t VSmap;
+		ILmap_t ILmap;
+		PSmap_t::iterator firstPS;
+		VSmap_t::iterator firstVS;
+		ILmap_t::iterator firstIL;
 	};
 }

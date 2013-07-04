@@ -37,6 +37,7 @@ void Direct3DRenderer::init(IDXGIAdapter* pAdapter,
 				if (FAILED(hr)) {
 					throw hr;
 				}
+
 				hr = pContext.QueryInterface(&m_pContext);
 				if (FAILED(hr)) {
 					throw hr;
@@ -65,6 +66,36 @@ void Direct3DRenderer::bindToHwnd(HWND target) {
 	if (FAILED(hr)) {
 		throw hr;
 	}
+	createRenderTarget();
+	setViewports();
+}
+void Direct3DRenderer::createRenderTarget() {
+	HRESULT hr = S_OK;
+	CComPtr<ID3D11Texture2D> buffer;
+	hr = m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**) &buffer);
+	if (FAILED(hr)) {
+		throw hr;
+	}
+	hr = m_pDevice->CreateRenderTargetView(buffer, NULL, &m_pRenderTarget);
+	if (FAILED(hr)) {
+		throw hr;
+	}
+}
+void Direct3DRenderer::setViewports() {
+	HRESULT hr = S_OK;
+	DXGI_SWAP_CHAIN_DESC swd;
+	hr = m_pSwapChain->GetDesc(&swd);
+	if (FAILED(hr)) {
+		throw hr;
+	}
+	D3D11_VIEWPORT port;
+	port.TopLeftX = 0;
+	port.TopLeftY = 0;
+	port.MinDepth = 0;
+	port.MaxDepth = 1;
+	port.Height = static_cast<float>(swd.BufferDesc.Height);
+	port.Width = static_cast<float>(swd.BufferDesc.Width);
+	m_pContext->RSSetViewports(1, &port);
 }
 LibCommon::IMessage * Direct3DRenderer::getRenderingMessage() {
 	if(lazyMessage == nullptr) {
@@ -100,11 +131,8 @@ void Direct3DRenderer::Present() {
 	params.pDirtyRects = nullptr;
 	params.pScrollRect = nullptr;
 	params.pScrollOffset = nullptr;
+	
+	
 	m_pSwapChain->Present1(0, 0, &params);
-	DXGI_RGBA clearColor;
-	clearColor.r = 1.0f;
-	clearColor.g = 0;
-	clearColor.b = 0;
-	clearColor.a = 1.0f;
-	//m_pSwapChain->SetBackgroundColor(&clearColor);
+	m_pContext->OMSetRenderTargets(1, &m_pRenderTarget.p, nullptr);
 }

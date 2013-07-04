@@ -9,7 +9,7 @@
 namespace LibDirect3D {
 	class Triangle : public LibCommon::IComponent {
 	public:
-		Triangle(Eigen::Vector3f center, float scale);
+		Triangle();
 	private:
 		void init();
 		void initVertexBuffer(ID3D11Device1 * dev);
@@ -17,7 +17,7 @@ namespace LibDirect3D {
 
 		void handleDraw(Direct3DRenderingMessage * msg);
 
-		shaderSet* _pActiveShaders;
+		shaderSet _pActiveShaders;
 		CComPtr<ID3D11Buffer> _pVertexBuffer;
 		CComPtr<ID3D11Buffer> _pIndexBuffer;
 		unsigned int indices[3];

@@ -4,13 +4,30 @@
 #include <Utils\files.h>
 
 namespace LibDirect3D {
+	Shaders::Shaders() {
+		firstIL = ILmap.end();
+		firstPS = PSmap.end();
+		firstVS = VSmap.end();
+	}
 	void Shaders::addPS(const std::string& name, CComPtr<ID3D11PixelShader> shader, CComPtr<ID3D11InputLayout> layout) {
 		PSmap[name] = shader;
 		ILmap[name] = layout;
+		if (firstPS == PSmap.end()) {
+			firstPS = PSmap.find(name);
+		}
+		if (firstIL == ILmap.end()) {
+			firstIL = ILmap.find(name);
+		}
 	}
 	void Shaders::addVS(const std::string& name, CComPtr<ID3D11VertexShader> shader, CComPtr<ID3D11InputLayout> layout) {
 		VSmap[name] = shader;
 		ILmap[name] = layout;
+		if (firstVS == VSmap.end()) {
+			firstVS = VSmap.find(name);
+		}
+		if (firstIL == ILmap.end()) {
+			firstIL = ILmap.find(name);
+		}
 	}
 
 	void Shaders::addPS( ID3D11Device * pDev, const std::string& name, const BYTE shaderBlob [], size_t shaderSize, const std::vector<D3D11_INPUT_ELEMENT_DESC> &desc) {
@@ -20,14 +37,14 @@ namespace LibDirect3D {
 		if (FAILED(hr)) {
 			throw hr;
 		}
-		PSmap.emplace(name, pPS);
+		
 		//PSmap.insert(std::pair<std::string, CComPtr<ID3D11PixelShader>>(name, pPS));
 		CComPtr<ID3D11InputLayout> pIL;
 		hr = pDev->CreateInputLayout(desc.data(), static_cast<unsigned int>(desc.size()), shaderBlob, shaderSize, &pIL);
 		if (FAILED(hr)) {
 			throw hr;
 		}
-		ILmap[name] = pIL;
+		addPS(name, pPS, pIL);
 		
 		
 	}
@@ -38,14 +55,13 @@ namespace LibDirect3D {
 		if (FAILED(hr)) {
 			throw hr;
 		}
-		VSmap.emplace(name, pVS);
 
 		CComPtr<ID3D11InputLayout> pIL;
 		hr = pDev->CreateInputLayout(desc.data(), static_cast<unsigned int>(desc.size()), shaderBlob, shaderSize, &pIL);
 		if (FAILED(hr)) {
 			throw hr;
 		}
-		ILmap[name] = pIL;
+		addVS(name, pVS, pIL);
 	}
 
 	void Shaders::addPS(ID3D11Device * pDev, const std::string& filename, const std::vector<D3D11_INPUT_ELEMENT_DESC>& desc) {
@@ -65,14 +81,30 @@ namespace LibDirect3D {
 		rv.pPS = PSmap.at(ps).p;
 		return rv;
 	}
-	shaderSet* Shaders::getDefaultSet() {
-		if (defaultSetName == nullptr) {
+	
+	bool Shaders::defaultSetExists() {
+		if (firstPS == PSmap.end() ||
+			firstVS == VSmap.end() ||
+			firstIL == ILmap.end()) {
+				return false;
+		}
+		else {
+			return true;
+		}
+	}
+	shaderSet Shaders::getDefaultSet() {
+		if (!defaultSetExists()) {
 			throw std::exception("no default shader defined");
 		}
-		return namedSets.at(*defaultSetName).get();
+		shaderSet rv;
+		rv.layout = firstIL->second;
+		rv.pPS = firstPS->second;
+		rv.pVS = firstVS->second;
+		return rv;
+
 	}
-	shaderSet* Shaders::getNamedSet(const std::string& name) {
-		return namedSets.at(name).get();
+	shaderSet Shaders::getNamedSet(const std::string& name) {
+		return namedSets.at(name);
 	}
 
 	bool Shaders::createNamedSet(const std::string& name, const std::string& vs, const std::string& ps) {
@@ -81,16 +113,11 @@ namespace LibDirect3D {
 		}
 
 		//start modifing internal state
-		std::unique_ptr<shaderSet> newSet = std::make_unique<shaderSet>(getSetWith(vs, ps));
-		//we successfully added the set to the list of sets, it is now
-		//safe to set the default name, note that this CAN fail but if it does
-		//we are still in a consistant state
-		if (defaultSetName == nullptr) {
-			defaultSetName = std::make_unique<std::string>(name);
-		}
+		shaderSet newSet(getSetWith(vs, ps));
+
 		//-----after this line no exceptions will be thrown
 		//is there a copy here? I have no idea, I hope not
-		namedSets[name] = std::move(newSet);
+		namedSets[name] = newSet;
 		assert(namedSets.count(name));
 
 		return true;

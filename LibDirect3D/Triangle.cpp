@@ -1,18 +1,17 @@
 #include "stdafx.h"
 #include "Triangle.h"
 #include <math.h>
+#include <DirectXMath.h>
 
 namespace LibDirect3D {
-	Triangle::Triangle(Eigen::Vector3f center, float scale) {
-		
-		float halfLength = (scale / 2);
-		float innerLength = halfLength * static_cast<float>(sqrt(2));
-		verts[0].Pos = center + Eigen::Vector3f(0, innerLength, 0);
-		verts[1].Pos = center + Eigen::Vector3f(-halfLength, -innerLength, 0);
-		verts[2].Pos = center + Eigen::Vector3f(halfLength, -innerLength, 0);
-		indices[0] = 0;
+	Triangle::Triangle() {
+		verts[0].Pos = Eigen::Vector3f(0.0f, 1.0f, 0.0f);
+		verts[1].Pos = Eigen::Vector3f(-1.0f, -1.0f, 0.0f);
+		verts[2].Pos = Eigen::Vector3f(1.0f, -1.0f, 0.0f);
+		indices[0] = 2;
 		indices[1] = 1;
-		indices[2] = 2;
+		indices[2] = 0;
+		receive.connect<Direct3DRenderingMessage*>([this](Direct3DRenderingMessage * msg){this->handleDraw(msg); });
 	}
 	void Triangle::initVertexBuffer(ID3D11Device1 * dev) {
 		D3D11_BUFFER_DESC bufferDesc;
@@ -58,15 +57,16 @@ namespace LibDirect3D {
 		if(_pIndexBuffer == nullptr) {
 			initIndexBuffer(msg->pDevice);
 		}
-		if (_pActiveShaders == nullptr) {
-			_pActiveShaders = msg->pShaders->getDefaultSet();
-		}
-		msg->pContext->IASetInputLayout(_pActiveShaders->layout);
+		_pActiveShaders = msg->pShaders->getDefaultSet();
+		
+		msg->pContext->IASetInputLayout(_pActiveShaders.layout);
 		msg->pContext->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		unsigned int stride = sizeof(VertexData);
 		unsigned int offset = 0;
-		msg->pContext->IASetVertexBuffers(0, 1, &_pVertexBuffer, &stride, &offset);
+		msg->pContext->IASetVertexBuffers(0, 1, &_pVertexBuffer.p, &stride, &offset);
 		msg->pContext->IASetIndexBuffer(_pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+		msg->pContext->VSSetShader(_pActiveShaders.pVS, nullptr, 0);
+		msg->pContext->PSSetShader(_pActiveShaders.pPS, nullptr, 0);
 		msg->pContext->DrawIndexed(3, 0, 0);
 	}
 }

@@ -33,12 +33,14 @@ namespace LibDirect3D {
 			D3D_FEATURE_LEVEL* outLevel);
 		
 		void bindToHwnd(HWND target);
+		void createRenderTarget();
+		void setViewports();
 		CComPtr<ID3D11Device2> m_pDevice;
 		CComPtr<ID3D11DeviceContext2> m_pContext;
 		CComPtr<IDXGISwapChain2> m_pSwapChain;
 		CComPtr<IDXGIFactory2> m_pDXGIFactory;
 		CComPtr<IDXGIDevice3> m_pDXGIDevice;
-
+		CComPtr<ID3D11RenderTargetView> m_pRenderTarget;
 		
 
 		std::unique_ptr<Shaders> m_pShaders;

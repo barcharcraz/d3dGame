@@ -124,7 +124,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	render->addPixelShader("DefaultPS.cso");
 	
 	Entity * square = new Entity();
-	LibDirect3D::Triangle * renderComp = new LibDirect3D::Triangle(Eigen::Vector3f(0, 0, 0), 10);
+	LibDirect3D::Triangle * renderComp = new LibDirect3D::Triangle();
 	square->addComponent(renderComp);
 	Scene * sce = new Scene(render);
 	sce->AddEntity(square);
