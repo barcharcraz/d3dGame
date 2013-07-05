@@ -52,6 +52,9 @@
     <Filter Include="Source Files\Components\Input">
       <UniqueIdentifier>{49731671-2331-48a1-80bb-6eec2e987780}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\FileFormats">
+      <UniqueIdentifier>{946d1be6-5e23-4cbe-91d2-2be0dff7cbf4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -126,6 +129,15 @@
     <ClInclude Include="errors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GeometryFile.h">
+      <Filter>Header Files\FileFormats</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjFile.h">
+      <Filter>Header Files\FileFormats</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjParser.h">
+      <Filter>Header Files\FileFormats</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -160,6 +172,9 @@
     </ClCompile>
     <ClCompile Include="KeyUpMessage.cpp">
       <Filter>Source Files\Components\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjFile.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

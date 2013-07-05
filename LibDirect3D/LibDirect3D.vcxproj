@@ -144,6 +144,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Buffers.h" />
     <ClInclude Include="DataFormats.h" />
     <ClInclude Include="Direct3DRenderer.h" />
     <ClInclude Include="Direct3DRenderingMessage.h" />
@@ -154,6 +155,7 @@
     <ClInclude Include="Triangle.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Buffers.cpp" />
     <ClCompile Include="Direct3DRenderer.cpp" />
     <ClCompile Include="Direct3DRenderingMessage.cpp" />
     <ClCompile Include="Shaders.cpp" />

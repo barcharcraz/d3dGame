@@ -140,11 +140,14 @@
     <ClInclude Include="BasicController2D.h" />
     <ClInclude Include="Bubbly.h" />
     <ClInclude Include="errors.h" />
+    <ClInclude Include="GeometryFile.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="InputMessage.h" />
     <ClInclude Include="KeyDownMessage.h" />
     <ClInclude Include="Keys.h" />
     <ClInclude Include="KeyUpMessage.h" />
+    <ClInclude Include="ObjFile.h" />
+    <ClInclude Include="ObjParser.h" />
     <ClInclude Include="Velocity2D.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Event.hpp" />
@@ -168,6 +171,7 @@
     <ClCompile Include="InputMessage.cpp" />
     <ClCompile Include="KeyDownMessage.cpp" />
     <ClCompile Include="KeyUpMessage.cpp" />
+    <ClCompile Include="ObjFile.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

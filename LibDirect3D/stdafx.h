@@ -27,6 +27,10 @@
 #include <d3d11_2.h>
 #include <atlbase.h>
 
+//eigen
+#include <Eigen/Core>
+#include <Eigen/Geometry>
+
 //standard libraries
 #include <memory>
 #include <vector>

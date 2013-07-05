@@ -28,3 +28,11 @@
 #include <string>
 
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
+
+//includes for stdlib
+#include <vector>
+#include <memory>
+
+//includes for eigen
+#include <Eigen/Core>
+#include <Eigen/Geometry>

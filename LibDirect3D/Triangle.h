@@ -12,16 +12,16 @@ namespace LibDirect3D {
 		Triangle();
 	private:
 		void init();
-		void initVertexBuffer(ID3D11Device1 * dev);
-		void initIndexBuffer(ID3D11Device1 * dev);
 
 		void handleDraw(Direct3DRenderingMessage * msg);
 
 		shaderSet _pActiveShaders;
+		CComPtr<ID3D11Buffer> _pConstantBuffer;
 		CComPtr<ID3D11Buffer> _pVertexBuffer;
 		CComPtr<ID3D11Buffer> _pIndexBuffer;
-		unsigned int indices[3];
-		VertexData verts[3];
+		Eigen::Affine3f camera;
+		std::vector<unsigned int> indices;
+		std::vector<VertexData> verts;
 
 	};
 }
