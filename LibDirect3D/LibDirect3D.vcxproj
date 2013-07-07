@@ -148,6 +148,7 @@
     <ClInclude Include="DataFormats.h" />
     <ClInclude Include="Direct3DRenderer.h" />
     <ClInclude Include="Direct3DRenderingMessage.h" />
+    <ClInclude Include="ModelRenderer.h" />
     <ClInclude Include="Shaders.h" />
     <ClInclude Include="ShapeData.h" />
     <ClInclude Include="stdafx.h" />
@@ -158,6 +159,7 @@
     <ClCompile Include="Buffers.cpp" />
     <ClCompile Include="Direct3DRenderer.cpp" />
     <ClCompile Include="Direct3DRenderingMessage.cpp" />
+    <ClCompile Include="ModelRenderer.cpp" />
     <ClCompile Include="Shaders.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

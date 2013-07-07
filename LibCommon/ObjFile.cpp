@@ -16,6 +16,26 @@ namespace LibCommon {
 	std::vector<int> ObjFile::indices() {
 		return _indices;
 	}
+	std::vector<Vertex> ObjFile::verts() {
+		if (_verts.empty()) {
+			_verts = constructVerts();
+		}
+		return _verts;
+	}
+	std::vector<Vertex> ObjFile::constructVerts() {
+		//initialize the return value to the proper size
+		std::vector<Vertex> retval(_points.size());
+		for (int i = 0; i < _points.size(); ++i) {
+			retval[i].pos = _points[i];
+			//find the first position of the vertex in the set of indexes
+			//from this information we can find the associated UV value
+			int indexPos = std::find(_indices.begin(), _indices.end(), i) - _indices.begin();
+			int uvIndex = _uvIndices[indexPos];
+			retval[i].uv = _uvs[uvIndex];
+
+		}
+		return retval;
+	}
 	void ObjFile::read(const std::string& filename) {
 		std::ifstream inFile(filename);
 		read(inFile);
@@ -23,6 +43,7 @@ namespace LibCommon {
 	void ObjFile::read(std::istream& from) {
 		std::vector<Eigen::Vector4f> points;
 		std::vector<int> indices;
+		std::vector<int> uvIndices;
 		std::vector<Eigen::Vector3f> uvs;
 		std::string curLine;
 		while (!from.eof()) {
@@ -33,14 +54,17 @@ namespace LibCommon {
 				points.push_back(parseVertex(curLine));
 			}
 			else if (curLine[0] == 'f') {
-				auto vec = parseIndex(curLine);
-				indices.insert(indices.end(), vec.begin(), vec.end());
+				auto pair = parseIndex(curLine);
+				indices.insert(indices.end(), pair.first.begin(), pair.first.end());
+				uvIndices.insert(uvIndices.end(), pair.second.begin(), pair.second.end());
+				
 			} else if (curLine[0] == 'vt') {
 				uvs.insert.push_back(parseUV(curLine));
 			}
 		}
 		_points = std::move(points);
 		_indices = std::move(indices);
+		_uvIndices = std::move(uvIndices);
 		_uvs = std::move(uvs);
 	}
 	Eigen::Vector4f ObjFile::parseVertex(const std::string& line) {
@@ -51,6 +75,7 @@ namespace LibCommon {
 		std::stringstream st(line);
 		char type;
 		st >> type;
+		
 		if (type != 'v') {
 			throw std::exception("not a valid vertex record");
 		}
@@ -63,8 +88,9 @@ namespace LibCommon {
 		return Eigen::Vector4f(x, y, z, w);
 
 	}
-	std::vector<int> ObjFile::parseIndex(const std::string& line) {
-		std::vector<int> retval;
+	std::pair<std::vector<int>, std::vector<int>> ObjFile::parseIndex(const std::string& line) {
+		std::vector<int> indices;
+		std::vector<int> uvIndices;
 		std::stringstream st(line);
 		char type;
 		st >> type;
@@ -72,11 +98,20 @@ namespace LibCommon {
 			throw std::exception("not a valid face record");
 		}
 		int curIdx;
+		
 		while (!st.eof()) {
-			st >> curIdx;
-			retval.push_back(curIdx);
+			if (st.peek() == '/') {
+				int uvIndex;
+				//pull off the /
+				st >> type;
+				st >> uvIndex;
+				uvIndices.push_back(uvIndex);
+			} else {
+				st >> curIdx;
+				indices.push_back(curIdx);
+			}
 		}
-		return retval;
+		return std::pair<std::vector<int>, std::vector<int>>(indices, uvIndices);
 	}
 	Eigen::Vector3f ObjFile::parseUV(const std::string& line) {
 		float u;

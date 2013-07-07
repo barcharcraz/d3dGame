@@ -54,6 +54,9 @@
     <ClInclude Include="Buffers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ModelRenderer.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -73,6 +76,9 @@
     </ClCompile>
     <ClCompile Include="Buffers.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelRenderer.cpp">
+      <Filter>Source Files\Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

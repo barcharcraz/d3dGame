@@ -7,6 +7,10 @@ namespace LibCommon {
 		Eigen::Vector4f pos;
 		Eigen::Vector3f uv;
 	};
+	struct Model {
+		std::vector<Vertex> verts;
+		std::vector<int> indices;
+	};
 }
 
 #endif
