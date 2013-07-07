@@ -93,6 +93,7 @@
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeader>Create</PrecompiledHeader>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -139,6 +140,7 @@
   <ItemGroup>
     <ClInclude Include="BasicController2D.h" />
     <ClInclude Include="Bubbly.h" />
+    <ClInclude Include="Data.h" />
     <ClInclude Include="errors.h" />
     <ClInclude Include="GeometryFile.h" />
     <ClInclude Include="Input.h" />

@@ -4,7 +4,7 @@
 namespace LibCommon {
 	class VertexFile {
 	public:
-		virtual std::vector<Eigen::Vector3f> verts() = 0;
+		virtual std::vector<Eigen::Vector4f> points() = 0;
 	};
 	class IndexFile {
 	public:

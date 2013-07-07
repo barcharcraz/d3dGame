@@ -1,32 +1,49 @@
 #include "stdafx.h"
 #include "ObjFile.h"
 #include <fstream>
+#include <Utils/strings.h>
+
 namespace LibCommon {
 	ObjFile::ObjFile(const std::string& filename) {
 		read(filename);
+	}
+	ObjFile::ObjFile(std::istream& from) {
+		read(from);
+	}
+	std::vector<Eigen::Vector4f> ObjFile::points() {
+		return _points;
+	}
+	std::vector<int> ObjFile::indices() {
+		return _indices;
 	}
 	void ObjFile::read(const std::string& filename) {
 		std::ifstream inFile(filename);
 		read(inFile);
 	}
 	void ObjFile::read(std::istream& from) {
-		std::vector<Eigen::Vector3f> verts;
+		std::vector<Eigen::Vector4f> points;
 		std::vector<int> indices;
+		std::vector<Eigen::Vector3f> uvs;
 		std::string curLine;
 		while (!from.eof()) {
 			std::getline(from, curLine);
+			utils::trim(&curLine);
 			if (curLine[0] == 'v') {
-				verts.push_back(parseLine(curLine));
+				
+				points.push_back(parseVertex(curLine));
 			}
 			else if (curLine[0] == 'f') {
 				auto vec = parseIndex(curLine);
-				indices.insert(indices.begin(), vec.begin(), vec.end());
+				indices.insert(indices.end(), vec.begin(), vec.end());
+			} else if (curLine[0] == 'vt') {
+				uvs.insert.push_back(parseUV(curLine));
 			}
 		}
-		_verts = std::move(verts);
+		_points = std::move(points);
 		_indices = std::move(indices);
+		_uvs = std::move(uvs);
 	}
-	Eigen::Vector3f parseLine(const std::string& line) {
+	Eigen::Vector4f ObjFile::parseVertex(const std::string& line) {
 		float x;
 		float y;
 		float z;
@@ -37,11 +54,16 @@ namespace LibCommon {
 		if (type != 'v') {
 			throw std::exception("not a valid vertex record");
 		}
-		st >> x >> y >> z >> w;
-		return Eigen::Vector3f(x, y, z, w);
+		st >> x >> y >> z;
+		if (!st.eof()) {
+			st >> w;
+		} else {
+			w = 1.0f;
+		}
+		return Eigen::Vector4f(x, y, z, w);
 
 	}
-	std::vector<int> parseIndex(const std::string& line) {
+	std::vector<int> ObjFile::parseIndex(const std::string& line) {
 		std::vector<int> retval;
 		std::stringstream st(line);
 		char type;
@@ -55,5 +77,23 @@ namespace LibCommon {
 			retval.push_back(curIdx);
 		}
 		return retval;
+	}
+	Eigen::Vector3f ObjFile::parseUV(const std::string& line) {
+		float u;
+		float v;
+		float w;
+		std::stringstream st(line);
+		char type;
+		st >> type;
+		if (type != 'vt') {
+			throw std::exception("not a valid vt record");
+		}
+		st >> u >> v;
+		if (!st.eof()) {
+			st >> w;
+		} else {
+			w = 0.0f;
+		}
+		return Eigen::Vector3f(u, v, w);
 	}
 }

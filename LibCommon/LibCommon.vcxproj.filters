@@ -55,6 +55,9 @@
     <Filter Include="Header Files\FileFormats">
       <UniqueIdentifier>{946d1be6-5e23-4cbe-91d2-2be0dff7cbf4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\FileFormat">
+      <UniqueIdentifier>{29636dd8-0ff7-4b21-9dc8-1cbb05abd8e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -138,6 +141,9 @@
     <ClInclude Include="ObjParser.h">
       <Filter>Header Files\FileFormats</Filter>
     </ClInclude>
+    <ClInclude Include="Data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -174,7 +180,7 @@
       <Filter>Source Files\Components\Input</Filter>
     </ClCompile>
     <ClCompile Include="ObjFile.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\FileFormat</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
