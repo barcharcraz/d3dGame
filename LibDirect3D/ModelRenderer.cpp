@@ -50,6 +50,16 @@ namespace LibDirect3D {
 		_pIndexBuffer = std::move(indexBuffer);
 	}
 	void ModelRenderer::handleDraw(Direct3DRenderingMessage * msg) {
-		
+		if (_pIndexBuffer == nullptr || _pVertexBuffer == nullptr) {
+			initBuffers(msg->pDevice);
+		}
+		_activeShaders = msg->pShaders->getDefaultSet();
+		msg->pContext->IASetInputLayout(_activeShaders.layout);
+		msg->pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		unsigned int stride = sizeof(LibCommon::Vertex);
+		unsigned int offset = 0;
+		msg->pContext->IASetVertexBuffers(0, 1, &_pVertexBuffer.p, &stride, &offset);
+		msg->pContext->IASetIndexBuffer(_pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+		msg->pContext->PSSetShader(_activeShaders.pPS, nullptr, 0);
 	}
 }
