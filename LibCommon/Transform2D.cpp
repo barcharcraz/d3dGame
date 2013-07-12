@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "Transform2D.h"
+#include "Marked.h"
+#include "MessageMarkers.h"
 
 using namespace LibCommon;
 Transform2D::Transform2D() {
@@ -26,7 +28,7 @@ const Eigen::Affine2f& Transform2D::getTransform() const {
 }
 
 void Transform2D::init() {
-	receive.connect<Get<Transform2D, Eigen::Affine2f>* >([this](Get<Transform2D, Eigen::Affine2f> * msg){this->getTransform(msg);});
+	receive.connect<Marked<Tags::Transform, Get<Eigen::Affine2f> >* >([this](Get<Eigen::Affine2f> * msg){this->getTransform(msg);});
 }
 
 Eigen::Affine2f& Transform2D::getTransform() {
@@ -38,9 +40,9 @@ void Transform2D::setTransform(Eigen::Affine2f &transform) {
 }
 #pragma endregion
 
-void Transform2D::getTransform(Get<Transform2D, Eigen::Affine2f> &msg) {
+void Transform2D::getTransform(Get<Eigen::Affine2f> &msg) {
 	msg.value = _mtransform.get();
 }
-void Transform2D::getTransform(Get<Transform2D, Eigen::Affine2f> *msg) {
+void Transform2D::getTransform(Get<Eigen::Affine2f> *msg) {
 	msg->value = _mtransform.get();
 }

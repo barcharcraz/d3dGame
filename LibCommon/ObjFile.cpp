@@ -29,7 +29,8 @@ namespace LibCommon {
 			retval[i].pos = _points[i];
 			//find the first position of the vertex in the set of indexes
 			//from this information we can find the associated UV value
-			int indexPos = std::find(_indices.begin(), _indices.end(), i) - _indices.begin();
+			
+			int indexPos = static_cast<int>(std::find(_indices.begin(), _indices.end(), i) - _indices.begin());
 			int uvIndex = _uvIndices[indexPos];
 			retval[i].uv = _uvs[uvIndex];
 
@@ -59,7 +60,7 @@ namespace LibCommon {
 				uvIndices.insert(uvIndices.end(), pair.second.begin(), pair.second.end());
 				
 			} else if (curLine[0] == 'vt') {
-				uvs.insert.push_back(parseUV(curLine));
+				uvs.push_back(parseUV(curLine));
 			}
 		}
 		_points = std::move(points);

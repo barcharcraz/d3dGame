@@ -14,7 +14,7 @@ namespace LibCommon {
 	private:
 		void init();
 		void HandleUpdate(UpdateMessage * msg);
-		void HandleGetVelocity(Get<Velocity2D, Eigen::Vector2f> * msg);
+		void HandleGetVelocity(Get<Eigen::Vector2f> * msg);
 	};
 }
 

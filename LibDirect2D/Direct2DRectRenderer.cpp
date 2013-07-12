@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "Direct2DRectRenderer.h"
+#include <LibCommon/Marked.h>
+#include <LibCommon/MessageMarkers.h>
 using namespace LibDirect2D;
 
 Direct2DRectRenderer::Direct2DRectRenderer(D2D1_RECT_F rect) 
@@ -11,15 +13,10 @@ void Direct2DRectRenderer::init() {
 	receive.connect<Direct2DRenderingMessage *>([this](Direct2DRenderingMessage* msg){this->HandleDraw(msg);});
 	
 }
-void Direct2DRectRenderer::HandleDrawThunk(LibCommon::IMessage * msg) {
-	if(dynamic_cast<Direct2DRenderingMessage*>(msg)) {
-		HandleDraw(dynamic_cast<Direct2DRenderingMessage*>(msg));
-	}
-}
 void Direct2DRectRenderer::HandleDraw(Direct2DRenderingMessage *message) {
-	
-	LibCommon::Get<LibCommon::Transform2D, Eigen::Affine2f> * msg = new LibCommon::Get<LibCommon::Transform2D, Eigen::Affine2f>(this);
-	this->send(msg);
+	using namespace LibCommon;
+	auto msg = std::make_unique<Marked<Tags::Transform, Get<Eigen::Affine2f> >>(this);
+	this->send(msg.get());
 	Eigen::Affine2f transform = *msg->value;
 	D2D1_MATRIX_3X2_F d2dTransform = Affine2f_to_D2D1Matrix3x2f(transform);
 	HRESULT hr;

@@ -17,8 +17,8 @@ namespace LibCommon {
 		void setTransform(Eigen::Affine2f &transform);
 
 	private:
-		void getTransform(Get<Transform2D, Eigen::Affine2f> &msg);
-		void getTransform(Get<Transform2D, Eigen::Affine2f> *msg);
+		void getTransform(Get<Eigen::Affine2f> &msg);
+		void getTransform(Get<Eigen::Affine2f> *msg);
 		std::unique_ptr<Eigen::Affine2f> _mtransform;
 		void init();
 	};

@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "Direct2DBitmap.h"
+#include <LibCommon/Marked.h>
+#include <LibCommon/MessageMarkers.h>
 namespace LibDirect2D {
 	Direct2DBitmap::Direct2DBitmap(std::wstring file) 
 		: filename(file) 
@@ -17,8 +19,9 @@ namespace LibDirect2D {
 			}
 			BitmapLoader::unInitialize();
 		}
-		LibCommon::Get<LibCommon::Transform2D, Eigen::Affine2f> * msg = new LibCommon::Get<LibCommon::Transform2D, Eigen::Affine2f>(this);
-		this->send(msg);
+		using namespace LibCommon;
+		auto msg = std::make_unique<Marked<Tags::Transform, Get<Eigen::Affine2f>>>(this);
+		this->send(msg.get());
 		Eigen::Affine2f transform = *msg->value;
 		D2D1_MATRIX_3X2_F d2dTransform = Affine2f_to_D2D1Matrix3x2f(transform);
 		message->pContext->SetTransform(d2dTransform);
