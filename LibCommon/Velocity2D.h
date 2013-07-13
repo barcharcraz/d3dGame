@@ -3,7 +3,7 @@
 #include "stdafx.h"
 #include "IComponent.h"
 #include "Get.hpp"
-#include "Transform2D.h"
+#include "Transform.hpp"
 #include "UpdateMessage.h"
 namespace LibCommon {
 	class Velocity2D : public IComponent {

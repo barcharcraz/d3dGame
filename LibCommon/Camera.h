@@ -1,15 +1,20 @@
+#ifndef LIBCOMMON_CAMERA_H
+#define LIBCOMMON_CAMERA_H
+
 #include "stdafx.h"
 #include "IComponent.h"
 #include "Markers.h"
+#include "Get.hpp"
+
 namespace LibCommon {
-	class Camera : IComponent {
+	class Camera : public IComponent {
 	public:
 		Camera();
-		Camera(const Eigen::Vector3f& transform);
-		Camera(float x, float y, float z);
-		Eigen::Vector3f getPosition() const;
-		void setPositioon(const Eigen::Vector3f& position);
+		Camera(const Camera& other);
+		void init();
 	private:
-		Eigen::Vector3f position;
+		void handleGet(Get<Eigen::Vector3f> * msg);
 	};
 }
+
+#endif

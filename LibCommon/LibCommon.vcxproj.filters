@@ -93,9 +93,6 @@
     <ClInclude Include="Matrix.h">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Transform2D.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="Get.hpp">
       <Filter>Header Files\Messages\Informational</Filter>
     </ClInclude>
@@ -153,6 +150,9 @@
     <ClInclude Include="Camera.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
+    <ClInclude Include="Transform.hpp">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -163,9 +163,6 @@
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Source Files\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Transform2D.cpp">
-      <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="UpdateMessage.cpp">
       <Filter>Source Files\Messages</Filter>
@@ -190,6 +187,9 @@
     </ClCompile>
     <ClCompile Include="ObjFile.cpp">
       <Filter>Source Files\FileFormat</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
