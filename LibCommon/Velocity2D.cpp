@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Velocity2D.h"
-#include "Marked.h"
-#include "MessageMarkers.h"
+#include "Marked.hpp"
+#include "Markers.h"
 namespace LibCommon {
 	Velocity2D::Velocity2D() 
 		: velocity(Eigen::Vector2f::Identity()) 

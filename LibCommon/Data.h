@@ -11,6 +11,9 @@ namespace LibCommon {
 		std::vector<Vertex> verts;
 		std::vector<int> indices;
 	};
+	struct Transforms {
+		Eigen::Matrix4f worldView;
+	};
 }
 
 #endif

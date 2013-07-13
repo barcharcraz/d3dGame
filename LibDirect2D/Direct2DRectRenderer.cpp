@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Direct2DRectRenderer.h"
-#include <LibCommon/Marked.h>
-#include <LibCommon/MessageMarkers.h>
+#include <LibCommon/Marked.hpp>
+#include <LibCommon/Markers.h>
 using namespace LibDirect2D;
 
 Direct2DRectRenderer::Direct2DRectRenderer(D2D1_RECT_F rect) 

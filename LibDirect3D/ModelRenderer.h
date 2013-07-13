@@ -11,9 +11,13 @@ namespace LibDirect3D {
 		void init();
 		void handleDraw(Direct3DRenderingMessage * msg);
 		shaderSet _activeShaders;
-		void initBuffers(ID3D11Device * pDev);
+		void initConstantBuffers(ID3D11Device * pDev);
+		void initIndexBuffer(ID3D11Device * pDev);
+		void initVertexBuffers(ID3D11Device * pDev);
+		void updateTransformBuffer(ID3D11DeviceContext * pCtx);
 		CComPtr<ID3D11Buffer> _pVertexBuffer;
 		CComPtr<ID3D11Buffer> _pIndexBuffer;
+		CComPtr<ID3D11Buffer> _pTransformBuffer;
 		LibCommon::Model _model;
 	};
 }

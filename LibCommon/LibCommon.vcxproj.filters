@@ -144,11 +144,14 @@
     <ClInclude Include="Data.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MessageMarkers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Marked.h">
+    <ClInclude Include="Marked.hpp">
       <Filter>Header Files\Messages</Filter>
+    </ClInclude>
+    <ClInclude Include="Markers.h">
+      <Filter>Header Files\Messages</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

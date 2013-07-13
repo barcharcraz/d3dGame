@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Direct2DBitmap.h"
-#include <LibCommon/Marked.h>
-#include <LibCommon/MessageMarkers.h>
+#include <LibCommon/Marked.hpp>
+#include <LibCommon/Markers.h>
 namespace LibDirect2D {
 	Direct2DBitmap::Direct2DBitmap(std::wstring file) 
 		: filename(file) 

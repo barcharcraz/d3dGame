@@ -140,6 +140,7 @@
   <ItemGroup>
     <ClInclude Include="BasicController2D.h" />
     <ClInclude Include="Bubbly.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Data.h" />
     <ClInclude Include="errors.h" />
     <ClInclude Include="GeometryFile.h" />
@@ -148,8 +149,8 @@
     <ClInclude Include="KeyDownMessage.h" />
     <ClInclude Include="Keys.h" />
     <ClInclude Include="KeyUpMessage.h" />
-    <ClInclude Include="Marked.h" />
-    <ClInclude Include="MessageMarkers.h" />
+    <ClInclude Include="Marked.hpp" />
+    <ClInclude Include="Markers.h" />
     <ClInclude Include="ObjFile.h" />
     <ClInclude Include="ObjParser.h" />
     <ClInclude Include="Velocity2D.h" />
