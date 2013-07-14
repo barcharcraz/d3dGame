@@ -31,20 +31,21 @@ public:
 };
 TEST_F(ObjFixture, LongVertContent) {
 	auto result = longVert.verts();
-	ASSERT_EQ(result[0], Eigen::Vector4f(1.0f, 2.0f, 3.0f, 4.0f));
+	ASSERT_EQ(result[0].pos, Eigen::Vector4f(1.0f, 2.0f, 3.0f, 4.0f));
 }
 TEST_F(ObjFixture, LongVertContent2) {
 	auto result = longVert.verts();
-	ASSERT_EQ(result[1], Eigen::Vector4f(5.0f, 6.0f, 7.0f, 8.0f));
+	ASSERT_EQ(result[1].pos, Eigen::Vector4f(5.0f, 6.0f, 7.0f, 8.0f));
 }
 TEST_F(ObjFixture, short3Vert) {
 	auto result = short3Vert.verts();
-	ASSERT_EQ(result[0], Eigen::Vector4f(1.0f, 2.0f, 3.0f, 1.0f));
+	ASSERT_EQ(result[0].pos, Eigen::Vector4f(1.0f, 2.0f, 3.0f, 1.0f));
 }
 TEST_F(ObjFixture, long3Vert) {
 	auto result = long3Vert.verts();
 	vector<Vector4f> expected{ Vector4f(1.0f, 2.0f, 3.0f, 1.0f), Vector4f(4.0f, 5.0f, 6.0f, 1.0f) };
-	ASSERT_EQ(result, expected);
+	ASSERT_EQ(result[0].pos, expected[0]);
+	ASSERT_EQ(result[1].pos, expected[1]);
 }
 TEST_F(ObjFixture, noIndexTest1) {
 	auto result = shortVert.indices();
@@ -85,7 +86,7 @@ TEST(ObjFileTests, VertContentLength) {
 	std::stringstream vertStream(vertLine);
 	LibCommon::ObjFile testObj(vertStream);
 	auto result = testObj.verts();
-	ASSERT_EQ(result[0], Eigen::Vector4f(1.0f, 2.0f, 3.0f, 4.0f));
+	ASSERT_EQ(result[0].pos, Eigen::Vector4f(1.0f, 2.0f, 3.0f, 4.0f));
 }
 TEST(ObjFileTests, LongerLengthTest) {
 	std::string vertline("v 1.0 2.0 3.0 4.0 \nv 5.0 6.0 7.0 8.0");

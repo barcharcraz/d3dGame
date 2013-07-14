@@ -93,7 +93,7 @@
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeader>Create</PrecompiledHeader>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -152,7 +152,6 @@
     <ClInclude Include="Marked.hpp" />
     <ClInclude Include="Markers.h" />
     <ClInclude Include="ObjFile.h" />
-    <ClInclude Include="ObjParser.h" />
     <ClInclude Include="Transform.hpp" />
     <ClInclude Include="Velocity2D.h" />
     <ClInclude Include="Entity.h" />

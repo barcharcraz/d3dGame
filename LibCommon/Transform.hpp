@@ -13,11 +13,11 @@ namespace LibCommon {
 	class Transform : public IComponent {
 	public:
 		template<typename... Params>
-		Transform(Params... params) : T(params...) {
+		Transform(Params... params) : transform(params...) {
 			receive.connect<Marked<Tags::Transform, Get<T> > *>([this](Get<T> * msg) {this->handleGet(msg); });
 		}
-		void handleGet(Marked < Tags::Transform, Get<T> > * msg) {
-			msg->value = transform;
+		void handleGet(Get<T> * msg) {
+			msg->value = &transform;
 		}
 	private:
 		T transform;

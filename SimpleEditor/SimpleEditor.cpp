@@ -14,10 +14,12 @@
 #include <LibCommon\Scene.h>
 #include <LibDirect2D\Direct2DRectRenderer.h>
 #include <LibDirect2D\Direct2DBitmap.h>
-#include <LibCommon\Scene.h>
-#include <LibCommon/Transform2D.h>
+#include <LibCommon/Scene.h>
+#include <LibCommon/Transform.hpp>
 #include <LibDirect3D\Direct3DRenderer.h>
 #include <LibDirect3D\Triangle.h>
+#include <LibCommon/ObjFile.h>
+#include <LibDirect3D/ModelRenderer.h>
 #pragma comment(lib, "LibDirect3D.lib")
 #pragma comment(lib,"Comctl32.lib")
 #pragma comment(lib, "windowscodecs.lib")
@@ -117,17 +119,18 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	//Direct3DRenderer d3dRender;
 	//CComPtr<ID3D11Debug> pDebug;
 	//d3dRender.getDevice()->QueryInterface(IID_PPV_ARGS(&pDebug));
-	wchar_t cd[256];
-	GetCurrentDirectory(256, cd);
+	
 	LibDirect3D::Direct3DRenderer * render = new LibDirect3D::Direct3DRenderer(mywin.getHwnd());
 	render->addVertexShader("DefaultVS.cso");
 	render->addPixelShader("DefaultPS.cso");
-	
-	Entity * square = new Entity();
-	LibDirect3D::Triangle * renderComp = new LibDirect3D::Triangle();
-	square->addComponent(renderComp);
+	LibCommon::ObjFile modelFile("test.obj");
+	Entity * model = new Entity();
+	Transform3D * transform = new Transform3D(Eigen::Affine3f::Identity());
+	LibDirect3D::ModelRenderer * renderComp = new LibDirect3D::ModelRenderer(modelFile.model());
+	model->addComponent(renderComp);
+	model->addComponent(transform);
 	Scene * sce = new Scene(render);
-	sce->AddEntity(square);
+	sce->AddEntity(model);
 	
 	//context.DrawShapes(commands);
 	//factory.getSwapChain()->Present(1,0);

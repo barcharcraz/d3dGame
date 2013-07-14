@@ -8,7 +8,7 @@
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 #include "Direct2DRenderingMessage.h"
-#include <LibCommon/Transform2D.h>
+#include <LibCommon/Transform.hpp>
 #include "Conversions.h"
 namespace LibDirect2D {
 	class Direct2DRectRenderer : public LibCommon::IComponent {

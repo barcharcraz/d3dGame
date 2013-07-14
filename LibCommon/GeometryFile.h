@@ -12,5 +12,9 @@ namespace LibCommon {
 	public:
 		virtual std::vector<int> indices() = 0;
 	};
+	class ModelFile {
+	public:
+		virtual Model model() = 0;
+	};
 }
 #endif

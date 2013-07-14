@@ -135,9 +135,6 @@
     <ClInclude Include="ObjFile.h">
       <Filter>Header Files\FileFormats</Filter>
     </ClInclude>
-    <ClInclude Include="ObjParser.h">
-      <Filter>Header Files\FileFormats</Filter>
-    </ClInclude>
     <ClInclude Include="Data.h">
       <Filter>Header Files</Filter>
     </ClInclude>

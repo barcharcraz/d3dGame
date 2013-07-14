@@ -15,6 +15,7 @@ namespace LibDirect3D {
 		void initIndexBuffer(ID3D11Device * pDev);
 		void initVertexBuffers(ID3D11Device * pDev);
 		void updateTransformBuffer(ID3D11DeviceContext * pCtx);
+		LibCommon::Transforms transform;
 		CComPtr<ID3D11Buffer> _pVertexBuffer;
 		CComPtr<ID3D11Buffer> _pIndexBuffer;
 		CComPtr<ID3D11Buffer> _pTransformBuffer;

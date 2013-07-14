@@ -10,7 +10,6 @@ namespace LibCommon {
 	class Camera : public IComponent {
 	public:
 		Camera();
-		Camera(const Camera& other);
 		void init();
 	private:
 		void handleGet(Get<Eigen::Vector3f> * msg);

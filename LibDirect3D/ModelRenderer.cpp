@@ -23,11 +23,11 @@ namespace LibDirect3D {
 		transDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 		transDesc.MiscFlags = 0;
 		transDesc.StructureByteStride = 0;
-		D3D11_SUBRESOURCE_DATA transDat;
-		transDat.pSysMem = nullptr;
-		transDat.SysMemPitch = 0;
-		transDat.SysMemSlicePitch = 0;
-		hr = pDev->CreateBuffer(&transDesc, &transDat, &transformBuffer);
+		D3D11_SUBRESOURCE_DATA data;
+		data.pSysMem = &transform;
+		data.SysMemPitch = 0;
+		data.SysMemSlicePitch = 0;
+		hr = pDev->CreateBuffer(&transDesc, &data, &transformBuffer);
 		if (FAILED(hr)) {
 			throw hr;
 		}
@@ -75,13 +75,20 @@ namespace LibDirect3D {
 	}
 	void ModelRenderer::updateTransformBuffer(ID3D11DeviceContext * pCtx) {
 		using namespace LibCommon;
-		Marked<Tags::Transform, Get<Eigen::Vector3f> > msg(this);
+		HRESULT hr = S_OK;
+		Marked<Tags::Transform, Get<Eigen::Affine3f> > msg(this);
 		send(&msg);
+		transform.worldView = msg.value->matrix();
 		D3D11_MAPPED_SUBRESOURCE map;
-		map.pData = msg.value;
+		map.pData = 0;
 		map.DepthPitch = 0;
 		map.RowPitch = 0;
-		pCtx->Map(_pTransformBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &map);
+		hr = pCtx->Map(_pTransformBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &map);
+		if (FAILED(hr)) {
+			throw hr;
+		}
+		memcpy(map.pData, &transform, sizeof(transform));
+		pCtx->Unmap(_pTransformBuffer, 0);
 
 	}
 	void ModelRenderer::handleDraw(Direct3DRenderingMessage * msg) {
@@ -100,6 +107,7 @@ namespace LibDirect3D {
 		msg->pContext->IASetIndexBuffer(_pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 		msg->pContext->PSSetShader(_activeShaders.pPS, nullptr, 0);
 		msg->pContext->VSSetShader(_activeShaders.pVS, nullptr, 0);
+		msg->pContext->VSSetConstantBuffers(0, 1, &_pTransformBuffer.p);
 		msg->pContext->DrawIndexed(static_cast<UINT>(_model.indices.size()), 0, 0);
 	}
 }

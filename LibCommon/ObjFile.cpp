@@ -22,6 +22,12 @@ namespace LibCommon {
 		}
 		return _verts;
 	}
+	Model ObjFile::model() {
+		Model retval;
+		retval.verts = verts();
+		retval.indices = indices();
+		return retval;
+	}
 	std::vector<Vertex> ObjFile::constructVerts() {
 		//initialize the return value to the proper size
 		std::vector<Vertex> retval(_points.size());
@@ -29,16 +35,20 @@ namespace LibCommon {
 			retval[i].pos = _points[i];
 			//find the first position of the vertex in the set of indexes
 			//from this information we can find the associated UV value
-			
-			int indexPos = static_cast<int>(std::find(_indices.begin(), _indices.end(), i) - _indices.begin());
-			int uvIndex = _uvIndices[indexPos];
-			retval[i].uv = _uvs[uvIndex];
+			auto indexIterators = std::find(_indices.begin(), _indices.end(), i+1);
+			if (indexIterators == _indices.end()) {
+				retval[i].uv = Eigen::Vector3f(0, 0, 0);
+			} else {
+				int indexPos = static_cast<int>(indexIterators - _indices.begin());
+				int uvIndex = _uvIndices[indexPos];
+				retval[i].uv = _uvs[uvIndex];
+			}
 
 		}
 		return retval;
 	}
 	void ObjFile::read(const std::string& filename) {
-		std::ifstream inFile(filename);
+		std::ifstream inFile(filename, std::ifstream::in);
 		read(inFile);
 	}
 	void ObjFile::read(std::istream& from) {
@@ -50,16 +60,16 @@ namespace LibCommon {
 		while (!from.eof()) {
 			std::getline(from, curLine);
 			utils::trim(&curLine);
-			if (curLine[0] == 'v') {
+			if (curLine.compare(0, 2, "v ") == 0) {
 				
 				points.push_back(parseVertex(curLine));
 			}
-			else if (curLine[0] == 'f') {
+			else if (curLine.compare(0, 2, "f ") == 0) {
 				auto pair = parseIndex(curLine);
 				indices.insert(indices.end(), pair.first.begin(), pair.first.end());
 				uvIndices.insert(uvIndices.end(), pair.second.begin(), pair.second.end());
 				
-			} else if (curLine[0] == 'vt') {
+			} else if (curLine.compare(0, 3, "vt ") == 0) {
 				uvs.push_back(parseUV(curLine));
 			}
 		}
@@ -106,10 +116,10 @@ namespace LibCommon {
 				//pull off the /
 				st >> type;
 				st >> uvIndex;
-				uvIndices.push_back(uvIndex);
+				uvIndices.push_back(uvIndex - 1);
 			} else {
 				st >> curIdx;
-				indices.push_back(curIdx);
+				indices.push_back(curIdx - 1);
 			}
 		}
 		return std::pair<std::vector<int>, std::vector<int>>(indices, uvIndices);
@@ -119,9 +129,9 @@ namespace LibCommon {
 		float v;
 		float w;
 		std::stringstream st(line);
-		char type;
+		std::string type;
 		st >> type;
-		if (type != 'vt') {
+		if (type != "vt") {
 			throw std::exception("not a valid vt record");
 		}
 		st >> u >> v;

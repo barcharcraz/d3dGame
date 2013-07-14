@@ -2,6 +2,7 @@
 #include <vector>
 #include <Eigen/Core>
 #include <Eigen/Geometry>
+#include <iostream>
 #ifndef _DEBUG
 #pragma comment(lib, "gtest.lib")
 #endif
@@ -11,5 +12,8 @@
 #pragma comment(lib, "LibCommon.lib")
 int main(int argc, char **argv) {
 	testing::InitGoogleTest(&argc, argv);
-	return RUN_ALL_TESTS();
+	auto rv = RUN_ALL_TESTS();
+	std::string in;
+	std::cin >> in;
+	return rv;
 }
