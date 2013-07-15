@@ -22,6 +22,8 @@ namespace LibCommon {
 	private:
 		T transform;
 	};
+	template class Transform<Eigen::Affine3f>;
+	template class Transform<Eigen::Affine3f>;
 	typedef Transform<Eigen::Affine3f> Transform3D;
 	typedef Transform<Eigen::Affine2f> Transform2D;
 }

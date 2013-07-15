@@ -4,6 +4,7 @@
 namespace LibCommon {
 	Scene::Scene(IRenderer* pRenderer) : _pRenderer(pRenderer), _rate(34) {
 		receive.connect<IMessage*>([this](IMessage* msg){this->send(msg);});
+		_lastUpdate = _clock.now();
 		
 	}
 	void Scene::AddEntity(Entity* pEntity) {
@@ -14,6 +15,7 @@ namespace LibCommon {
 		
 	}
 	void Scene::Update() {
+		
 		if( (_clock.now() - _lastUpdate) > _rate ) {
 			auto tickTime = _clock.now() - _lastUpdate;
 			UpdateMessage updatemsg(tickTime);

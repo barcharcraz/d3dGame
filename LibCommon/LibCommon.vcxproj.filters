@@ -111,9 +111,6 @@
     <ClInclude Include="Keys.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Velocity2D.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="BasicController2D.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
@@ -150,6 +147,9 @@
     <ClInclude Include="Transform.hpp">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
+    <ClInclude Include="Velocity.hpp">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -169,9 +169,6 @@
     </ClCompile>
     <ClCompile Include="InputMessage.cpp">
       <Filter>Source Files\Messages</Filter>
-    </ClCompile>
-    <ClCompile Include="Velocity2D.cpp">
-      <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="Input.cpp">
       <Filter>Source Files\Components\Input</Filter>

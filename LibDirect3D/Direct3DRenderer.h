@@ -21,6 +21,7 @@ namespace LibDirect3D {
 		void addVertexShader(const std::string& filename);
 
 		void Present();
+		void Clear();
 	private:
 		
 		void init(IDXGIAdapter* pAdapter,

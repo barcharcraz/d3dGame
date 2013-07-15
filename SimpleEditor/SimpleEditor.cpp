@@ -20,6 +20,9 @@
 #include <LibDirect3D\Triangle.h>
 #include <LibCommon/ObjFile.h>
 #include <LibDirect3D/ModelRenderer.h>
+#include <LibCommon/Velocity.hpp>
+#include <Eigen/Core>
+#include <Eigen/Geometry>
 #pragma comment(lib, "LibDirect3D.lib")
 #pragma comment(lib,"Comctl32.lib")
 #pragma comment(lib, "windowscodecs.lib")
@@ -125,20 +128,24 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	render->addPixelShader("DefaultPS.cso");
 	LibCommon::ObjFile modelFile("test.obj");
 	Entity * model = new Entity();
-	Transform3D * transform = new Transform3D(Eigen::Affine3f::Identity());
+	//Velocity3D * vel = new Velocity3D(Eigen::AngleAxisf(0.2f, Eigen::Vector3f::UnitX()));
+	Transform3D * transform = new Transform3D(Eigen::Scaling(0.1f));
+	
 	LibDirect3D::ModelRenderer * renderComp = new LibDirect3D::ModelRenderer(modelFile.model());
 	model->addComponent(renderComp);
 	model->addComponent(transform);
+	//model->addComponent(vel);
 	Scene * sce = new Scene(render);
 	sce->AddEntity(model);
-	
 	//context.DrawShapes(commands);
 	//factory.getSwapChain()->Present(1,0);
 	mywin.onNoMessage = [&](){
 		//render->getContext()->Clear(D2D1::ColorF(D2D1::ColorF::Black));
-		
+		render->Clear();
 		sce->Update();
 		render->Present();
+
+		
 	};
 	mywin.libStartWindow();
 	delete sce;
