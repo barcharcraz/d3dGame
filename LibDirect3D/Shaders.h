@@ -1,7 +1,6 @@
 #pragma once
 #include "stdafx.h"
 #include <fstream>
-#include <LibCommon\errors.h>
 
 namespace LibDirect3D {
 	struct shaderSet {

@@ -33,3 +33,11 @@ _ReSharper*/
 #kate files
 #.kateproject
 #.kateproject.d
+#cmake files
+CMakeCache.txt
+CMakeFiles
+Makefile
+cmake_install.cmake
+install_manifest.txt
+
+

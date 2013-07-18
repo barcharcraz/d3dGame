@@ -1,14 +1,9 @@
-set(libcommon_src
-	Entity.cpp
-	Input.cpp
-	Camera.cpp
-	InputMessage.cpp
-	KeyDownMessage.cpp
-	KeyUpMessage.cpp
-	UpdateMessage.cpp
-	Bubbly.cpp
-	ObjFile.cpp
-	Scene.cpp
-	stdafx.cpp
+file(GLOB libcommon_src *.cpp)
+file(GLOB libcommon_h *.h)
+file(GLOB libcommon_hpp *.hpp)
+set(libcommon_files 
+	${libcommon_src}
+	${libcommon_h}
+	${libcommon_hpp}
 	)
-add_library(LibCommon SHARED ${libcommon_src})
+add_library(LibCommon STATIC ${libcommon_files})
