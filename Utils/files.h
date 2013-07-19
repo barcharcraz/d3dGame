@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 #include <fstream>
+#include <vector>
 namespace utils {
 	std::unique_ptr<std::vector<unsigned char>> slurpBinary(const std::string& filename) {
 		std::ifstream stream(filename, std::ios::in | std::ios::binary | std::ios::ate);

@@ -60,10 +60,9 @@ int main(int argc, char** argv)
 	
 	//pDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 	
-	auto rv = Fl::run();
+	return Fl::run();
 
 	delete sce;
 	CoUninitialize();
-	return rv;
 	
 }
