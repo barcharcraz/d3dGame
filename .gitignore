@@ -29,7 +29,6 @@ ipch
 obj/
 [Rr]elease*/
 _ReSharper*/
-!/asstes/*.obj
 [Tt]est[Rr]esult*
 #kate files
 #.kateproject
@@ -40,5 +39,6 @@ CMakeFiles
 Makefile
 cmake_install.cmake
 install_manifest.txt
+assets/!*.obj
 
 
