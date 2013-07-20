@@ -24,6 +24,7 @@ Thumbs.db
 *.sln
 *.vcxproj
 *.vcxproj.filters
+[Bb]uild
 [Bb]in
 [Dd]ebug*/
 ipch
