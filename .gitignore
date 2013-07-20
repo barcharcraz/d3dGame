@@ -29,6 +29,7 @@ ipch
 obj/
 [Rr]elease*/
 _ReSharper*/
+!asstes/*.obj
 [Tt]est[Rr]esult*
 #kate files
 #.kateproject
