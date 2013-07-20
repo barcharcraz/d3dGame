@@ -18,8 +18,8 @@ namespace LibCommon {
 		//will likely get thrown >50% of the time so it is really
 		//not that exceptional and avoiding it with pointers (which can equal 0)
 		//is a good idea
-		Event<IMessage*> send;
-		Event<IMessage*> receive;
+		Event<IMessage> send;
+		Event<IMessage> receive;
 		virtual ~IComponent() = 0;
 
 		template<typename T>

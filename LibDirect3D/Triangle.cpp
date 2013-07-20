@@ -16,7 +16,7 @@ namespace LibDirect3D {
 		camera = Eigen::Affine3f::Identity();
 		camera *= Eigen::AngleAxisf(1.0f, Eigen::Vector3f::UnitY());
 		
-		receive.connect<Direct3DRenderingMessage*>([this](Direct3DRenderingMessage * msg){this->handleDraw(msg); });
+		receive.connect<Direct3DRenderingMessage>([this](Direct3DRenderingMessage * msg){this->handleDraw(msg); });
 	}
 	void Triangle::handleDraw(Direct3DRenderingMessage * msg) {
 		if(_pVertexBuffer == nullptr) {

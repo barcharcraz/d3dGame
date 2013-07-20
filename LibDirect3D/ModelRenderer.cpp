@@ -4,6 +4,7 @@
 #include <LibCommon/Get.hpp>
 #include <LibCommon/Marked.hpp>
 #include <LibCommon/Markers.h>
+#include <LibCommon/Bubbly.h>
 namespace LibDirect3D {
 	ModelRenderer::ModelRenderer(const LibCommon::Model& model)
 		: _model(model) 
@@ -11,7 +12,7 @@ namespace LibDirect3D {
 		init();
 	}
 	void ModelRenderer::init() {
-		receive.connect<Direct3DRenderingMessage*>([this](Direct3DRenderingMessage * msg) {this->handleDraw(msg); });
+		receive.connect<Direct3DRenderingMessage>([this](Direct3DRenderingMessage * msg) {this->handleDraw(msg); });
 	}
 	void ModelRenderer::initConstantBuffers(ID3D11Device * pDev) {
 		HRESULT hr = S_OK;
@@ -76,9 +77,12 @@ namespace LibDirect3D {
 	void ModelRenderer::updateTransformBuffer(ID3D11DeviceContext * pCtx) {
 		using namespace LibCommon;
 		HRESULT hr = S_OK;
+		Marked<Tags::Camera, Get<Eigen::Affine3f> > camMsg(this);
 		Marked<Tags::Transform, Get<Eigen::Affine3f> > msg(this);
 		send(&msg);
-		transform.worldView = msg.value->matrix();
+		send(Bubbly(&camMsg));
+		auto worldViewTransform = (*msg.value) * (*camMsg.value);
+		transform.worldView = worldViewTransform.matrix();
 		D3D11_MAPPED_SUBRESOURCE map;
 		map.pData = 0;
 		map.DepthPitch = 0;

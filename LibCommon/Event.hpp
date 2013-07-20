@@ -20,15 +20,15 @@ namespace LibCommon {
 	class Event {
 		
 	public:
-		typedef typename std::list<std::function<void(T)> >::const_iterator connection;
+		typedef typename std::list<std::function<void(T*)> >::const_iterator connection;
 
 		//! \brief register a function to get called on a specific message
 		//!        as specified by that functions parameter type
 		template<typename U>
-		connection connect(std::function<void(U)> func) {
-			callbacks.push_back([func](T v){
-				if(dynamic_cast<U>(v)) {
-					func(dynamic_cast<U>(v));
+		connection connect(std::function<void(U*)> func) {
+			callbacks.push_back([func](T* v){
+				if(dynamic_cast<U*>(v)) {
+					func(dynamic_cast<U*>(v));
 				}
 			});
 			
@@ -37,15 +37,18 @@ namespace LibCommon {
 		void disconnect(connection index) {
 			callbacks.erase(index);
 		}
-		void operator()(T v) {
-			for(std::function<void(T)> val : callbacks) {
+		void operator()(T* v) {
+			for(std::function<void(T*)> val : callbacks) {
 				val(v);
 			}
+		}
+		void operator()(T && v) {
+			this->operator()(&v);
 		}
 		
 
 	private:
-		std::list<std::function<void(T)> > callbacks;
+		std::list<std::function<void(T*)> > callbacks;
 	};
 }
 

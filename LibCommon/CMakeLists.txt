@@ -14,5 +14,7 @@ source_group("Header Files\\Components" FILES
 	IComponent.h
 	BasicController2D.h
 	Camera.h
+	)
+source_group("Source Files\\Components" FILES
 	Camera.cpp
 	)

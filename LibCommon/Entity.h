@@ -24,7 +24,7 @@ namespace LibCommon {
 	private:
 		std::function<void(IMessage*)> m_handler;
 		vector<std::shared_ptr<IComponent> > Components;
-		vector<Event<IMessage*>::connection> Connections;
+		vector<Event<IMessage>::connection> Connections;
 	};
 }
 #endif

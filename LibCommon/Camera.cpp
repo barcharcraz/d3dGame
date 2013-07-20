@@ -6,11 +6,17 @@ namespace LibCommon {
 		init();
 	}
 	void Camera::init() {
-		receive.connect<Marked<Tags::Camera, Get<Eigen::Vector3f> >* >([this](Get<Eigen::Vector3f> * msg) {this->handleGet(msg); });
+		//this matrix has no FOV
+		_cameraMtx << 
+			1, 0, 0, 0,
+			0, 1, 0, 0,
+			0, 0, 1, 0,
+			0, 0, 1, 0;
+		receive.connect<Marked<Tags::Camera, Get<Eigen::Affine3f> > >([this](Get<Eigen::Affine3f> * msg) {this->handleGet(msg); });
 	}
-	void Camera::handleGet(Get<Eigen::Vector3f> * msg) {
-		Marked<Tags::Transform, Get<Eigen::Vector3f> > transMsg(this);
+	void Camera::handleGet(Get<Eigen::Affine3f> * msg) {
+		Marked<Tags::Transform, Get<Eigen::Affine3f> > transMsg(this);
 		send(&transMsg);
-		msg->value = transMsg.value; //just forward our transform
+		(*msg->value) = (*transMsg.value) * _cameraMtx;
 	}
 }

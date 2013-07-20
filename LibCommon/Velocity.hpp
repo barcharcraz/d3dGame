@@ -13,8 +13,8 @@ namespace LibCommon {
 	public:
 		template<typename... Params>
 		Velocity(Params... params) : velocity(params...) {
-			receive.connect<Marked<Tags::Velocity, Get<T> > * >([this](Get<T> * msg) {this->handleGet(msg); });
-			receive.connect<UpdateMessage*>([this](UpdateMessage * msg) {this->handleUpdate(msg); });
+			receive.connect<Marked<Tags::Velocity, Get<T> >  >([this](Get<T> * msg) {this->handleGet(msg); });
+			receive.connect<UpdateMessage>([this](UpdateMessage * msg) {this->handleUpdate(msg); });
 		}
 		void handleGet(Get<T> * msg) {
 			msg->value = &velocity;
