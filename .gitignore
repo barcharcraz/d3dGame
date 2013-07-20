@@ -21,6 +21,9 @@ Thumbs.db
 *.log
 *.sdf
 *.opensdf
+*.sln
+*.vcxproj
+*.vcxproj.filters
 [Bb]in
 [Dd]ebug*/
 ipch
