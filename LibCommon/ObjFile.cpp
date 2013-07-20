@@ -55,6 +55,7 @@ namespace LibCommon {
 		std::vector<Eigen::Vector4f> points;
 		std::vector<int> indices;
 		std::vector<int> uvIndices;
+		std::vector<int> vnIndices;
 		std::vector<Eigen::Vector3f> uvs;
 		std::string curLine;
 		while (!from.eof()) {
@@ -65,9 +66,11 @@ namespace LibCommon {
 				points.push_back(parseVertex(curLine));
 			}
 			else if (curLine.compare(0, 2, "f ") == 0) {
-				auto pair = parseIndex(curLine);
-				indices.insert(indices.end(), pair.first.begin(), pair.first.end());
-				uvIndices.insert(uvIndices.end(), pair.second.begin(), pair.second.end());
+				auto tuple = parseIndex(curLine);
+				
+				indices.insert(indices.end(), std::get<0>(tuple).begin(), std::get<0>(tuple).end());
+				uvIndices.insert(uvIndices.end(), std::get<1>(tuple).begin(), std::get<1>(tuple).end());
+				vnIndices.insert(vnIndices.end(), std::get<2>(tuple).begin(), std::get<2>(tuple).end());
 				
 			} else if (curLine.compare(0, 3, "vt ") == 0) {
 				uvs.push_back(parseUV(curLine));
@@ -99,9 +102,10 @@ namespace LibCommon {
 		return Eigen::Vector4f(x, y, z, w);
 
 	}
-	std::pair<std::vector<int>, std::vector<int>> ObjFile::parseIndex(const std::string& line) {
+	std::tuple<std::vector<int>, std::vector<int>, std::vector<int>> ObjFile::parseIndex(const std::string& line) {
 		std::vector<int> indices;
 		std::vector<int> uvIndices;
+		std::vector<int> vnIndices;
 		std::stringstream st(line);
 		char type;
 		st >> type;
@@ -109,7 +113,8 @@ namespace LibCommon {
 			throw std::exception("not a valid face record");
 		}
 		int curIdx;
-		
+		//we use this to only take the "UV"
+		//once instead of taking both the UV and the normal
 		while (!st.eof()) {
 			if (st.peek() == '/') {
 				int uvIndex;
@@ -117,12 +122,19 @@ namespace LibCommon {
 				st >> type;
 				st >> uvIndex;
 				uvIndices.push_back(uvIndex - 1);
+				if (st.peek() == '/') {
+					int vnIdx;
+					st >> type;
+					st >> vnIdx;
+					
+				}
 			} else {
 				st >> curIdx;
 				indices.push_back(curIdx - 1);
 			}
 		}
-		return std::pair<std::vector<int>, std::vector<int>>(indices, uvIndices);
+		return std::tuple<std::vector<int>, std::vector<int>, std::vector<int>>(
+			std::move(indices), std::move(uvIndices), std::move(vnIndices));
 	}
 	Eigen::Vector3f ObjFile::parseUV(const std::string& line) {
 		float u;

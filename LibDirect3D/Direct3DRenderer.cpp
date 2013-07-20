@@ -132,11 +132,14 @@ void Direct3DRenderer::Present() {
 	params.pDirtyRects = nullptr;
 	params.pScrollRect = nullptr;
 	params.pScrollOffset = nullptr;
-
+	
 	m_pSwapChain->Present1(1, 0, &params);
+	
+	float color [] = { 1.0f, 0.0f, 0.0f, 0.0f };
+	m_pContext->OMSetRenderTargets(1, &m_pRenderTarget.p, nullptr);
+	m_pContext->ClearRenderTargetView(m_pRenderTarget, color);
+	
 }
 void Direct3DRenderer::Clear() {
-	m_pContext->OMSetRenderTargets(1, &m_pRenderTarget.p, nullptr);
-	float color [] = { 1.0f, 0.0f, 0.0f, 0.0f };
-	m_pContext->ClearRenderTargetView(m_pRenderTarget, color);
+	
 }

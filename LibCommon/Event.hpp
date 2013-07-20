@@ -26,7 +26,7 @@ namespace LibCommon {
 		//!        as specified by that functions parameter type
 		template<typename U>
 		connection connect(std::function<void(U)> func) {
-			callbacks.push_front([func](T v){
+			callbacks.push_back([func](T v){
 				if(dynamic_cast<U>(v)) {
 					func(dynamic_cast<U>(v));
 				}

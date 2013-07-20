@@ -15,22 +15,20 @@ namespace LibCommon {
 		
 	}
 	void Scene::Update() {
-		
+		std::unique_ptr<UpdateMessage> updatemsg;
 		if( (_clock.now() - _lastUpdate) > _rate ) {
 			auto tickTime = _clock.now() - _lastUpdate;
-			UpdateMessage updatemsg(tickTime);
-			IMessage * message;
-			
-			for(int i = 0; i<_entities.size(); ++i) {
-				_entities[i]->handleMessage(&updatemsg);
-				message = _pRenderer->getRenderingMessage();
-				_entities[i]->handleMessage(message);
-				//delete message;
-			
-			}
-
+			updatemsg = make_unique<UpdateMessage>(tickTime);
 			_lastUpdate = _clock.now();
 			
+		}
+		IMessage * message;
+		for (auto ptr : _entities) {
+			message = _pRenderer->getRenderingMessage();
+			if (updatemsg) {
+				ptr->handleMessage(updatemsg.get());
+			}
+			ptr->handleMessage(message);
 		}
 	}
 }

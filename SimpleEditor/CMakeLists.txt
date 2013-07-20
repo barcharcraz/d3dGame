@@ -6,8 +6,6 @@ set(editor_src
 	stdafx.cpp
 	targetver.h
 	)
-find_package(FLTK)
 
-add_executable(SimpleEditor ${editor_src})
-include_directories(${FLTK_INCLUDE_DIR})
-target_link_libraries(SimpleEditor ${FLTK_LIBRARIES} LibDXGI LibDirect3D LibCommon)
+add_executable(SimpleEditor WIN32 ${editor_src})
+target_link_libraries(SimpleEditor LibDXGI LibDirect3D LibCommon windows)
