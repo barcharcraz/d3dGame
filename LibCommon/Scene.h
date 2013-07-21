@@ -16,7 +16,7 @@ namespace LibCommon {
 		void AddEntity(Entity* pEntity);
 	private:
 		std::unique_ptr<IRenderer> _pRenderer;
-		std::vector<std::shared_ptr<Entity> > _entities;
+		std::vector<std::unique_ptr<Entity>> _entities;
 		std::chrono::system_clock _clock;
 		std::chrono::system_clock::time_point _lastUpdate;
 		std::chrono::milliseconds _rate;

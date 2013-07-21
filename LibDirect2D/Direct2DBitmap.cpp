@@ -6,7 +6,7 @@ namespace LibDirect2D {
 	Direct2DBitmap::Direct2DBitmap(std::wstring file) 
 		: filename(file) 
 	{
-		receive.connect<Direct2DRenderingMessage*>([this](Direct2DRenderingMessage* msg){this->HandleDraw(msg);});
+		receive.connect<Direct2DRenderingMessage>([this](Direct2DRenderingMessage* msg){this->HandleDraw(msg);});
 		
 	}
 	void Direct2DBitmap::HandleDraw(Direct2DRenderingMessage *message) {

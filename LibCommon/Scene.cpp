@@ -11,8 +11,6 @@ namespace LibCommon {
 		_entities.push_back(std::unique_ptr<Entity>(pEntity));
 		send.connect<IMessage>([pEntity](IMessage* msg){pEntity->receive(msg);});
 		pEntity->send.connect<IMessage>([this](IMessage* msg){this->receive(msg);});
-		
-		
 	}
 	void Scene::Update() {
 		std::unique_ptr<UpdateMessage> updatemsg;
@@ -23,7 +21,7 @@ namespace LibCommon {
 			
 		}
 		IMessage * message;
-		for (auto ptr : _entities) {
+		for (auto& ptr : _entities) {
 			message = _pRenderer->getRenderingMessage();
 			if (updatemsg) {
 				ptr->handleMessage(updatemsg.get());

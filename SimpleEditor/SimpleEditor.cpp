@@ -19,6 +19,7 @@
 #include <LibCommon/ObjFile.h>
 #include <LibDirect3D/ModelRenderer.h>
 #include <LibCommon/Velocity.hpp>
+#include <LibCommon/Camera.h>
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 #include <windows/Window.h>
@@ -44,15 +45,20 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrvInstance, LPWSTR lpCmdLin
 	render->addPixelShader("DefaultPS.cso");
 	LibCommon::ObjFile modelFile("TestObj.obj");
 	Entity * model = new Entity();
+	Entity * camera = new Entity();
+	Transform3D * transform = new Transform3D(Eigen::Translation3f(0, 0, -3));
 	Velocity3D * vel = new Velocity3D(Eigen::AngleAxisf(0.1f, Eigen::Vector3f::UnitX()));
-	Transform3D * transform = new Transform3D(Eigen::Scaling(0.1f));
-	
+	Transform3D * camPos = new Transform3D(Eigen::Affine3f::Identity());
+	Camera * cam = new Camera();
+	camera->addComponent(cam);
+	camera->addComponent(camPos);
 	LibDirect3D::ModelRenderer * renderComp = new LibDirect3D::ModelRenderer(modelFile.model());
 	model->addComponent(renderComp);
 	model->addComponent(transform);
 	model->addComponent(vel);
 	Scene * sce = new Scene(render);
 	sce->AddEntity(model);
+	sce->AddEntity(camera);
 	//context.DrawShapes(commands);
 	//factory.getSwapChain()->Present(1,0);
 	

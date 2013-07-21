@@ -12,11 +12,11 @@ namespace LibCommon {
 			0, 1, 0, 0,
 			0, 0, 1, 0,
 			0, 0, 1, 0;
-		receive.connect<Marked<Tags::Camera, Get<Eigen::Affine3f> > >([this](Get<Eigen::Affine3f> * msg) {this->handleGet(msg); });
+		receive.connect<Marked<Tags::Camera, Get<Eigen::Matrix4f> > >([this](Get<Eigen::Matrix4f> * msg) {this->handleGet(msg); });
 	}
-	void Camera::handleGet(Get<Eigen::Affine3f> * msg) {
+	void Camera::handleGet(Get<Eigen::Matrix4f> * msg) {
 		Marked<Tags::Transform, Get<Eigen::Affine3f> > transMsg(this);
 		send(&transMsg);
-		(*msg->value) = (*transMsg.value) * _cameraMtx;
+		msg->value = &_cameraMtx;
 	}
 }

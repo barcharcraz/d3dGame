@@ -10,7 +10,7 @@ Direct2DRectRenderer::Direct2DRectRenderer(D2D1_RECT_F rect)
 	init();
 }
 void Direct2DRectRenderer::init() {
-	receive.connect<Direct2DRenderingMessage *>([this](Direct2DRenderingMessage* msg){this->HandleDraw(msg);});
+	receive.connect<Direct2DRenderingMessage>([this](Direct2DRenderingMessage* msg){this->HandleDraw(msg);});
 	
 }
 void Direct2DRectRenderer::HandleDraw(Direct2DRenderingMessage *message) {

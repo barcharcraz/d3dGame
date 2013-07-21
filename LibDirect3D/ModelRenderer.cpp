@@ -77,12 +77,12 @@ namespace LibDirect3D {
 	void ModelRenderer::updateTransformBuffer(ID3D11DeviceContext * pCtx) {
 		using namespace LibCommon;
 		HRESULT hr = S_OK;
-		Marked<Tags::Camera, Get<Eigen::Affine3f> > camMsg(this);
+		Marked<Tags::Camera, Get<Eigen::Matrix4f> > camMsg(this);
 		Marked<Tags::Transform, Get<Eigen::Affine3f> > msg(this);
 		send(&msg);
 		send(Bubbly(&camMsg));
-		auto worldViewTransform = (*msg.value) * (*camMsg.value);
-		transform.worldView = worldViewTransform.matrix();
+		auto worldViewTransform = (*camMsg.value) * (*msg.value).matrix();
+		transform.worldView = worldViewTransform;
 		D3D11_MAPPED_SUBRESOURCE map;
 		map.pData = 0;
 		map.DepthPitch = 0;
