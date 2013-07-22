@@ -8,7 +8,7 @@
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 #include "Get.hpp"
-#include "Messages.h"
+#include "IMessage.h"
 #include "Bubbly.h"
 
 namespace LibCommon {
@@ -18,13 +18,12 @@ namespace LibCommon {
 		Entity();
 		virtual std::shared_ptr<IComponent> removeComponent(int index);
 		virtual void addComponent(IComponent* c);
-		virtual void handleMessage(IMessage& message);
-		virtual void handleMessage(IMessage * message);
 
 	private:
-		std::function<void(IMessage*)> m_handler;
+		void forwardBubble(Bubbly * msg);
+		
 		vector<std::shared_ptr<IComponent>> Components;
-		vector<Event<IMessage>::connection> Connections;
+		Event _messenger;
 	};
 }
 #endif

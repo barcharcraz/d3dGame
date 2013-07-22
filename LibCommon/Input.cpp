@@ -9,7 +9,7 @@ namespace LibCommon {
 	bool Input::HandleKeypress(Keys key) {
 		if(actions.count(key)) {
 			InputMessage msg(actions.at(key));
-			send(&msg);
+			messenger->send(&msg);
 			return true;
 		} else {
 			return false;

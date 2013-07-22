@@ -1,13 +1,10 @@
 #ifndef LIBCOMMON_IMESSAGE_H
 #define LIBCOMMON_IMESSAGE_H
 #include "stdafx.h"
-#include "IComponent.h"
 
 namespace LibCommon {
-	class IComponent;
 	class IMessage {
 	public:
-		IComponent* src;
 		virtual ~IMessage() = 0;
 	};
 	//body for the virtual destructor, must be outside class

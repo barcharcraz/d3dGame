@@ -6,16 +6,9 @@ namespace LibCommon {
 	template<typename T>
 	class Get : public IMessage {
 	public:
-		Get(IComponent* component);
 		//the value that we got if any.
 		//could be null
 		T * value;
 	};
-
-	template<typename T>
-	Get<T>::Get(IComponent* component)
-	{
-		src = component;
-	}
 }
 #endif
