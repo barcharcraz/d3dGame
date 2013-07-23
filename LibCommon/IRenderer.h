@@ -1,6 +1,6 @@
 #ifndef LIBCOMMON_IRENDERER_H
 #define LIBCOMMON_IRENDERER_H
-#include "RenderingMessage.h"
+#include "IRenderingMessage.h"
 namespace LibCommon { 
 	//so far just a marker interface
 	class IRenderer {

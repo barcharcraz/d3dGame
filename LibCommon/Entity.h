@@ -16,13 +16,14 @@ namespace LibCommon {
 	class Entity : public IComponent {
 	public:
 		Entity();
-		virtual std::shared_ptr<IComponent> removeComponent(int index);
-		virtual void addComponent(IComponent* c);
+		std::unique_ptr<IComponent> removeComponent(int index);
+		void AddComponent(IComponent* c);
+		void AddComponent(Entity* e);
+		void AddEntity(Entity* e);
 
 	private:
 		void forwardBubble(Bubbly * msg);
-		
-		vector<std::shared_ptr<IComponent>> Components;
+		vector<std::unique_ptr<IComponent>> Components;
 		Event _messenger;
 	};
 }

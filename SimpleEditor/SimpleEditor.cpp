@@ -50,12 +50,12 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrvInstance, LPWSTR lpCmdLin
 	Velocity3D * vel = new Velocity3D(Eigen::AngleAxisf(0.1f, Eigen::Vector3f::UnitX()));
 	Transform3D * camPos = new Transform3D(Eigen::Affine3f::Identity());
 	Camera * cam = new Camera();
-	camera->addComponent(cam);
-	camera->addComponent(camPos);
+	camera->AddComponent(cam);
+	camera->AddComponent(camPos);
 	LibDirect3D::ModelRenderer * renderComp = new LibDirect3D::ModelRenderer(modelFile.model());
-	model->addComponent(renderComp);
-	model->addComponent(transform);
-	model->addComponent(vel);
+	model->AddComponent(renderComp);
+	model->AddComponent(transform);
+	model->AddComponent(vel);
 	Scene * sce = new Scene(render);
 	sce->AddEntity(model);
 	sce->AddEntity(camera);

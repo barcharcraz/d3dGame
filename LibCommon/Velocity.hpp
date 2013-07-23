@@ -5,7 +5,6 @@
 #include "IComponent.h"
 #include "Get.hpp"
 #include "UpdateMessage.h"
-#include "Marked.hpp"
 #include "Markers.h"
 namespace LibCommon {
 	template<typename T>
@@ -13,27 +12,26 @@ namespace LibCommon {
 	public:
 		template<typename... Params>
 		Velocity(Params... params) : velocity(params...) {
-			receive.connect<Marked<Tags::Velocity, Get<T> >  >([this](Get<T> * msg) {this->handleGet(msg); });
-			receive.connect<UpdateMessage>([this](UpdateMessage * msg) {this->handleUpdate(msg); });
+			messenger->connect(&Velocity::handleUpdate, this);
+			messenger->connect(&Velocity::handleGet, this);
 		}
-		void handleGet(Get<T> * msg) {
+		void handleGet(T * msg) {
 			msg->value = &velocity;
 		}
 		void handleUpdate(UpdateMessage * msg) {
 			using namespace std::chrono;
 			float ticktime = 1000.0f / static_cast<float>(msg->tick.count());
 			auto norm = velocity.matrix() * ticktime;
-			Marked<Tags::Transform, Get<T> > transform(this);
-			send(&transform);
-			(*transform.value) = (*transform.value) * velocity;
+			auto transform = messenger->Get<T>();
+			*transform = *transform * velocity;
 		}
 	private:
-		T velocity;
+		typename T::value_type velocity;
 	};
-	template class Velocity<Eigen::Affine2f>;
-	template class Velocity<Eigen::Affine3f>;
-	typedef Velocity<Eigen::Affine2f> Velocity2D;
-	typedef Velocity<Eigen::Affine3f> Velocity3D;
+	template class Velocity<Tags::Velocity3D>;
+	template class Velocity<Tags::Velocity2D>;
+	typedef Velocity<Tags::Velocity2D> Velocity2D;
+	typedef Velocity<Tags::Velocity3D> Velocity3D;
 }
 
 

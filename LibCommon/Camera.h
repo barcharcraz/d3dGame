@@ -12,8 +12,9 @@ namespace LibCommon {
 		Camera();
 		void init();
 	private:
-		void handleGet(Get<Eigen::Matrix4f> * msg);
+		void handleGet(Tags::CameraTransform3D * msg);
 		Eigen::Matrix4f _cameraMtx;
+		Eigen::Matrix4f _cameraTransform;
 	};
 }
 

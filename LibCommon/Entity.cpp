@@ -3,15 +3,21 @@
 
 namespace LibCommon {
 	Entity::Entity() {
-		
-	}
-	void Entity::addComponent(IComponent* c) {
-		c->messenger = &_messenger;
-		Components.push_back(std::shared_ptr<IComponent>(c));
 		_messenger.connect(&Entity::forwardBubble, this);
 	}
-	std::shared_ptr<IComponent> Entity::removeComponent(int index) {
-		std::shared_ptr<IComponent> retval = nullptr;
+	void Entity::AddComponent(IComponent* c) {
+		c->messenger = &_messenger;
+		Components.push_back(std::unique_ptr<IComponent>(c));
+	}
+	void Entity::AddComponent(Entity* e) {
+		_messenger.connectForwarder(&e->_messenger);
+		Components.push_back(std::unique_ptr<IComponent>(e));
+	}
+	void Entity::AddEntity(Entity* e) {
+		AddComponent(e);
+	}
+	std::unique_ptr<IComponent> Entity::removeComponent(int index) {
+		std::unique_ptr<IComponent> retval = nullptr;
 		retval = std::move(Components[index]);
 		//we dont want the component receving our messages any more
 		//so we get the connection and we disconnect it

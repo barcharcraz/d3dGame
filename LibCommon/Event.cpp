@@ -1,5 +1,11 @@
 #include "Event.h"
 namespace LibCommon {
+	void Event::connectForwarder(Event* forwarder) {
+		forwardTargets.push_back(forwarder);
+	}
+	void Event::disconnectForwarder(Event* forwarder) {
+		std::remove(forwardTargets.begin(), forwardTargets.end(), forwarder);
+	}
 	void Event::disconnect(connection index) {
 		for (auto i = componentConnections.begin(); i != componentConnections.end(); ++i) {
 			if (i->second == index) {
@@ -19,6 +25,14 @@ namespace LibCommon {
 		auto range = callbacks.equal_range(std::type_index(typeid(v)));
 		for (auto i = range.first; i != range.second; ++i) {
 			i->second(v);
+		}
+		//if there were no callbacks registered for us but someone
+		//had registed a forwarding target then we want to call that
+		//event. Note that if this condition is true the previous loop did nothing
+		if (range.first == callbacks.end() && range.second == callbacks.end()) {
+			for (auto f : forwardTargets) {
+				f->send(v);
+			}
 		}
 	}
 }

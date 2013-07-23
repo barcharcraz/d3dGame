@@ -10,11 +10,10 @@
 #include <vector>
 #include <chrono>
 namespace LibCommon {
-	class Scene : IComponent {
+	class Scene : public Entity {
 	public:
 		Scene(IRenderer* pRenderer);
 		void Update();
-		void AddEntity(Entity* pEntity);
 	private:
 		std::unique_ptr<IRenderer> _pRenderer;
 		std::vector<std::unique_ptr<Entity>> _entities;

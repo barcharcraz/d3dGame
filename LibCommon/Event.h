@@ -5,6 +5,7 @@
 #include <functional>
 #include <typeindex>
 #include "IMessage.h"
+#include "Bubbly.h"
 #include "IComponent.h"
 
 namespace LibCommon {
@@ -37,11 +38,28 @@ namespace LibCommon {
 			componentConnections.insert(std::make_pair(static_cast<IComponent*>(u), rv));
 			return rv;
 		}
+		void connectForwarder(Event* forwarder);
+		void disconnectForwarder(Event* forwarder);
 		void disconnect(connection index);
 		void disconnect(IComponent* component);
 		void send(IMessage * v);
+		template<typename T>
+		decltype(T::value) Get() {
+			T msg;
+			send(&msg);
+			return msg.value;
+		}
+		template<typename T>
+		decltype(T::value) GetBubbly() {
+			T msg;
+			Bubbly bmsg(&msg);
+			send(&bmsg);
+			return msg.value;
+
+		}
 
 	private:
+		std::vector<Event*> forwardTargets;
 		std::unordered_multimap<IComponent*, connection> componentConnections;
 		std::unordered_multimap<std::type_index, std::function<void(IMessage*) > > callbacks;
 		//std::list<std::function<void(T*)> > callbacks;

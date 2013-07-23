@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Camera.h"
-#include "Marked.hpp"
+#include "Markers.h"
 namespace LibCommon {
 	Camera::Camera() {
 		init();
@@ -14,9 +14,9 @@ namespace LibCommon {
 			0, 0, 1, 0;
 		messenger->connect(&Camera::handleGet, this);
 	}
-	void Camera::handleGet(Get<Eigen::Matrix4f> * msg) {
-		Marked<Tags::Transform, Get<Eigen::Affine3f> > transMsg(this);
-		messenger->send(&transMsg);
-		msg->value = &_cameraMtx;
+	void Camera::handleGet(Tags::CameraTransform3D * msg) {
+		auto transform = messenger->Get<Tags::Transform3D>();
+		_cameraTransform = (*transform) * _cameraMtx;
+		msg->value = &_cameraTransform;
 	}
 }

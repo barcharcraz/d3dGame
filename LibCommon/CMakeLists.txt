@@ -18,3 +18,29 @@ source_group("Header Files\\Components" FILES
 source_group("Source Files\\Components" FILES
 	Camera.cpp
 	)
+source_group("Header Files\\Components\\Entities" FILES
+	Entity.h
+	Scene.h
+	)
+source_group("Source Files\\Components\\Entities" FILES
+	Entity.cpp
+	Scene.cpp
+	)
+source_group("Header Files\\Messages" FILES
+	IMessage.h
+	Bubbly.h
+	Get.hpp
+	Markers.h
+	KeyUpMessage.h
+	KeyDownMessage.h
+	InputMessage.h
+	UpdateMessage.h
+	IRenderingMessage.h
+	)
+source_group("Source Files\\Messages" FILES
+	Bubbly.cpp
+	InputMessage.cpp
+	KeyDownMessage.cpp
+	KeyUpMessage.cpp
+	UpdateMessage.cpp
+	)

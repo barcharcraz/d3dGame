@@ -2,7 +2,6 @@
 #include "ModelRenderer.h"
 #include <LibCommon/Data.h>
 #include <LibCommon/Get.hpp>
-#include <LibCommon/Marked.hpp>
 #include <LibCommon/Markers.h>
 #include <LibCommon/Bubbly.h>
 namespace LibDirect3D {
@@ -12,7 +11,7 @@ namespace LibDirect3D {
 		init();
 	}
 	void ModelRenderer::init() {
-		receive.connect<Direct3DRenderingMessage>([this](Direct3DRenderingMessage * msg) {this->handleDraw(msg); });
+		messenger->connect(&ModelRenderer::handleDraw, this);
 	}
 	void ModelRenderer::initConstantBuffers(ID3D11Device * pDev) {
 		HRESULT hr = S_OK;
@@ -77,11 +76,9 @@ namespace LibDirect3D {
 	void ModelRenderer::updateTransformBuffer(ID3D11DeviceContext * pCtx) {
 		using namespace LibCommon;
 		HRESULT hr = S_OK;
-		Marked<Tags::Camera, Get<Eigen::Matrix4f> > camMsg(this);
-		Marked<Tags::Transform, Get<Eigen::Affine3f> > msg(this);
-		send(&msg);
-		send(Bubbly(&camMsg));
-		auto worldViewTransform = (*camMsg.value) * (*msg.value).matrix();
+		Eigen::Matrix4f * camTransform = messenger->GetBubbly<Tags::CameraTransform3D>();
+		Eigen::Affine3f * objTransform = messenger->Get<Tags::Transform3D>();
+		auto worldViewTransform = (*camTransform) * (*objTransform).matrix();
 		transform.worldView = worldViewTransform;
 		D3D11_MAPPED_SUBRESOURCE map;
 		map.pData = 0;

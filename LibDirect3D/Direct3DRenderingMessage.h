@@ -1,10 +1,10 @@
 #pragma once
 #include "stdafx.h"
 #include "Shaders.h"
-#include <LibCommon/RenderingMessage.h>
+#include <LibCommon/IRenderingMessage.h>
 #include <DirectXMath.h>
 namespace LibDirect3D {
-	class Direct3DRenderingMessage : public LibCommon::RenderingMessage {
+	class Direct3DRenderingMessage : public LibCommon::IRenderingMessage {
 	public:
 		Direct3DRenderingMessage(ID3D11Device2 *device, ID3D11DeviceContext2 *context, Shaders *shaders);
 

@@ -3,7 +3,6 @@
 
 #include "stdafx.h"
 #include "Get.hpp"
-#include "Marked.hpp"
 #include "Markers.h"
 #include "IComponent.h"
 #include <Eigen/Core>
@@ -14,18 +13,18 @@ namespace LibCommon {
 	public:
 		template<typename... Params>
 		Transform(Params... params) : transform(params...) {
-			receive.connect<Marked<Tags::Transform, Get<T> > >([this](Get<T> * msg) {this->handleGet(msg); });
+			messenger->connect(&Transform::handleGet, this);
 		}
-		void handleGet(Get<T> * msg) {
+		void handleGet(T * msg) {
 			msg->value = &transform;
 		}
 	private:
-		T transform;
+		typename T::value_type transform;
 	};
-	template class Transform<Eigen::Affine3f>;
-	template class Transform<Eigen::Affine3f>;
-	typedef Transform<Eigen::Affine3f> Transform3D;
-	typedef Transform<Eigen::Affine2f> Transform2D;
+	template class Transform<Tags::Transform2D>;
+	template class Transform<Tags::Transform3D>;
+	typedef Transform<Tags::Transform3D> Transform3D;
+	typedef Transform<Tags::Transform2D> Transform2D;
 }
 
 

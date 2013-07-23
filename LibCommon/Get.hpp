@@ -9,6 +9,9 @@ namespace LibCommon {
 		//the value that we got if any.
 		//could be null
 		T * value;
+
+		//template stuff, do not remove
+		typedef T value_type;
 	};
 }
 #endif
