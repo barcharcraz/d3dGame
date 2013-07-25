@@ -7,11 +7,12 @@ namespace LibCommon {
 	}
 	void Entity::AddComponent(IComponent* c) {
 		c->messenger = &_messenger;
+		c->OnConnect();
 		Components.push_back(std::unique_ptr<IComponent>(c));
 	}
 	void Entity::AddComponent(Entity* e) {
 		_messenger.connectForwarder(&e->_messenger);
-		Components.push_back(std::unique_ptr<IComponent>(e));
+		AddComponent(static_cast<IComponent*>(e));
 	}
 	void Entity::AddEntity(Entity* e) {
 		AddComponent(e);
@@ -27,8 +28,14 @@ namespace LibCommon {
 		Components.erase(Components.begin()+=index);
 		return retval;
 	}
+	//---------PROTECTED-----------
+	void Entity::OnConnect() {
+		_messenger.connect(&Entity::forwardBubble, this);
+	}
 	//---------PRIVATE-------------
 	void Entity::forwardBubble(Bubbly * msg) {
-		messenger->send(msg->message);
+		if (messenger) {
+			messenger->send(msg->message);
+		}
 	}
 }

@@ -12,26 +12,28 @@ namespace LibCommon {
 	public:
 		template<typename... Params>
 		Velocity(Params... params) : velocity(params...) {
+		}
+		void handleGet(Tags::Tagged<Tags::Internal::Velocity, Get<T> > * msg) {
+			msg->value = &velocity;
+		}
+		virtual void OnConnect() override {
 			messenger->connect(&Velocity::handleUpdate, this);
 			messenger->connect(&Velocity::handleGet, this);
-		}
-		void handleGet(T * msg) {
-			msg->value = &velocity;
 		}
 		void handleUpdate(UpdateMessage * msg) {
 			using namespace std::chrono;
 			float ticktime = 1000.0f / static_cast<float>(msg->tick.count());
 			auto norm = velocity.matrix() * ticktime;
-			auto transform = messenger->Get<T>();
-			*transform = *transform * velocity;
+			auto transform = messenger->Get<Tags::Tagged<Tags::Internal::Transform, LibCommon::Get<T>>>();
+			(*transform) = velocity * (*transform).matrix();
 		}
 	private:
-		typename T::value_type velocity;
+		typename T velocity;
 	};
-	template class Velocity<Tags::Velocity3D>;
-	template class Velocity<Tags::Velocity2D>;
-	typedef Velocity<Tags::Velocity2D> Velocity2D;
-	typedef Velocity<Tags::Velocity3D> Velocity3D;
+	template class Velocity<Eigen::Affine2f>;
+	template class Velocity<Eigen::Affine3f>;
+	typedef Velocity<Eigen::Affine2f> Velocity2D;
+	typedef Velocity<Eigen::Affine3f> Velocity3D;
 }
 
 

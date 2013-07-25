@@ -13,6 +13,8 @@ namespace LibCommon {
 	public:
 		template<typename... Params>
 		Transform(Params... params) : transform(params...) {
+		}
+		virtual void OnConnect() override {
 			messenger->connect(&Transform::handleGet, this);
 		}
 		void handleGet(T * msg) {

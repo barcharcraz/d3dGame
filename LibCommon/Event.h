@@ -3,6 +3,7 @@
 #include "stdafx.h"
 #include <unordered_map>
 #include <functional>
+#include <typeinfo>
 #include <typeindex>
 #include "IMessage.h"
 #include "Bubbly.h"

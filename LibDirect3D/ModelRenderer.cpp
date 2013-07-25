@@ -8,9 +8,8 @@ namespace LibDirect3D {
 	ModelRenderer::ModelRenderer(const LibCommon::Model& model)
 		: _model(model) 
 	{
-		init();
 	}
-	void ModelRenderer::init() {
+	void ModelRenderer::OnConnect() {
 		messenger->connect(&ModelRenderer::handleDraw, this);
 	}
 	void ModelRenderer::initConstantBuffers(ID3D11Device * pDev) {

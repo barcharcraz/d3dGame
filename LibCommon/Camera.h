@@ -11,6 +11,7 @@ namespace LibCommon {
 	public:
 		Camera();
 		void init();
+		virtual void OnConnect() override;
 	private:
 		void handleGet(Tags::CameraTransform3D * msg);
 		Eigen::Matrix4f _cameraMtx;

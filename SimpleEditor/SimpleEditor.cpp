@@ -46,8 +46,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrvInstance, LPWSTR lpCmdLin
 	LibCommon::ObjFile modelFile("TestObj.obj");
 	Entity * model = new Entity();
 	Entity * camera = new Entity();
-	Transform3D * transform = new Transform3D(Eigen::Translation3f(0, 0, -3));
-	Velocity3D * vel = new Velocity3D(Eigen::AngleAxisf(0.1f, Eigen::Vector3f::UnitX()));
+	Transform3D * transform = new Transform3D(Eigen::Translation3f(0, 0, 100));
+	//Velocity3D * vel = new Velocity3D(Eigen::AngleAxisf(0.2f, Eigen::Vector3f::UnitY()));
 	Transform3D * camPos = new Transform3D(Eigen::Affine3f::Identity());
 	Camera * cam = new Camera();
 	camera->AddComponent(cam);
@@ -55,7 +55,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrvInstance, LPWSTR lpCmdLin
 	LibDirect3D::ModelRenderer * renderComp = new LibDirect3D::ModelRenderer(modelFile.model());
 	model->AddComponent(renderComp);
 	model->AddComponent(transform);
-	model->AddComponent(vel);
+	//model->AddComponent(vel);
 	Scene * sce = new Scene(render);
 	sce->AddEntity(model);
 	sce->AddEntity(camera);

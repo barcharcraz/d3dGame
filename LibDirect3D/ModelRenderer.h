@@ -7,6 +7,7 @@ namespace LibDirect3D {
 	class ModelRenderer : public LibCommon::IComponent {
 	public:
 		ModelRenderer(const LibCommon::Model& model);
+		virtual void OnConnect() override;
 	private:
 		void init();
 		void handleDraw(Direct3DRenderingMessage * msg);

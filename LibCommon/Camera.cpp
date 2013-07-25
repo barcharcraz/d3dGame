@@ -12,11 +12,14 @@ namespace LibCommon {
 			0, 1, 0, 0,
 			0, 0, 1, 0,
 			0, 0, 1, 0;
+		
+	}
+	void Camera::OnConnect() {
 		messenger->connect(&Camera::handleGet, this);
 	}
 	void Camera::handleGet(Tags::CameraTransform3D * msg) {
 		auto transform = messenger->Get<Tags::Transform3D>();
-		_cameraTransform = (*transform) * _cameraMtx;
+		_cameraTransform = (*transform).matrix() * _cameraMtx;
 		msg->value = &_cameraTransform;
 	}
 }

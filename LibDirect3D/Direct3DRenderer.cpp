@@ -49,6 +49,7 @@ void Direct3DRenderer::init(IDXGIAdapter* pAdapter,
 					throw hr;
 				}
 				m_pDXGIFactory = LibDXGI::GetFactory(m_pDXGIDevice);
+				
 
 				
 }
@@ -68,6 +69,7 @@ void Direct3DRenderer::bindToHwnd(HWND target) {
 	}
 	createRenderTarget();
 	setViewports();
+	createDepthStencil();
 }
 void Direct3DRenderer::createRenderTarget() {
 	HRESULT hr = S_OK;
@@ -81,6 +83,64 @@ void Direct3DRenderer::createRenderTarget() {
 	if (FAILED(hr)) {
 		throw hr;
 	}
+}
+void Direct3DRenderer::createDepthStencil() {
+	HRESULT hr = S_OK;
+	//we need the swap chain description
+	//so that we can tell what the size
+	//of our target is
+	DXGI_SWAP_CHAIN_DESC swapDesc;
+	hr = m_pSwapChain->GetDesc(&swapDesc);
+	if (FAILED(hr)) {
+		throw hr;
+	}
+	
+	D3D11_TEXTURE2D_DESC desc;
+	desc.Width = swapDesc.BufferDesc.Width;
+	desc.Height = swapDesc.BufferDesc.Height;
+	desc.MipLevels = 1;
+	desc.ArraySize = 1;
+	desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	desc.SampleDesc.Count = 1;
+	desc.SampleDesc.Quality = 0;
+	desc.Usage = D3D11_USAGE_DEFAULT;
+	desc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	desc.CPUAccessFlags = 0;
+	desc.MiscFlags = 0;
+	hr = m_pDevice->CreateTexture2D(&desc, nullptr, &_pDepthStencil);
+	if (FAILED(hr)) {
+		throw hr;
+	}
+
+	D3D11_DEPTH_STENCIL_DESC dsDesc;
+	dsDesc.DepthEnable = true;
+	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
+	dsDesc.StencilEnable = true;
+	dsDesc.StencilReadMask = 0xFF;
+	dsDesc.StencilWriteMask = 0xFF;
+
+	dsDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	dsDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+	dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+	dsDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	dsDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+	dsDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+	hr = m_pDevice->CreateDepthStencilState(&dsDesc, &_pdsState);
+	if (FAILED(hr)) {
+		throw hr;
+	}
+	
+
+	hr = m_pDevice->CreateDepthStencilView(_pDepthStencil, nullptr, &_pdsView);
+	if (FAILED(hr)) {
+		throw hr;
+	}
+	m_pContext->OMSetDepthStencilState(_pdsState, 1);
 }
 void Direct3DRenderer::setViewports() {
 	HRESULT hr = S_OK;
@@ -136,8 +196,9 @@ void Direct3DRenderer::Present() {
 	m_pSwapChain->Present1(1, 0, &params);
 	
 	float color [] = { 1.0f, 0.0f, 0.0f, 0.0f };
-	m_pContext->OMSetRenderTargets(1, &m_pRenderTarget.p, nullptr);
+	m_pContext->OMSetRenderTargets(1, &m_pRenderTarget.p, _pdsView);
 	m_pContext->ClearRenderTargetView(m_pRenderTarget, color);
+	m_pContext->ClearDepthStencilView(_pdsView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	
 }
 void Direct3DRenderer::Clear() {

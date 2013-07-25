@@ -35,6 +35,7 @@ namespace LibDirect3D {
 		
 		void bindToHwnd(HWND target);
 		void createRenderTarget();
+		void createDepthStencil();
 		void setViewports();
 		CComPtr<ID3D11Device2> m_pDevice;
 		CComPtr<ID3D11DeviceContext2> m_pContext;
@@ -42,6 +43,10 @@ namespace LibDirect3D {
 		CComPtr<IDXGIFactory2> m_pDXGIFactory;
 		CComPtr<IDXGIDevice3> m_pDXGIDevice;
 		CComPtr<ID3D11RenderTargetView> m_pRenderTarget;
+
+		CComPtr<ID3D11DepthStencilState> _pdsState;
+		CComPtr<ID3D11DepthStencilView> _pdsView;
+		CComPtr<ID3D11Texture2D> _pDepthStencil;
 		
 
 		std::unique_ptr<Shaders> m_pShaders;

@@ -20,11 +20,13 @@ namespace LibCommon {
 		void AddComponent(IComponent* c);
 		void AddComponent(Entity* e);
 		void AddEntity(Entity* e);
-
-	private:
-		void forwardBubble(Bubbly * msg);
-		vector<std::unique_ptr<IComponent>> Components;
+	protected:
 		Event _messenger;
+		virtual void OnConnect() override;
+	private:
+		void forwardBubble(Bubbly* msg);
+		vector<std::unique_ptr<IComponent>> Components;
+		
 	};
 }
 #endif
