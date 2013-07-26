@@ -44,3 +44,9 @@ source_group("Source Files\\Messages" FILES
 	KeyUpMessage.cpp
 	UpdateMessage.cpp
 	)
+source_group("Header Files\\Systems" FILES
+	System.h
+	)
+source_group("Source Files\\Systems" FILES
+	System.cpp
+	)

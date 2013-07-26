@@ -25,7 +25,7 @@ namespace LibCommon {
 			float ticktime = 1000.0f / static_cast<float>(msg->tick.count());
 			auto norm = velocity.matrix() * ticktime;
 			auto transform = messenger->Get<Tags::Tagged<Tags::Internal::Transform, LibCommon::Get<T>>>();
-			(*transform) = velocity * (*transform).matrix();
+			(*transform) = (*transform) * velocity;
 		}
 	private:
 		typename T velocity;

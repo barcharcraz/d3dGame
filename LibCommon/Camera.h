@@ -10,7 +10,10 @@ namespace LibCommon {
 	class Camera : public IComponent {
 	public:
 		Camera();
-		void init();
+		Camera(float near, float far);
+		Camera(float near, float far, float fov);
+		Camera(float fov);
+		void init(float near, float far, float fov);
 		virtual void OnConnect() override;
 	private:
 		void handleGet(Tags::CameraTransform3D * msg);

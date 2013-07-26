@@ -5,7 +5,7 @@
 namespace LibCommon {
 	struct Vertex {
 		Eigen::Vector4f pos;
-		Eigen::Vector3f uv;
+		Eigen::Vector4f uv;
 	};
 	struct Model {
 		std::vector<Vertex> verts;

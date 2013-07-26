@@ -27,13 +27,8 @@ namespace LibCommon {
 		for (auto i = range.first; i != range.second; ++i) {
 			i->second(v);
 		}
-		//if there were no callbacks registered for us but someone
-		//had registed a forwarding target then we want to call that
-		//event. Note that if this condition is true the previous loop did nothing
-		if (range.first == callbacks.end() && range.second == callbacks.end()) {
-			for (auto f : forwardTargets) {
-				f->send(v);
-			}
+		for (auto f : forwardTargets) {
+			f->send(v);
 		}
 	}
 }

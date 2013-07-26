@@ -24,6 +24,8 @@ namespace LibCommon {
 		typedef Tagged<Internal::Transform, Get<Eigen::Affine2f> > Transform2D;
 		typedef Tagged<Internal::Velocity, Get<Eigen::Affine2f> > Velocity2D;
 		typedef Tagged<Internal::CameraTransform, Get<Eigen::Matrix4f> > CameraTransform3D;
+
+		
 	}
 }
 

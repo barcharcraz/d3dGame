@@ -39,6 +39,7 @@ namespace LibCommon {
 			componentConnections.insert(std::make_pair(static_cast<IComponent*>(u), rv));
 			return rv;
 		}
+		
 		void connectForwarder(Event* forwarder);
 		void disconnectForwarder(Event* forwarder);
 		void disconnect(connection index);
