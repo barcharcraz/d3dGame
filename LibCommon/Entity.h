@@ -2,8 +2,10 @@
 #define LIBCOMMON_ENTITY_H
 #include "IComponent.h"
 #include <vector>
-#include <list>
+#include <map>
 #include <memory>
+#include <typeindex>
+#include <typeinfo>
 #include <functional>
 #include <Eigen/Core>
 #include <Eigen/Geometry>
@@ -12,20 +14,16 @@
 #include "Bubbly.h"
 
 namespace LibCommon {
-	using namespace std;
-	class Entity : public IComponent {
+	class Entity {
 	public:
 		Entity();
-		std::unique_ptr<IComponent> removeComponent(int index);
 		void AddComponent(IComponent* c);
-		void AddComponent(Entity* e);
-		void AddEntity(Entity* e);
-	protected:
-		Event _messenger;
-		virtual void OnConnect() override;
+		void AddComponent(std::unique_ptr<IComponent> && c);
+
+		bool HasComponent(std::type_index type);
+		bool HasAllComponents(const std::vector<std::type_index>& types);
 	private:
-		void forwardBubble(Bubbly* msg);
-		vector<std::unique_ptr<IComponent>> Components;
+		std::map<std::type_index, std::unique_ptr<IComponent> > _components;
 		
 	};
 }
