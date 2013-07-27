@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include <algorithm>
 #include <typeinfo>
+#include <set>
 namespace LibCommon {
 	Scene::Scene(IRenderer* pRenderer) : _pRenderer(pRenderer), _rate(34) {
 		_lastUpdate = _clock.now();
@@ -10,6 +11,15 @@ namespace LibCommon {
 		using namespace std::chrono;
 		auto now = _clock.now();
 		_delta = now - _lastUpdate;
+		UpdateSystems();
+	}
+	void Scene::UpdateSystems() {
+		for (auto& sys : _systems) {
+			auto input = SelectEntities(sys->aspect);
+			for (auto ent : input) {
+				sys->Process(ent);
+			}
+		}
 	}
 	void Scene::AddEntity(Entity* e) {
 		_entities.push_back(std::unique_ptr<Entity>(e));
