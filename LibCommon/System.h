@@ -9,7 +9,7 @@ namespace LibCommon {
 		std::vector<type_info> in;
 		std::vector<type_info> out;
 		System(std::vector<type_info> inputs, std::vector<type_info> outputs);
-		virtual void Process(Entity* ent);
+		virtual void Process(Entity* ent) = 0;
 		virtual ~System() = 0;
 	};
 	inline System::~System() {};

@@ -13,6 +13,7 @@ namespace LibCommon {
 	}
 	void Scene::AddEntity(Entity* e) {
 		_entities.push_back(std::unique_ptr<Entity>(e));
+		
 	}
 	void Scene::AddEntity(std::unique_ptr<Entity> && e) {
 		_entities.push_back(std::move(e));

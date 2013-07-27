@@ -22,7 +22,8 @@ namespace LibCommon {
 	private:
 		std::vector<std::unique_ptr<System>> _systems;
 		std::vector<std::unique_ptr<Entity>> _entities;
-		
+		Event _messenger;
+		void UnwrapBubbly(Bubbly * msg);
 		//! \brief SelectEntities job is to select entities that have the components
 		//! specified in the types parameter, depending on how entities are stored
 		//! this may involve a database query
