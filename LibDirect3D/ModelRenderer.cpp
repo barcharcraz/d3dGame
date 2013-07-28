@@ -1,18 +1,21 @@
 #include "stdafx.h"
 #include "ModelRenderer.h"
 #include <LibCommon/Data.h>
-#include <LibCommon/Get.hpp>
-#include <LibCommon/Markers.h>
-#include <LibCommon/Bubbly.h>
+#include <LibComponents/Model.h>
+#include <LibComponents/Transform.h>
+#include <LibComponents/Camera.h>
 namespace LibDirect3D {
-	ModelRenderer::ModelRenderer(const LibCommon::Model& model)
-		: _model(model) 
+	ModelRenderer::ModelRenderer(const Direct3DRenderer& renderer)
+		: System({ typeid(Components::Model), typeid(Components::Transform3D) }), pCtx(renderer.m_pContext), pDev(renderer.m_pDevice)
 	{
+		
 	}
-	void ModelRenderer::OnConnect() {
-		messenger->connect(&ModelRenderer::handleDraw, this);
+	void ModelRenderer::Init() {
+		auto camera = parent->SelectEntity({ typeid(Components::Camera) });
+		cameraTransform = &camera->Get<Components::Camera>()->CameraMatrix;
+		createConstantBuffers();
 	}
-	void ModelRenderer::initConstantBuffers(ID3D11Device * pDev) {
+	void ModelRenderer::createConstantBuffers() {
 		HRESULT hr = S_OK;
 		CComPtr<ID3D11Buffer> transformBuffer;
 		D3D11_BUFFER_DESC transDesc;
@@ -22,63 +25,59 @@ namespace LibDirect3D {
 		transDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 		transDesc.MiscFlags = 0;
 		transDesc.StructureByteStride = 0;
-		D3D11_SUBRESOURCE_DATA data;
-		data.pSysMem = &transform;
-		data.SysMemPitch = 0;
-		data.SysMemSlicePitch = 0;
-		hr = pDev->CreateBuffer(&transDesc, &data, &transformBuffer);
+
+		hr = pDev->CreateBuffer(&transDesc, nullptr, &transformBuffer);
 		if (FAILED(hr)) {
 			throw hr;
 		}
 		_pTransformBuffer = std::move(transformBuffer);
 
 	}
-	void ModelRenderer::initVertexBuffers(ID3D11Device * pDev) {
+	CComPtr<ID3D11Buffer> ModelRenderer::createVertexBuffer(const Components::Model& model) {
 		HRESULT hr = S_OK;
 		CComPtr<ID3D11Buffer> vertexBuffer;
 		D3D11_BUFFER_DESC vertexDesc;
 		vertexDesc.Usage = D3D11_USAGE_DEFAULT;
-		vertexDesc.ByteWidth = static_cast<UINT>(sizeof(LibCommon::Vertex) * _model.verts.size());
+		vertexDesc.ByteWidth = static_cast<UINT>(sizeof(LibCommon::Vertex) * model.verts.size());
 		vertexDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		vertexDesc.CPUAccessFlags = 0;
 		vertexDesc.MiscFlags = 0;
 		vertexDesc.StructureByteStride = 0;
 		D3D11_SUBRESOURCE_DATA vertexData;
-		vertexData.pSysMem = _model.verts.data();
+		vertexData.pSysMem = model.verts.data();
 		vertexData.SysMemPitch = 0;
 		vertexData.SysMemSlicePitch = 0;
 		hr = pDev->CreateBuffer(&vertexDesc, &vertexData, &vertexBuffer);
 		if (FAILED(hr)) {
 			throw hr;
 		}
-		_pVertexBuffer = std::move(vertexBuffer);
+		return vertexBuffer;
 	}
-	void ModelRenderer::initIndexBuffer(ID3D11Device * pDev) {
+	CComPtr<ID3D11Buffer> ModelRenderer::createIndexBuffer(const Components::Model& model) {
 		HRESULT hr = S_OK;
 		CComPtr<ID3D11Buffer> indexBuffer;
 		D3D11_BUFFER_DESC indexDesc;
 		indexDesc.Usage = D3D11_USAGE_DEFAULT;
-		indexDesc.ByteWidth = static_cast<UINT>(sizeof(int) * _model.indices.size());
+		indexDesc.ByteWidth = static_cast<UINT>(sizeof(int) * model.indices.size());
 		indexDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 		indexDesc.CPUAccessFlags = 0;
 		indexDesc.MiscFlags = 0;
 		D3D11_SUBRESOURCE_DATA indexData;
-		indexData.pSysMem = _model.indices.data();
+		indexData.pSysMem = model.indices.data();
 		indexData.SysMemPitch = 0;
 		indexData.SysMemSlicePitch = 0;
 		hr = pDev->CreateBuffer(&indexDesc, &indexData, &indexBuffer);
 		if (FAILED(hr)) {
 			throw hr;
 		}
-		_pIndexBuffer = std::move(indexBuffer);
+		return indexBuffer;
 	}
-	void ModelRenderer::updateTransformBuffer(ID3D11DeviceContext * pCtx) {
+	void ModelRenderer::updateTransformBuffer(const Components::Transform3D& transform) {
 		using namespace LibCommon;
 		HRESULT hr = S_OK;
-		Eigen::Matrix4f * camTransform = messenger->GetBubbly<Tags::CameraTransform3D>();
-		Eigen::Affine3f * objTransform = messenger->Get<Tags::Transform3D>();
-		auto worldViewTransform = (*camTransform) * (*objTransform).matrix();
-		transform.worldView = worldViewTransform;
+		
+		auto worldViewTransform = (*cameraTransform) * transform.transform.matrix();
+		constTransforms.worldView = worldViewTransform;
 		D3D11_MAPPED_SUBRESOURCE map;
 		map.pData = 0;
 		map.DepthPitch = 0;
@@ -90,6 +89,15 @@ namespace LibDirect3D {
 		memcpy(map.pData, &transform, sizeof(transform));
 		pCtx->Unmap(_pTransformBuffer, 0);
 
+	}
+	void ModelRenderer::Process(LibCommon::Entity* e) {
+		using namespace Components;
+		auto model = e->Get<Model>();
+		auto transform = e->Get<Transform3D>();
+		CComPtr<ID3D11Buffer> indexBuffer = createIndexBuffer(*model);
+		CComPtr<ID3D11Buffer> vertexBuffer = createVertexBuffer(*model);
+		updateTransformBuffer(*transform);
+		pCtx->IASetInputLayout
 	}
 	void ModelRenderer::handleDraw(Direct3DRenderingMessage * msg) {
 		if (_pIndexBuffer == nullptr || _pVertexBuffer == nullptr || _pTransformBuffer == nullptr) {

@@ -1,6 +1,9 @@
 #ifndef UTILS_STRINGS_H
 #define UTILS_STRINGS_H
 #include <string>
+#include <codecvt>
+#include <locale>
+
 namespace utils {
 	inline void trim(std::string * in) {
 		//we dont want to try and trim anything if the
@@ -25,6 +28,14 @@ namespace utils {
 			return;
 		}
 		trim(in);
+	}
+	inline std::string narrow(const std::wstring& wstr) {
+		std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+		return converter.to_bytes(wstr);
+	}
+	inline std::wstring widen(const std::string& nstr) {
+		std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+		return converter.from_bytes(nstr);
 	}
 }
 

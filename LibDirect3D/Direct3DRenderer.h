@@ -10,7 +10,7 @@ namespace LibDirect3D {
 		Direct3DRenderer();
 		Direct3DRenderer(HWND target);
 		virtual LibCommon::IMessage * getRenderingMessage() override;
-
+		
 		void addPixelShader(const std::string &name, const BYTE shaderBlob[], size_t shaderSize, const std::vector<D3D11_INPUT_ELEMENT_DESC> &desc);
 		void addVertexShader(const std::string &name, const BYTE shaderBlob[], size_t shaderSize, const std::vector<D3D11_INPUT_ELEMENT_DESC> &desc);
 
@@ -22,6 +22,9 @@ namespace LibDirect3D {
 
 		void Present();
 		void Clear();
+
+		CComPtr<ID3D11Device2> m_pDevice;
+		CComPtr<ID3D11DeviceContext2> m_pContext;
 	private:
 		
 		void init(IDXGIAdapter* pAdapter,
@@ -37,8 +40,7 @@ namespace LibDirect3D {
 		void createRenderTarget();
 		void createDepthStencil();
 		void setViewports();
-		CComPtr<ID3D11Device2> m_pDevice;
-		CComPtr<ID3D11DeviceContext2> m_pContext;
+		
 		CComPtr<IDXGISwapChain2> m_pSwapChain;
 		CComPtr<IDXGIFactory2> m_pDXGIFactory;
 		CComPtr<IDXGIDevice3> m_pDXGIDevice;

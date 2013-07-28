@@ -1,25 +1,28 @@
 #pragma once
 #include "stdafx.h"
-#include "Direct3DRenderingMessage.h"
+#include "Direct3DRenderer.h"
 #include <LibCommon/Data.h>
-#include <LibCommon/IComponent.h>
+#include <LibCommon/Entity.h>
+#include <LibCommon/System.h>
+#include <LibComponents/Model.h>
 namespace LibDirect3D {
-	class ModelRenderer : public LibCommon::IComponent {
+	class ModelRenderer : public LibCommon::System {
 	public:
-		ModelRenderer(const LibCommon::Model& model);
-		virtual void OnConnect() override;
+		explicit ModelRenderer(const Direct3DRenderer& renderer);
+		virtual void Process(LibCommon::Entity * e) override;
+		virtual void Init() override;
 	private:
 		void init();
-		void handleDraw(Direct3DRenderingMessage * msg);
 		shaderSet _activeShaders;
-		void initConstantBuffers(ID3D11Device * pDev);
-		void initIndexBuffer(ID3D11Device * pDev);
-		void initVertexBuffers(ID3D11Device * pDev);
-		void updateTransformBuffer(ID3D11DeviceContext * pCtx);
-		LibCommon::Transforms transform;
-		CComPtr<ID3D11Buffer> _pVertexBuffer;
-		CComPtr<ID3D11Buffer> _pIndexBuffer;
+		void createConstantBuffers();
+		CComPtr<ID3D11Buffer> createIndexBuffer(const Components::Model& model);
+		CComPtr<ID3D11Buffer> createVertexBuffer(const Components::Model& model);
+		void updateTransformBuffer(const Components::Transform3D& transform);
+		LibCommon::Transforms constTransforms;
+		const Eigen::Matrix4f* cameraTransform;
 		CComPtr<ID3D11Buffer> _pTransformBuffer;
-		LibCommon::Model _model;
+
+		CComPtr<ID3D11Device2> pDev;
+		CComPtr<ID3D11DeviceContext2> pCtx;
 	};
 }

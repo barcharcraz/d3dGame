@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include <algorithm>
 namespace LibCommon {
+	using namespace Components;
 	Entity::Entity() {
 		
 	}

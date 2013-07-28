@@ -15,6 +15,7 @@ namespace LibCommon {
 	}
 	void Scene::UpdateSystems() {
 		for (auto& sys : _systems) {
+			sys->Init();
 			auto input = SelectEntities(sys->aspect);
 			for (auto ent : input) {
 				sys->Process(ent);
@@ -30,8 +31,8 @@ namespace LibCommon {
 	}
 	void Scene::AddSystem(std::unique_ptr<System> && s) {
 		_systems.push_back(std::move(s));
+		_systems.back()->parent = this;
 	}
-	//-------------PRIVATE----------------------
 	std::vector<Entity*> Scene::SelectEntities(const std::vector<std::type_index>& info) {
 		//^| this function could really use some caching at some point
 		std::vector<Entity*> retval;
@@ -41,5 +42,13 @@ namespace LibCommon {
 			}
 		}
 		return retval;
+	}
+	Entity* Scene::SelectEntity(const std::vector<std::type_index>& info) {
+		for (auto& ent : _entities) {
+			if (ent->HasAllComponents(info)) {
+				return ent.get();
+			}
+		}
+		return nullptr;
 	}
 }

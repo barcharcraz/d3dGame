@@ -3,6 +3,7 @@
 #include "stdafx.h"
 #include "GeometryFile.h"
 #include "Data.h"
+#include <LibComponents/Model.h>
 namespace LibCommon {
 	class ObjFile : public VertexFile, public IndexFile, public ModelFile {
 	public:
@@ -11,7 +12,7 @@ namespace LibCommon {
 		virtual std::vector<Eigen::Vector4f> points() override;
 		virtual std::vector<int> indices() override;
 		virtual std::vector<Vertex> verts() override;
-		virtual Model model() override;
+		virtual Components::Model model() override;
 		
 	private:
 		void read(const std::string& filename);

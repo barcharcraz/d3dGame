@@ -8,16 +8,6 @@ set(libcommon_files
 	)
 
 add_library(LibCommon STATIC ${libcommon_files})
-source_group("Header Files\\Components" FILES
-	Velocity.hpp
-	Transform.hpp
-	IComponent.h
-	BasicController2D.h
-	Camera.h
-	)
-source_group("Source Files\\Components" FILES
-	Camera.cpp
-	)
 source_group("Header Files\\Components\\Entities" FILES
 	Entity.h
 	Scene.h
@@ -46,7 +36,9 @@ source_group("Source Files\\Messages" FILES
 	)
 source_group("Header Files\\Systems" FILES
 	System.h
+	VelocitySystem3D.h
 	)
 source_group("Source Files\\Systems" FILES
 	System.cpp
+	VelocitySystem3D.cpp
 	)

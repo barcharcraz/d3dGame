@@ -14,7 +14,7 @@ namespace LibCommon {
 	};
 	class ModelFile {
 	public:
-		virtual Model model() = 0;
+		virtual Components::Model model() = 0;
 	};
 }
 #endif

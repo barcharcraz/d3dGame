@@ -3,7 +3,6 @@
 #include "IRenderer.h"
 #include "Entity.h"
 #include "IMessage.h"
-#include "IComponent.h"
 #include "Bubbly.h"
 #include "UpdateMessage.h"
 #include "System.h"
@@ -18,6 +17,9 @@ namespace LibCommon {
 		void AddEntity(Entity* e);
 		void AddEntity(std::unique_ptr<Entity> && e);
 		void AddSystem(std::unique_ptr<System> && s);
+
+		std::vector<Entity*> SelectEntities(const std::vector<std::type_index>& types);
+		Entity* SelectEntity(const std::vector<std::type_index>& types);
 	protected:
 	private:
 		std::vector<std::unique_ptr<System>> _systems;
@@ -26,7 +28,7 @@ namespace LibCommon {
 		//! \brief SelectEntities job is to select entities that have the components
 		//! specified in the types parameter, depending on how entities are stored
 		//! this may involve a database query
-		std::vector<Entity*> SelectEntities(const std::vector<std::type_index>& types);
+		
 		void UpdateSystems();
 		std::unique_ptr<IRenderer> _pRenderer;
 		std::chrono::system_clock _clock;
