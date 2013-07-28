@@ -21,17 +21,11 @@ source_group("Header Files\\Messages" FILES
 	Bubbly.h
 	Get.hpp
 	Markers.h
-	KeyUpMessage.h
-	KeyDownMessage.h
-	InputMessage.h
 	UpdateMessage.h
 	IRenderingMessage.h
 	)
 source_group("Source Files\\Messages" FILES
 	Bubbly.cpp
-	InputMessage.cpp
-	KeyDownMessage.cpp
-	KeyUpMessage.cpp
 	UpdateMessage.cpp
 	)
 source_group("Header Files\\Systems" FILES

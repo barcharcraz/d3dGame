@@ -2,6 +2,7 @@
 #define LIBCOMMON_GEOMETRYFILE_H
 #include "stdafx.h"
 #include "Data.h"
+#include <LibComponents/Model.h>
 namespace LibCommon {
 	class VertexFile {
 	public:

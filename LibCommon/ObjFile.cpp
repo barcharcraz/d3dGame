@@ -2,6 +2,7 @@
 #include "ObjFile.h"
 #include <fstream>
 #include <Utils/strings.h>
+#include <exception>
 
 namespace LibCommon {
 	ObjFile::ObjFile(const std::string& filename) {
@@ -22,8 +23,9 @@ namespace LibCommon {
 		}
 		return _verts;
 	}
-	Model ObjFile::model() {
-		Model retval;
+    Components::Model ObjFile::model() {
+
+        Components::Model retval;
 		retval.verts = verts();
 		retval.indices = indices();
 		return retval;
@@ -90,8 +92,8 @@ namespace LibCommon {
 		char type;
 		st >> type;
 		
-		if (type != 'v') {
-			throw std::exception("not a valid vertex record");
+        if (type != 'v') {
+            throw std::runtime_error("not a valid vertex record");
 		}
 		st >> x >> y >> z;
 		if (!st.eof()) {
@@ -110,7 +112,7 @@ namespace LibCommon {
 		char type;
 		st >> type;
 		if (type != 'f') {
-			throw std::exception("not a valid face record");
+            throw std::runtime_error("not a valid face record");
 		}
 		int curIdx;
 		//we use this to only take the "UV"
@@ -144,7 +146,7 @@ namespace LibCommon {
 		std::string type;
 		st >> type;
 		if (type != "vt") {
-			throw std::exception("not a valid vt record");
+            throw std::runtime_error("not a valid vt record");
 		}
 		st >> u >> v;
 		if (!st.eof()) {

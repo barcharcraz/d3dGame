@@ -1,7 +1,7 @@
 #ifndef H_LIBCOMMON_GET
 #define H_LIBCOMMON_GET
 #include "IMessage.h"
-#include "IComponent.h"
+#include <LibComponents/IComponent.h>
 namespace LibCommon {
 	template<typename T>
 	class Get : public IMessage {

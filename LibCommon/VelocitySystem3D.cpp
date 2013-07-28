@@ -1,8 +1,9 @@
 #include "stdafx.h"
 #include "VelocitySystem3D.h"
-#include "Velocity.hpp"
-#include "Transform.hpp"
+#include <LibComponents/Velocity.h>
+#include <LibComponents/Transform.h>
 namespace LibCommon {
+    using namespace Components;
 	VelocitySystem3D::VelocitySystem3D() : System({ typeid(Velocity3D), typeid(Transform3D) }) {
 
 	}
