@@ -6,6 +6,7 @@ set(libcomponents_files
 	Camera.cpp
 	IComponent.h
 	Shaders.h
+	Shaders.cpp
 	stdafx.h
 	stdafx.cpp
 	)

@@ -12,9 +12,8 @@ namespace LibShaders {
 			auto ext = utils::getFileExtension(_filename);
 			if (ext == "cso") {
 				_pShader = loadCompiledFile(pDev);
-			}
-			else if (ext == ".hlsl" || ext == ".ps") {
-				_pShader = loadCompiledFile(pDev);
+			} else if (ext == "hlsl" || ext == "ps") {
+				_pShader = loadTextFile(pDev);
 			}
 		}
 		return _pShader;

@@ -1,7 +1,11 @@
 #pragma once
 #include "stdafx.h"
+#include <memory>
+#include "HLSLVertexShader.h"
+#include "HLSLPixelShader.h"
 namespace LibShaders {
-	struct {
-
+	struct HLSLShaderSet {
+		HLSLPixelShader ps;
+		HLSLVertexShader vs;
 	};
 }

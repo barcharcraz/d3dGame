@@ -7,7 +7,7 @@
 #include <vector>
 #include <exception>
 namespace utils {
-	std::vector<unsigned char> slurpBinary(const std::string& filename) {
+	inline std::vector<unsigned char> slurpBinary(const std::string& filename) {
 		std::ifstream stream;
 		stream.exceptions(std::ifstream::badbit | std::ifstream::failbit);
 		stream.open(filename, std::ios::in | std::ios::binary | std::ios::ate);
@@ -17,7 +17,7 @@ namespace utils {
 		stream.read((char*) buffer.data(), size);
 		return buffer;
 	}
-	std::string getFileExtension(const std::string& filename) {
+	inline std::string getFileExtension(const std::string& filename) {
 		using namespace std;
 		auto idx = filename.rfind('.');
 		if (idx != string::npos) {
