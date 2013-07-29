@@ -3,8 +3,8 @@
 #include "IComponent.h"
 #include <memory>
 namespace LibShaders {
-	extern class HLSLShaderSet;
-	extern class GLSLShaderSet;
+    class HLSLShaderSet;
+    class GLSLShaderSet;
 }
 namespace Components {
 	class Shaders : public IComponent {
@@ -14,6 +14,6 @@ namespace Components {
 	private:
 		std::shared_ptr<LibShaders::HLSLShaderSet> _HLSL;
 	};
-};
+}
 
 #endif
