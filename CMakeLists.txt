@@ -10,10 +10,19 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/output)
 IF(CMAKE_COMPILER_IS_GNUCXX)
 	add_definitions(-std=c++11)
 ENDIF(CMAKE_COMPILER_IS_GNUCXX)
+
+#config.h configuration
+INCLUDE(CheckIncludeFiles)
+CHECK_INCLUDE_FILES(X11/Xlib.h HAS_X11)
+CHECK_INCLUDE_FILES(windows.h HAS_WIN32)
+CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/config.h)
+
+
 add_subdirectory(LibCommon)
 add_subdirectory(assets)
 add_subdirectory(Utils)
 add_subdirectory(LibComponents)
+add_subdirectory(CrossplatApp)
 IF(WIN32)
 add_subdirectory(LibHLSL)
 add_subdirectory(HLSLShaders)
