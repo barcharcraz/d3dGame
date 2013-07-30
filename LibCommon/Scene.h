@@ -17,6 +17,7 @@ namespace LibCommon {
 		void AddEntity(Entity* e);
 		void AddEntity(std::unique_ptr<Entity> && e);
 		void AddSystem(std::unique_ptr<System> && s);
+		void AddSystem(System * s);
 
 		std::vector<Entity*> SelectEntities(const std::vector<std::type_index>& types);
 		Entity* SelectEntity(const std::vector<std::type_index>& types);

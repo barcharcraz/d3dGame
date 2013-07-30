@@ -3,15 +3,9 @@ set(libd3d_src
 	Buffers.cpp
 	Direct3DRenderer.h
 	Direct3DRenderer.cpp
-	Direct3DRenderingMessage.h
-	Direct3DRenderingMessage.cpp
 	ModelRenderer.h
 	ModelRenderer.cpp
-	Shaders.h
-	Shaders.cpp
 	DataFormats.h
-	Triangle.h
-	Triangle.cpp
 	stdafx.h
 	stdafx.cpp
 	targetver.h

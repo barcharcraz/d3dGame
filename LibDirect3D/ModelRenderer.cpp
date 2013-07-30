@@ -4,9 +4,13 @@
 #include <LibComponents/Model.h>
 #include <LibComponents/Transform.h>
 #include <LibComponents/Camera.h>
+#include <LibCommon/Scene.h>
+#include <LibComponents/Shaders.h>
+#include <LibHLSL/HLSLShaderSet.h>
 namespace LibDirect3D {
 	ModelRenderer::ModelRenderer(const Direct3DRenderer& renderer)
-		: System({ typeid(Components::Model), typeid(Components::Transform3D) }), pCtx(renderer.m_pContext), pDev(renderer.m_pDevice)
+		: System({ typeid(Components::Model), typeid(Components::Transform3D), typeid(Components::Shaders) }), 
+		pCtx(renderer.m_pContext), pDev(renderer.m_pDevice)
 	{
 		
 	}
@@ -93,29 +97,21 @@ namespace LibDirect3D {
 	void ModelRenderer::Process(LibCommon::Entity* e) {
 		using namespace Components;
 		auto model = e->Get<Model>();
+		auto shader = e->Get<Components::Shaders>()->HLSL();
 		auto transform = e->Get<Transform3D>();
 		CComPtr<ID3D11Buffer> indexBuffer = createIndexBuffer(*model);
 		CComPtr<ID3D11Buffer> vertexBuffer = createVertexBuffer(*model);
 		updateTransformBuffer(*transform);
-		pCtx->IASetInputLayout
-	}
-	void ModelRenderer::handleDraw(Direct3DRenderingMessage * msg) {
-		if (_pIndexBuffer == nullptr || _pVertexBuffer == nullptr || _pTransformBuffer == nullptr) {
-			initConstantBuffers(msg->pDevice);
-			initVertexBuffers(msg->pDevice);
-			initIndexBuffer(msg->pDevice);
-		}
-		updateTransformBuffer(msg->pContext);
-		_activeShaders = msg->pShaders->getDefaultSet();
-		msg->pContext->IASetInputLayout(_activeShaders.layout);
-		msg->pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		pCtx->IASetInputLayout(shader->vs.getInputLayout(pDev));
+		pCtx->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		unsigned int stride = sizeof(LibCommon::Vertex);
 		unsigned int offset = 0;
-		msg->pContext->IASetVertexBuffers(0, 1, &_pVertexBuffer.p, &stride, &offset);
-		msg->pContext->IASetIndexBuffer(_pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
-		msg->pContext->PSSetShader(_activeShaders.pPS, nullptr, 0);
-		msg->pContext->VSSetShader(_activeShaders.pVS, nullptr, 0);
-		msg->pContext->VSSetConstantBuffers(0, 1, &_pTransformBuffer.p);
-		msg->pContext->DrawIndexed(static_cast<UINT>(_model.indices.size()), 0, 0);
+		pCtx->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
+		pCtx->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+		pCtx->VSSetShader(shader->vs.getShader(pDev), nullptr, 0);
+		pCtx->PSSetShader(shader->ps.getShader(pDev), nullptr, 0);
+		pCtx->VSSetConstantBuffers(0, 1, &_pTransformBuffer.p);
+		pCtx->DrawIndexed(static_cast<UINT>(model->indices.size()), 0, 0);
+		
 	}
 }

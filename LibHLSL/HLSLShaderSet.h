@@ -5,7 +5,9 @@
 #include "HLSLPixelShader.h"
 namespace LibShaders {
 	struct HLSLShaderSet {
-		HLSLPixelShader ps;
+		HLSLShaderSet(const HLSLVertexShader& verts, const HLSLPixelShader& pixels)
+			: vs(verts), ps(pixels) {}
 		HLSLVertexShader vs;
+		HLSLPixelShader ps;
 	};
 }

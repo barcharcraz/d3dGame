@@ -4,6 +4,7 @@
 #include <LibCommon/Data.h>
 #include <LibCommon/Entity.h>
 #include <LibCommon/System.h>
+#include <LibComponents/Transform.h>
 #include <LibComponents/Model.h>
 namespace LibDirect3D {
 	class ModelRenderer : public LibCommon::System {
@@ -13,7 +14,6 @@ namespace LibDirect3D {
 		virtual void Init() override;
 	private:
 		void init();
-		shaderSet _activeShaders;
 		void createConstantBuffers();
 		CComPtr<ID3D11Buffer> createIndexBuffer(const Components::Model& model);
 		CComPtr<ID3D11Buffer> createVertexBuffer(const Components::Model& model);

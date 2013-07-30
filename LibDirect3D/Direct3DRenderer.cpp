@@ -1,14 +1,14 @@
 #include "stdafx.h"
 #include "Direct3DRenderer.h"
 using namespace LibDirect3D;
-Direct3DRenderer::Direct3DRenderer() : m_pShaders(std::make_unique<Shaders>()) {
+Direct3DRenderer::Direct3DRenderer() {
 	UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 #ifdef _DEBUG
 	creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 	init(nullptr, D3D_DRIVER_TYPE_HARDWARE, 0, creationFlags, defaultFeatureLevels, defaultNumFeatureLevels, D3D11_SDK_VERSION, nullptr);
 }
-Direct3DRenderer::Direct3DRenderer(HWND target) : m_pShaders(std::make_unique<Shaders>()) {
+Direct3DRenderer::Direct3DRenderer(HWND target) {
 	UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 #ifdef _DEBUG
 	creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
@@ -157,32 +157,6 @@ void Direct3DRenderer::setViewports() {
 	port.Height = static_cast<float>(swd.BufferDesc.Height);
 	port.Width = static_cast<float>(swd.BufferDesc.Width);
 	m_pContext->RSSetViewports(1, &port);
-}
-LibCommon::IMessage * Direct3DRenderer::getRenderingMessage() {
-	if(lazyMessage == nullptr) {
-		lazyMessage.reset(new Direct3DRenderingMessage(m_pDevice, m_pContext, m_pShaders.get()));
-	}
-	//return a non-owning raw pointer
-	return lazyMessage.get();
-}
-
-void Direct3DRenderer::addPixelShader(const std::string &name, const BYTE shaderBlob[], size_t shaderSize, const std::vector<D3D11_INPUT_ELEMENT_DESC> &desc) {
-	m_pShaders->addPS(m_pDevice, name, shaderBlob, shaderSize, desc);
-}
-void Direct3DRenderer::addVertexShader(const std::string &name, const BYTE shaderBlob [], size_t shaderSize, const std::vector<D3D11_INPUT_ELEMENT_DESC> &desc) {
-	m_pShaders->addVS(m_pDevice, name, shaderBlob, shaderSize, desc);
-}
-void Direct3DRenderer::addPixelShader(const std::string& filename, const std::vector<D3D11_INPUT_ELEMENT_DESC>& desc) {
-	m_pShaders->addVS(m_pDevice, filename, desc);
-}
-void Direct3DRenderer::addVertexShader(const std::string& filename, const std::vector<D3D11_INPUT_ELEMENT_DESC>& desc) {
-	m_pShaders->addPS(m_pDevice, filename, desc);
-}
-void Direct3DRenderer::addPixelShader(const std::string& filename) {
-	m_pShaders->addPS(m_pDevice, filename, defaultLayout);
-}
-void Direct3DRenderer::addVertexShader(const std::string& filename) {
-	m_pShaders->addVS(m_pDevice, filename, defaultLayout);
 }
 
 void Direct3DRenderer::Present() {

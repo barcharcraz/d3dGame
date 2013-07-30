@@ -3,8 +3,8 @@
 #include "IComponent.h"
 #include <memory>
 namespace LibShaders {
-    class HLSLShaderSet;
-    class GLSLShaderSet;
+    struct HLSLShaderSet;
+    struct GLSLShaderSet;
 }
 namespace Components {
 	class Shaders : public IComponent {

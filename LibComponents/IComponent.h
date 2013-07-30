@@ -5,6 +5,10 @@
 
 namespace Components {
 	//IComponent is trivial
-	class IComponent {};
+	class IComponent {
+	public:
+		virtual ~IComponent() = 0;
+	};
+	inline IComponent::~IComponent() {}
 }
 #endif

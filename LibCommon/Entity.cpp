@@ -20,7 +20,7 @@ namespace LibCommon {
 		if (_components.count(type_index(typeid(c))) != 0) {
 			throw std::runtime_error("ERROR: entities may not have more than one component of the same type");
 		}
-		_components[typeid(c)] = std::move(c);
+		_components[typeid(*c.get())] = std::move(c);
 	}
 	bool Entity::HasComponent(std::type_index type) {
 		return _components.count(type) > 0;

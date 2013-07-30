@@ -33,6 +33,10 @@ namespace LibCommon {
 		_systems.push_back(std::move(s));
 		_systems.back()->parent = this;
 	}
+	void Scene::AddSystem(System* s) {
+		_systems.push_back(std::unique_ptr<System>(s));
+		_systems.back()->parent = this;
+	}
 	std::vector<Entity*> Scene::SelectEntities(const std::vector<std::type_index>& info) {
 		//^| this function could really use some caching at some point
 		std::vector<Entity*> retval;
