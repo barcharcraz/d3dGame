@@ -18,6 +18,8 @@ CHECK_INCLUDE_FILES(windows.h HAS_WIN32)
 CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/config.h)
 
 
+add_custom_target(Glue SOURCES windowing.h)
+
 add_subdirectory(LibCommon)
 add_subdirectory(assets)
 add_subdirectory(Utils)
