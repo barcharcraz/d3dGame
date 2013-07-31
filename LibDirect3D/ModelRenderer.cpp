@@ -90,7 +90,8 @@ namespace LibDirect3D {
 		if (FAILED(hr)) {
 			throw hr;
 		}
-		memcpy(map.pData, &transform, sizeof(transform));
+		Eigen::Matrix4f finalTransform = (*cameraTransform) * transform.transform.matrix();
+		memcpy(map.pData, &finalTransform, sizeof(finalTransform));
 		pCtx->Unmap(_pTransformBuffer, 0);
 
 	}
@@ -99,6 +100,9 @@ namespace LibDirect3D {
 		auto model = e->Get<Model>();
 		auto shader = e->Get<Components::Shaders>()->HLSL();
 		auto transform = e->Get<Transform3D>();
+		if (_pTransformBuffer == nullptr) {
+			createConstantBuffers();
+		}
 		CComPtr<ID3D11Buffer> indexBuffer = createIndexBuffer(*model);
 		CComPtr<ID3D11Buffer> vertexBuffer = createVertexBuffer(*model);
 		updateTransformBuffer(*transform);
@@ -106,7 +110,7 @@ namespace LibDirect3D {
 		pCtx->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		unsigned int stride = sizeof(LibCommon::Vertex);
 		unsigned int offset = 0;
-		pCtx->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
+		pCtx->IASetVertexBuffers(0, 1, &vertexBuffer.p, &stride, &offset);
 		pCtx->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 		pCtx->VSSetShader(shader->vs.getShader(pDev), nullptr, 0);
 		pCtx->PSSetShader(shader->ps.getShader(pDev), nullptr, 0);

@@ -3,7 +3,7 @@
 
 namespace windows {
 	//----NON CLASS---------
-	int Run() {
+	size_t Run() {
 		MSG msg{ 0 };
 		while (msg.message != WM_QUIT) {
 			Window * win = (Window*) GetWindowLongPtr(msg.hwnd, GWLP_USERDATA);
@@ -23,7 +23,6 @@ namespace windows {
 				}
 			}
 		}
-
 		return msg.wParam;
 	}
 	LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
@@ -45,6 +44,20 @@ namespace windows {
 
 	Window::Window(int w, int h) {
 		initDefault();
+		
+		init(w,h);
+	}
+	Window::Window() {
+		initDefault();
+		init(640, 480);
+	}
+	void Window::Show() {
+		ShowWindow(_hwnd, SW_SHOWDEFAULT);
+		UpdateWindow(_hwnd);
+		
+	}
+	//-----------PRIVATE-------------------
+	void Window::init(int w, int h) {
 		_hwnd = CreateWindowEx(
 			WS_EX_CLIENTEDGE,
 			L"Windowing",
@@ -56,19 +69,6 @@ namespace windows {
 		if (_hwnd == NULL) {
 			throw std::exception("failed to create window");
 		}
-		init();
-	}
-	Window::Window() {
-
-	}
-	void Window::Show() {
-		ShowWindow(_hwnd, SW_SHOWDEFAULT);
-		UpdateWindow(_hwnd);
-		
-	}
-	//-----------PRIVATE-------------------
-	void Window::init() {
-		
 		SetWindowLongPtr(_hwnd, GWLP_USERDATA, (LONG_PTR)this);
 		
 	}

@@ -9,10 +9,10 @@ namespace LibShaders {
 namespace Components {
 	class Shaders : public IComponent {
 	public:
-		Shaders(std::shared_ptr<LibShaders::HLSLShaderSet> hlsl);
+		Shaders(LibShaders::HLSLShaderSet* hlsl);
 		LibShaders::HLSLShaderSet* HLSL();
 	private:
-		std::shared_ptr<LibShaders::HLSLShaderSet> _HLSL;
+		LibShaders::HLSLShaderSet* _HLSL;
 	};
 }
 

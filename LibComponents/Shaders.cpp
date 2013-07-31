@@ -2,7 +2,7 @@
 #include "Shaders.h"
 #include <stdexcept>
 namespace Components {
-	Shaders::Shaders(std::shared_ptr<LibShaders::HLSLShaderSet> hlsl)
+	Shaders::Shaders(LibShaders::HLSLShaderSet* hlsl)
 		: _HLSL(hlsl)
 	{
 
@@ -11,5 +11,6 @@ namespace Components {
 		if (_HLSL == nullptr) {
 			throw std::runtime_error("Entity does not contain an HLSL shader, perhaps you forgot to add one");
 		}
+		return _HLSL;
 	}
 }

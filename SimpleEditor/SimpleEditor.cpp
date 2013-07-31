@@ -23,7 +23,7 @@
 #include <LibComponents/Transform.h>
 #include <LibComponents/Model.h>
 #include <LibComponents/Shaders.h>
-#include <windows/Window.h>
+#include <windowing.h>
 #include <map>
 #include <typeindex>
 
@@ -31,13 +31,13 @@
 using namespace LibCommon;
 using namespace windows;
 using namespace Components;
-int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrvInstance, LPWSTR lpCmdLine, int nCmdShow)
+int main(int argc, char** argv)
 {
 	Window win(640, 480);
 	win.Show();
 	
 	
-	CoInitialize(NULL);
+	ComInitialize com;
 	//Direct3DRenderer d3dRender;
 	//CComPtr<ID3D11Debug> pDebug;
 	//d3dRender.getDevice()->QueryInterface(IID_PPV_ARGS(&pDebug));
@@ -46,10 +46,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrvInstance, LPWSTR lpCmdLin
 		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
 	LibDirect3D::Direct3DRenderer * render = new LibDirect3D::Direct3DRenderer(win.Hwnd());
-	auto shaders = std::make_shared<LibShaders::HLSLShaderSet>(
-		LibShaders::HLSLVertexShader("DefaultVS.cso", defaultLayout),
-		LibShaders::HLSLPixelShader("DefaultPS.cso")
-	);
+
+	LibShaders::HLSLPixelShader ps("DefaultPS.cso");
+	LibShaders::HLSLVertexShader vs("DefaultVS.cso", defaultLayout);
+	auto shaders = std::make_unique<LibShaders::HLSLShaderSet>(vs, ps);
 
 	LibCommon::ObjFile modelFile("Torus.obj");
 	Entity * model = new Entity();
@@ -59,13 +59,14 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrvInstance, LPWSTR lpCmdLin
 	Transform3D * camPos = new Transform3D(Eigen::Affine3f::Identity());
 	Camera * cam = new Camera();
 	Model * mod = new Model(modelFile.verts(), modelFile.indices());
+	Shaders * shadersComp = new Shaders(shaders.get());
 	camera->AddComponent(cam);
 	camera->AddComponent(camPos);
 	LibDirect3D::ModelRenderer * renderComp = new LibDirect3D::ModelRenderer(*render);
 	model->AddComponent(transform);
 	model->AddComponent(vel);
 	model->AddComponent(mod);
-	model->AddComponent(std::make_unique<Shaders>(shaders));
+	model->AddComponent(shadersComp);
 	Scene * sce = new Scene(render);
 	sce->AddSystem(renderComp);
 	sce->AddEntity(model);
@@ -74,18 +75,17 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrvInstance, LPWSTR lpCmdLin
 	//factory.getSwapChain()->Present(1,0);
 	
 	win.update = [&]() {
-		
+		render->Clear();
 		sce->Update();
 		render->Present();
-		render->Clear();
+		
 		
 	};
 	//pDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 	
-	int rv = Run();
+	auto rv = Run();
 
 	delete sce;
-	CoUninitialize();
 	return rv;
 	
 	

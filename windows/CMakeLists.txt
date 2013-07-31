@@ -5,5 +5,9 @@ set(windows_files
 	Keys.cpp
 	stdafx.h
 	stdafx.cpp
+	WinMain.cpp
+	WinMain.h
+	ComUtils.h
+	ComUtils.cpp
 	)
 add_library(windows ${windows_files})
