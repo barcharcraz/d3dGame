@@ -33,8 +33,9 @@ namespace xwindows {
 									  0, 0, w, h, 0,
 									  BlackColor, WhiteColor);
 		XSelectInput(dpy, _winxid, StructureNotifyMask);
+
+	}
+	void Window::Show() {
 		XMapWindow(dpy, _winxid);
-
-
 	}
 }

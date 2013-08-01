@@ -25,6 +25,7 @@ add_subdirectory(assets)
 add_subdirectory(Utils)
 add_subdirectory(LibComponents)
 add_subdirectory(CrossplatApp)
+add_subdirectory(LibOpenGL)
 IF(WIN32)
 add_subdirectory(LibHLSL)
 add_subdirectory(HLSLShaders)
@@ -36,4 +37,8 @@ add_subdirectory(SimpleEditor)
 ENDIF(WIN32)
 IF(UNIX)
 add_subdirectory(LibXWindows)
+add_subdirectory(LibGLX)
+
 ENDIF(UNIX)
+
+
