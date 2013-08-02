@@ -1,7 +1,7 @@
-#ifndef LIBCOMMON_KEYS_H
-#define LIBCOMMON_KEYS_H
+#ifndef LIBINPUT_KEYS_H
+#define LIBINPUT_KEYS_H
 
-namespace LibCommon {
+namespace Input {
 	//names of keys in no particular order
 	enum Keys {
 		A,
@@ -56,6 +56,7 @@ namespace LibCommon {
 		Right,
 		Count
 	};
+	
 }
 
 #endif

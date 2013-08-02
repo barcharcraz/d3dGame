@@ -16,7 +16,9 @@ INCLUDE(CheckIncludeFiles)
 CHECK_INCLUDE_FILES(X11/Xlib.h HAS_X11)
 CHECK_INCLUDE_FILES(windows.h HAS_WIN32)
 CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/config.h)
-
+IF(WIN32)
+set(CMAKE_EXE_LINKER_FLAGS /ENTRY:"wWinMainCRTStartup")
+ENDIF(WIN32)
 
 add_custom_target(Glue SOURCES windowing.h)
 
@@ -26,6 +28,7 @@ add_subdirectory(Utils)
 add_subdirectory(LibComponents)
 add_subdirectory(CrossplatApp)
 add_subdirectory(LibOpenGL)
+add_subdirectory(LibInput)
 IF(WIN32)
 add_subdirectory(LibHLSL)
 add_subdirectory(HLSLShaders)

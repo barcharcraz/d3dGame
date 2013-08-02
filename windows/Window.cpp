@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Window.h"
-
+#include "Keys.h"
 namespace windows {
 	//----NON CLASS---------
 	size_t Run() {
@@ -26,6 +26,7 @@ namespace windows {
 		return msg.wParam;
 	}
 	LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
+		Window * win = (Window*) GetWindowLongPtr(hwnd, GWLP_USERDATA);
 		switch (msg) {
 		case WM_CLOSE:
 			DestroyWindow(hwnd);
@@ -34,6 +35,16 @@ namespace windows {
 			PostQuitMessage(0);
 			break;
 		case WM_ERASEBKGND:
+			break;
+		case WM_KEYDOWN:
+			if (keymap.count(wparam) && win->onKeyDown) {
+				win->onKeyDown(keymap[wparam]);
+			}
+			break;
+		case WM_KEYUP:
+			if (keymap.count(wparam) && win->onKeyUp) {
+				win->onKeyUp(keymap[wparam]);
+			}
 			break;
 		default:
 			return DefWindowProc(hwnd, msg, wparam, lparam);

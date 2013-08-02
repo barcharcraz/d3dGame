@@ -1,7 +1,59 @@
 #pragma once
 #include <map>
-#include <LibCommon/Keys.h>
+#include <LibInput/Keys.h>
 namespace windows {
-	std::map<int, LibCommon::Keys> windows_keymap;
-	std::map<int, LibCommon::Keys>& getKeymap();
+	std::map<int, Input::Keys> windows_keymap;
+	std::map<int, Input::Keys>& getKeymap();
+	std::map<int, Input::Keys> keymap {
+		{ 0x41, Input::A },
+		{ 0x42, Input::B },
+		{ 0x43, Input::C },
+		{ 0x44, Input::D },
+		{ 0x45, Input::E },
+		{ 0x46, Input::F },
+		{ 0x47, Input::G },
+		{ 0x48, Input::H },
+		{ 0x49, Input::I },
+		{ 0x4A, Input::J },
+		{ 0x4B, Input::K },
+		{ 0x4C, Input::L },
+		{ 0x4D, Input::M },
+		{ 0x4E, Input::N },
+		{ 0x4F, Input::O },
+		{ 0x50, Input::P },
+		{ 0x51, Input::Q },
+		{ 0x52, Input::R },
+		{ 0x53, Input::S },
+		{ 0x54, Input::T },
+		{ 0x55, Input::U },
+		{ 0x56, Input::V },
+		{ 0x57, Input::W },
+		{ 0x58, Input::X },
+		{ 0x59, Input::Y },
+		{ 0x5A, Input::Z },
+		{ 0x30, Input::Num0 },
+		{ 0x31, Input::Num1 },
+		{ 0x32, Input::Num2 },
+		{ 0x33, Input::Num3 },
+		{ 0x34, Input::Num4 },
+		{ 0x35, Input::Num5 },
+		{ 0x36, Input::Num6 },
+		{ 0x37, Input::Num7 },
+		{ 0x38, Input::Num8 },
+		{ 0x39, Input::Num9 },
+		{ VK_NUMPAD0, Input::Numpad0 },
+		{ VK_NUMPAD1, Input::Numpad1 },
+		{ VK_NUMPAD2, Input::Numpad2 },
+		{ VK_NUMPAD3, Input::Numpad3 },
+		{ VK_NUMPAD4, Input::Numpad4 },
+		{ VK_NUMPAD5, Input::Numpad5 },
+		{ VK_NUMPAD6, Input::Numpad6 },
+		{ VK_NUMPAD7, Input::Numpad7 },
+		{ VK_NUMPAD8, Input::Numpad8 },
+		{ VK_NUMPAD9, Input::Numpad9 },
+		{ VK_UP, Input::Up },
+		{ VK_DOWN, Input::Down },
+		{ VK_LEFT, Input::Left },
+		{VK_RIGHT, Input::Right}
+	};
 }
