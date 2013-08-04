@@ -7,7 +7,7 @@ namespace LibShaders {
 	{
 
 	}
-	CComPtr<ID3D11VertexShader> HLSLVertexShader::getShader(ID3D11Device * pDev) {
+	CComPtr<ID3D11VertexShader> HLSLVertexShader::getShader(CComPtr<ID3D11Device> pDev) {
 		if (!_pShader) {
 			auto ext = utils::getFileExtension(_filename);
 			if (ext == "cso") {
@@ -18,13 +18,13 @@ namespace LibShaders {
 		}
 		return _pShader;
 	}
-	CComPtr<ID3D11InputLayout> HLSLVertexShader::getInputLayout(ID3D11Device* pDev) {
+	CComPtr<ID3D11InputLayout> HLSLVertexShader::getInputLayout(CComPtr<ID3D11Device> pDev) {
 		if (!_pLayout) {
 			_pShader = getShader(pDev);
 		}
 		return _pLayout;
 	}
-	CComPtr<ID3D11VertexShader> HLSLVertexShader::loadCompiledFile(ID3D11Device* pDev) {
+	CComPtr<ID3D11VertexShader> HLSLVertexShader::loadCompiledFile(CComPtr<ID3D11Device> pDev) {
 		auto content = utils::slurpBinary(_filename);
 		CComPtr<ID3D11VertexShader> vs;
 		HRESULT hr = S_OK;
@@ -40,7 +40,7 @@ namespace LibShaders {
 		_pLayout = layout;
 		return vs;
 	}
-	CComPtr<ID3D11VertexShader> HLSLVertexShader::loadTextFile(ID3D11Device* pDev) {
+	CComPtr<ID3D11VertexShader> HLSLVertexShader::loadTextFile(CComPtr<ID3D11Device> pDev) {
 		CComPtr<ID3DBlob> shaderCode;
 		HRESULT hr = S_OK;
 		hr = D3DCompileFromFile(utils::widen(_filename).c_str(), nullptr, nullptr, "main", "vs_5_0", D3DCOMPILE_DEBUG, 0, &shaderCode, nullptr);

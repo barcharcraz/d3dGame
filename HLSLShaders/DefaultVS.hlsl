@@ -5,9 +5,14 @@ struct VertexInput {
 	float4 pos : POSITION;
 	float4 uv : COLOR;
 };
-float4 main( VertexInput input ) : SV_POSITION
+struct VertexOutput {
+	float4 Pos : SV_POSITION;
+	float4 Color : COLOR;
+};
+VertexOutput main( VertexInput input )
 {
-	float4 retval = mul(mvp, input.pos);
-	retval /= retval.w;
+	VertexOutput retval;
+	retval.Pos = mul(mvp, input.pos);
+	retval.Color = input.uv;
 	return retval;
 }

@@ -22,7 +22,7 @@ namespace LibDirect3D {
 		Eigen::Matrix4f cameraTransform;
 		CComPtr<ID3D11Buffer> _pTransformBuffer;
 
-		CComPtr<ID3D11Device2> pDev;
-		CComPtr<ID3D11DeviceContext2> pCtx;
+		CComPtr<ID3D11Device> pDev;
+		CComPtr<ID3D11DeviceContext> pCtx;
 	};
 }

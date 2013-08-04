@@ -15,6 +15,7 @@ namespace windows {
 		void Show();
 		void AttachInput(Input::Input* input);
 		void ClearInput();
+		void Update();
 		std::function<void(Input::Keys)> onKeyDown;
 		std::function<void(Input::Keys)> onKeyUp;
 		std::function<void(long dx, long dy)> onMouseMove;
@@ -26,6 +27,7 @@ namespace windows {
 		int handleRaw(HRAWINPUT raw);
 		WNDCLASSEX _class;
 		HWND _hwnd;
+		Input::Input* _input;
 	};
 	
 

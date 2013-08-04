@@ -6,6 +6,7 @@ set(input_files
 	Input.h
 	Axis.h
 	Axis.cpp
+	DeviceTypes.h
 	stdafx.h
 	stdafx.cpp
 	)

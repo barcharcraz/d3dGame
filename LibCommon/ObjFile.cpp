@@ -78,6 +78,7 @@ namespace LibCommon {
 				uvs.push_back(parseUV(curLine));
 			}
 		}
+		std::reverse(indices.begin(), indices.end());
 		_points = std::move(points);
 		_indices = std::move(indices);
 		_uvIndices = std::move(uvIndices);

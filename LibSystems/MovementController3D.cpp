@@ -14,22 +14,25 @@ namespace Systems {
 		using namespace Eigen;
 		auto vel = e->Get<Velocity3D>();
 		auto inp = e->Get<In::Input>();
-		Vector3f newVel = Vector3f::Zero();
+		Affine3f newVel( Affine3f::Identity() );
+		auto rotY = inp->AxisAction("Horizontal");
+		auto rotX = inp->AxisAction("Vertical");
+		newVel.rotate( AngleAxisf(rotY, Vector3f::UnitY()) );
+		newVel.rotate( AngleAxisf(rotX, Vector3f::UnitX()) );
+		if (inp->Action("Left")) {
+			newVel *= Translation3f(Vector3f::UnitX());
+		}
+		if (inp->Action("Right")) {
+			newVel *= Translation3f(-Vector3f::UnitX());
+		}
+		if (inp->Action("Forward")) {
+			newVel *= Translation3f(Vector3f::UnitZ());
+		}
+		if (inp->Action("Backward")) {
+			newVel *= Translation3f(-Vector3f::UnitZ());
+		}
 		
-		if (inp->ActionStatus("Left")) {
-			newVel += Vector3f::UnitX();
-		}
-		if (inp->ActionStatus("Right")) {
-			newVel -= Vector3f::UnitX();
-		}
-		if (inp->ActionStatus("Forward")) {
-			newVel += Vector3f::UnitZ();
-		}
-		if (inp->ActionStatus("Backward")) {
-			newVel -= Vector3f::UnitZ();
-		}
-		
-		vel->velocity.translation() = newVel;
+		vel->velocity = std::move(newVel);
 
 	}
 }

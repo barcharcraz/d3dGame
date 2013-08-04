@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Window.h"
 #include "Keys.h"
+#include <LibInput/Axis.h>
+#include <LibInput/DeviceTypes.h>
 namespace windows {
 	//----NON CLASS---------
 	size_t Run() {
@@ -19,7 +21,8 @@ namespace windows {
 					DispatchMessage(&msg);
 				}
 				else {
-					win->update();
+					win->Update();
+					
 				}
 			}
 		}
@@ -39,13 +42,13 @@ namespace windows {
 		case WM_INPUT:
 			win->handleRaw((HRAWINPUT) lparam);
 		case WM_KEYDOWN:
-			if (input_keymap.count(wparam) && win->onKeyDown) {
-				win->onKeyDown(input_keymap[wparam]);
+			if (input_keymap.count(wparam) && win->_input) {
+				win->_input->ActivateKey(input_keymap[wparam]);
 			}
 			break;
 		case WM_KEYUP:
-			if (input_keymap.count(wparam) && win->onKeyUp) {
-				win->onKeyUp(input_keymap[wparam]);
+			if (input_keymap.count(wparam) && win->_input) {
+				win->_input->DeactivateKey(input_keymap[wparam]);
 			}
 			break;
 		default:
@@ -69,10 +72,17 @@ namespace windows {
 		UpdateWindow(_hwnd);
 		
 	}
+	void Window::Update() {
+		update();
+		auto dev = _input->Device(Input::MouseType);
+		dev->axes[Input::AxisName::X].SetPosition(0.0f);
+		dev->axes[Input::AxisName::Y].SetPosition(0.0f);
+	}
 	void Window::AttachInput(Input::Input* input) {
-		using namespace std::placeholders;
-		onKeyUp = [input](Input::Keys k){input->DeactivateKey(k); };
-		onKeyDown = [input](Input::Keys k){input->ActivateKey(k); };
+		_input = input;
+		//using namespace std::placeholders;
+		//onKeyUp = [input](Input::Keys k){input->DeactivateKey(k); };
+		//onKeyDown = [input](Input::Keys k){input->ActivateKey(k); };
 	}
 	void Window::ClearInput() {
 		onKeyUp = nullptr;
@@ -92,6 +102,7 @@ namespace windows {
 			throw std::exception("failed to create window");
 		}
 		SetWindowLongPtr(_hwnd, GWLP_USERDATA, (LONG_PTR)this);
+		initRawInput();
 		
 	}
 	void Window::initDefault() {
@@ -143,9 +154,10 @@ namespace windows {
 		if (praw->header.dwType == RIM_TYPEMOUSE) {
 			long dx = praw->data.mouse.lLastX;
 			long dy = praw->data.mouse.lLastY;
-			if (onMouseMove) {
-				onMouseMove(dx, dy);
-			}
+			auto device = _input->Device({ 0x01, 0x02 });
+			device->axes[Input::AxisName::X].SetPosition(dx);
+			device->axes[Input::AxisName::Y].SetPosition(dy);
+			
 		}
 		return 0;
 	}

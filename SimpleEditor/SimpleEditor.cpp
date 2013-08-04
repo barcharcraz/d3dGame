@@ -41,14 +41,14 @@ int main(int argc, char** argv)
 	
 	ComInitialize com;
 	//Direct3DRenderer d3dRender;
-	//CComPtr<ID3D11Debug> pDebug;
-	//d3dRender.getDevice()->QueryInterface(IID_PPV_ARGS(&pDebug));
+	
 	const std::vector<D3D11_INPUT_ELEMENT_DESC> defaultLayout = {
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
 	LibDirect3D::Direct3DRenderer * render = new LibDirect3D::Direct3DRenderer(win.Hwnd());
-
+	//CComPtr<ID3D11Debug> pDebug;
+	//render->m_pDevice->QueryInterface(IID_PPV_ARGS(&pDebug));
 	LibShaders::HLSLPixelShader ps("DefaultPS.cso");
 	LibShaders::HLSLVertexShader vs("DefaultVS.cso", defaultLayout);
 	auto shaders = std::make_unique<LibShaders::HLSLShaderSet>(vs, ps);
@@ -56,18 +56,20 @@ int main(int argc, char** argv)
 	LibCommon::ObjFile modelFile("Torus.obj");
 	Entity * model = new Entity();
 	Entity * camera = new Entity();
-	Transform3D * transform = new Transform3D(Eigen::Affine3f(Eigen::Translation3f(0, 0, -10) * Eigen::AngleAxisf(1.2f, Eigen::Vector3f::UnitX())));
+	Transform3D * transform = new Transform3D(Eigen::Affine3f(Eigen::Translation3f(0, 0, -10)));
 	Velocity3D * vel = new Velocity3D(Eigen::Affine3f::Identity());
-	Transform3D * camPos = new Transform3D(Eigen::Affine3f::Identity());
+	Transform3D * camPos = new Transform3D(Eigen::Affine3f(Eigen::AngleAxisf(0.5f, Eigen::Vector3f::UnitX())));
 	Camera * cam = new Camera();
 	Model * mod = new Model(modelFile.verts(), modelFile.indices());
 	MovementController3D * control = new MovementController3D();
 	VelocitySystem3D * velsys = new VelocitySystem3D();
 	Input::Input * input = new Input::Input();
-	input->AddAction("Left", Input::Keys::Left );
-	input->AddAction("Right", Input::Keys::Right);
-	input->AddAction("Forward", Input::Keys::Up);
-	input->AddAction("Backward", Input::Keys::Down);
+	input->AddAction("Left", Input::Keys::A );
+	input->AddAction("Right", Input::Keys::D);
+	input->AddAction("Forward", Input::Keys::W);
+	input->AddAction("Backward", Input::Keys::S);
+	input->AddAxisAction("Horizontal", Input::MouseType, Input::AxisName::X);
+	input->AddAxisAction("Vertical", Input::MouseType, Input::AxisName::Y);
 	win.AttachInput(input);
 	Shaders * shadersComp = new Shaders(shaders.get());
 	camera->AddComponent(cam);
@@ -94,11 +96,12 @@ int main(int argc, char** argv)
 		
 		
 	};
-	//pDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
+	
 	
 	auto rv = Run();
 
 	delete sce;
+	//pDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 	return rv;
 	
 	

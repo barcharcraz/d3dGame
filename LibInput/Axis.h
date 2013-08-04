@@ -3,13 +3,14 @@
 #include <string>
 namespace Input {
 	class Axis {
-		Axis(const std::string& name);
-		explicit operator float();
+	public:
+		Axis();
+		explicit operator float() const;
+		void SetPosition(long newPos);
 	private:
 		long _ceil;
 		float _deadzone;
 		long _pos;
-		std::string _name;
 	};
 }
 
