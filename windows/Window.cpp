@@ -36,14 +36,16 @@ namespace windows {
 			break;
 		case WM_ERASEBKGND:
 			break;
+		case WM_INPUT:
+			win->handleRaw((HRAWINPUT) lparam);
 		case WM_KEYDOWN:
-			if (keymap.count(wparam) && win->onKeyDown) {
-				win->onKeyDown(keymap[wparam]);
+			if (input_keymap.count(wparam) && win->onKeyDown) {
+				win->onKeyDown(input_keymap[wparam]);
 			}
 			break;
 		case WM_KEYUP:
-			if (keymap.count(wparam) && win->onKeyUp) {
-				win->onKeyUp(keymap[wparam]);
+			if (input_keymap.count(wparam) && win->onKeyUp) {
+				win->onKeyUp(input_keymap[wparam]);
 			}
 			break;
 		default:
@@ -66,6 +68,15 @@ namespace windows {
 		ShowWindow(_hwnd, SW_SHOWDEFAULT);
 		UpdateWindow(_hwnd);
 		
+	}
+	void Window::AttachInput(Input::Input* input) {
+		using namespace std::placeholders;
+		onKeyUp = [input](Input::Keys k){input->DeactivateKey(k); };
+		onKeyDown = [input](Input::Keys k){input->ActivateKey(k); };
+	}
+	void Window::ClearInput() {
+		onKeyUp = nullptr;
+		onKeyDown = nullptr;
 	}
 	//-----------PRIVATE-------------------
 	void Window::init(int w, int h) {
@@ -100,6 +111,43 @@ namespace windows {
 		if (!registerResult) {
 			throw registerResult;
 		}
+	}
+	void Window::initRawInput() {
+		RAWINPUTDEVICE Rid;
+		Rid.dwFlags = RIDEV_NOLEGACY;
+		Rid.hwndTarget = _hwnd;
+		Rid.usUsagePage = 0x01;
+		Rid.usUsage = 0x02;
+		bool result = true;
+		result = RegisterRawInputDevices(&Rid, 1, sizeof(Rid));
+		if (!result) {
+			HRESULT hr = HRESULT_FROM_WIN32(GetLastError());
+			throw std::system_error(
+				std::error_code(hr, std::system_category()),
+				"Raw Input Registration Failed");
+		}
+	}
+	int Window::handleRaw(HRAWINPUT raw) {
+		unsigned int size;
+		unsigned int errorc;
+		GetRawInputData(raw, RID_INPUT, nullptr, &size, sizeof(RAWINPUTHEADER));
+		if (size == 0) {
+			return 0;
+		}
+		std::vector<unsigned char> data(size);
+		errorc = GetRawInputData(raw, RID_INPUT, data.data(), &size, sizeof(RAWINPUTHEADER));
+		if (errorc != size) {
+			throw std::runtime_error("raw input read did not return correct size");
+		}
+		RAWINPUT* praw = (RAWINPUT*) (data.data());
+		if (praw->header.dwType == RIM_TYPEMOUSE) {
+			long dx = praw->data.mouse.lLastX;
+			long dy = praw->data.mouse.lLastY;
+			if (onMouseMove) {
+				onMouseMove(dx, dy);
+			}
+		}
+		return 0;
 	}
 	HWND Window::Hwnd() {
 		return _hwnd;

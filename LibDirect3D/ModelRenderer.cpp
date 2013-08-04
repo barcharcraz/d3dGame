@@ -15,8 +15,10 @@ namespace LibDirect3D {
 		
 	}
 	void ModelRenderer::Init() {
-		auto camera = parent->SelectEntity({ typeid(Components::Camera) });
-		cameraTransform = &camera->Get<Components::Camera>()->CameraMatrix;
+		auto camera = parent->SelectEntity({ typeid(Components::Camera), typeid(Components::Transform3D) });
+		auto camcomp = camera->Get<Components::Camera>();
+		auto camtrans = camera->Get<Components::Transform3D>();
+		cameraTransform = camcomp->CameraMatrix * camtrans->transform.matrix();
 		createConstantBuffers();
 	}
 	void ModelRenderer::createConstantBuffers() {
@@ -80,7 +82,7 @@ namespace LibDirect3D {
 		using namespace LibCommon;
 		HRESULT hr = S_OK;
 		
-		auto worldViewTransform = (*cameraTransform) * transform.transform.matrix();
+		auto worldViewTransform = (cameraTransform) * transform.transform.matrix();
 		constTransforms.worldView = worldViewTransform;
 		D3D11_MAPPED_SUBRESOURCE map;
 		map.pData = 0;
@@ -90,7 +92,7 @@ namespace LibDirect3D {
 		if (FAILED(hr)) {
 			throw hr;
 		}
-		Eigen::Matrix4f finalTransform = (*cameraTransform) * transform.transform.matrix();
+		Eigen::Matrix4f finalTransform = (cameraTransform) * transform.transform.matrix();
 		memcpy(map.pData, &finalTransform, sizeof(finalTransform));
 		pCtx->Unmap(_pTransformBuffer, 0);
 

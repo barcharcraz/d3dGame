@@ -2,7 +2,6 @@
 //
 
 #include "stdafx.h"
-
 #include "SimpleEditor.h"
 #include <Windows.h>
 #include <vector>
@@ -23,6 +22,8 @@
 #include <LibComponents/Transform.h>
 #include <LibComponents/Model.h>
 #include <LibComponents/Shaders.h>
+#include <LibSystems/MovementController3D.h>
+#include <LibSystems/VelocitySystem3D.h>
 #include <windowing.h>
 #include <map>
 #include <typeindex>
@@ -31,6 +32,7 @@
 using namespace LibCommon;
 using namespace windows;
 using namespace Components;
+using namespace Systems;
 int main(int argc, char** argv)
 {
 	Window win(640, 480);
@@ -54,23 +56,34 @@ int main(int argc, char** argv)
 	LibCommon::ObjFile modelFile("Torus.obj");
 	Entity * model = new Entity();
 	Entity * camera = new Entity();
-	Transform3D * transform = new Transform3D(Eigen::Affine3f(Eigen::Translation3f(0, 0, -10)));
-	Velocity3D * vel = new Velocity3D(Eigen::Affine3f(Eigen::AngleAxisf(0.2f, Eigen::Vector3f::UnitX())));
+	Transform3D * transform = new Transform3D(Eigen::Affine3f(Eigen::Translation3f(0, 0, -10) * Eigen::AngleAxisf(1.2f, Eigen::Vector3f::UnitX())));
+	Velocity3D * vel = new Velocity3D(Eigen::Affine3f::Identity());
 	Transform3D * camPos = new Transform3D(Eigen::Affine3f::Identity());
 	Camera * cam = new Camera();
 	Model * mod = new Model(modelFile.verts(), modelFile.indices());
+	MovementController3D * control = new MovementController3D();
+	VelocitySystem3D * velsys = new VelocitySystem3D();
+	Input::Input * input = new Input::Input();
+	input->AddAction("Left", Input::Keys::Left );
+	input->AddAction("Right", Input::Keys::Right);
+	input->AddAction("Forward", Input::Keys::Up);
+	input->AddAction("Backward", Input::Keys::Down);
+	win.AttachInput(input);
 	Shaders * shadersComp = new Shaders(shaders.get());
 	camera->AddComponent(cam);
 	camera->AddComponent(camPos);
+	camera->AddComponent(vel);
+	camera->AddComponent(input);
 	LibDirect3D::ModelRenderer * renderComp = new LibDirect3D::ModelRenderer(*render);
 	model->AddComponent(transform);
-	model->AddComponent(vel);
 	model->AddComponent(mod);
 	model->AddComponent(shadersComp);
 	Scene * sce = new Scene(render);
 	sce->AddSystem(renderComp);
+	sce->AddSystem(control);
 	sce->AddEntity(model);
 	sce->AddEntity(camera);
+	sce->AddSystem(velsys);
 	//context.DrawShapes(commands);
 	//factory.getSwapChain()->Present(1,0);
 	

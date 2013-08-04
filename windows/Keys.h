@@ -2,9 +2,7 @@
 #include <map>
 #include <LibInput/Keys.h>
 namespace windows {
-	std::map<int, Input::Keys> windows_keymap;
-	std::map<int, Input::Keys>& getKeymap();
-	std::map<int, Input::Keys> keymap {
+	static std::map<int, Input::Keys> input_keymap = {
 		{ 0x41, Input::A },
 		{ 0x42, Input::B },
 		{ 0x43, Input::C },
@@ -54,6 +52,6 @@ namespace windows {
 		{ VK_UP, Input::Up },
 		{ VK_DOWN, Input::Down },
 		{ VK_LEFT, Input::Left },
-		{VK_RIGHT, Input::Right}
+		{ VK_RIGHT, Input::Right }
 	};
 }

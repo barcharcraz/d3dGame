@@ -7,6 +7,10 @@ namespace Input {
 	class KeyCombination {
 	public:
 		KeyCombination(std::initializer_list<Keys> combo);
+		//! \brief Constructs a key combination with
+		//! only the specified key active
+		KeyCombination(Keys);
+		KeyCombination();
 		void Clear();
 		void Clear(Keys key);
 		void Set(Keys key);

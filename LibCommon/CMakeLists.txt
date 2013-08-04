@@ -30,10 +30,8 @@ source_group("Source Files\\Messages" FILES
 	)
 source_group("Header Files\\Systems" FILES
 	System.h
-	VelocitySystem3D.h
 	)
 source_group("Source Files\\Systems" FILES
 	System.cpp
-	VelocitySystem3D.cpp
 	)
 

@@ -19,7 +19,7 @@ namespace LibDirect3D {
 		CComPtr<ID3D11Buffer> createVertexBuffer(const Components::Model& model);
 		void updateTransformBuffer(const Components::Transform3D& transform);
 		LibCommon::Transforms constTransforms;
-		const Eigen::Matrix4f* cameraTransform;
+		Eigen::Matrix4f cameraTransform;
 		CComPtr<ID3D11Buffer> _pTransformBuffer;
 
 		CComPtr<ID3D11Device2> pDev;

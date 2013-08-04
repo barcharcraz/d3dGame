@@ -8,4 +8,4 @@ set(editor_src
 	)
 
 add_executable(SimpleEditor WIN32 ${editor_src})
-target_link_libraries(SimpleEditor LibDXGI LibDirect3D LibCommon windows LibComponents LibHLSL Input)
+target_link_libraries(SimpleEditor LibDXGI LibDirect3D LibCommon windows LibComponents LibHLSL Input Systems)

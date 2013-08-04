@@ -7,6 +7,13 @@ namespace Input {
 			_combo[key] = true;
 		}
 	}
+	KeyCombination::KeyCombination(Keys key) {
+		_combo.fill(false);
+		_combo[key] = true;
+	}
+	KeyCombination::KeyCombination() {
+		_combo.fill(false);
+	}
 	void KeyCombination::Clear() {
 		_combo.fill(false);
 	}

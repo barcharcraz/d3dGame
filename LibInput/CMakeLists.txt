@@ -4,6 +4,8 @@ set(input_files
 	Keys.h
 	KeyCombination.h
 	Input.h
+	Axis.h
+	Axis.cpp
 	stdafx.h
 	stdafx.cpp
 	)

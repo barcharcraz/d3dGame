@@ -30,6 +30,8 @@ namespace utils {
 		}
 		trim(in);
 	}
+#pragma warning( push )
+#pragma warning( disable:4996 )
 	inline std::string narrow(const std::wstring& wstr) {
         std::mbstate_t state = std::mbstate_t();
         auto buffer = wstr.c_str();
@@ -52,6 +54,7 @@ namespace utils {
         //std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
         //return converter.from_bytes(nstr);
 	}
+#pragma warning( pop )
 }
 
 
