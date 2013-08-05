@@ -29,6 +29,7 @@ namespace windows {
 		return msg.wParam;
 	}
 	LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
+		unsigned int wpint = static_cast<unsigned int>(wparam);
 		Window * win = (Window*) GetWindowLongPtr(hwnd, GWLP_USERDATA);
 		switch (msg) {
 		case WM_CLOSE:
@@ -41,14 +42,15 @@ namespace windows {
 			break;
 		case WM_INPUT:
 			win->handleRaw((HRAWINPUT) lparam);
+			break;
 		case WM_KEYDOWN:
-			if (input_keymap.count(wparam) && win->_input) {
-				win->_input->ActivateKey(input_keymap[wparam]);
+			if (input_keymap.count(wpint) && win->_input) {
+				win->_input->ActivateKey(input_keymap[wpint]);
 			}
 			break;
 		case WM_KEYUP:
-			if (input_keymap.count(wparam) && win->_input) {
-				win->_input->DeactivateKey(input_keymap[wparam]);
+			if (input_keymap.count(wpint) && win->_input) {
+				win->_input->DeactivateKey(input_keymap[wpint]);
 			}
 			break;
 		default:
@@ -75,8 +77,8 @@ namespace windows {
 	void Window::Update() {
 		update();
 		auto dev = _input->Device(Input::MouseType);
-		dev->axes[Input::AxisName::X].SetPosition(0.0f);
-		dev->axes[Input::AxisName::Y].SetPosition(0.0f);
+		dev->axes[Input::AxisName::X].SetPosition(0);
+		dev->axes[Input::AxisName::Y].SetPosition(0);
 	}
 	void Window::AttachInput(Input::Input* input) {
 		_input = input;
@@ -130,7 +132,7 @@ namespace windows {
 		Rid.usUsagePage = 0x01;
 		Rid.usUsage = 0x02;
 		bool result = true;
-		result = RegisterRawInputDevices(&Rid, 1, sizeof(Rid));
+		result = RegisterRawInputDevices(&Rid, 1, sizeof(Rid)) != 0;
 		if (!result) {
 			HRESULT hr = HRESULT_FROM_WIN32(GetLastError());
 			throw std::system_error(

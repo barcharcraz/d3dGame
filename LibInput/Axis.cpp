@@ -3,13 +3,13 @@
 #include <Utils/math.h>
 namespace Input {
 	Axis::Axis()
-		: _ceil(100), _deadzone(0.01f), _pos(0.0f)
+		: _ceil(100), _deadzone(0.01f), _pos(0)
 	{
 
 	}
 	Axis::operator float() const {
-		float cval = utils::clamp(_pos, -_ceil, _ceil);
-		float ceil = _ceil;
+		float cval = float(utils::clamp(_pos, -_ceil, _ceil));
+		float ceil = float(_ceil);
 		auto retval = cval / ceil;
 		if (abs(retval) < _deadzone) {
 			return 0.0f;

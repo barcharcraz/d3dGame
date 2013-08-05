@@ -22,11 +22,12 @@ int CALLBACK wWinMain(HINSTANCE hinstance, HINSTANCE hPrevInstance, LPWSTR cmdLi
 		argv[i][narrowParams[i].size()] = '\0';
 
 	}
-	return main(argc, argv);
+	auto retval = main(argc, argv);
 	//this is to satisfy memory checkers and what have you
 	//the process is going away anyways
 	for (int i = 0; i < argc; ++i) {
 		delete[] argv[i];
 	}
 	delete[] argv;
+	return retval;
 }

@@ -39,11 +39,11 @@ namespace LibCommon {
 			//from this information we can find the associated UV value
 			auto indexIterators = std::find(_indices.begin(), _indices.end(), i+1);
 			if (indexIterators == _indices.end()) {
-				retval[i].uv = Eigen::Vector4f(0, 0, 0, 0);
+				retval[i].uv = Eigen::Vector3f(0, 0, 0);
 			} else {
 				int indexPos = static_cast<int>(indexIterators - _indices.begin());
 				int uvIndex = _uvIndices[indexPos];
-				retval[i].uv << _uvs[uvIndex], 0;
+				retval[i].uv << _uvs[uvIndex];
 			}
 
 		}

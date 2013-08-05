@@ -5,7 +5,7 @@
 namespace LibCommon {
 	struct Vertex {
 		Eigen::Vector4f pos;
-		Eigen::Vector4f uv;
+		Eigen::Vector3f uv;
 	};
 
 	struct Transforms {

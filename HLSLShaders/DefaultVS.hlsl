@@ -3,16 +3,16 @@ cbuffer constants {
 }
 struct VertexInput {
 	float4 pos : POSITION;
-	float4 uv : COLOR;
+	float3 uv : TEXCOORD;
 };
 struct VertexOutput {
 	float4 Pos : SV_POSITION;
-	float4 Color : COLOR;
+	float3 uv : TEXCOORD;
 };
 VertexOutput main( VertexInput input )
 {
 	VertexOutput retval;
 	retval.Pos = mul(mvp, input.pos);
-	retval.Color = input.uv;
+	retval.uv = input.uv;
 	return retval;
 }

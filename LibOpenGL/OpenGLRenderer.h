@@ -1,6 +1,6 @@
 #ifndef LIBOPENGL_RENDERER_H
 #define LIBOPENGL_RENDERER_H
-extern 
+
 namespace LibOpenGL {
 	class OpenGLRenderer {
 	public:

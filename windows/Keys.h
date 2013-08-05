@@ -2,7 +2,7 @@
 #include <map>
 #include <LibInput/Keys.h>
 namespace windows {
-	static std::map<int, Input::Keys> input_keymap = {
+	static std::map<unsigned int, Input::Keys> input_keymap = {
 		{ 0x41, Input::A },
 		{ 0x42, Input::B },
 		{ 0x43, Input::C },
