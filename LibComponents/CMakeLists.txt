@@ -7,6 +7,8 @@ set(libcomponents_files
 	IComponent.h
 	Shaders.h
 	Shaders.cpp
+	Texture.h
+	Texture.cpp
 	stdafx.h
 	stdafx.cpp
 	)

@@ -1,7 +1,9 @@
 #ifndef LIBIMAGE_TARGA_H
 #define LIBIMAGE_TARGA_H
 #include <vector>
+#include <string>
 namespace Image {
+	struct ImageData;
 	namespace Targa {
 		enum ColorMapType : unsigned char {
 			NO_COLOR_MAP = 0,
@@ -48,9 +50,11 @@ namespace Image {
 			ImageSpec image_spec;
 			std::vector<unsigned char> color_map_data;
 			std::vector<unsigned char> image_data;
+			explicit operator ImageData();
 		};
 		TargaFile LoadTarga(const std::string& filename);
 	}
+
 }
 
 #endif

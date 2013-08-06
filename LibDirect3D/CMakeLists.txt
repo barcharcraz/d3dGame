@@ -6,6 +6,8 @@ set(libd3d_src
 	ModelRenderer.h
 	ModelRenderer.cpp
 	DataFormats.h
+	Direct3DTexture.h
+	Direct3DTexture.cpp
 	stdafx.h
 	stdafx.cpp
 	targetver.h

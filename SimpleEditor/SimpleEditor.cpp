@@ -25,6 +25,7 @@
 #include <LibSystems/MovementController3D.h>
 #include <LibSystems/VelocitySystem3D.h>
 #include <windowing.h>
+#include <LibImage/targa.h>
 #include <map>
 #include <typeindex>
 
@@ -41,7 +42,7 @@ int main(int argc, char** argv)
 	
 	ComInitialize com;
 	//Direct3DRenderer d3dRender;
-	
+	Image::Targa::TargaFile f = Image::Targa::LoadTarga("Textures/wood_black/diffuse.tga");
 	const std::vector<D3D11_INPUT_ELEMENT_DESC> defaultLayout = {
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
