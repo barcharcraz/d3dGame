@@ -21,7 +21,7 @@ namespace xwindows {
 		//!        640x480
 		Window();
 		Window(int w, int h);
-		XID WinID();
+		XID WinID() const;
 		void Show();
 		std::function<void()> update;
 	private:

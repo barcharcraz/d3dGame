@@ -26,7 +26,7 @@ namespace std {
 	template<>
 	struct hash<Input::DeviceType> {
 	public:
-		std::size_t operator()(const Input::DeviceType& other) {
+		std::size_t operator()(const Input::DeviceType& other) const noexcept {
 			auto h1 = std::hash<short>()(other.usage_page);
 			auto h2 = std::hash<short>()(other.usage);
 			return h1 ^ (h2 << 1);

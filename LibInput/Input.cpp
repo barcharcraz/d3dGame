@@ -7,7 +7,8 @@ namespace Input {
 		_actions.emplace(name, action);
 	}
 	void Input::AddAxisAction(const std::string& name, DeviceType type, AxisName axis) {
-		_axisActions.emplace(name, _devices[type].axes[axis]);
+		Axis& dat = _devices[type].axes[axis];
+		_axisActions.emplace(std::pair<std::string, Axis&>{name, dat});
 	}
 	void Input::ActivateKey(Keys key) {
 		_pressed.Set(key);

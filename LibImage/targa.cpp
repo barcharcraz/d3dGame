@@ -42,7 +42,7 @@ namespace Image {
 			retval.color_map_data.resize(retval.color_map_spec.length * retval.color_map_spec.bpp, 0);
 			if (retval.color_map_spec.length > 0) {
 				file.seekg(retval.color_map_spec.offset);
-				file.read((char*) (retval.color_map_data[0]), retval.color_map_spec.length * retval.color_map_spec.bpp);
+				file.read((char*) (&retval.color_map_data[0]), retval.color_map_spec.length * retval.color_map_spec.bpp);
 			}
 			//size in bytes of the image data
 			int image_size = retval.image_spec.width * retval.image_spec.height * retval.image_spec.pixel_depth;
@@ -63,7 +63,7 @@ namespace Image {
 		TargaFile::operator Image::ImageData() {
 			ImageData retval;
 			if (this->image_spec.pixel_depth == 24 && this->image_spec.alpha_depth == 0) {
-				retval.format = Formats::R8B8G8_UNORM;
+				retval.format = Formats::R8G8B8_UNORM;
 			} else if (this->image_spec.pixel_depth == 32 && this->image_spec.alpha_depth == 8) {
 				retval.format = Formats::R8G8B8A8_UNORM;
 			} else {
