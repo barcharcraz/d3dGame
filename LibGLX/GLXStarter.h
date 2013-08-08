@@ -15,10 +15,12 @@ namespace LibGLX {
 		GLXStarter(Display* dpy, XID win);
 		void init(Display* dpy, XID win, XID root);
 	private:
+		void initFBConfig();
+
 		XID _winID;
 		XID _rootID;
 		Display* _dpy;
-		GLXFBConfig* _fbConfigs;
+		GLXFBConfig* _fbConfig;
 	};
 }
 
