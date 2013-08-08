@@ -6,5 +6,6 @@ set(libimage_files
 	conversions.h
 	conversions.cpp
 	image.h
+	image.cpp
 	)
 add_library(Image STATIC ${libimage_files})

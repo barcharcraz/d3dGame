@@ -4,5 +4,6 @@ set(util_src
 	math.h
 	exceptions.h
 	endian.h
+	sets.h
 	)
 add_custom_target(utils SOURCES ${util_src})

@@ -1,6 +1,7 @@
 #ifndef LIBIMAGE_IMAGE_H
 #define LIBIMAGE_IMAGE_H
 #include <vector>
+#include <string>
 namespace Image {
 
 	enum class Formats {
@@ -13,6 +14,7 @@ namespace Image {
 		unsigned short height;
 		std::vector<unsigned char> data;
 	};
+	ImageData LoadImage(const std::string& filename);
 	
 }
 
