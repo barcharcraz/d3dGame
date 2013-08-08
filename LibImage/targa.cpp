@@ -42,12 +42,22 @@ namespace Image {
 			retval.color_map_data.resize(retval.color_map_spec.length * retval.color_map_spec.bpp, 0);
 			if (retval.color_map_spec.length > 0) {
 				file.seekg(retval.color_map_spec.offset);
-				file.read((char*) (&retval.color_map_data[0]), retval.color_map_spec.length * retval.color_map_spec.bpp);
+				file.read((char*) (&retval.color_map_data[0]), retval.color_map_spec.length * (retval.color_map_spec.bpp / 8));
 			}
 			//size in bytes of the image data
-			int image_size = retval.image_spec.width * retval.image_spec.height * retval.image_spec.pixel_depth;
+			int image_size = retval.image_spec.width * retval.image_spec.height * (retval.image_spec.pixel_depth/8);
 			retval.image_data.resize(image_size, 0);
 			file.read((char*) (&retval.image_data[0]), image_size);
+			if (retval.image_spec.origin == BOTTOM_RIGHT) {
+				std::reverse(retval.image_data.begin(), retval.image_data.end());
+			}
+			if (retval.image_spec.origin == BOTTOM_LEFT) {
+				for (unsigned int i = 0; i < retval.image_spec.height; ++i) {
+					auto lineStart = retval.image_data.begin() += i * retval.image_spec.width * (retval.image_spec.pixel_depth / 8);
+					auto lineEnd = retval.image_data.begin() += (i + 1) * retval.image_spec.width * (retval.image_spec.pixel_depth / 8);
+					std::reverse(lineStart, lineEnd);
+				}
+			}
 			return retval;
 
 		}

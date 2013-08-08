@@ -29,8 +29,4 @@ namespace LibDirect3D {
 		D3D_FEATURE_LEVEL_9_2,
 		D3D_FEATURE_LEVEL_9_1
 	};
-	std::map<Image::Formats, DXGI_FORMAT> DXGIFormats = {
-		{Image::Formats::R8B8G8_UNORM, DXGI_FORMAT_UNKNOWN},
-		{Image::Formats::R8G8B8A8_UNORM, DXGI_FORMAT_R8G8B8A8_UNORM}
-	};
 }

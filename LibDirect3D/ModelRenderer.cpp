@@ -1,11 +1,13 @@
 #include "stdafx.h"
 #include "ModelRenderer.h"
+#include "Direct3DTexture.h"
 #include <LibCommon/Data.h>
 #include <LibComponents/Model.h>
 #include <LibComponents/Transform.h>
 #include <LibComponents/Camera.h>
 #include <LibCommon/Scene.h>
 #include <LibComponents/Shaders.h>
+#include <LibComponents/Texture.h>
 #include <LibHLSL/HLSLShaderSet.h>
 namespace LibDirect3D {
 	ModelRenderer::ModelRenderer(const Direct3DRenderer& renderer)
@@ -102,6 +104,10 @@ namespace LibDirect3D {
 		auto model = e->Get<Model>();
 		auto shader = e->Get<Components::Shaders>()->HLSL();
 		auto transform = e->Get<Transform3D>();
+		auto texture = e->GetOptional<Texture>();
+		if (texture) {
+			texture->D3DTex()->SetRenderState(pDev, pCtx);
+		}
 		if (_pTransformBuffer == nullptr) {
 			createConstantBuffers();
 		}

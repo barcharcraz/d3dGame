@@ -6,6 +6,9 @@ namespace LibCommon {
 	Entity::Entity() {
 		
 	}
+	Entity::~Entity() {
+
+	}
 	void Entity::AddComponent(IComponent* c) {
 		using namespace std;
 		if (_components.count(type_index(typeid(*c))) != 0) {
