@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "ModelRenderer.h"
 #include <LibComponents/Model.h>
 #include <LibComponents/Camera.h>
@@ -13,6 +14,5 @@ namespace LibOpenGL {
 	void ModelRenderer::Process(LibCommon::Entity *ent) {
 		using namespace Components;
 		auto& mod = ent->Get<Components::Model>();
-		
 	}
 }

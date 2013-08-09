@@ -10,7 +10,8 @@ namespace LibOpenGL {
         ModelRenderer();
         virtual void Process(LibCommon::Entity * ent) override;
 	private:
-		 
+		Gluint _vertexBuffer;
+		
     };
 }
 

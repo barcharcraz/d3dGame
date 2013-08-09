@@ -4,5 +4,6 @@
 #include <GL/gl.h>
 #elif defined HAS_OPENGL
 #include <OpenGL/OpenGL.h>
+#include <OpenGL/gl.h>
 #endif
 
