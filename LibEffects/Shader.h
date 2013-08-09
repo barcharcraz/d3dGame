@@ -5,6 +5,8 @@ namespace Effects {
 	class GLSLShader;
 	class Shader {
 	public:
+        Shader(HLSLShader* hlslArg);
+        Shader(GLSLShader* glslArg);
 		HLSLShader* hlsl;
 		GLSLShader* glsl;
 	};

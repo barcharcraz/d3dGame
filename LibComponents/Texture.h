@@ -1,6 +1,7 @@
 #ifndef LIBCOMPONENTS_TEXTURE_H
 #define LIBCOMPONENTS_TEXTURE_H
 #include "IComponent.h"
+#include <LibImage/image.h>
 namespace LibDirect3D {
 	class Direct3DTexture;
 }

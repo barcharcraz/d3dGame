@@ -4,7 +4,32 @@
 #include <Utils/sets.h>
 namespace Effects {
 	static std::multimap<std::set<ShaderCaps>, Shader> shaderCache;
-	void AddShader(const std::set<ShaderCaps>& caps, const Shader& shader) {
+	void AddShader(const std::set<ShaderCaps>& caps, HLSLShader* shader) {
+        if(shaderCache.count(caps) == 0) {
+            shaderCache.emplace(caps, shader);
+        } else {
+            auto range = shaderCache.equal_range(caps);
+            for(auto& i = range.first; i != range.second; ++i) {
+                if(i->second.hlsl == nullptr) {
+                    i->second.hlsl = shader;
+                }
+            }
+        }
+    }
+    void AddShader(const std::set<ShaderCaps>& caps, GLSLShader* shader) {
+        if(shaderCache.count(caps) == 0) {
+            //implicit conversion, nbd because pointers
+            shaderCache.emplace(caps, shader);
+        } else {
+            auto range = shaderCache.equal_range(caps);
+            for(auto& i = range.first; i != range.second; ++i) {
+                if(i->second.glsl == nullptr) {
+                    i->second.glsl = shader;
+                }
+            }
+        }
+    }
+    void AddShader(const std::set<ShaderCaps>& caps, const Shader& shader) {
 		if (shaderCache.count(caps) == 0) {
 			shaderCache.emplace(caps, shader);
 		} else {
@@ -18,7 +43,7 @@ namespace Effects {
 			shaderCache.emplace(caps, shader);
 		}
 	}
-
+    
 	Shader ChooseShader(const std::set<ShaderCaps>& requestedCaps) {
 		for (auto& elm : shaderCache) {
 			if (utils::subset(requestedCaps, elm.first)) {
