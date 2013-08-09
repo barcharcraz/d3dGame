@@ -6,12 +6,14 @@
 #include <LibComponents/Transform.h>
 #include <LibComponents/Camera.h>
 #include <LibCommon/Scene.h>
-#include <LibComponents/Shaders.h>
 #include <LibComponents/Texture.h>
 #include <LibHLSL/HLSLShaderSet.h>
+#include <LibHLSL/HLSLPixelShader.h>
+#include <LibHLSL/HLSLVertexShader.h>
+#include <LibComponents/Effect.h>
 namespace LibDirect3D {
 	ModelRenderer::ModelRenderer(const Direct3DRenderer& renderer)
-		: System({ typeid(Components::Model), typeid(Components::Transform3D), typeid(Components::Shaders) }), 
+		: System({ typeid(Components::Model), typeid(Components::Transform3D), typeid(Components::Effect) }), 
 		pCtx(renderer.m_pContext), pDev(renderer.m_pDevice)
 	{
 		
@@ -102,7 +104,8 @@ namespace LibDirect3D {
 	void ModelRenderer::Process(LibCommon::Entity* e) {
 		using namespace Components;
 		auto model = e->Get<Model>();
-		auto shader = e->Get<Components::Shaders>()->HLSL();
+		auto& ps = e->Get<Components::Effect>()->ps.hps;
+		auto& vs = e->Get<Components::Effect>()->vs.hvs;
 		auto transform = e->Get<Transform3D>();
 		auto texture = e->GetOptional<Texture>();
 		if (texture) {
@@ -114,14 +117,14 @@ namespace LibDirect3D {
 		CComPtr<ID3D11Buffer> indexBuffer = createIndexBuffer(*model);
 		CComPtr<ID3D11Buffer> vertexBuffer = createVertexBuffer(*model);
 		updateTransformBuffer(*transform);
-		pCtx->IASetInputLayout(shader->vs.getInputLayout(pDev));
+		pCtx->IASetInputLayout(vs->getInputLayout(pDev));
 		pCtx->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		unsigned int stride = sizeof(LibCommon::Vertex);
 		unsigned int offset = 0;
 		pCtx->IASetVertexBuffers(0, 1, &vertexBuffer.p, &stride, &offset);
 		pCtx->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
-		pCtx->VSSetShader(shader->vs.getShader(pDev), nullptr, 0);
-		pCtx->PSSetShader(shader->ps.getShader(pDev), nullptr, 0);
+		pCtx->VSSetShader(vs->getShader(pDev), nullptr, 0);
+		pCtx->PSSetShader(ps->getShader(pDev), nullptr, 0);
 		pCtx->VSSetConstantBuffers(0, 1, &_pTransformBuffer.p);
 		pCtx->DrawIndexed(static_cast<UINT>(model->indices.size()), 0, 0);
 		

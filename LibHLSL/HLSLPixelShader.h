@@ -1,7 +1,7 @@
 #pragma once
 #include "stdafx.h"
 
-namespace LibShaders {
+namespace Effects {
 	class HLSLPixelShader {
 	public:
 		HLSLPixelShader(const std::string& filename);

@@ -7,3 +7,5 @@
 #cmakedefine HAS_WIN32
 #cmakedefine GLFW3_FOUND
 #cmakedefine HAS_MAKE_UNIQUE
+#cmakedefine USE_OPENGL
+#cmakedefine USE_DIRECT3D

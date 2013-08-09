@@ -3,12 +3,13 @@
 #include <d3d11_2.h>
 #include <atlbase.h>
 #include <vector>
+#include <LibEffects/Shader.h>
 #include <Utils/strings.h>
 #include <Utils/files.h>
-namespace LibShaders {
+namespace Effects {
 	class HLSLVertexShader {
 	public:
-		HLSLVertexShader(const std::string& filename, const std::vector<D3D11_INPUT_ELEMENT_DESC>& inputDesc);
+		HLSLVertexShader(const std::string& filename, const std::vector<Effects::ShaderDesc>& inputDesc);
 		CComPtr<ID3D11VertexShader> getShader(CComPtr<ID3D11Device> pDev);
 		CComPtr<ID3D11InputLayout> getInputLayout(CComPtr<ID3D11Device> pDev);
 		

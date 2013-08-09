@@ -169,7 +169,7 @@ void Direct3DRenderer::Present() {
 	
 	m_pSwapChain->Present1(1, 0, &params);
 	
-	float color [] = { 1.0f, 0.0f, 0.0f, 0.0f };
+	float color [] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	m_pContext->OMSetRenderTargets(1, &m_pRenderTarget.p, _pdsView);
 	m_pContext->ClearRenderTargetView(m_pRenderTarget, color);
 	m_pContext->ClearDepthStencilView(_pdsView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);

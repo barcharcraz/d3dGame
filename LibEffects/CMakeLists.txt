@@ -5,5 +5,7 @@ set(effects_files
 	EffectsManagement.cpp
 	Shader.h
 	Shader.cpp
+	Effect.h
+	Effect.cpp
 	)
 add_library(Effects STATIC ${effects_files})

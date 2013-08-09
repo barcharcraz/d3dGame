@@ -9,6 +9,8 @@ set(libcomponents_files
 	Shaders.cpp
 	Texture.h
 	Texture.cpp
+	Effect.h
+	DirectionalLight.h
 	stdafx.h
 	stdafx.cpp
 	)

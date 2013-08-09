@@ -1,11 +1,22 @@
 #include "stdafx.h"
 #include "HLSLVertexShader.h"
 #include <d3dcompiler.h>
-namespace LibShaders {
-	HLSLVertexShader::HLSLVertexShader(const std::string& filename, const std::vector<D3D11_INPUT_ELEMENT_DESC>& inputDesc)
-		: _filename(filename), _desc(inputDesc)
+#include <cassert>
+namespace Effects {
+	HLSLVertexShader::HLSLVertexShader(const std::string& filename, const std::vector<Effects::ShaderDesc>& inputDesc)
+		: _filename(filename)
 	{
-
+		for (auto& desc : inputDesc) {
+			D3D11_INPUT_ELEMENT_DESC curDesc;
+			curDesc.AlignedByteOffset = desc.AlignedByteOffset;
+			curDesc.Format = static_cast<DXGI_FORMAT>(desc.Format);
+			curDesc.InputSlot = desc.InputSlot;
+			curDesc.InputSlotClass = static_cast<D3D11_INPUT_CLASSIFICATION>(desc.InputSlotClass);
+			curDesc.InstanceDataStepRate = desc.InstanceDataStepRate;
+			curDesc.SemanticIndex = desc.Index;
+			curDesc.SemanticName = desc.ElementName.c_str();
+			_desc.push_back(std::move(curDesc));
+		}
 	}
 	CComPtr<ID3D11VertexShader> HLSLVertexShader::getShader(CComPtr<ID3D11Device> pDev) {
 		if (!_pShader) {

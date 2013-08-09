@@ -4,8 +4,10 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 find_package(Eigen3 REQUIRED)
 find_package(GLFW3)
 find_package(OpenGL)
-include_directories(${EIGEN3_INCLUDE_DIR} ${PROJECT_SOURCE_DIR} ${GLFW3_INCLUDE_PATH})
-
+include_directories(${EIGEN3_INCLUDE_DIR} ${PROJECT_SOURCE_DIR})
+IF(GLFW3_FOUND)
+include_directories( ${GLFW3_INCLUDE_PATH} )
+ENDIF(GLFW3_FOUND)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/output)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/output)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/output)
@@ -18,6 +20,15 @@ ENDIF(CMAKE_COMPILER_IS_GNUCXX)
 IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
     add_definitions(-std=c++11 -Wall)
 ENDIF()
+
+#openGL/DX options/defaults
+IF(WIN32)
+SET(USE_OPENGL OFF CACHE BOOL "build with OpenGL support")
+SET(USE_DIRECT3D ON CACHE BOOL "build with Direct3D support")
+ELSE(WIN32)
+SET(USE_OPENGL ON CACHE BOOL "build with OpenGL support")
+SET(USE_DIRECT3D OFF CACHE BOOL "build with direct3D support")
+ENDIF(WIN32)
 
 #config.h configuration
 INCLUDE(CheckIncludeFiles)
@@ -33,7 +44,7 @@ CHECK_CXX_SOURCE_COMPILES(
 "
 #include <memory>
 int main() {
-	int foo = std::make_unique<int>(4);
+	std::unique_ptr<int> foo = std::make_unique<int>(4);
 }
 " HAS_MAKE_UNIQUE)
 
@@ -53,29 +64,34 @@ add_subdirectory(assets)
 add_subdirectory(Utils)
 add_subdirectory(LibComponents)
 
-add_subdirectory(LibOpenGL)
+
 add_subdirectory(LibInput)
 add_subdirectory(LibSystems)
 add_subdirectory(LibImage)
 add_subdirectory(LibPrefabs)
 add_subdirectory(LibEffects)
-IF(WIN32)
+IF(USE_DIRECT3D)
 add_subdirectory(LibHLSL)
 add_subdirectory(HLSLShaders)
 add_subdirectory(LibDirect3D)
 add_subdirectory(LibDirect2D)
 add_subdirectory(LibDXGI)
+ENDIF(USE_DIRECT3D)
+IF(WIN32)
 add_subdirectory(windows)
 add_subdirectory(SimpleEditor)
 ENDIF(WIN32)
 IF(HAS_X11)
 add_subdirectory(LibXWindows)
 ENDIF(HAS_X11)
-IF(HAS_GLX)
-add_subdirectory(LibGLX)
-ENDIF(HAS_GLX)
-IF(GLFW3_FOUND)
-add_subdirectory(LibGLFW)
-ENDIF(GLFW3_FOUND)
+IF(USE_OPENGL)
+	add_subdirectory(LibOpenGL)
+	IF(HAS_GLX)
+	add_subdirectory(LibGLX)
+	ENDIF(HAS_GLX)
+	IF(GLFW3_FOUND)
+	add_subdirectory(LibGLFW)
+	ENDIF(GLFW3_FOUND)
+ENDIF(USE_OPENGL)
 add_subdirectory(CrossplatApp)
 

@@ -8,6 +8,8 @@ set(libd3d_src
 	DataFormats.h
 	Direct3DTexture.h
 	Direct3DTexture.cpp
+	Direct3DDevice.h
+	Direct3DDevice.cpp
 	stdafx.h
 	stdafx.cpp
 	targetver.h

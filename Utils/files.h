@@ -25,6 +25,10 @@ namespace utils {
 		}
 		return "";
 	}
+	inline bool fileExists(const std::string& filename) {
+		std::ifstream file(filename);
+		return file.is_open();
+	}
 }
 
 #endif

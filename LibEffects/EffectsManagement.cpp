@@ -3,48 +3,17 @@
 #include <Utils/exceptions.h>
 #include <Utils/sets.h>
 namespace Effects {
-	static std::multimap<std::set<ShaderCaps>, Shader> shaderCache;
-	void AddShader(const std::set<ShaderCaps>& caps, HLSLShader* shader) {
-        if(shaderCache.count(caps) == 0) {
-            shaderCache.emplace(caps, shader);
-        } else {
-            auto range = shaderCache.equal_range(caps);
-            for(auto& i = range.first; i != range.second; ++i) {
-                if(i->second.hlsl == nullptr) {
-                    i->second.hlsl = shader;
-                }
-            }
+	static std::map<std::set<ShaderCaps>, Effect> shaderCache;
+	void AddEffect(const Effect& effect) {
+        if(shaderCache.count(effect.caps) == 0) {
+            shaderCache.emplace(effect.caps, effect);
         }
     }
-    void AddShader(const std::set<ShaderCaps>& caps, GLSLShader* shader) {
-        if(shaderCache.count(caps) == 0) {
-            //implicit conversion, nbd because pointers
-            shaderCache.emplace(caps, shader);
-        } else {
-            auto range = shaderCache.equal_range(caps);
-            for(auto& i = range.first; i != range.second; ++i) {
-                if(i->second.glsl == nullptr) {
-                    i->second.glsl = shader;
-                }
-            }
-        }
-    }
-    void AddShader(const std::set<ShaderCaps>& caps, const Shader& shader) {
-		if (shaderCache.count(caps) == 0) {
-			shaderCache.emplace(caps, shader);
-		} else {
-			auto range = shaderCache.equal_range(caps);
-			for (auto& i = range.first; i != range.second; ++i) {
-				if (i->second == shader) {
-					return; //the shader is already in the set
-					//TODO: Emit warning here
-				}
-			}
-			shaderCache.emplace(caps, shader);
+	Effect ChooseShader(const std::set<ShaderCaps>& requestedCaps) {
+		if (shaderCache.count(requestedCaps) != 0) {
+			//there is an exact match, we can just return that
+			return shaderCache.at(requestedCaps);
 		}
-	}
-    
-	Shader ChooseShader(const std::set<ShaderCaps>& requestedCaps) {
 		for (auto& elm : shaderCache) {
 			if (utils::subset(requestedCaps, elm.first)) {
 				return elm.second;

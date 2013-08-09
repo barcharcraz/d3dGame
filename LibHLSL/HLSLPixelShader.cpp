@@ -3,7 +3,7 @@
 #include <d3dcompiler.h>
 #include <Utils/files.h>
 #include <Utils/strings.h>
-namespace LibShaders {
+namespace Effects {
 	HLSLPixelShader::HLSLPixelShader(const std::string& filename) : _filename(filename) {
 
 	}

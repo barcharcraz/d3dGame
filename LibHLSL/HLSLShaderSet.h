@@ -3,7 +3,7 @@
 #include <memory>
 #include "HLSLVertexShader.h"
 #include "HLSLPixelShader.h"
-namespace LibShaders {
+namespace Effects {
 	struct HLSLShaderSet {
 		HLSLShaderSet(const HLSLVertexShader& verts, const HLSLPixelShader& pixels)
 			: vs(verts), ps(pixels) {}
