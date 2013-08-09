@@ -11,6 +11,7 @@ namespace LibGLFW {
         Window();
         ~Window();
         Window(int w ,int h);
+        void Show();
         //! \brief note that this function
         //! sets a given context as the OpenGL
         //! current context as well, note that this is
@@ -22,7 +23,7 @@ namespace LibGLFW {
         GLFWwindow *_win;
     };
     
-    Window* ActiveWindow;
+    
 }
 
 #endif

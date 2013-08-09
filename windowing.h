@@ -4,15 +4,12 @@
 #include "windows/Keys.h"
 #include "windows/WinMain.h"
 #include "windows/ComUtils.h"
-#endif
-#ifdef HAS_X11
-#include "LibXWindows/Window.h"
-#endif
-
-
-#ifdef HAS_WIN32
 namespace windowing = windows;
-#endif
-#ifdef HAS_X11
+#elif defined GLFW3_FOUND
+#include "LibGLFW/Window.h"
+namespace windowing = LibGLFW;
+#elif defined HAS_X11
+#include "LibXWindows/Window.h"
 namespace windowing = xwindows;
 #endif
+

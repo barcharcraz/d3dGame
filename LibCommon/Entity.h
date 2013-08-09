@@ -13,7 +13,7 @@
 #include "Get.hpp"
 #include "IMessage.h"
 #include "Bubbly.h"
-
+#include <Utils/make_unique.h>
 namespace LibCommon {
 	class Entity {
 	public:
@@ -26,6 +26,7 @@ namespace LibCommon {
 			if (_components.count(typeid(T)) != 0) {
 				throw std::runtime_error("ERROR: Entites may not have more than one component of a given type");
 			}
+            
 			_components[typeid(T)] = std::make_unique<T>(std::forward<Args>(args)...);
 		}
 		template<typename T>
