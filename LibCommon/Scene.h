@@ -16,19 +16,24 @@ namespace LibCommon {
 		void Update();
 		void AddEntity(Entity* e);
 		void AddEntity(std::unique_ptr<Entity> && e);
+		void RemoveEntity(Entity* e);
 		void AddSystem(std::unique_ptr<System> && s);
 		void AddSystem(System * s);
+		
+		void RemoveSystem(System* s);
 
 		std::vector<Entity*> SelectEntities(const std::vector<std::type_index>& types);
+		//! \brief SelectEntities job is to select entities that have the components
+		//! specified in the types parameter, depending on how entities are stored
+		//! this may involve a database query
 		Entity* SelectEntity(const std::vector<std::type_index>& types);
 	protected:
 	private:
 		std::vector<std::unique_ptr<System>> _systems;
 		std::vector<std::unique_ptr<Entity>> _entities;
-
-		//! \brief SelectEntities job is to select entities that have the components
-		//! specified in the types parameter, depending on how entities are stored
-		//! this may involve a database query
+		//! \brief sends a removal message to all systems for the
+		//! entity e
+		void sendRemoveMessage(Entity* e);
 		
 		void UpdateSystems();
 		std::unique_ptr<IRenderer> _pRenderer;

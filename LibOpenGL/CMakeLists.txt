@@ -2,6 +2,8 @@ set(LibOpenGL_files
 	OpenGLRenderer.h
 	ModelRenderer.h
 	ModelRenderer.cpp
+	GLBuffer.h
+	GLBuffer.cpp
 	stdafx.h
 	stdafx.cpp
 )

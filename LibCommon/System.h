@@ -13,6 +13,7 @@ namespace LibCommon {
 		System(std::vector<std::type_index> types);
         virtual void Init() {}
 		virtual void Process(Entity* ent) = 0;
+		virtual void OnEntityRemove(Entity* ent) {}
 		virtual ~System() = 0;
 	};
     inline System::~System() {}
