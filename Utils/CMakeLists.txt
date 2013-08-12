@@ -6,5 +6,6 @@ set(util_src
 	endian.h
 	sets.h
     make_unique.h
+	identifier.h
 	)
 add_custom_target(utils SOURCES ${util_src})

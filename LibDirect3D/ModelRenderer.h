@@ -6,23 +6,23 @@
 #include <LibCommon/System.h>
 #include <LibComponents/Transform.h>
 #include <LibComponents/Model.h>
+#include <map>
 namespace LibDirect3D {
 	class ModelRenderer : public LibCommon::System {
 	public:
 		explicit ModelRenderer(const Direct3DRenderer& renderer);
 		virtual void Process(LibCommon::Entity * e) override;
 		virtual void Init() override;
+		virtual void OnEntityRemove(LibCommon::Entity* e) override;
 	private:
+		struct res {
+			CComPtr<ID3D11Buffer> indexBuffer;
+			CComPtr<ID3D11Buffer> vertexBuffer;
+		};
 		void init();
-		void createConstantBuffers();
-		CComPtr<ID3D11Buffer> createIndexBuffer(const Components::Model& model);
-		CComPtr<ID3D11Buffer> createVertexBuffer(const Components::Model& model);
-		void updateTransformBuffer(const Components::Transform3D& transform);
 		LibCommon::Transforms constTransforms;
 		Eigen::Matrix4f cameraTransform;
-		CComPtr<ID3D11Buffer> _pTransformBuffer;
-
-		CComPtr<ID3D11Device> pDev;
-		CComPtr<ID3D11DeviceContext> pCtx;
+		std::map<LibCommon::Entity*, res> entityCache;
+		const Direct3DRenderer* render;
 	};
 }

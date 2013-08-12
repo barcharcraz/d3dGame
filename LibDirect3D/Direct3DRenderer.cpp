@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Direct3DRenderer.h"
+#include <stdexcept>
 using namespace LibDirect3D;
 Direct3DRenderer::Direct3DRenderer() {
 	UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
@@ -33,18 +34,18 @@ void Direct3DRenderer::init(IDXGIAdapter* pAdapter,
 				}
 
 				//and assign contexts
-				hr = pDevice.QueryInterface(&m_pDevice);
+				hr = pDevice.QueryInterface(&pDev);
 				if (FAILED(hr)) {
 					throw hr;
 				}
 
-				hr = pContext.QueryInterface(&m_pContext);
+				hr = pContext.QueryInterface(&pCtx);
 				if (FAILED(hr)) {
 					throw hr;
 				}
 
 				//set the dxgi device
-				hr = m_pDevice.QueryInterface(&m_pDXGIDevice);
+				hr = pDev.QueryInterface(&m_pDXGIDevice);
 				if(FAILED(hr)) {
 					throw hr;
 				}
@@ -79,7 +80,7 @@ void Direct3DRenderer::createRenderTarget() {
 		throw hr;
 	}
 	
-	hr = m_pDevice->CreateRenderTargetView(buffer, NULL, &m_pRenderTarget);
+	hr = pDev->CreateRenderTargetView(buffer, NULL, &m_pRenderTarget);
 	if (FAILED(hr)) {
 		throw hr;
 	}
@@ -107,7 +108,7 @@ void Direct3DRenderer::createDepthStencil() {
 	desc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
 	desc.CPUAccessFlags = 0;
 	desc.MiscFlags = 0;
-	hr = m_pDevice->CreateTexture2D(&desc, nullptr, &_pDepthStencil);
+	hr = pDev->CreateTexture2D(&desc, nullptr, &_pDepthStencil);
 	if (FAILED(hr)) {
 		throw hr;
 	}
@@ -130,17 +131,17 @@ void Direct3DRenderer::createDepthStencil() {
 	dsDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
 	dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 
-	hr = m_pDevice->CreateDepthStencilState(&dsDesc, &_pdsState);
+	hr = pDev->CreateDepthStencilState(&dsDesc, &_pdsState);
 	if (FAILED(hr)) {
 		throw hr;
 	}
 	
 
-	hr = m_pDevice->CreateDepthStencilView(_pDepthStencil, nullptr, &_pdsView);
+	hr = pDev->CreateDepthStencilView(_pDepthStencil, nullptr, &_pdsView);
 	if (FAILED(hr)) {
 		throw hr;
 	}
-	m_pContext->OMSetDepthStencilState(_pdsState, 1);
+	pCtx->OMSetDepthStencilState(_pdsState, 1);
 }
 void Direct3DRenderer::setViewports() {
 	HRESULT hr = S_OK;
@@ -156,7 +157,7 @@ void Direct3DRenderer::setViewports() {
 	port.MaxDepth = 1;
 	port.Height = static_cast<float>(swd.BufferDesc.Height);
 	port.Width = static_cast<float>(swd.BufferDesc.Width);
-	m_pContext->RSSetViewports(1, &port);
+	pCtx->RSSetViewports(1, &port);
 }
 
 void Direct3DRenderer::Present() {
@@ -170,11 +171,84 @@ void Direct3DRenderer::Present() {
 	m_pSwapChain->Present1(1, 0, &params);
 	
 	float color [] = { 0.0f, 0.0f, 0.0f, 0.0f };
-	m_pContext->OMSetRenderTargets(1, &m_pRenderTarget.p, _pdsView);
-	m_pContext->ClearRenderTargetView(m_pRenderTarget, color);
-	m_pContext->ClearDepthStencilView(_pdsView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	pCtx->OMSetRenderTargets(1, &m_pRenderTarget.p, _pdsView);
+	pCtx->ClearRenderTargetView(m_pRenderTarget, color);
+	pCtx->ClearDepthStencilView(_pdsView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	
 }
 void Direct3DRenderer::Clear() {
 	
+}
+
+//creation utilities
+CComPtr<ID3D11Buffer> Direct3DRenderer::CreateIndexBuffer(const Components::Model& model) const {
+	HRESULT hr = S_OK;
+	CComPtr<ID3D11Buffer> indexBuffer;
+	D3D11_BUFFER_DESC indexDesc;
+	indexDesc.Usage = D3D11_USAGE_DEFAULT;
+	indexDesc.ByteWidth = static_cast<UINT>(sizeof(int) * model.indices.size());
+	indexDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	indexDesc.CPUAccessFlags = 0;
+	indexDesc.MiscFlags = 0;
+	D3D11_SUBRESOURCE_DATA indexData;
+	indexData.pSysMem = model.indices.data();
+	indexData.SysMemPitch = 0;
+	indexData.SysMemSlicePitch = 0;
+	hr = pDev->CreateBuffer(&indexDesc, &indexData, &indexBuffer);
+	if (FAILED(hr)) {
+		throw hr;
+	}
+	return indexBuffer;
+}
+CComPtr<ID3D11Buffer> Direct3DRenderer::CreateVertexBuffer(const Components::Model& model) const {
+	HRESULT hr = S_OK;
+	CComPtr<ID3D11Buffer> vertexBuffer;
+	D3D11_BUFFER_DESC vertexDesc;
+	vertexDesc.Usage = D3D11_USAGE_DEFAULT;
+	vertexDesc.ByteWidth = static_cast<UINT>(sizeof(LibCommon::Vertex) * model.verts.size());
+	vertexDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vertexDesc.CPUAccessFlags = 0;
+	vertexDesc.MiscFlags = 0;
+	vertexDesc.StructureByteStride = 0;
+	D3D11_SUBRESOURCE_DATA vertexData;
+	vertexData.pSysMem = model.verts.data();
+	vertexData.SysMemPitch = 0;
+	vertexData.SysMemSlicePitch = 0;
+	hr = pDev->CreateBuffer(&vertexDesc, &vertexData, &vertexBuffer);
+	if (FAILED(hr)) {
+		throw hr;
+	}
+	return vertexBuffer;
+}
+void Direct3DRenderer::createTransformBuffer() const {
+	HRESULT hr = S_OK;
+	D3D11_BUFFER_DESC desc;
+	desc.Usage = D3D11_USAGE_DYNAMIC;
+	desc.ByteWidth = static_cast<UINT>(sizeof(LibCommon::Transforms));
+	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	desc.MiscFlags = 0;
+	desc.StructureByteStride = 0;
+	hr = pDev->CreateBuffer(&desc, nullptr, &_transformBuffer);
+	if (FAILED(hr)) {
+		throw std::system_error(hr, std::system_category());
+	}
+	
+}
+CComPtr<ID3D11Buffer> Direct3DRenderer::GetTransforms(const LibCommon::Transforms& transforms) const {
+	HRESULT hr = S_OK;
+	if (_transformBuffer == nullptr) {
+		createTransformBuffer();
+	}
+	D3D11_MAPPED_SUBRESOURCE map;
+	map.pData = 0;
+	map.DepthPitch = 0;
+	map.RowPitch = 0;
+	hr = pCtx->Map(_transformBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &map);
+	if (FAILED(hr)) {
+		throw std::system_error(hr, std::system_category());
+	}
+	memcpy(map.pData, &transforms, sizeof(transforms));
+	pCtx->Unmap(_transformBuffer, 0);
+	return _transformBuffer;
 }

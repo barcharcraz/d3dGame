@@ -32,7 +32,7 @@ namespace LibCommon {
 		_entities.push_back(std::move(e));
 	}
 	void Scene::RemoveEntity(Entity *e) {
-		for(_entities::iterator i = _entities.begin(); i != _entities.end(); ++i) {
+		for(auto i = _entities.begin(); i != _entities.end(); i++) {
 			if(i->get() == e) {
 				sendRemoveMessage(e);
 				_entities.erase(i);
@@ -50,7 +50,7 @@ namespace LibCommon {
 		_systems.back()->parent = this;
 	}
 	void Scene::RemoveSystem(System *s) {
-		for(_systems::iterator i = _systems.begin(); i != _systems.end(); ++i) {
+		for(auto i = _systems.begin(); i != _systems.end(); ++i) {
 			if(i->get() == s) {
 				_systems.erase(i);
 				return;

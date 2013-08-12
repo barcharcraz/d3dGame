@@ -2,6 +2,9 @@
 #include "stdafx.h"
 #include <LibDXGI/LibDXGI.h>
 #include <LibCommon/IRenderer.h>
+#include <LibComponents/Model.h>
+#include <Eigen/Core>
+#include <Eigen/Geometry>
 #include "DataFormats.h"
 namespace LibDirect3D {
 	class Direct3DRenderer : public LibCommon::IRenderer {
@@ -12,8 +15,11 @@ namespace LibDirect3D {
 		void Present();
 		void Clear();
 
-		CComPtr<ID3D11Device2> m_pDevice;
-		CComPtr<ID3D11DeviceContext2> m_pContext;
+		CComPtr<ID3D11Buffer> CreateIndexBuffer(const Components::Model& indexData) const;
+		CComPtr<ID3D11Buffer> CreateVertexBuffer(const Components::Model& vertexData) const;
+		CComPtr<ID3D11Buffer> GetTransforms(const LibCommon::Transforms& transforms) const;
+		CComPtr<ID3D11Device2> pDev;
+		CComPtr<ID3D11DeviceContext2> pCtx;
 	private:
 		
 		void init(IDXGIAdapter* pAdapter,
@@ -25,11 +31,12 @@ namespace LibDirect3D {
 			UINT sdkVersion,
 			D3D_FEATURE_LEVEL* outLevel);
 		
+
+
 		void bindToHwnd(HWND target);
 		void createRenderTarget();
 		void createDepthStencil();
 		void setViewports();
-		
 		CComPtr<IDXGISwapChain2> m_pSwapChain;
 		CComPtr<IDXGIFactory2> m_pDXGIFactory;
 		CComPtr<IDXGIDevice3> m_pDXGIDevice;
@@ -38,6 +45,9 @@ namespace LibDirect3D {
 		CComPtr<ID3D11DepthStencilState> _pdsState;
 		CComPtr<ID3D11DepthStencilView> _pdsView;
 		CComPtr<ID3D11Texture2D> _pDepthStencil;
+
+		void createTransformBuffer() const;
+		mutable CComPtr<ID3D11Buffer> _transformBuffer;
 
 		
 	};
