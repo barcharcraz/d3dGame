@@ -2,6 +2,7 @@
 #define LIBCOMMON_GEOMETRYFILE_H
 #include "stdafx.h"
 #include "Data.h"
+#include <LibComponents/Model.h>
 namespace LibCommon {
 	class VertexFile {
 	public:
@@ -14,7 +15,7 @@ namespace LibCommon {
 	};
 	class ModelFile {
 	public:
-		virtual Model model() = 0;
+		virtual Components::Model model() = 0;
 	};
 }
 #endif

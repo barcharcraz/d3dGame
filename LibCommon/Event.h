@@ -7,8 +7,7 @@
 #include <typeindex>
 #include "IMessage.h"
 #include "Bubbly.h"
-#include "IComponent.h"
-
+#include <LibComponents/IComponent.h>
 namespace LibCommon {
 	//! \brief this template is a contravarent multicast event
 	//!        this means that a function with a parameter of 

@@ -1,6 +1,6 @@
 #pragma once
 #include "stdafx.h"
-#include <LibCommon/IComponent.h>
+#include <LibComponents/IComponent.h>
 #include <LibCommon/Get.hpp>
 #include <LibCommon/IMessage.h>
 #include <d2d1_1.h>
@@ -8,10 +8,10 @@
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 #include "Direct2DRenderingMessage.h"
-#include <LibCommon/Transform.hpp>
+#include <LibComponents/Transform.h>
 #include "Conversions.h"
 namespace LibDirect2D {
-	class Direct2DRectRenderer : public LibCommon::IComponent {
+	class Direct2DRectRenderer : public Components::IComponent {
 	public:
 		Direct2DRectRenderer(D2D1_RECT_F rect);
 	private:

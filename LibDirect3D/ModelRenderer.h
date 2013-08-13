@@ -1,25 +1,35 @@
 #pragma once
 #include "stdafx.h"
-#include "Direct3DRenderingMessage.h"
+#include "Direct3DRenderer.h"
 #include <LibCommon/Data.h>
-#include <LibCommon/IComponent.h>
+#include <LibCommon/Entity.h>
+#include <LibCommon/System.h>
+#include <LibComponents/Transform.h>
+#include <LibComponents/Model.h>
+#include <LibComponents/DirectionalLight.h>
+#include <map>
 namespace LibDirect3D {
-	class ModelRenderer : public LibCommon::IComponent {
+	class ModelRenderer : public LibCommon::System {
 	public:
-		ModelRenderer(const LibCommon::Model& model);
-		virtual void OnConnect() override;
+		explicit ModelRenderer(const Direct3DRenderer& renderer);
+		virtual void Process(LibCommon::Entity * e) override;
+		virtual void Init() override;
+		virtual void OnEntityRemove(LibCommon::Entity* e) override;
 	private:
+		struct res {
+			CComPtr<ID3D11Buffer> indexBuffer;
+			CComPtr<ID3D11Buffer> vertexBuffer;
+		};
+		struct light {
+
+		};
 		void init();
-		void handleDraw(Direct3DRenderingMessage * msg);
-		shaderSet _activeShaders;
-		void initConstantBuffers(ID3D11Device * pDev);
-		void initIndexBuffer(ID3D11Device * pDev);
-		void initVertexBuffers(ID3D11Device * pDev);
-		void updateTransformBuffer(ID3D11DeviceContext * pCtx);
-		LibCommon::Transforms transform;
-		CComPtr<ID3D11Buffer> _pVertexBuffer;
-		CComPtr<ID3D11Buffer> _pIndexBuffer;
-		CComPtr<ID3D11Buffer> _pTransformBuffer;
-		LibCommon::Model _model;
+		std::vector<Components::DirectionalLight*> directionalLights;
+		LibCommon::Transforms constTransforms;
+		Eigen::Matrix4f cameraTransform;
+		Eigen::Matrix4f camPos;
+		CComPtr<ID3D11Buffer> _lights;
+		std::map<LibCommon::Entity*, res> entityCache;
+		const Direct3DRenderer* render;
 	};
 }

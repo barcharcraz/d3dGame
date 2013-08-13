@@ -2,79 +2,111 @@
 //
 
 #include "stdafx.h"
-
 #include "SimpleEditor.h"
 #include <Windows.h>
 #include <vector>
-#include <d2d1helper.h>
-#include <LibDirect2D\Direct2DRenderer.h>
 #include <LibCommon\Entity.h>
 #include <LibCommon\Scene.h>
-#include <LibDirect2D\Direct2DRectRenderer.h>
-#include <LibDirect2D\Direct2DBitmap.h>
 #include <LibCommon/Scene.h>
-#include <LibCommon/Transform.hpp>
 #include <LibDirect3D\Direct3DRenderer.h>
-#include <LibDirect3D\Triangle.h>
 #include <LibCommon/ObjFile.h>
 #include <LibDirect3D/ModelRenderer.h>
-#include <LibCommon/Velocity.hpp>
-#include <LibCommon/Camera.h>
+#include <LibDirect3D/Direct3DTexture.h>
+#include <LibHLSL/HLSLShaderSet.h>
+#include <LibHLSL/HLSLVertexShader.h>
+#include <LibHLSL/HLSLPixelShader.h>
 #include <Eigen/Core>
 #include <Eigen/Geometry>
-#include <windows/Window.h>
+#include <LibComponents/Camera.h>
+#include <LibComponents/Transform.h>
+#include <LibComponents/Velocity.h>
+#include <LibComponents/Transform.h>
+#include <LibComponents/Model.h>
+#include <LibComponents/Effect.h>
+#include <LibComponents/Texture.h>
+#include <LibComponents/DirectionalLight.h>
+#include <LibSystems/MovementController3D.h>
+#include <LibSystems/VelocitySystem3D.h>
+#include <windowing.h>
+#include <LibImage/targa.h>
 #include <map>
+#include <set>
 #include <typeindex>
+#include <LibPrefabs/Camera.h>
+#include <LibPrefabs/StaticModel.h>
+#include <LibPrefabs/DirectionalLight.h>
+#include <LibEffects/Effect.h>
+#include <LibEffects/Shader.h>
+#include <LibEffects/EffectsManagement.h>
 
-using namespace LibDirect2D;
 using namespace LibCommon;
 using namespace windows;
-int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrvInstance, LPWSTR lpCmdLine, int nCmdShow)
+using namespace Components;
+using namespace Systems;
+int main(int argc, char** argv)
 {
-	Window win(640, 480);
+	Window win(1280, 768);
 	win.Show();
 	
-	
-	CoInitialize(NULL);
+
+	ComInitialize com;
 	//Direct3DRenderer d3dRender;
-	//CComPtr<ID3D11Debug> pDebug;
-	//d3dRender.getDevice()->QueryInterface(IID_PPV_ARGS(&pDebug));
-	
+	Image::Targa::TargaFile f = Image::Targa::LoadTarga("Textures/wood_flat/diffuse.tga");
+
+	const std::vector<Effects::ShaderDesc> defaultLayout = {
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+	};
+	const std::set<Effects::ShaderCaps> defaultCaps = {
+		Effects::ShaderCaps::MESH_INDEXED,
+		Effects::ShaderCaps::TEXTURE_MAPPED,
+		Effects::ShaderCaps::LIT_DIRECTIONAL
+	};
 	LibDirect3D::Direct3DRenderer * render = new LibDirect3D::Direct3DRenderer(win.Hwnd());
-	render->addVertexShader("DefaultVS.cso");
-	render->addPixelShader("DefaultPS.cso");
-	LibCommon::ObjFile modelFile("Torus.obj");
-	Entity * model = new Entity();
-	Entity * camera = new Entity();
-	Transform3D * transform = new Transform3D(Eigen::Translation3f(0, 0, -10));
-	Velocity3D * vel = new Velocity3D(Eigen::AngleAxisf(0.2f, Eigen::Vector3f::UnitX()));
-	Transform3D * camPos = new Transform3D(Eigen::Affine3f::Identity());
-	Camera * cam = new Camera();
-	camera->AddComponent(cam);
-	camera->AddComponent(camPos);
-	LibDirect3D::ModelRenderer * renderComp = new LibDirect3D::ModelRenderer(modelFile.model());
-	model->AddComponent(renderComp);
-	model->AddComponent(transform);
-	model->AddComponent(vel);
+	//CComPtr<ID3D11Debug> pDebug;
+	//render->pDev->QueryInterface(IID_PPV_ARGS(&pDebug));
+	Effects::AddEffect({ "DefaultVS.cso", "DefaultPS.cso", defaultLayout, defaultCaps });
+	LibDirect3D::Direct3DTexture d3dTex{ Image::ImageData(f) };
+	LibCommon::ObjFile modelFile("TestObj.obj");
+	Prefabs::Camera * cam = new Prefabs::Camera();
+	Prefabs::StaticModel * model = new Prefabs::StaticModel(modelFile.model(), Texture(&d3dTex));
+	model->Get<Transform3D>()->transform.translate(Eigen::Vector3f{ 0, 0, -10 });
+	MovementController3D * control = new MovementController3D();
+	VelocitySystem3D * velsys = new VelocitySystem3D();
+	Input::Input * input = new Input::Input();
+	input->AddAction("Left", Input::Keys::A );
+	input->AddAction("Right", Input::Keys::D);
+	input->AddAction("Forward", Input::Keys::W);
+	input->AddAction("Backward", Input::Keys::S);
+	input->AddAxisAction("Horizontal", Input::MouseType, Input::AxisName::X);
+	input->AddAxisAction("Vertical", Input::MouseType, Input::AxisName::Y);
+	win.AttachInput(input);
+	cam->AddComponent(input);
+	LibDirect3D::ModelRenderer * renderComp = new LibDirect3D::ModelRenderer(*render);
 	Scene * sce = new Scene(render);
+	sce->AddSystem(renderComp);
+	sce->AddSystem(control);
 	sce->AddEntity(model);
-	sce->AddEntity(camera);
+	sce->AddEntity(cam);
+	sce->AddEntity(std::make_unique<Prefabs::DirectionalLight>(Eigen::Vector4f{ 0.70f, 0.0f, 0.20f, 1.0f }, Eigen::Vector3f{ 0.0f, 0.0f, 100.0f }));
+	sce->AddSystem(velsys);
 	//context.DrawShapes(commands);
 	//factory.getSwapChain()->Present(1,0);
 	
 	win.update = [&]() {
-		
+		render->Clear();
 		sce->Update();
 		render->Present();
-		render->Clear();
+		
 		
 	};
-	//pDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 	
-	int rv = Run();
+	
+	auto rv = Run();
 
 	delete sce;
-	CoUninitialize();
+	//pDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 	return rv;
 	
 	

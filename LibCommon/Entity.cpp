@@ -1,41 +1,41 @@
 #include "stdafx.h"
 #include "Entity.h"
-
+#include <algorithm>
 namespace LibCommon {
+	using namespace Components;
 	Entity::Entity() {
-		_messenger.connect(&Entity::forwardBubble, this);
+		
+	}
+	Entity::~Entity() {
+
 	}
 	void Entity::AddComponent(IComponent* c) {
-		c->messenger = &_messenger;
-		c->OnConnect();
-		Components.push_back(std::unique_ptr<IComponent>(c));
+		using namespace std;
+		if (_components.count(type_index(typeid(*c))) != 0) {
+			throw std::runtime_error("ERROR: entities may not have more than one component of the same type");
+		}
+		//typeid(*c) works because type_index has an implicit
+		//conversion from type_info
+		_components[typeid(*c)] = std::unique_ptr<IComponent>(c);
 	}
-	void Entity::AddComponent(Entity* e) {
-		_messenger.connectForwarder(&e->_messenger);
-		AddComponent(static_cast<IComponent*>(e));
+	void Entity::AddComponent(std::unique_ptr<IComponent> && c) {
+		using namespace std;
+		if (_components.count(type_index(typeid(c))) != 0) {
+			throw std::runtime_error("ERROR: entities may not have more than one component of the same type");
+		}
+		_components[typeid(*c.get())] = std::move(c);
 	}
-	void Entity::AddEntity(Entity* e) {
-		AddComponent(e);
+	bool Entity::HasComponent(std::type_index type) {
+		return _components.count(type) > 0;
 	}
-	std::unique_ptr<IComponent> Entity::removeComponent(int index) {
-		std::unique_ptr<IComponent> retval = nullptr;
-		retval = std::move(Components[index]);
-		//we dont want the component receving our messages any more
-		//so we get the connection and we disconnect it
-		
-		_messenger.disconnect(retval.get());
-		//remove the component by memory location
-		Components.erase(Components.begin()+=index);
+	bool Entity::HasAllComponents(const std::vector<std::type_index>& types) {
+		bool retval = true;
+		for (auto& type : types) {
+			if (_components.count(type) == 0) {
+				retval = false;
+			}
+		}
 		return retval;
 	}
-	//---------PROTECTED-----------
-	void Entity::OnConnect() {
-		_messenger.connect(&Entity::forwardBubble, this);
-	}
-	//---------PRIVATE-------------
-	void Entity::forwardBubble(Bubbly * msg) {
-		if (messenger) {
-			messenger->send(msg->message);
-		}
-	}
+	
 }

@@ -1,24 +1,94 @@
 #include "stdafx.h"
 #include "Scene.h"
+#include <algorithm>
+#include <typeinfo>
+#include <set>
+#include <Utils/exceptions.h>
 
 namespace LibCommon {
 	Scene::Scene(IRenderer* pRenderer) : _pRenderer(pRenderer), _rate(34) {
 		_lastUpdate = _clock.now();
 	}
-	void Scene::forwardBubble(Bubbly * msg) {
-		_messenger.send(msg);
-	}
 	void Scene::Update() {
-		std::unique_ptr<UpdateMessage> updatemsg;
-		if( (_clock.now() - _lastUpdate) > _rate ) {
-			auto tickTime = _clock.now() - _lastUpdate;
-			updatemsg = make_unique<UpdateMessage>(tickTime);
-			_lastUpdate = _clock.now();
-			
+		using namespace std::chrono;
+		auto now = _clock.now();
+		_delta = now - _lastUpdate;
+		UpdateSystems();
+	}
+	void Scene::UpdateSystems() {
+		for (auto& sys : _systems) {
+			sys->Init();
+			auto input = SelectEntities(sys->aspect);
+			for (auto ent : input) {
+				sys->Process(ent);
+			}
 		}
-		if (updatemsg) {
-			_messenger.send(updatemsg.get());
+	}
+	void Scene::AddEntity(Entity* e) {
+		_entities.push_back(std::unique_ptr<Entity>(e));
+		
+	}
+	void Scene::AddEntity(std::unique_ptr<Entity> && e) {
+		_entities.push_back(std::move(e));
+	}
+	void Scene::RemoveEntity(Entity *e) {
+		for(auto i = _entities.begin(); i != _entities.end(); i++) {
+			if(i->get() == e) {
+				sendRemoveMessage(e);
+				_entities.erase(i);
+				return;
+			}
 		}
-		_messenger.send(_pRenderer->getRenderingMessage());
+	}
+
+	void Scene::AddSystem(std::unique_ptr<System> && s) {
+		_systems.push_back(std::move(s));
+		_systems.back()->parent = this;
+	}
+	void Scene::AddSystem(System* s) {
+		_systems.push_back(std::unique_ptr<System>(s));
+		_systems.back()->parent = this;
+	}
+	void Scene::RemoveSystem(System *s) {
+		for(auto i = _systems.begin(); i != _systems.end(); ++i) {
+			if(i->get() == s) {
+				_systems.erase(i);
+				return;
+			}
+		}
+		throw utils::not_supported_error("could not find element in vector");
+	}
+
+	std::vector<Entity*> Scene::SelectEntities(const std::vector<std::type_index>& info) {
+		//^| this function could really use some caching at some point
+		std::vector<Entity*> retval;
+		for (auto& ent : _entities) {
+			if (ent->HasAllComponents(info)) {
+				retval.push_back(ent.get());
+			}
+		}
+		return retval;
+	}
+	Entity* Scene::SelectEntity(const std::vector<std::type_index>& info) {
+		for (auto& ent : _entities) {
+			if (ent->HasAllComponents(info)) {
+				return ent.get();
+			}
+		}
+		return nullptr;
+	}
+	std::vector<Components::IComponent*> Scene::SelectComponents(std::type_index type) {
+		std::vector<Components::IComponent*> retval;
+		for (auto& ent : _entities) {
+			if (ent->HasComponent(type)) {
+				retval.push_back(ent->Get(type));
+			}
+		}
+		return retval;
+	}
+	void Scene::sendRemoveMessage(Entity *e) {
+		for(std::unique_ptr<System>& elm : _systems) {
+			elm->OnEntityRemove(e);
+		}
 	}
 }

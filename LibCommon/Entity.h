@@ -1,31 +1,53 @@
 #ifndef LIBCOMMON_ENTITY_H
 #define LIBCOMMON_ENTITY_H
-#include "IComponent.h"
+#include <LibComponents/IComponent.h>
 #include <vector>
-#include <list>
+#include <map>
 #include <memory>
+#include <stdexcept>
+#include <typeindex>
+#include <typeinfo>
 #include <functional>
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 #include "Get.hpp"
 #include "IMessage.h"
 #include "Bubbly.h"
-
+#include <Utils/make_unique.h>
 namespace LibCommon {
-	using namespace std;
-	class Entity : public IComponent {
+	class Entity {
 	public:
 		Entity();
-		std::unique_ptr<IComponent> removeComponent(int index);
-		void AddComponent(IComponent* c);
-		void AddComponent(Entity* e);
-		void AddEntity(Entity* e);
-	protected:
-		Event _messenger;
-		virtual void OnConnect() override;
+		virtual ~Entity();
+		void AddComponent(Components::IComponent* c);
+		void AddComponent(std::unique_ptr<Components::IComponent> && c);
+		template<typename T, typename... Args>
+		void AddComponent(Args&&... args) {
+			if (_components.count(typeid(T)) != 0) {
+				throw std::runtime_error("ERROR: Entites may not have more than one component of a given type");
+			}
+            
+			_components[typeid(T)] = std::make_unique<T>(std::forward<Args>(args)...);
+		}
+		template<typename T>
+		T* Get() {
+			return static_cast<T*>(_components.at(typeid(T)).get());
+		}
+		template<typename T>
+		T* GetOptional() {
+			if (_components.count(typeid(T))) {
+				return static_cast<T*>(_components.at(typeid(T)).get());
+			} else {
+				return nullptr;
+			}
+		}
+		Components::IComponent* Get(std::type_index type) {
+			return _components.at(type).get();
+		}
+		bool HasComponent(std::type_index type);
+		bool HasAllComponents(const std::vector<std::type_index>& types);
 	private:
-		void forwardBubble(Bubbly* msg);
-		vector<std::unique_ptr<IComponent>> Components;
+		std::map<std::type_index, std::unique_ptr<Components::IComponent> > _components;
 		
 	};
 }

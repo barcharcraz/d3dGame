@@ -1,0 +1,34 @@
+[Buildset]
+BuildItems=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x01\x00\x00\x00\x0b\x00\x00\x00\x00\x01\x00\x00\x00\x0e\x00d\x003\x00d\x00G\x00a\x00m\x00e)
+
+[CMake]
+Build Directory Count=1
+CMakeDir=/usr/share/cmake-2.8/Modules
+Current Build Directory Index=0
+ProjectRootRelative=./
+
+[CMake][CMake Build Directory 0]
+Build Directory Path=file:///home/charlie/d3dGame/build
+Build Type=Debug
+CMake Binary=file:///usr/bin/cmake
+Environment Profile=
+Extra Arguments=
+Install Directory=file:///usr/local
+
+[Launch]
+Launch Configurations=Launch Configuration 0
+
+[Launch][Launch Configuration 0]
+Configured Launch Modes=execute
+Configured Launchers=nativeAppLauncher
+Name=CrossplatApp
+Type=Native Application
+
+[Launch][Launch Configuration 0][Data]
+Configured from ProjectItem=d3dGame,CrossplatApp,CrossplatApp
+Project Target=d3dGame,CrossplatApp,CrossplatApp
+Working Directory=file:///home/charlie/d3dGame/build/output/
+isExecutable=false
+
+[Project]
+VersionControlSupport=kdevgit

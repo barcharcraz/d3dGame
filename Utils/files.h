@@ -5,14 +5,29 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include <exception>
 namespace utils {
-	std::unique_ptr<std::vector<unsigned char>> slurpBinary(const std::string& filename) {
-		std::ifstream stream(filename, std::ios::in | std::ios::binary | std::ios::ate);
+	inline std::vector<unsigned char> slurpBinary(const std::string& filename) {
+		std::ifstream stream;
+		stream.exceptions(std::ifstream::badbit | std::ifstream::failbit);
+		stream.open(filename, std::ios::in | std::ios::binary | std::ios::ate);
 		std::ifstream::pos_type size = stream.tellg();
-		std::unique_ptr<std::vector<unsigned char>> buffer = std::make_unique<std::vector<unsigned char>>(size);
+		std::vector<unsigned char> buffer(size);
 		stream.seekg(0, std::ios::beg);
-		stream.read((char*) buffer->data(), size);
+		stream.read((char*) buffer.data(), size);
 		return buffer;
+	}
+	inline std::string getFileExtension(const std::string& filename) {
+		using namespace std;
+		auto idx = filename.rfind('.');
+		if (idx != string::npos) {
+			return filename.substr(idx + 1);
+		}
+		return "";
+	}
+	inline bool fileExists(const std::string& filename) {
+		std::ifstream file(filename);
+		return file.is_open();
 	}
 }
 

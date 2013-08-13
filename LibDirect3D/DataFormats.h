@@ -1,6 +1,11 @@
 #pragma once
 #include <Eigen/Core>
 #include <DirectXMath.h>
+#include <dxgiformat.h>
+#include <d3d11.h>
+#include <LibImage/image.h>
+#include <map>
+#include <vector>
 namespace LibDirect3D {
 	struct VertexData {
 		Eigen::Vector3f Pos;

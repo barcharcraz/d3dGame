@@ -5,7 +5,6 @@ namespace LibCommon {
 	//so far just a marker interface
 	class IRenderer {
 	public:
-		virtual IMessage* getRenderingMessage() = 0;
 		virtual ~IRenderer()= 0;
 	};
 	
