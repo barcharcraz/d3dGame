@@ -19,10 +19,8 @@ namespace windows {
 				if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
 					TranslateMessage(&msg);
 					DispatchMessage(&msg);
-				}
-				else {
+				} else {
 					win->Update();
-					
 				}
 			}
 		}
@@ -127,7 +125,7 @@ namespace windows {
 	}
 	void Window::initRawInput() {
 		RAWINPUTDEVICE Rid;
-		Rid.dwFlags = RIDEV_NOLEGACY;
+		Rid.dwFlags = 0;
 		Rid.hwndTarget = _hwnd;
 		Rid.usUsagePage = 0x01;
 		Rid.usUsage = 0x02;

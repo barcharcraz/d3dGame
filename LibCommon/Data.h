@@ -5,11 +5,14 @@
 namespace LibCommon {
 	struct Vertex {
 		Eigen::Vector4f pos;
+		Eigen::Vector4f norm;
 		Eigen::Vector3f uv;
 	};
 
 	struct Transforms {
-		Eigen::Matrix4f worldView;
+		Eigen::Matrix4f model;
+		Eigen::Matrix4f view;
+		Eigen::Matrix4f proj;
 	};
 }
 

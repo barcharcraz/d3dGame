@@ -11,6 +11,7 @@
 #include <LibHLSL/HLSLPixelShader.h>
 #include <LibHLSL/HLSLVertexShader.h>
 #include <LibComponents/Effect.h>
+#include <cstddef>
 namespace LibDirect3D {
 	ModelRenderer::ModelRenderer(const Direct3DRenderer& renderer)
 		: System({ typeid(Components::Model), typeid(Components::Transform3D), typeid(Components::Effect) }), 
@@ -20,9 +21,15 @@ namespace LibDirect3D {
 	}
 	void ModelRenderer::Init() {
 		auto camera = parent->SelectEntity({ typeid(Components::Camera), typeid(Components::Transform3D) });
+		directionalLights = parent->SelectComponents<Components::DirectionalLight>();
+		auto first = *directionalLights[0];
+		
+		int off = (int)offsetof(Components::DirectionalLight, Color);
+		_lights = render->CreateConstantBuffer(((char*)directionalLights[0])+off, sizeof(Components::DirectionalLight) - off);
 		auto camcomp = camera->Get<Components::Camera>();
 		auto camtrans = camera->Get<Components::Transform3D>();
-		cameraTransform = camcomp->CameraMatrix * camtrans->transform.matrix();
+		cameraTransform = camcomp->CameraMatrix;
+		camPos = camtrans->transform.matrix();
 	}
 	void ModelRenderer::Process(LibCommon::Entity* e) {
 		using namespace Components;
@@ -43,7 +50,9 @@ namespace LibDirect3D {
 		auto vertexBuffer = entityCache[e].vertexBuffer;
 		auto indexBuffer = entityCache[e].indexBuffer;
 		LibCommon::Transforms trans;
-		trans.worldView = cameraTransform * (transform->transform).matrix();
+		trans.model = transform->transform.matrix();
+		trans.view = camPos;
+		trans.proj = cameraTransform;
 		auto transformBuffer = render->GetTransforms(trans);
 		pCtx->IASetInputLayout(vs->getInputLayout(pDev));
 		pCtx->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -54,6 +63,7 @@ namespace LibDirect3D {
 		pCtx->VSSetShader(vs->getShader(pDev), nullptr, 0);
 		pCtx->PSSetShader(ps->getShader(pDev), nullptr, 0);
 		pCtx->VSSetConstantBuffers(0, 1, &transformBuffer.p);
+		pCtx->PSSetConstantBuffers(0, 1, &_lights.p);
 		pCtx->DrawIndexed(static_cast<UINT>(model->indices.size()), 0, 0);
 		
 	}

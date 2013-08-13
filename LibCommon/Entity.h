@@ -41,7 +41,9 @@ namespace LibCommon {
 				return nullptr;
 			}
 		}
-		
+		Components::IComponent* Get(std::type_index type) {
+			return _components.at(type).get();
+		}
 		bool HasComponent(std::type_index type);
 		bool HasAllComponents(const std::vector<std::type_index>& types);
 	private:

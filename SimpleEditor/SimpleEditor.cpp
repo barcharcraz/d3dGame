@@ -24,6 +24,7 @@
 #include <LibComponents/Model.h>
 #include <LibComponents/Effect.h>
 #include <LibComponents/Texture.h>
+#include <LibComponents/DirectionalLight.h>
 #include <LibSystems/MovementController3D.h>
 #include <LibSystems/VelocitySystem3D.h>
 #include <windowing.h>
@@ -32,8 +33,11 @@
 #include <set>
 #include <typeindex>
 #include <LibPrefabs/Camera.h>
+#include <LibPrefabs/StaticModel.h>
+#include <LibPrefabs/DirectionalLight.h>
 #include <LibEffects/Effect.h>
 #include <LibEffects/Shader.h>
+#include <LibEffects/EffectsManagement.h>
 
 using namespace LibCommon;
 using namespace windows;
@@ -51,23 +55,23 @@ int main(int argc, char** argv)
 
 	const std::vector<Effects::ShaderDesc> defaultLayout = {
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
 	const std::set<Effects::ShaderCaps> defaultCaps = {
 		Effects::ShaderCaps::MESH_INDEXED,
-		Effects::ShaderCaps::TEXTURE_MAPPED
+		Effects::ShaderCaps::TEXTURE_MAPPED,
+		Effects::ShaderCaps::LIT_DIRECTIONAL
 	};
 	LibDirect3D::Direct3DRenderer * render = new LibDirect3D::Direct3DRenderer(win.Hwnd());
 	//CComPtr<ID3D11Debug> pDebug;
-	//render->m_pDevice->QueryInterface(IID_PPV_ARGS(&pDebug));
-	Effect * eff = new Effect("DefaultVS.cso", "DefaultPS.cso", defaultLayout, defaultCaps);
+	//render->pDev->QueryInterface(IID_PPV_ARGS(&pDebug));
+	Effects::AddEffect({ "DefaultVS.cso", "DefaultPS.cso", defaultLayout, defaultCaps });
 	LibDirect3D::Direct3DTexture d3dTex{ Image::ImageData(f) };
 	LibCommon::ObjFile modelFile("TestObj.obj");
-	Entity * model = new Entity();
 	Prefabs::Camera * cam = new Prefabs::Camera();
-	Transform3D * transform = new Transform3D(Eigen::Affine3f(Eigen::Translation3f(0, 0, -10)));
-	Model * mod = new Model(modelFile.verts(), modelFile.indices());
-	Texture * tex = new Texture(&d3dTex);
+	Prefabs::StaticModel * model = new Prefabs::StaticModel(modelFile.model(), Texture(&d3dTex));
+	model->Get<Transform3D>()->transform.translate(Eigen::Vector3f{ 0, 0, -10 });
 	MovementController3D * control = new MovementController3D();
 	VelocitySystem3D * velsys = new VelocitySystem3D();
 	Input::Input * input = new Input::Input();
@@ -80,15 +84,12 @@ int main(int argc, char** argv)
 	win.AttachInput(input);
 	cam->AddComponent(input);
 	LibDirect3D::ModelRenderer * renderComp = new LibDirect3D::ModelRenderer(*render);
-	model->AddComponent(transform);
-	model->AddComponent(mod);
-	model->AddComponent(eff);
-	model->AddComponent(tex);
 	Scene * sce = new Scene(render);
 	sce->AddSystem(renderComp);
 	sce->AddSystem(control);
 	sce->AddEntity(model);
 	sce->AddEntity(cam);
+	sce->AddEntity(std::make_unique<Prefabs::DirectionalLight>(Eigen::Vector4f{ 0.70f, 0.0f, 0.20f, 1.0f }, Eigen::Vector3f{ 0.0f, 0.0f, 100.0f }));
 	sce->AddSystem(velsys);
 	//context.DrawShapes(commands);
 	//factory.getSwapChain()->Present(1,0);

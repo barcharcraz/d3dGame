@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Direct3DRenderer.h"
 #include <stdexcept>
+#include <cassert>
 using namespace LibDirect3D;
 Direct3DRenderer::Direct3DRenderer() {
 	UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
@@ -220,25 +221,64 @@ CComPtr<ID3D11Buffer> Direct3DRenderer::CreateVertexBuffer(const Components::Mod
 	}
 	return vertexBuffer;
 }
-void Direct3DRenderer::createTransformBuffer() const {
+CComPtr<ID3D11Buffer> Direct3DRenderer::CreateConstantBuffer(size_t size) const {
 	HRESULT hr = S_OK;
+	CComPtr<ID3D11Buffer> retval;
 	D3D11_BUFFER_DESC desc;
 	desc.Usage = D3D11_USAGE_DYNAMIC;
-	desc.ByteWidth = static_cast<UINT>(sizeof(LibCommon::Transforms));
+	desc.ByteWidth = static_cast<UINT>(size);
 	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	desc.MiscFlags = 0;
 	desc.StructureByteStride = 0;
-	hr = pDev->CreateBuffer(&desc, nullptr, &_transformBuffer);
+	hr = pDev->CreateBuffer(&desc, nullptr, &retval);
 	if (FAILED(hr)) {
 		throw std::system_error(hr, std::system_category());
 	}
+	return retval;
 	
+}
+CComPtr<ID3D11Buffer> Direct3DRenderer::CreateConstantBuffer(const void* data, size_t size) const {
+	HRESULT hr = S_OK;
+	CComPtr<ID3D11Buffer> retval;
+	D3D11_BUFFER_DESC desc;
+	desc.Usage = D3D11_USAGE_DYNAMIC;
+	desc.ByteWidth = static_cast<UINT>(size);
+	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	desc.MiscFlags = 0;
+	desc.StructureByteStride = 0;
+
+	D3D11_SUBRESOURCE_DATA dat;
+	dat.pSysMem = data;
+	dat.SysMemPitch = 0;
+	dat.SysMemSlicePitch = 0;
+
+	hr = pDev->CreateBuffer(&desc, &dat, &retval);
+	if (FAILED(hr)) {
+		throw std::system_error(hr, std::system_category());
+	}
+	return retval;
+}
+void Direct3DRenderer::UpdateConstantBuffer(CComPtr<ID3D11Buffer> buffer, const void* data, size_t size) const {
+	HRESULT hr = S_OK;
+	D3D11_MAPPED_SUBRESOURCE map;
+	map.pData = 0;
+	map.DepthPitch = 0;
+	map.RowPitch = 0;
+	//do a bounds check on the buffer if we are in debug mode
+	assert(GetBufferSize(buffer) >= size);
+	hr = pCtx->Map(buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &map);
+	if (FAILED(hr)) {
+		throw std::system_error(hr, std::system_category());
+	}
+	memcpy(map.pData, data, size);
+	pCtx->Unmap(buffer, 0);
 }
 CComPtr<ID3D11Buffer> Direct3DRenderer::GetTransforms(const LibCommon::Transforms& transforms) const {
 	HRESULT hr = S_OK;
 	if (_transformBuffer == nullptr) {
-		createTransformBuffer();
+		_transformBuffer = CreateConstantBuffer(sizeof(transforms));
 	}
 	D3D11_MAPPED_SUBRESOURCE map;
 	map.pData = 0;
@@ -251,4 +291,10 @@ CComPtr<ID3D11Buffer> Direct3DRenderer::GetTransforms(const LibCommon::Transform
 	memcpy(map.pData, &transforms, sizeof(transforms));
 	pCtx->Unmap(_transformBuffer, 0);
 	return _transformBuffer;
+}
+size_t Direct3DRenderer::GetBufferSize(CComPtr<ID3D11Buffer> buffer) const {
+	D3D11_BUFFER_DESC desc;
+	ZeroMemory(&desc, sizeof(desc));
+	buffer->GetDesc(&desc);
+	return desc.ByteWidth;
 }

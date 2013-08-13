@@ -18,6 +18,11 @@ namespace LibDirect3D {
 		CComPtr<ID3D11Buffer> CreateIndexBuffer(const Components::Model& indexData) const;
 		CComPtr<ID3D11Buffer> CreateVertexBuffer(const Components::Model& vertexData) const;
 		CComPtr<ID3D11Buffer> GetTransforms(const LibCommon::Transforms& transforms) const;
+		CComPtr<ID3D11Buffer> CreateConstantBuffer(const void* data, size_t size) const;
+		CComPtr<ID3D11Buffer> CreateConstantBuffer(size_t size) const;
+		void UpdateConstantBuffer(CComPtr<ID3D11Buffer> buffer, const void* data, size_t size) const;
+		size_t GetBufferSize(CComPtr<ID3D11Buffer> buffer) const;
+		
 		CComPtr<ID3D11Device2> pDev;
 		CComPtr<ID3D11DeviceContext2> pCtx;
 	private:
@@ -46,7 +51,7 @@ namespace LibDirect3D {
 		CComPtr<ID3D11DepthStencilView> _pdsView;
 		CComPtr<ID3D11Texture2D> _pDepthStencil;
 
-		void createTransformBuffer() const;
+
 		mutable CComPtr<ID3D11Buffer> _transformBuffer;
 
 		

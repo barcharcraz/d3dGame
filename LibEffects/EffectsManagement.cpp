@@ -9,7 +9,7 @@ namespace Effects {
             shaderCache.emplace(effect.caps, effect);
         }
     }
-	Effect ChooseShader(const std::set<ShaderCaps>& requestedCaps) {
+	Effect ChooseEffect(const std::set<ShaderCaps>& requestedCaps) {
 		if (shaderCache.count(requestedCaps) != 0) {
 			//there is an exact match, we can just return that
 			return shaderCache.at(requestedCaps);

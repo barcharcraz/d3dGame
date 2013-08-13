@@ -43,7 +43,9 @@ namespace LibCommon {
 			} else {
 				int indexPos = static_cast<int>(indexIterators - _indices.begin());
 				int uvIndex = _uvIndices[indexPos];
+				int normIndex = _vnIndices[indexPos];
 				retval[i].uv << _uvs[uvIndex];
+				retval[i].norm << _normals[normIndex];
 			}
 
 		}
@@ -55,6 +57,7 @@ namespace LibCommon {
 	}
 	void ObjFile::read(std::istream& from) {
 		std::vector<Eigen::Vector4f> points;
+		std::vector<Eigen::Vector4f> normals;
 		std::vector<int> indices;
 		std::vector<int> uvIndices;
 		std::vector<int> vnIndices;
@@ -76,12 +79,18 @@ namespace LibCommon {
 				
 			} else if (curLine.compare(0, 3, "vt ") == 0) {
 				uvs.push_back(parseUV(curLine));
+			} else if (curLine.compare(0, 3, "vn ") == 0) {
+				normals.push_back(parseNormal(curLine));
 			}
 		}
 		std::reverse(indices.begin(), indices.end());
+		std::reverse(vnIndices.begin(), vnIndices.end());
+		std::reverse(uvIndices.begin(), uvIndices.end());
 		_points = std::move(points);
 		_indices = std::move(indices);
+		_normals = std::move(normals);
 		_uvIndices = std::move(uvIndices);
+		_vnIndices = std::move(vnIndices);
 		_uvs = std::move(uvs);
 	}
 	Eigen::Vector4f ObjFile::parseVertex(const std::string& line) {
@@ -104,6 +113,25 @@ namespace LibCommon {
 		}
 		return Eigen::Vector4f(x, y, z, w);
 
+	}
+	Eigen::Vector4f ObjFile::parseNormal(const std::string& line) {
+		float x;
+		float y;
+		float z;
+		float w;
+		std::stringstream st(line);
+		std::string type;
+		st >> type;
+		if (type != "vn") {
+			throw std::runtime_error("not a valid vertex normal record");
+		}
+		st >> x >> y >> z;
+		if (!st.eof()) {
+			st >> w;
+		} else {
+			w = 1.0f;
+		}
+		return Eigen::Vector4f(x, y, z, w);
 	}
 	std::tuple<std::vector<int>, std::vector<int>, std::vector<int>> ObjFile::parseIndex(const std::string& line) {
 		std::vector<int> indices;
@@ -129,6 +157,7 @@ namespace LibCommon {
 					int vnIdx;
 					st >> type;
 					st >> vnIdx;
+					vnIndices.push_back(vnIdx - 1);
 					
 				}
 			} else {

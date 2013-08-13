@@ -33,8 +33,9 @@ namespace Systems {
 			newVel.pretranslate(-Vector3f::UnitZ());
 		}
 		Eigen::Vector3f transUp = trans->transform.rotation() * Eigen::Vector3f::UnitY();
-		newVel *= AngleAxisf(rotY, transUp);
+		
 		newVel *= AngleAxisf(rotX, Vector3f::UnitX());
+		newVel *= AngleAxisf(rotY, transUp);
 		
 		
 		vel->velocity = std::move(newVel);

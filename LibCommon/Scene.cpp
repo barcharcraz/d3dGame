@@ -77,6 +77,15 @@ namespace LibCommon {
 		}
 		return nullptr;
 	}
+	std::vector<Components::IComponent*> Scene::SelectComponents(std::type_index type) {
+		std::vector<Components::IComponent*> retval;
+		for (auto& ent : _entities) {
+			if (ent->HasComponent(type)) {
+				retval.push_back(ent->Get(type));
+			}
+		}
+		return retval;
+	}
 	void Scene::sendRemoveMessage(Entity *e) {
 		for(std::unique_ptr<System>& elm : _systems) {
 			elm->OnEntityRemove(e);
