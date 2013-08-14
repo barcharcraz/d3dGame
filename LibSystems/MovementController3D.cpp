@@ -1,6 +1,8 @@
 #include "stdafx.h"
+#include <Eigen/Eigen>
 #include "MovementController3D.h"
 #include <LibComponents/Velocity.h>
+#include <Utils/math.h>
 #include <LibInput/Input.h>
 #include <LibComponents/Transform.h>
 namespace Systems {
@@ -19,23 +21,24 @@ namespace Systems {
 		Affine3f newVel( Affine3f::Identity() );
 		auto rotY = inp->AxisAction("Horizontal");
 		auto rotX = inp->AxisAction("Vertical");
+		float speed = 0.25f;
 		
 		if (inp->Action("Left")) {
-			newVel.pretranslate(Vector3f::UnitX());
+			newVel.translate(-Eigen::Vector3f::UnitX() * speed);
 		}
 		if (inp->Action("Right")) {
-			newVel.pretranslate(-Vector3f::UnitX());
+			newVel.translate(Eigen::Vector3f::UnitX() * speed);
 		}
 		if (inp->Action("Forward")) {
-			newVel.pretranslate(Vector3f::UnitZ());
+			newVel.translate(-Eigen::Vector3f::UnitZ() * speed);
 		}
 		if (inp->Action("Backward")) {
-			newVel.pretranslate(-Vector3f::UnitZ());
+			newVel.translate(Eigen::Vector3f::UnitZ() * speed);
 		}
 		Eigen::Vector3f transUp = trans->transform.rotation() * Eigen::Vector3f::UnitY();
 		
-		newVel *= AngleAxisf(rotX, Vector3f::UnitX());
-		newVel *= AngleAxisf(rotY, transUp);
+		newVel.rotate(AngleAxisf(rotX, -Vector3f::UnitX()));
+		newVel.rotate(AngleAxisf(rotY, -Vector3f::UnitY()));
 		
 		
 		vel->velocity = std::move(newVel);

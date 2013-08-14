@@ -7,9 +7,18 @@ namespace Components {
 	class DirectionalLight : public IComponent {
 	public:
 		DirectionalLight(const Eigen::Vector4f& color, const Eigen::Vector3f& dir)
-			: Color(color), Direction(dir) {}
-		Eigen::Vector4f Color;
-		Eigen::Vector3f Direction;
+			: Direction(data.Direction), Color(data.Color) 
+		{
+			data.Color = color;
+			data.Direction = dir;
+		}
+		struct Data {
+			Eigen::Vector4f Color;
+			Eigen::Vector3f Direction;
+		};
+		Data data;
+		Eigen::Vector4f& Color;
+		Eigen::Vector3f& Direction;
 	};
 }
 

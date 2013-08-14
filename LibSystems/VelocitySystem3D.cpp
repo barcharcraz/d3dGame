@@ -11,8 +11,7 @@ namespace Systems {
 	void VelocitySystem3D::Process(Entity* e) {
 		auto& transform = e->Get<Transform3D>()->transform;
 		auto& velocity = e->Get<Velocity3D>()->velocity;
-		auto rot = transform.rotation();
-		transform = velocity * transform;
+		transform = transform * velocity;
 		
 	}
 }

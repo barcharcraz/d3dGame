@@ -4,7 +4,7 @@
 #include <functional>
 
 namespace Components {
-	//IComponent is trivial
+	
 	class IComponent {
 	public:
 		virtual ~IComponent() = 0;

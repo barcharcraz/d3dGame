@@ -5,6 +5,10 @@ cbuffer light {
 	float4 diffuse;
 	float3 direction;
 };
+cbuffer material {
+	float4 mambiant;
+	float4 mdiffuse;
+};
 
 struct VS_OUTPUT {
 	float4 Pos : SV_POSITION;
@@ -17,12 +21,13 @@ float4 main(VS_OUTPUT input) : SV_TARGET
 	float4 lightDir;
 	float4 texColor;
 	float intensity;
+	color = mambiant;
 	texColor = tex.Sample(samp, input.uv.xy);
 	lightDir.xyz = direction.xyz;
 	lightDir.w = 1;
 	lightDir *= -1;
 	intensity = saturate(dot(input.norm, lightDir));
-	color = saturate(diffuse * intensity);
+	color += saturate(diffuse * intensity);
 	color *= texColor;
 	//color = input.norm;
 	return color;

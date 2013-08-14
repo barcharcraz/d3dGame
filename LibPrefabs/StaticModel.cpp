@@ -2,6 +2,7 @@
 #include <LibComponents/Transform.h>
 #include <LibComponents/Shaders.h>
 #include <LibComponents/Effect.h>
+#include <LibComponents/Material.h>
 #include <LibEffects/EffectsManagement.h>
 namespace Prefabs {
 	StaticModel::StaticModel(const Components::Model& mod, const Components::Texture& tex) {
@@ -10,5 +11,6 @@ namespace Prefabs {
 		AddComponent<Components::Model>(mod);
 		AddComponent<Components::Texture>(tex);
 		AddComponent<Components::Effect>(Effects::ChooseEffect({ ShaderCaps::LIT_DIRECTIONAL, ShaderCaps::MESH_INDEXED, ShaderCaps::TEXTURE_MAPPED }));
+		AddComponent<Components::Material>(Eigen::Vector4f(0.5f, 0.5f, 0.5f, 0.0f), Eigen::Vector4f(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 }

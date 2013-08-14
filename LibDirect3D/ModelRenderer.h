@@ -29,6 +29,7 @@ namespace LibDirect3D {
 		Eigen::Matrix4f cameraTransform;
 		Eigen::Matrix4f camPos;
 		CComPtr<ID3D11Buffer> _lights;
+		CComPtr<ID3D11Buffer> _materials;
 		std::map<LibCommon::Entity*, res> entityCache;
 		const Direct3DRenderer* render;
 	};

@@ -11,10 +11,11 @@
 #include <LibHLSL/HLSLPixelShader.h>
 #include <LibHLSL/HLSLVertexShader.h>
 #include <LibComponents/Effect.h>
+#include <LibComponents/Material.h>
 #include <cstddef>
 namespace LibDirect3D {
 	ModelRenderer::ModelRenderer(const Direct3DRenderer& renderer)
-		: System({ typeid(Components::Model), typeid(Components::Transform3D), typeid(Components::Effect) }), 
+		: System({ typeid(Components::Model), typeid(Components::Transform3D), typeid(Components::Material), typeid(Components::Effect) }), 
 		render(&renderer)
 	{
 		
@@ -22,14 +23,13 @@ namespace LibDirect3D {
 	void ModelRenderer::Init() {
 		auto camera = parent->SelectEntity({ typeid(Components::Camera), typeid(Components::Transform3D) });
 		directionalLights = parent->SelectComponents<Components::DirectionalLight>();
-		auto first = *directionalLights[0];
-		
-		int off = (int)offsetof(Components::DirectionalLight, Color);
-		_lights = render->CreateConstantBuffer(((char*)directionalLights[0])+off, sizeof(Components::DirectionalLight) - off);
+		_lights = render->CreateConstantBuffer(&directionalLights[0]->data, sizeof(Components::DirectionalLight::Data));
 		auto camcomp = camera->Get<Components::Camera>();
 		auto camtrans = camera->Get<Components::Transform3D>();
 		cameraTransform = camcomp->CameraMatrix;
 		camPos = camtrans->transform.matrix();
+		_materials = render->CreateConstantBuffer(sizeof(Components::Material::Data));
+		render->pCtx->PSSetConstantBuffers(0, 1, &_lights.p);
 	}
 	void ModelRenderer::Process(LibCommon::Entity* e) {
 		using namespace Components;
@@ -49,9 +49,11 @@ namespace LibDirect3D {
 		}
 		auto vertexBuffer = entityCache[e].vertexBuffer;
 		auto indexBuffer = entityCache[e].indexBuffer;
+		auto& material = e->Get<Components::Material>()->data;
+		render->UpdateConstantBuffer(_materials, &material, sizeof(Components::Material::Data));
 		LibCommon::Transforms trans;
 		trans.model = transform->transform.matrix();
-		trans.view = camPos;
+		trans.view = camPos.inverse();
 		trans.proj = cameraTransform;
 		auto transformBuffer = render->GetTransforms(trans);
 		pCtx->IASetInputLayout(vs->getInputLayout(pDev));
@@ -63,7 +65,7 @@ namespace LibDirect3D {
 		pCtx->VSSetShader(vs->getShader(pDev), nullptr, 0);
 		pCtx->PSSetShader(ps->getShader(pDev), nullptr, 0);
 		pCtx->VSSetConstantBuffers(0, 1, &transformBuffer.p);
-		pCtx->PSSetConstantBuffers(0, 1, &_lights.p);
+		pCtx->PSSetConstantBuffers(1, 1, &_materials.p);
 		pCtx->DrawIndexed(static_cast<UINT>(model->indices.size()), 0, 0);
 		
 	}

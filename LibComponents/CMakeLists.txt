@@ -10,6 +10,8 @@ set(libcomponents_files
 	Texture.h
 	Texture.cpp
 	Effect.h
+	Material.h
+	Material.cpp
 	DirectionalLight.h
 	stdafx.h
 	stdafx.cpp
