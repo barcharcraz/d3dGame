@@ -60,6 +60,7 @@ namespace Image {
 			case Formats::R8G8B8A8_UNORM:
 				return ConvertToR8G8B8A8_UNORM(dat);
 			}
+
 		}
 	}
 }

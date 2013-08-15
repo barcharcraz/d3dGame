@@ -39,7 +39,7 @@ namespace LibGLX {
 		}
 		int best_fbc = -1;
 		int worst_fbc = -1;
-		int
+
 	}
 
 	/* ---static helpers----- */

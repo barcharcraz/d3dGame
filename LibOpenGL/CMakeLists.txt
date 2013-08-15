@@ -8,4 +8,4 @@ set(LibOpenGL_files
 	stdafx.cpp
 )
 add_library(LibOpenGL STATIC ${LibOpenGL_files})
-target_link_libraries(LibOpenGL ${OPEN_gl_LIBRARY})
+target_link_libraries(LibOpenGL ${OPEN_gl_LIBRARY} ${GLEW_LIBRARIES})

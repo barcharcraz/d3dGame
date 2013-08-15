@@ -8,11 +8,13 @@ namespace LibOpenGL {
 	GLBuffer::GLBuffer(GLenum target) {
 		init();
 		glBindBuffer(target, _buffer);
+
 		initalTarget = target;
 	}
 
 	GLBuffer::~GLBuffer() {
 		glDeleteBuffers(1, &_buffer);
+
 	}
 	//PUBLIC UPDATE METHODS
 	void GLBuffer::UpdateData(GLenum target, GLsizeiptr size, const void *data, GLenum usage) {

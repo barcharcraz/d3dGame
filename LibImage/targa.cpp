@@ -3,6 +3,7 @@
 #include "image.h"
 #include <Utils/exceptions.h>
 #include <fstream>
+#include <algorithm>
 namespace Image {
 	namespace Targa {
 		static void ValidateTarga(const TargaFile& file);

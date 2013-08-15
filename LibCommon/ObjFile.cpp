@@ -3,7 +3,7 @@
 #include <fstream>
 #include <Utils/strings.h>
 #include <exception>
-
+#include <algorithm>
 namespace LibCommon {
 	ObjFile::ObjFile(const std::string& filename) {
 		read(filename);

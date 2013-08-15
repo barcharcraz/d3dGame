@@ -47,7 +47,7 @@ namespace Effects {
 				hvs = &hvs_map.at(filename);
 			}
 #else
-			throw utils::not_supported_error("Tried to load an HLSL shader without HLSL support")
+			throw utils::not_supported_error("Tried to load an HLSL shader without HLSL support");
 #endif
 		}
 	}
