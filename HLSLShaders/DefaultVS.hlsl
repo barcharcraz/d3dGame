@@ -21,6 +21,7 @@ VertexOutput main( VertexInput input )
 	retval.pos = mul(proj, retval.pos);
 	retval.uv = input.uv;
 	retval.norm = mul(input.norm, world);
+	retval.norm.w = 1;
 	retval.norm = normalize(retval.norm);
 	return retval;
 }

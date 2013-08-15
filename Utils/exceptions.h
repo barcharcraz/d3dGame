@@ -21,6 +21,14 @@ namespace utils {
 
 		}
 	};
+	class precondition_error : public std::logic_error {
+	public:
+		explicit precondition_error(const std::string& what_arg)
+			: logic_error(what_arg)
+		{
+
+		}
+	};
 }
 
 #endif

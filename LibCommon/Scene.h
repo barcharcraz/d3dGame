@@ -12,7 +12,7 @@
 namespace LibCommon {
 	class Scene {
 	public:
-		Scene(IRenderer* pRenderer);
+		Scene();
 		void Update();
 		void AddEntity(Entity* e);
 		void AddEntity(std::unique_ptr<Entity> && e);
@@ -40,7 +40,6 @@ namespace LibCommon {
 		Entity* SelectEntity(const std::vector<std::type_index>& types);
 	protected:
 	private:
-		std::unique_ptr<IRenderer> _pRenderer;
 		std::vector<std::unique_ptr<System>> _systems;
 		std::vector<std::unique_ptr<Entity>> _entities;
 		//! \brief sends a removal message to all systems for the

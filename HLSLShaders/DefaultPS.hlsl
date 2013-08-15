@@ -9,7 +9,11 @@ cbuffer material {
 	float4 mambiant;
 	float4 mdiffuse;
 };
-
+struct pointLight {
+	float4 position;
+	float4 diffuse;
+};
+StructuredBuffer<pointLight> pointLights;
 struct VS_OUTPUT {
 	float4 Pos : SV_POSITION;
 	float4 norm : NORMAL;
@@ -18,16 +22,13 @@ struct VS_OUTPUT {
 float4 main(VS_OUTPUT input) : SV_TARGET
 {
 	float4 color;
-	float4 lightDir;
 	float4 texColor;
 	float intensity;
 	color = mambiant;
 	texColor = tex.Sample(samp, input.uv.xy);
-	lightDir.xyz = direction.xyz;
-	lightDir.w = 1;
-	lightDir *= -1;
-	intensity = saturate(dot(input.norm, lightDir));
-	color += saturate(diffuse * intensity);
+	intensity = saturate(dot((float3)input.norm, direction));
+	color += (diffuse * intensity);
+	color = saturate(color);
 	color *= texColor;
 	//color = input.norm;
 	return color;

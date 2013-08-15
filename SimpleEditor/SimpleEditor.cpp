@@ -38,6 +38,8 @@
 #include <LibEffects/Effect.h>
 #include <LibEffects/Shader.h>
 #include <LibEffects/EffectsManagement.h>
+#include <LibEffects/EffectCache.h>
+#include <Utils/functions.h>
 
 using namespace LibCommon;
 using namespace windows;
@@ -45,11 +47,10 @@ using namespace Components;
 using namespace Systems;
 int main(int argc, char** argv)
 {
+
 	Window win(1280, 768);
 	win.Show();
 	
-
-	ComInitialize com;
 	//Direct3DRenderer d3dRender;
 	Image::Targa::TargaFile f = Image::Targa::LoadTarga("Textures/wood_flat/diffuse.tga");
 
@@ -63,16 +64,25 @@ int main(int argc, char** argv)
 		Effects::ShaderCaps::TEXTURE_MAPPED,
 		Effects::ShaderCaps::LIT_DIRECTIONAL
 	};
-	LibDirect3D::Direct3DRenderer * render = new LibDirect3D::Direct3DRenderer(win.Hwnd());
 	//CComPtr<ID3D11Debug> pDebug;
+	/*utils::Defer<std::function<void()>> def([&](){
+		pDebug->ReportLiveDeviceObjects(D3D11_RLDO_FLAGS::D3D11_RLDO_DETAIL);
+	});*/
+	auto render = std::make_unique<LibDirect3D::Direct3DRenderer>(win.Hwnd());
+	
 	//render->pDev->QueryInterface(IID_PPV_ARGS(&pDebug));
+	
+	Effects::EffectCache cache;
 	Effects::AddEffect({ "DefaultVS.cso", "DefaultPS.cso", defaultLayout, defaultCaps });
 	LibDirect3D::Direct3DTexture d3dTex{ Image::ImageData(f) };
 	LibCommon::ObjFile modelFile("TestObj.obj");
+	LibCommon::ObjFile cone("Helix.obj");
 	Prefabs::Camera * cam = new Prefabs::Camera();
 	Prefabs::StaticModel * model = new Prefabs::StaticModel(modelFile.model(), Texture(&d3dTex));
+	Prefabs::StaticModel * coneMod = new Prefabs::StaticModel(cone.model(), Texture(&d3dTex));
 	model->Get<Transform3D>()->transform.translate(Eigen::Vector3f{ 0, 0, -10 });
 	model->AddComponent<Components::Velocity3D>(Eigen::Affine3f(Eigen::AngleAxisf(0.01f, Eigen::Vector3f::UnitY()) * Eigen::Affine3f::Identity()));
+	coneMod->AddComponent<Components::Velocity3D>(Eigen::Affine3f(Eigen::AngleAxisf(0.01f, Eigen::Vector3f::UnitX()) * Eigen::Affine3f::Identity()));
 	MovementController3D * control = new MovementController3D();
 	VelocitySystem3D * velsys = new VelocitySystem3D();
 	Input::Input * input = new Input::Input();
@@ -85,10 +95,11 @@ int main(int argc, char** argv)
 	win.AttachInput(input);
 	cam->AddComponent(input);
 	LibDirect3D::ModelRenderer * renderComp = new LibDirect3D::ModelRenderer(*render);
-	Scene * sce = new Scene(render);
+	auto sce = std::make_unique<Scene>();
 	sce->AddSystem(renderComp);
 	sce->AddSystem(control);
 	sce->AddEntity(model);
+	sce->AddEntity(coneMod);
 	sce->AddEntity(cam);
 	sce->AddEntity(std::make_unique<Prefabs::DirectionalLight>(Eigen::Vector4f{ 0.70f, 0.0f, 0.20f, 1.0f }, Eigen::Vector3f{ 0.0f, 0.0f, 100.0f }));
 	sce->AddSystem(velsys);
@@ -106,8 +117,7 @@ int main(int argc, char** argv)
 	
 	auto rv = Run();
 
-	delete sce;
-	//pDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
+	
 	return rv;
 	
 	

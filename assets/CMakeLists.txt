@@ -1,5 +1,7 @@
 set(asset_files
 	TestObj.obj
+	Cone.obj
+	Helix.obj
 	)
 add_custom_target(assets SOURCES ${asset_files})
 add_custom_command(TARGET assets PRE_BUILD 

@@ -7,5 +7,6 @@ set(util_src
 	sets.h
     make_unique.h
 	identifier.h
+	functions.h
 	)
 add_custom_target(utils SOURCES ${util_src})

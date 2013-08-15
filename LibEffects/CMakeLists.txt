@@ -3,6 +3,8 @@ set(effects_files
 	stdafx.cpp
 	EffectsManagement.h
 	EffectsManagement.cpp
+	EffectCache.h
+	EffectCache.cpp
 	Shader.h
 	Shader.cpp
 	Effect.h

@@ -6,7 +6,7 @@
 #include <Utils/exceptions.h>
 
 namespace LibCommon {
-	Scene::Scene(IRenderer* pRenderer) : _pRenderer(pRenderer), _rate(34) {
+	Scene::Scene() : _rate(34) {
 		_lastUpdate = _clock.now();
 	}
 	void Scene::Update() {
