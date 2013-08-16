@@ -17,6 +17,7 @@ namespace Components {
 		Data data;
 		Eigen::Vector4f& Color;
 		unsigned int& Radius;
+		
 	};
 }
 
