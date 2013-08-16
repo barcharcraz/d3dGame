@@ -4,6 +4,7 @@
 #include <Utils/strings.h>
 #include <exception>
 #include <algorithm>
+#include <cassert>
 namespace LibCommon {
 	ObjFile::ObjFile(const std::string& filename) {
 		read(filename);
@@ -11,44 +12,27 @@ namespace LibCommon {
 	ObjFile::ObjFile(std::istream& from) {
 		read(from);
 	}
-	std::vector<Eigen::Vector4f> ObjFile::points() {
-		return _points;
-	}
-	std::vector<int> ObjFile::indices() {
-		return _indices;
-	}
-	std::vector<Vertex> ObjFile::verts() {
-		if (_verts.empty()) {
-			_verts = constructVerts();
-		}
-		return _verts;
-	}
     Components::Model ObjFile::model() {
-
-        Components::Model retval;
-		retval.verts = verts();
-		retval.indices = indices();
-		return retval;
+		return constructModel();
 	}
-	std::vector<Vertex> ObjFile::constructVerts() {
-		//initialize the return value to the proper size
-		std::vector<Vertex> retval(_points.size());
-		for (int i = 0; i < _points.size(); ++i) {
-			retval[i].pos = _points[i];
-			//find the first position of the vertex in the set of indexes
-			//from this information we can find the associated UV value
-			auto indexIterators = std::find(_indices.begin(), _indices.end(), i+1);
-			if (indexIterators == _indices.end()) {
-				retval[i].uv = Eigen::Vector3f(0, 0, 0);
-			} else {
-				int indexPos = static_cast<int>(indexIterators - _indices.begin());
-				int uvIndex = _uvIndices[indexPos];
-				int normIndex = _vnIndices[indexPos];
-				retval[i].uv << _uvs[uvIndex];
-				retval[i].norm << _normals[normIndex];
+	Components::Model ObjFile::constructModel() {
+		Components::Model retval;
+		//assert(_vnIndices.size() == _indices.size() == _uvIndices.size());
+		for (int i = 0; i < _indices.size(); ++i) {
+			Vertex vert;
+			vert.pos = _points[_indices[i]];
+			vert.norm = _normals[_vnIndices[i]] * -1;
+			vert.norm.w() = 1;
+			vert.uv = _uvs[_uvIndices[i]];
+			auto iter = std::find(retval.verts.begin(), retval.verts.end(), vert);
+			auto position = iter - retval.verts.begin();
+			if (iter == retval.verts.end()) {
+				retval.verts.push_back(vert);
 			}
-
+			retval.indices.push_back(position);
 		}
+		reverseIndices(retval.indices);
+		//std::reverse(retval.verts.begin(), retval.verts.end());
 		return retval;
 	}
 	void ObjFile::read(const std::string& filename) {
@@ -83,9 +67,9 @@ namespace LibCommon {
 				normals.push_back(parseNormal(curLine));
 			}
 		}
-		std::reverse(indices.begin(), indices.end());
-		std::reverse(vnIndices.begin(), vnIndices.end());
-		std::reverse(uvIndices.begin(), uvIndices.end());
+		//std::reverse(indices.begin(), indices.end());
+		//std::reverse(vnIndices.begin(), vnIndices.end());
+		//std::reverse(uvIndices.begin(), uvIndices.end());
 		_points = std::move(points);
 		_indices = std::move(indices);
 		_normals = std::move(normals);
@@ -185,5 +169,12 @@ namespace LibCommon {
 			w = 0.0f;
 		}
 		return Eigen::Vector3f(u, v, w);
+	}
+	void ObjFile::reverseIndices(std::vector<unsigned int>& indices) {
+		for (unsigned int i = 0; i < _indices.size(); i += 3) {
+			auto temp = indices[i];
+			indices[i] = indices[i + 1];
+			indices[i + 1] = temp;
+		}
 	}
 }

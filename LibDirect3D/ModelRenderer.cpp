@@ -12,6 +12,7 @@
 #include <LibHLSL/HLSLVertexShader.h>
 #include <LibComponents/Effect.h>
 #include <LibComponents/Material.h>
+#include <LibComponents/PointLight.h>
 #include <cstddef>
 namespace LibDirect3D {
 	ModelRenderer::ModelRenderer(const Direct3DRenderer& renderer)
@@ -30,6 +31,14 @@ namespace LibDirect3D {
 		camPos = camtrans->transform.matrix();
 		_materials = render->CreateConstantBuffer(sizeof(Components::Material::Data));
 		render->pCtx->PSSetConstantBuffers(0, 1, &_lights.p);
+	}
+	void ModelRenderer::initPointLights() {
+		auto lights = parent->SelectEntities({ typeid(Components::PointLight), typeid(Components::Transform3D) });
+		std::vector<LibCommon::point_light> lightStructs;
+		for (auto e : lights) {
+			LibCommon::point_light light;
+			light.diffuse = e->Get<Components::PointLight>()->Color;
+		}
 	}
 	void ModelRenderer::Process(LibCommon::Entity* e) {
 		using namespace Components;

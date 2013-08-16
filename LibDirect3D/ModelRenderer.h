@@ -20,10 +20,6 @@ namespace LibDirect3D {
 			CComPtr<ID3D11Buffer> indexBuffer;
 			CComPtr<ID3D11Buffer> vertexBuffer;
 		};
-		struct light {
-
-		};
-		void init();
 		std::vector<Components::DirectionalLight*> directionalLights;
 		LibCommon::Transforms constTransforms;
 		Eigen::Matrix4f cameraTransform;
@@ -32,5 +28,7 @@ namespace LibDirect3D {
 		CComPtr<ID3D11Buffer> _materials;
 		std::map<LibCommon::Entity*, res> entityCache;
 		const Direct3DRenderer* render;
+		CComPtr<ID3D11ShaderResourceView> _pointLights;
+		void initPointLights();
 	};
 }

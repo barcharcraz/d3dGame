@@ -47,8 +47,16 @@ using namespace Components;
 using namespace Systems;
 int main(int argc, char** argv)
 {
-
+	Input::Input * input = new Input::Input();
+	input->AddAction("Left", Input::Keys::A);
+	input->AddAction("Right", Input::Keys::D);
+	input->AddAction("Forward", Input::Keys::W);
+	input->AddAction("Backward", Input::Keys::S);
+	input->AddAxisAction("Horizontal", Input::MouseType, Input::AxisName::X);
+	input->AddAxisAction("Vertical", Input::MouseType, Input::AxisName::Y);
+	
 	Window win(1280, 768);
+	win.AttachInput(input);
 	win.Show();
 	
 	//Direct3DRenderer d3dRender;
@@ -76,7 +84,7 @@ int main(int argc, char** argv)
 	Effects::AddEffect({ "DefaultVS.cso", "DefaultPS.cso", defaultLayout, defaultCaps });
 	LibDirect3D::Direct3DTexture d3dTex{ Image::ImageData(f) };
 	LibCommon::ObjFile modelFile("TestObj.obj");
-	LibCommon::ObjFile cone("Helix.obj");
+	LibCommon::ObjFile cone("Cone.obj");
 	Prefabs::Camera * cam = new Prefabs::Camera();
 	Prefabs::StaticModel * model = new Prefabs::StaticModel(modelFile.model(), Texture(&d3dTex));
 	Prefabs::StaticModel * coneMod = new Prefabs::StaticModel(cone.model(), Texture(&d3dTex));
@@ -85,14 +93,7 @@ int main(int argc, char** argv)
 	coneMod->AddComponent<Components::Velocity3D>(Eigen::Affine3f(Eigen::AngleAxisf(0.01f, Eigen::Vector3f::UnitX()) * Eigen::Affine3f::Identity()));
 	MovementController3D * control = new MovementController3D();
 	VelocitySystem3D * velsys = new VelocitySystem3D();
-	Input::Input * input = new Input::Input();
-	input->AddAction("Left", Input::Keys::A );
-	input->AddAction("Right", Input::Keys::D);
-	input->AddAction("Forward", Input::Keys::W);
-	input->AddAction("Backward", Input::Keys::S);
-	input->AddAxisAction("Horizontal", Input::MouseType, Input::AxisName::X);
-	input->AddAxisAction("Vertical", Input::MouseType, Input::AxisName::Y);
-	win.AttachInput(input);
+	
 	cam->AddComponent(input);
 	LibDirect3D::ModelRenderer * renderComp = new LibDirect3D::ModelRenderer(*render);
 	auto sce = std::make_unique<Scene>();
@@ -101,7 +102,7 @@ int main(int argc, char** argv)
 	sce->AddEntity(model);
 	sce->AddEntity(coneMod);
 	sce->AddEntity(cam);
-	sce->AddEntity(std::make_unique<Prefabs::DirectionalLight>(Eigen::Vector4f{ 0.70f, 0.0f, 0.20f, 1.0f }, Eigen::Vector3f{ 0.0f, 0.0f, 100.0f }));
+	sce->AddEntity(std::make_unique<Prefabs::DirectionalLight>(Eigen::Vector4f{ 0.70f, 0.0f, 0.20f, 1.0f }, Eigen::Vector3f{ 0.0f, 0.0f, -100.0f }));
 	sce->AddSystem(velsys);
 	//context.DrawShapes(commands);
 	//factory.getSwapChain()->Present(1,0);

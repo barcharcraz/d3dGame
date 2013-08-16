@@ -20,7 +20,7 @@ VertexOutput main( VertexInput input )
 	retval.pos = mul(view, retval.pos);
 	retval.pos = mul(proj, retval.pos);
 	retval.uv = input.uv;
-	retval.norm = mul(input.norm, world);
+	retval.norm.xyz = mul((float3x3)world, input.norm.xyz);
 	retval.norm.w = 1;
 	retval.norm = normalize(retval.norm);
 	return retval;

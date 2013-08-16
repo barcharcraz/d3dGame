@@ -4,7 +4,7 @@
 #include <LibInput/Input.h>
 namespace windows {
 	LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
-	size_t Run();
+	int Run();
 
 	class Window {
 		friend LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);

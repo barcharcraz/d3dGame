@@ -187,7 +187,7 @@ CComPtr<ID3D11Buffer> Direct3DRenderer::CreateIndexBuffer(const Components::Mode
 	CComPtr<ID3D11Buffer> indexBuffer;
 	D3D11_BUFFER_DESC indexDesc;
 	indexDesc.Usage = D3D11_USAGE_DEFAULT;
-	indexDesc.ByteWidth = static_cast<UINT>(sizeof(int) * model.indices.size());
+	indexDesc.ByteWidth = static_cast<UINT>(sizeof(unsigned int) * model.indices.size());
 	indexDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	indexDesc.CPUAccessFlags = 0;
 	indexDesc.MiscFlags = 0;
@@ -259,6 +259,47 @@ CComPtr<ID3D11Buffer> Direct3DRenderer::CreateConstantBuffer(const void* data, s
 		throw std::system_error(hr, std::system_category());
 	}
 	return retval;
+}
+CComPtr<ID3D11Buffer> Direct3DRenderer::CreateStructuredBuffer(size_t structSize, unsigned int length) const {
+	HRESULT hr = S_OK;
+	D3D11_BUFFER_DESC desc;
+	desc.Usage = D3D11_USAGE_DYNAMIC;
+	desc.ByteWidth = static_cast<UINT>(structSize * length);
+	desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+	desc.StructureByteStride = static_cast<UINT>(structSize);
+	CComPtr<ID3D11Buffer> retval;
+	hr = pDev->CreateBuffer(&desc, nullptr, &retval);
+	if (FAILED(hr)) {
+		throw std::system_error(hr, std::system_category());
+	}
+	return retval;
+}
+CComPtr<ID3D11Buffer> Direct3DRenderer::CreateStructuredBuffer(const void* data, size_t structSize, unsigned int length) const {
+	HRESULT hr = S_OK;
+
+	D3D11_BUFFER_DESC desc;
+	desc.Usage = D3D11_USAGE_DYNAMIC;
+	desc.ByteWidth = static_cast<UINT>(structSize * length);
+	desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+	desc.StructureByteStride = static_cast<UINT>(structSize);
+
+	D3D11_SUBRESOURCE_DATA dat;
+	dat.pSysMem = data;
+	dat.SysMemPitch = 0;
+	dat.SysMemSlicePitch = 0;
+	CComPtr<ID3D11Buffer> retval;
+	hr = pDev->CreateBuffer(&desc, &dat, &retval);
+	if (FAILED(hr)) {
+		throw std::system_error(hr, std::system_category());
+	}
+	return retval;
+}
+void Direct3DRenderer::UpdateStructuredBuffer(CComPtr<ID3D11Buffer> buffer, const void* data, size_t size) const {
+	UpdateConstantBuffer(buffer, data, size);
 }
 void Direct3DRenderer::UpdateConstantBuffer(CComPtr<ID3D11Buffer> buffer, const void* data, size_t size) const {
 	HRESULT hr = S_OK;

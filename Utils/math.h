@@ -1,6 +1,5 @@
 #include <Eigen/Core>
 #include <Eigen/Geometry>
-
 #ifndef UTILS_FILES_H
 #define UTILS_FILES_H
 
@@ -25,6 +24,7 @@ namespace utils {
 		auto rot = transform.rotation();
 		return rot * Eigen::Vector3f::UnitX();
 	}
+	
 	
 }
 

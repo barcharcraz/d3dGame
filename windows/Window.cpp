@@ -5,7 +5,7 @@
 #include <LibInput/DeviceTypes.h>
 namespace windows {
 	//----NON CLASS---------
-	size_t Run() {
+	int Run() {
 		MSG msg{ 0 };
 		while (msg.message != WM_QUIT) {
 			Window * win = (Window*) GetWindowLongPtr(msg.hwnd, GWLP_USERDATA);
@@ -24,7 +24,7 @@ namespace windows {
 				}
 			}
 		}
-		return msg.wParam;
+		return static_cast<int>(msg.wParam);
 	}
 	LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 		unsigned int wpint = static_cast<unsigned int>(wparam);

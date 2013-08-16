@@ -20,6 +20,9 @@ namespace LibDirect3D {
 		CComPtr<ID3D11Buffer> GetTransforms(const LibCommon::Transforms& transforms) const;
 		CComPtr<ID3D11Buffer> CreateConstantBuffer(const void* data, size_t size) const;
 		CComPtr<ID3D11Buffer> CreateConstantBuffer(size_t size) const;
+		CComPtr<ID3D11Buffer> CreateStructuredBuffer(size_t structSize, unsigned int length) const;
+		CComPtr<ID3D11Buffer> CreateStructuredBuffer(const void* data, size_t structSize, unsigned int length) const;
+		void UpdateStructuredBuffer(CComPtr<ID3D11Buffer> buffer, const void* data, size_t size) const;
 		void UpdateConstantBuffer(CComPtr<ID3D11Buffer> buffer, const void* data, size_t size) const;
 		size_t GetBufferSize(CComPtr<ID3D11Buffer> buffer) const;
 		
