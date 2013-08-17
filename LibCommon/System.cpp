@@ -6,4 +6,7 @@ namespace LibCommon {
 		: aspect(types) {
 
 	}
+	System::System() {
+
+	}
 }

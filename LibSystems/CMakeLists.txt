@@ -3,6 +3,8 @@ set(system_files
 	VelocitySystem3D.cpp
 	MovementController3D.h
 	MovementController3D.cpp
+	Group.h
+	Group.cpp
 	stdafx.h
 	stdafx.cpp
 	)

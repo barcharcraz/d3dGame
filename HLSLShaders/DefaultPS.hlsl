@@ -1,10 +1,6 @@
 Texture2D tex;
 SamplerState samp;
 
-cbuffer light {
-	float4 diffuse;
-	float3 direction;
-};
 cbuffer material {
 	float4 mambiant;
 	float4 mdiffuse;
@@ -12,13 +8,18 @@ cbuffer material {
 struct pointLight {
 	float4 diffuse;
 	float3 position;
-	
+	float padding;
+};
+struct directionalLight {
+	float4 diffuse;
+	float4 direction;
 };
 StructuredBuffer<pointLight> pointLights;
 struct VS_OUTPUT {
 	float4 Pos : SV_POSITION;
+	float4 wPos : TEXCOORD0;
 	float4 norm : NORMAL;
-	float3 uv : TEXCOORD;
+	float3 uv : TEXCOORD1;
 };
 float4 main(VS_OUTPUT input) : SV_TARGET
 {
@@ -30,13 +31,12 @@ float4 main(VS_OUTPUT input) : SV_TARGET
 	uint stride = 0;
 	pointLights.GetDimensions(size, stride);
 	for (uint i = 0; i < size; ++i) {
-		float3 lvec = normalize(pointLights[i].position - input.Pos.xyz);
-		color += saturate(mdiffuse * dot(lvec, input.norm.xyz) * pointLights[i].diffuse);
+		float4 diffuse = pointLights[i].diffuse;
+		float3 lpos = pointLights[i].position;
+		float3 lvec = normalize(lpos - input.wPos.xyz) * -1;
+		color += saturate(mdiffuse * dot(lvec, input.norm.xyz) * diffuse);
 	}
-	float3 lightDir = direction * -1;
 	texColor = tex.Sample(samp, input.uv.xy);
-	intensity = saturate(dot(normalize(input.norm.xyz), normalize(lightDir)));
-	color += (diffuse * intensity);
 	color = saturate(color);
 	color *= texColor;
 	//color = input.norm;

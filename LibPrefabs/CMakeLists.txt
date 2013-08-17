@@ -7,6 +7,8 @@ set(prefab_files
 	StaticModel.cpp
 	DirectionalLight.h
 	DirectionalLight.cpp
+	PointLight.h
+	PointLight.cpp
 	)
 add_library(Prefabs STATIC ${prefab_files})
 target_link_libraries(Prefabs LibComponents Effects)

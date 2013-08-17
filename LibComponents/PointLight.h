@@ -2,8 +2,9 @@
 #define LIBCOMPONENTS_POINTLIGHT_H
 #include <Eigen/Core>
 #include <Eigen/Geometry>
+#include "IComponent.h"
 namespace Components {
-	class PointLight {
+	class PointLight : public IComponent {
 	public:
 		PointLight();
 		explicit PointLight(const Eigen::Vector4f& color);

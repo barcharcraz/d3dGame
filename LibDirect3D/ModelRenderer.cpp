@@ -24,13 +24,14 @@ namespace LibDirect3D {
 	void ModelRenderer::Init() {
 		auto camera = parent->SelectEntity({ typeid(Components::Camera), typeid(Components::Transform3D) });
 		directionalLights = parent->SelectComponents<Components::DirectionalLight>();
-		_lights = render->CreateConstantBuffer(&directionalLights[0]->data, sizeof(Components::DirectionalLight::Data));
+		//_lights = render->CreateConstantBuffer(&directionalLights[0]->data, sizeof(Components::DirectionalLight::Data));
 		auto camcomp = camera->Get<Components::Camera>();
 		auto camtrans = camera->Get<Components::Transform3D>();
 		cameraTransform = camcomp->CameraMatrix;
 		camPos = camtrans->transform.matrix();
 		_materials = render->CreateConstantBuffer(sizeof(Components::Material::Data));
-		render->pCtx->PSSetConstantBuffers(0, 1, &_lights.p);
+		//render->pCtx->PSSetConstantBuffers(0, 1, &_lights.p);
+		initPointLights();
 	}
 	void ModelRenderer::initPointLights() {
 		auto lights = parent->SelectEntities({ typeid(Components::PointLight), typeid(Components::Transform3D) });
@@ -38,7 +39,24 @@ namespace LibDirect3D {
 		for (auto e : lights) {
 			LibCommon::point_light light;
 			light.diffuse = e->Get<Components::PointLight>()->Color;
+			light.position = e->Get<Components::Transform3D>()->transform.translation();
+			lightStructs.push_back(light);
 		}
+		auto size = sizeof(LibCommon::point_light);
+		CComPtr<ID3D11Buffer> lightBuffer = render->CreateStructuredBuffer(&lightStructs[0], sizeof(LibCommon::point_light), lightStructs.size());
+		D3D11_SHADER_RESOURCE_VIEW_DESC desc;
+		desc.Format = DXGI_FORMAT_UNKNOWN;
+		desc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
+		desc.Buffer.ElementOffset = 0;
+		desc.Buffer.NumElements = lightStructs.size();
+		desc.BufferEx.Flags = D3D11_BUFFEREX_SRV_FLAG_RAW;
+		HRESULT hr = S_OK;
+		_pointLights.Release();
+		hr = render->pDev->CreateShaderResourceView(lightBuffer, &desc, &_pointLights);
+		if (FAILED(hr)) {
+			throw std::system_error(hr, std::system_category());
+		}
+		
 	}
 	void ModelRenderer::Process(LibCommon::Entity* e) {
 		using namespace Components;
@@ -69,12 +87,13 @@ namespace LibDirect3D {
 		pCtx->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		unsigned int stride = sizeof(LibCommon::Vertex);
 		unsigned int offset = 0;
+		pCtx->PSSetShaderResources(1, 1, &_pointLights.p);
 		pCtx->IASetVertexBuffers(0, 1, &vertexBuffer.p, &stride, &offset);
 		pCtx->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 		pCtx->VSSetShader(vs->getShader(pDev), nullptr, 0);
 		pCtx->PSSetShader(ps->getShader(pDev), nullptr, 0);
 		pCtx->VSSetConstantBuffers(0, 1, &transformBuffer.p);
-		pCtx->PSSetConstantBuffers(1, 1, &_materials.p);
+		pCtx->PSSetConstantBuffers(0, 1, &_materials.p);
 		pCtx->DrawIndexed(static_cast<UINT>(model->indices.size()), 0, 0);
 		
 	}

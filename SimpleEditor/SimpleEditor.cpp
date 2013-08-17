@@ -35,6 +35,7 @@
 #include <LibPrefabs/Camera.h>
 #include <LibPrefabs/StaticModel.h>
 #include <LibPrefabs/DirectionalLight.h>
+#include <LibPrefabs/PointLight.h>
 #include <LibEffects/Effect.h>
 #include <LibEffects/Shader.h>
 #include <LibEffects/EffectsManagement.h>
@@ -102,6 +103,7 @@ int main(int argc, char** argv)
 	sce->AddEntity(model);
 	sce->AddEntity(coneMod);
 	sce->AddEntity(cam);
+	sce->AddEntity<Prefabs::PointLight>(Eigen::Vector3f{ 0.0f, 0.0f, -5.0f }, Eigen::Vector4f{ 1.0f, 1.0f, 1.0f, 1.0f });
 	sce->AddEntity(std::make_unique<Prefabs::DirectionalLight>(Eigen::Vector4f{ 0.70f, 0.0f, 0.20f, 1.0f }, Eigen::Vector3f{ 0.0f, 0.0f, -100.0f }));
 	sce->AddSystem(velsys);
 	//context.DrawShapes(commands);

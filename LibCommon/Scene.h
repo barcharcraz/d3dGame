@@ -9,6 +9,7 @@
 #include <memory>
 #include <vector>
 #include <chrono>
+#include <functional>
 namespace LibCommon {
 	class Scene {
 	public:
@@ -16,6 +17,10 @@ namespace LibCommon {
 		void Update();
 		void AddEntity(Entity* e);
 		void AddEntity(std::unique_ptr<Entity> && e);
+		template<typename T, typename... Args>
+		void AddEntity(Args && ... args) {
+			AddEntity(std::make_unique<T>(std::forward<Args>(args)...));
+		}
 		void RemoveEntity(Entity* e);
 		void AddSystem(std::unique_ptr<System> && s);
 		void AddSystem(System * s);

@@ -10,13 +10,15 @@ struct VertexInput {
 };
 struct VertexOutput {
 	float4 pos : SV_POSITION;
+	float4 wPos : TEXCOORD0;
 	float4 norm : NORMAL;
-	float3 uv : TEXCOORD;
+	float3 uv : TEXCOORD1;
 };
 VertexOutput main( VertexInput input )
 {
 	VertexOutput retval;
 	retval.pos = mul(world, input.pos);
+	retval.wPos = mul(world, input.pos);
 	retval.pos = mul(view, retval.pos);
 	retval.pos = mul(proj, retval.pos);
 	retval.uv = input.uv;

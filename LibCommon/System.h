@@ -11,6 +11,7 @@ namespace LibCommon {
 		Scene* parent;
 		std::vector<std::type_index> aspect;
 		System(std::vector<std::type_index> types);
+		System();
         virtual void Init() {}
 		virtual void Process(Entity* ent) = 0;
 		virtual void OnEntityRemove(Entity* ent) {}
