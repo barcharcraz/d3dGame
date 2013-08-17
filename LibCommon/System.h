@@ -1,6 +1,6 @@
 #ifndef LIBCOMMON_SYSTEM_H
 #define LIBCOMMON_SYSTEM_H
-#include <vector>
+#include <set>
 #include <tuple>
 #include <typeindex>
 #include "Entity.h"
@@ -9,8 +9,8 @@ namespace LibCommon {
 	class System {
 	public:
 		Scene* parent;
-		std::vector<std::type_index> aspect;
-		System(std::vector<std::type_index> types);
+		std::set<std::type_index> aspect;
+		System(std::set<std::type_index> types);
 		System();
         virtual void Init() {}
 		virtual void Process(Entity* ent) = 0;

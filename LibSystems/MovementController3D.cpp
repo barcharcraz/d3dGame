@@ -17,7 +17,7 @@ namespace Systems {
 		using namespace Eigen;
 		auto vel = e->Get<Velocity3D>();
 		auto inp = e->Get<In::Input>();
-		auto trans = e->Get<Components::Transform3D>();
+		//auto trans = e->Get<Components::Transform3D>();
 		Affine3f newVel( Affine3f::Identity() );
 		auto rotY = inp->AxisAction("Horizontal");
 		auto rotX = inp->AxisAction("Vertical");
@@ -35,7 +35,7 @@ namespace Systems {
 		if (inp->Action("Backward")) {
 			newVel.translate(Eigen::Vector3f::UnitZ() * speed);
 		}
-		Eigen::Vector3f transUp = trans->transform.rotation() * Eigen::Vector3f::UnitY();
+		//Eigen::Vector3f transUp = trans->transform.rotation() * Eigen::Vector3f::UnitY();
 		
 		newVel.rotate(AngleAxisf(rotX, -Vector3f::UnitX()));
 		newVel.rotate(AngleAxisf(rotY, -Vector3f::UnitY()));

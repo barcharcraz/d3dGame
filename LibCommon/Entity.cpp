@@ -28,7 +28,7 @@ namespace LibCommon {
 	bool Entity::HasComponent(std::type_index type) {
 		return _components.count(type) > 0;
 	}
-	bool Entity::HasAllComponents(const std::vector<std::type_index>& types) {
+	bool Entity::HasAllComponents(const std::set<std::type_index>& types) {
 		bool retval = true;
 		for (auto& type : types) {
 			if (_components.count(type) == 0) {

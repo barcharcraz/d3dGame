@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "conversions.h"
 #include "image.h"
+#include <Utils/exceptions.h>
 #include <climits>
 namespace Image {
 	namespace Conversions {
@@ -42,6 +43,8 @@ namespace Image {
 				return R8G8B8_UNORM_to_R8G8B8A8_UNORM(dat);
 			case Formats::R8G8B8A8_UNORM:
 				return dat; //this is a copy
+			default:
+				throw utils::not_supported_error("unsupported conversion exception");
 			}
 		}
 		ImageData ConvertToR8B8G8_UNORM(const ImageData &dat) {
@@ -50,6 +53,8 @@ namespace Image {
 				return dat;
 			case Formats::R8G8B8A8_UNORM:
 				return R8G8B8A8_UNORM_to_R8G8B8_UNORM(dat);
+			default:
+				throw utils::not_supported_error("unsupported conversion exception");
 			}
 		}
 
@@ -59,6 +64,8 @@ namespace Image {
 				return ConvertToR8B8G8_UNORM(dat);
 			case Formats::R8G8B8A8_UNORM:
 				return ConvertToR8G8B8A8_UNORM(dat);
+			default:
+				throw utils::not_supported_error("unsupported conversion exception");
 			}
 
 		}

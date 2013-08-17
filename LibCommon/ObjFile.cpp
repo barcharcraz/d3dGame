@@ -18,7 +18,7 @@ namespace LibCommon {
 	Components::Model ObjFile::constructModel() {
 		Components::Model retval;
 		//assert(_vnIndices.size() == _indices.size() == _uvIndices.size());
-		for (int i = 0; i < _indices.size(); ++i) {
+		for (unsigned int i = 0; i < _indices.size(); ++i) {
 			Vertex vert;
 			vert.pos = _points[_indices[i]];
 			vert.norm = _normals[_vnIndices[i]] * -1;

@@ -24,7 +24,7 @@ namespace Effects {
 			return cache.at(requestedCaps);
 		}
 		for (auto& elm : cache) {
-			if (utils::subset(requestedCaps, elm.first)) {
+			if (utils::includes(requestedCaps, elm.first)) {
 				return elm.second;
 			}
 		}

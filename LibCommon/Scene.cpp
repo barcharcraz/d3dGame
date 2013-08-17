@@ -59,7 +59,7 @@ namespace LibCommon {
 		throw utils::not_supported_error("could not find element in vector");
 	}
 
-	std::vector<Entity*> Scene::SelectEntities(const std::vector<std::type_index>& info) {
+	std::vector<Entity*> Scene::SelectEntities(const std::set<std::type_index>& info) {
 		//^| this function could really use some caching at some point
 		std::vector<Entity*> retval;
 		for (auto& ent : _entities) {
@@ -69,7 +69,7 @@ namespace LibCommon {
 		}
 		return retval;
 	}
-	Entity* Scene::SelectEntity(const std::vector<std::type_index>& info) {
+	Entity* Scene::SelectEntity(const std::set<std::type_index>& info) {
 		for (auto& ent : _entities) {
 			if (ent->HasAllComponents(info)) {
 				return ent.get();

@@ -1,7 +1,7 @@
 #ifndef LIBCOMMON_ENTITY_H
 #define LIBCOMMON_ENTITY_H
 #include <LibComponents/IComponent.h>
-#include <vector>
+#include <set>
 #include <map>
 #include <memory>
 #include <stdexcept>
@@ -45,7 +45,7 @@ namespace LibCommon {
 			return _components.at(type).get();
 		}
 		bool HasComponent(std::type_index type);
-		bool HasAllComponents(const std::vector<std::type_index>& types);
+		bool HasAllComponents(const std::set<std::type_index>& types);
 	private:
 		std::map<std::type_index, std::unique_ptr<Components::IComponent> > _components;
 		

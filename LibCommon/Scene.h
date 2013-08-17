@@ -38,11 +38,11 @@ namespace LibCommon {
 			}
 			return retval;
 		}
-		std::vector<Entity*> SelectEntities(const std::vector<std::type_index>& types);
+		std::vector<Entity*> SelectEntities(const std::set<std::type_index>& types);
 		//! \brief SelectEntities job is to select entities that have the components
 		//! specified in the types parameter, depending on how entities are stored
 		//! this may involve a database query
-		Entity* SelectEntity(const std::vector<std::type_index>& types);
+		Entity* SelectEntity(const std::set<std::type_index>& types);
 	protected:
 	private:
 		std::vector<std::unique_ptr<System>> _systems;

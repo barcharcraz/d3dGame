@@ -8,13 +8,6 @@ namespace utils {
 	bool includes(const T& lhs, const T& rhs) {
 		return std::includes(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 	}
-	template<typename T>
-	T set_union(const T& lhs, const T& rhs) {
-		T retval;
-		std::back_insert_iterator<T> outItr;
-		std::set_union(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), retval.begin(), outItr);
-		return retval;
-	}
 }
 
 #endif

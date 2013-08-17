@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "GLSLPixelShader.h"
 namespace Effects {
 	GLSLPixelShader::GLSLPixelShader(const std::string &filename, const std::vector<ShaderDesc> &layout)
@@ -10,6 +11,6 @@ namespace Effects {
 	}
 	//private functions
 	void GLSLPixelShader::init() {
-		_shader = glCreateDebugObjectMESA()
+		_shader = glCreateShader(GL_VERTEX_SHADER);
 	}
 }
