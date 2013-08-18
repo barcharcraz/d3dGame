@@ -13,6 +13,7 @@ set(libcomponents_files
 	Material.h
 	Material.cpp
 	DirectionalLight.h
+	DirectionalLight.cpp
 	PointLight.h
 	PointLight.cpp
 	stdafx.h

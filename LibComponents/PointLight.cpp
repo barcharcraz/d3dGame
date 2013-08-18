@@ -2,27 +2,23 @@
 
 namespace Components {
 	PointLight::PointLight()
-		: Color(data.color), Radius(data.radius)
+		: Diffuse({ 1.0f, 1.0f, 1.0f, 1.0f }), Radius(1)
 	{
-		Color = Eigen::Vector4f{ 1.0f, 1.0f, 1.0f, 1.0f };
-		Radius = 1;
+
 	}
-	PointLight::PointLight(const Eigen::Vector4f& color)
-		: Color(data.color), Radius(data.radius)
+	PointLight::PointLight(const Eigen::Vector4f& diffuse)
+		: Diffuse(diffuse), Radius(1)
 	{
-		Color = color;
-		Radius = 1;
+
 	}
 	PointLight::PointLight(unsigned int radius)
-		: Color(data.color), Radius(data.radius)
+		: Diffuse({ 1.0f, 1.0f, 1.0f, 1.0f }), Radius(radius)
 	{
-		Color = Eigen::Vector4f{ 1.0f, 1.0f, 1.0f, 1.0f };
-		Radius = radius;
+
 	}
-	PointLight::PointLight(const Eigen::Vector4f& color, unsigned int radius)
-		: Color(data.color), Radius(data.radius)
+	PointLight::PointLight(const Eigen::Vector4f& diffuse, unsigned int radius)
+		: Diffuse(diffuse), Radius(radius)
 	{
-		Color = color;
-		Radius = radius;
+
 	}
 }

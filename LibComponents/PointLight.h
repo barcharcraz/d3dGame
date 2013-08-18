@@ -7,17 +7,12 @@ namespace Components {
 	class PointLight : public IComponent {
 	public:
 		PointLight();
-		explicit PointLight(const Eigen::Vector4f& color);
+		explicit PointLight(const Eigen::Vector4f& diffuse);
 		explicit PointLight(unsigned int radius);
-		PointLight(const Eigen::Vector4f& color, unsigned int radius);
+		PointLight(const Eigen::Vector4f& diffuse, unsigned int radius);
 		
-		struct Data {
-			Eigen::Vector4f color;
-			unsigned int radius;
-		};
-		Data data;
-		Eigen::Vector4f& Color;
-		unsigned int& Radius;
+		Eigen::Vector4f Diffuse;
+		unsigned int Radius;
 		
 	};
 }

@@ -42,12 +42,17 @@ namespace LibCommon {
 	}
 
 	void Scene::AddSystem(std::unique_ptr<System> && s) {
-		_systems.push_back(std::move(s));
-		_systems.back()->parent = this;
+		auto insertPos = std::find_if(_systems.begin(), _systems.end(), [&](std::unique_ptr<System>& elm) {
+			if (s->priority > elm->priority) {
+				return true;
+			}
+			return false;
+		});
+		auto element = _systems.insert(insertPos, std::move(s));
+		(*element)->parent = this;
 	}
 	void Scene::AddSystem(System* s) {
-		_systems.push_back(std::unique_ptr<System>(s));
-		_systems.back()->parent = this;
+		AddSystem(std::unique_ptr<System>(s));
 	}
 	void Scene::RemoveSystem(System *s) {
 		for(auto i = _systems.begin(); i != _systems.end(); ++i) {

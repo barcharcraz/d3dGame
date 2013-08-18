@@ -3,8 +3,13 @@
 #include <algorithm>
 #include <Utils/sets.h>
 namespace Systems {
-	Group::Group(const std::string& name, Priority prio)
-		: _name(name), _prio(prio)
+	Group::Group(const std::string& name, LibCommon::Priority prio)
+		: System(prio), _name(name)
+	{
+
+	}
+	Group::Group(const std::string& name) 
+		: _name(name)
 	{
 
 	}
@@ -23,13 +28,38 @@ namespace Systems {
 		auto added = _members.insert(posItr, std::move(s));
 		auto ptr = added->get();
 		if (!utils::includes(aspect, ptr->aspect)) {
-			aspect.insert(ptr->aspect.begin(), ptr->aspect.end());
+			std::set<std::type_index> intersection;
+			//we want the new aspect of the group to be the intersection
+			//of the aspects if its members. If the aspects of s and this are
+			//disjoint than this' aspects is Ø (the empty set) and we will get
+			//all entities
+			
+			std::set_intersection(aspect.begin(), aspect.end(), 
+				ptr->aspect.begin(), ptr->aspect.end(),
+				std::inserter(intersection, intersection.begin()));
+			aspect = std::move(intersection);
 		}
 		
 	}
 	void Group::Init() {
 		for (auto& elm : _members) {
 			elm->Init();
+		}
+	}
+	void Group::Process(LibCommon::Entity* ent) {
+		for (auto& elm : _members) {
+			if (ent->HasAllComponents(elm->aspect)) {
+				elm->Process(ent);
+				return; //we only want to process one element, this is the point
+			}
+		}
+	}
+	void Group::OnEntityRemove(LibCommon::Entity* ent) {
+		for (auto& elm : _members) {
+			if (ent->HasAllComponents(elm->aspect)) {
+				elm->OnEntityRemove(ent);
+				return; //we only want to send the removal message to one entitiy
+			}
 		}
 	}
 }

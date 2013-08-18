@@ -6,16 +6,24 @@
 #include "Entity.h"
 namespace LibCommon {
     class Scene;
+	enum class Priority {
+		HIGH,
+		MEDIUM,
+		LOW
+	};
 	class System {
 	public:
 		Scene* parent;
 		std::set<std::type_index> aspect;
-		System(std::set<std::type_index> types);
+		System(const std::set<std::type_index>& types);
 		System();
+		System(const std::set<std::type_index>& types, Priority prio);
+		System(Priority prio);
         virtual void Init() {}
 		virtual void Process(Entity* ent) = 0;
 		virtual void OnEntityRemove(Entity* ent) {}
 		virtual ~System() = 0;
+		Priority priority;
 	};
     inline System::~System() {}
 

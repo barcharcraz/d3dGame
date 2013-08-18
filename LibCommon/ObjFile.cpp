@@ -13,7 +13,7 @@ namespace LibCommon {
 		read(from);
 	}
     Components::Model ObjFile::model() {
-		return constructModel();
+		return std::move(constructModel());
 	}
 	Components::Model ObjFile::constructModel() {
 		Components::Model retval;
@@ -25,7 +25,7 @@ namespace LibCommon {
 			vert.norm.w() = 1;
 			vert.uv = _uvs[_uvIndices[i]];
 			auto iter = std::find(retval.verts.begin(), retval.verts.end(), vert);
-			auto position = iter - retval.verts.begin();
+			unsigned int position = iter - retval.verts.begin();
 			if (iter == retval.verts.end()) {
 				retval.verts.push_back(vert);
 			}

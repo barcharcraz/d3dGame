@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "ModelRenderer.h"
 #include "Direct3DTexture.h"
+#include "Buffers.h"
+#include "ShaderResource.h"
 #include <LibCommon/Data.h>
 #include <LibComponents/Model.h>
 #include <LibComponents/Transform.h>
@@ -35,21 +37,14 @@ namespace LibDirect3D {
 	}
 	void ModelRenderer::initPointLights() {
 		auto lights = parent->SelectEntities({ typeid(Components::PointLight), typeid(Components::Transform3D) });
-		std::vector<LibCommon::point_light> lightStructs;
-		for (auto e : lights) {
-			LibCommon::point_light light;
-			light.diffuse = e->Get<Components::PointLight>()->Color;
-			light.position = e->Get<Components::Transform3D>()->transform.translation();
-			lightStructs.push_back(light);
-		}
-		auto size = sizeof(LibCommon::point_light);
-		CComPtr<ID3D11Buffer> lightBuffer = render->CreateStructuredBuffer(&lightStructs[0], sizeof(LibCommon::point_light), lightStructs.size());
+		std::vector<LibCommon::point_light> lightStructs = LibCommon::fuse_point_lights(lights);
+		
+		CComPtr<ID3D11Buffer> lightBuffer = createStructuredBuffer(render->pDev, &lightStructs[0], sizeof(LibCommon::point_light), lightStructs.size());
 		D3D11_SHADER_RESOURCE_VIEW_DESC desc;
 		desc.Format = DXGI_FORMAT_UNKNOWN;
 		desc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
 		desc.Buffer.ElementOffset = 0;
-		desc.Buffer.NumElements = lightStructs.size();
-		desc.BufferEx.Flags = D3D11_BUFFEREX_SRV_FLAG_RAW;
+		desc.Buffer.NumElements = static_cast<UINT>(lightStructs.size());
 		HRESULT hr = S_OK;
 		_pointLights.Release();
 		hr = render->pDev->CreateShaderResourceView(lightBuffer, &desc, &_pointLights);
