@@ -1,19 +1,12 @@
+#include "LightStructs.hlsl"
+#include "ForwardLighting.hlsl"
 Texture2D tex;
 SamplerState samp;
 
-cbuffer material {
-	float4 mambiant;
-	float4 mdiffuse;
+cbuffer objMat {
+	material mat;
 };
-struct pointLight {
-	float4 diffuse;
-	float3 position;
-	float padding;
-};
-struct directionalLight {
-	float4 diffuse;
-	float4 direction;
-};
+
 StructuredBuffer<pointLight> pointLights;
 StructuredBuffer<directionalLight> dirLights;
 struct VS_OUTPUT {
@@ -27,16 +20,9 @@ float4 main(VS_OUTPUT input) : SV_TARGET
 	float4 color;
 	float4 texColor;
 	float intensity;
-	color = mambiant;
-	uint size = 0;
-	uint stride = 0;
-	pointLights.GetDimensions(size, stride);
-	for (uint i = 0; i < size; ++i) {
-		float4 diffuse = pointLights[i].diffuse;
-		float3 lpos = pointLights[i].position;
-		float3 lvec = normalize(lpos - input.wPos.xyz) * -1;
-		color += saturate(mdiffuse * dot(lvec, input.norm.xyz) * diffuse);
-	}
+	color = mat.ambiant;
+	color += pointLighting(pointLights, input.norm, input.wPos, mat);
+	color += directionalLighting(dirLights, input.norm, mat);
 	texColor = tex.Sample(samp, input.uv.xy);
 	color = saturate(color);
 	color *= texColor;

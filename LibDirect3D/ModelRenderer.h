@@ -29,6 +29,8 @@ namespace LibDirect3D {
 		std::map<LibCommon::Entity*, res> entityCache;
 		const Direct3DRenderer* render;
 		CComPtr<ID3D11ShaderResourceView> _pointLights;
+		CComPtr<ID3D11ShaderResourceView> _dirLights;
 		void initPointLights();
+		void initDirLights();
 	};
 }

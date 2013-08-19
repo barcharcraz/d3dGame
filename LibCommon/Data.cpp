@@ -11,7 +11,7 @@ namespace LibCommon {
 			auto light = elm->Get<Components::PointLight>();
 			point_light new_light;
 			new_light.diffuse = light->Diffuse;
-			new_light.position = transform->transform.translation();
+			new_light.position << transform->transform.translation(), 1.0f;
 			retval.push_back(std::move(new_light));
 		}
 		return retval;
@@ -23,10 +23,11 @@ namespace LibCommon {
 			auto light = elm->Get<Components::DirectionalLight>();
 			directional_light new_light;
 			new_light.diffuse = light->Diffuse;
-			auto direction = Eigen::Vector3f::UnitY();
-			direction *= transform->transform.rotation();
+			Eigen::Vector4f direction = Eigen::Vector4f::UnitY();
+			Eigen::Affine3f rotation(transform->transform.rotation());
+			direction = rotation * direction;
 			direction.normalize();
-			new_light.direction = std::move(direction);
+			new_light.direction = direction;
 			retval.push_back(std::move(new_light));
 		}
 		return retval;

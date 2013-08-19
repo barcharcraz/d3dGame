@@ -5,6 +5,7 @@
 #include <exception>
 #include <algorithm>
 #include <cassert>
+#include <unordered_map>
 namespace LibCommon {
 	ObjFile::ObjFile(const std::string& filename) {
 		read(filename);
@@ -17,6 +18,10 @@ namespace LibCommon {
 	}
 	Components::Model ObjFile::constructModel() {
 		Components::Model retval;
+		//this map is used to speed up checks for duplicate values
+		//when we add a vertex to the return value we cache its index here
+		//this way we can get O(1) searches for duplicates
+		std::unordered_map<Vertex, int> indexMap;
 		//assert(_vnIndices.size() == _indices.size() == _uvIndices.size());
 		for (unsigned int i = 0; i < _indices.size(); ++i) {
 			Vertex vert;
@@ -24,12 +29,16 @@ namespace LibCommon {
 			vert.norm = _normals[_vnIndices[i]] * -1;
 			vert.norm.w() = 1;
 			vert.uv = _uvs[_uvIndices[i]];
-			auto iter = std::find(retval.verts.begin(), retval.verts.end(), vert);
-			unsigned int position = iter - retval.verts.begin();
-			if (iter == retval.verts.end()) {
+			//auto iter = std::find(retval.verts.begin(), retval.verts.end(), vert);
+			//unsigned int position = iter - retval.verts.begin();
+			if (indexMap.count(vert) == 0) {
 				retval.verts.push_back(vert);
+				retval.indices.push_back(retval.verts.size() - 1);
+				indexMap[vert] = retval.verts.size() - 1;
+			} else {
+				retval.indices.push_back(indexMap.at(vert));
 			}
-			retval.indices.push_back(position);
+			
 		}
 		reverseIndices(retval.indices);
 		//std::reverse(retval.verts.begin(), retval.verts.end());

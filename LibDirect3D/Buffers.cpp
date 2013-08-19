@@ -105,7 +105,7 @@ namespace LibDirect3D {
 		}
 		return retval;
 	}
-	void updateConstantBuffer(ID3D11DeviceContext* pCtx, ID3D11Buffer* buffer, const void* data, size_t size) {
+	void updateBuffer(ID3D11DeviceContext* pCtx, ID3D11Buffer* buffer, const void* data, size_t size) {
 		HRESULT hr = S_OK;
 		D3D11_MAPPED_SUBRESOURCE map;
 		map.pData = 0;

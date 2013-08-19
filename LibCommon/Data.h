@@ -17,6 +17,7 @@ namespace LibCommon {
 			lhs.uv == rhs.uv
 			);
 	}
+	
 	struct Transforms {
 		Eigen::Matrix4f model;
 		Eigen::Matrix4f view;
@@ -24,7 +25,7 @@ namespace LibCommon {
 	};
 	struct point_light {
 		Eigen::Vector4f diffuse;
-		Eigen::Vector3f position;
+		Eigen::Vector4f position;
 	};
 	struct directional_light {
 		Eigen::Vector4f diffuse;
@@ -40,5 +41,31 @@ namespace LibCommon {
 	//! GPU
 	std::vector<directional_light> fuse_dir_lights(const std::vector<Entity*>& lights);
 }
-
+namespace std {
+	template<>
+	struct hash<LibCommon::Vertex> {
+		std::size_t operator()(const LibCommon::Vertex& v) const {
+			const unsigned long long int p = 167776199234521;
+			std::size_t hash = 2166136261;
+			hash = (hash ^ (std::size_t)v.pos.x()) * p;
+			hash = (hash ^ (std::size_t)v.pos.y()) * p;
+			hash = (hash ^ (std::size_t)v.pos.z()) * p;
+			hash = (hash ^ (std::size_t)v.pos.w()) * p;
+			hash = (hash ^ (std::size_t)v.norm.x()) * p;
+			hash = (hash ^ (std::size_t)v.norm.y()) * p;
+			hash = (hash ^ (std::size_t)v.norm.z()) * p;
+			hash = (hash ^ (std::size_t)v.norm.w()) * p;
+			hash = (hash ^ (std::size_t)v.uv.x()) * p;
+			hash = (hash ^ (std::size_t)v.uv.y()) * p;
+			hash = (hash ^ (std::size_t)v.uv.z()) * p;
+			//scramble the hash
+			hash += hash << 13;
+			hash ^= hash >> 7;
+			hash += hash << 3;
+			hash ^= hash >> 17;
+			hash += hash << 5;
+			return hash;
+		}
+	};
+}
 #endif

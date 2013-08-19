@@ -34,24 +34,22 @@ namespace LibDirect3D {
 		_materials = render->CreateConstantBuffer(sizeof(Components::Material::Data));
 		//render->pCtx->PSSetConstantBuffers(0, 1, &_lights.p);
 		initPointLights();
+		initDirLights();
 	}
 	void ModelRenderer::initPointLights() {
 		auto lights = parent->SelectEntities({ typeid(Components::PointLight), typeid(Components::Transform3D) });
 		std::vector<LibCommon::point_light> lightStructs = LibCommon::fuse_point_lights(lights);
-		
 		CComPtr<ID3D11Buffer> lightBuffer = createStructuredBuffer(render->pDev, &lightStructs[0], sizeof(LibCommon::point_light), lightStructs.size());
-		D3D11_SHADER_RESOURCE_VIEW_DESC desc;
-		desc.Format = DXGI_FORMAT_UNKNOWN;
-		desc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
-		desc.Buffer.ElementOffset = 0;
-		desc.Buffer.NumElements = static_cast<UINT>(lightStructs.size());
-		HRESULT hr = S_OK;
 		_pointLights.Release();
-		hr = render->pDev->CreateShaderResourceView(lightBuffer, &desc, &_pointLights);
-		if (FAILED(hr)) {
-			throw std::system_error(hr, std::system_category());
-		}
+		_pointLights = createStructuredBufferView(render->pDev, lightBuffer, lightStructs.size());
 		
+	}
+	void ModelRenderer::initDirLights() {
+		auto lights = parent->SelectEntities({ typeid(Components::DirectionalLight), typeid(Components::Transform3D) });
+		auto lightStructs = LibCommon::fuse_dir_lights(lights);
+		_dirLights.Release();
+		_dirLights = createStructuredBufferView(render->pDev, &lightStructs[0], sizeof(LibCommon::directional_light), lightStructs.size());
+		render->pCtx->PSSetShaderResources(2, 1, &_dirLights.p);
 	}
 	void ModelRenderer::Process(LibCommon::Entity* e) {
 		using namespace Components;
@@ -72,7 +70,7 @@ namespace LibDirect3D {
 		auto vertexBuffer = entityCache[e].vertexBuffer;
 		auto indexBuffer = entityCache[e].indexBuffer;
 		auto& material = e->Get<Components::Material>()->data;
-		render->UpdateConstantBuffer(_materials, &material, sizeof(Components::Material::Data));
+		updateBuffer(render->pCtx, _materials, &material, sizeof(Components::Material::Data));
 		LibCommon::Transforms trans;
 		trans.model = transform->transform.matrix();
 		trans.view = camPos.inverse();
