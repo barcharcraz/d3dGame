@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include <d3d11_1.h>
 #include "Direct2DRenderer.h"
+#include <stdexcept>
 using namespace LibDirect2D;
 
 Direct2DRenderer::Direct2DRenderer(HWND target) {
@@ -42,6 +43,23 @@ void Direct2DRenderer::init(IDXGIDevice* pdxgidevice, HWND target) {
 	m_pSwapChain = LibDXGI::CreateSwapChain(pdxgidevice, target);
 	pContext->SetTarget(getBackBufferBitmap());
 }
+void Direct2DRenderer::init(IDXGIDevice* pDev, IDXGISwapChain1* pSwap) {
+	HRESULT hr = S_OK;
+	hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &pFactory);
+	if (FAILED(hr)) {
+		throw std::system_error(hr, std::system_category());
+	}
+	hr = pFactory->CreateDevice(pDev, &pDevice);
+	if (FAILED(hr)) {
+		throw std::system_error(hr, std::system_category());
+	}
+	hr = pDevice->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_NONE, &pContext);
+	if (FAILED(hr)) {
+		throw std::system_error(hr, std::system_category());
+	}
+	m_pSwapChain = pSwap;
+	pContext->SetTarget(getBackBufferBitmap());
+}
 CComPtr<ID2D1Bitmap1> Direct2DRenderer::getBackBufferBitmap() {
 	return getBackBufferBitmap(pContext, m_pSwapChain);
 }
@@ -61,7 +79,7 @@ CComPtr<ID2D1Bitmap1> Direct2DRenderer::getBackBufferBitmap(ID2D1DeviceContext* 
 
 }
 
-CComPtr<ID2D1DeviceContext> Direct2DRenderer::getContext() {
+CComPtr<ID2D1DeviceContext> Direct2DRenderer::getContext() const {
 	return pContext;
 }
 Direct2DRenderer::~Direct2DRenderer() {

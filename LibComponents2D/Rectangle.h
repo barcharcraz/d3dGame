@@ -7,8 +7,9 @@
 namespace Components {
 	class Rectangle : public IComponent {
 	public:
-		Rectangle(const Eigen::Vector2f& extent_arg);
-		Eigen::Vector2f extent;
+		Rectangle(const Eigen::Vector2f& bottom_left_arg, const Eigen::Vector2f& top_right_arg);
+		Eigen::Vector2f bottom_left;
+		Eigen::Vector2f top_right;
 	};
 }
 

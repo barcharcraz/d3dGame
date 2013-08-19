@@ -10,9 +10,10 @@ public:
 	Direct2DRenderer(IDXGIDevice* pdxgidevice, HWND target);
 	void Present();
 
-	CComPtr<ID2D1DeviceContext> getContext();
+	CComPtr<ID2D1DeviceContext> getContext() const;
 	~Direct2DRenderer();
 private:
+	void init(IDXGIDevice* pDev, IDXGISwapChain1* pSwap);
 	void init(IDXGIDevice* pdxgidevice, HWND target);
 
 	CComPtr<ID3D11Device> p3Device;

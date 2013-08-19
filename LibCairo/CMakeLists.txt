@@ -1,5 +1,5 @@
 set(libcairo_files
-  Renderer.h,
+  Renderer.h
   Renderer.cpp
   )
 add_library(CairoRenderer STATIC ${libcairo_files})

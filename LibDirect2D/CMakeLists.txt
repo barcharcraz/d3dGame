@@ -9,6 +9,8 @@ set(libDirect2d_src
 	Direct2DRectRenderer.cpp
 	Direct2DRenderer.h
 	Direct2DRenderer.cpp
+	Renderer.h
+	Renderer.cpp
 	stdafx.h
 	stdafx.cpp
 	targetver.h
