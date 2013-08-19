@@ -18,7 +18,7 @@ namespace LibOpenGL {
 			GLBuffer Vertex;
 			GLBuffer Index;
 		};
-
+		
 		std::map<LibCommon::Entity*, buffers> buffer_map;
 		
     };

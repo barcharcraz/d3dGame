@@ -7,13 +7,13 @@ namespace LibOpenGL {
 	}
 	GLBuffer::GLBuffer(GLenum target) {
 		init();
-		glBindBuffer(target, _buffer);
+		gl::BindBuffer(target, _buffer);
 
 		initalTarget = target;
 	}
 
 	GLBuffer::~GLBuffer() {
-		glDeleteBuffers(1, &_buffer);
+		gl::DeleteBuffers(1, &_buffer);
 
 	}
 	//PUBLIC UPDATE METHODS
@@ -22,23 +22,24 @@ namespace LibOpenGL {
 			std::cerr << "Warning - performence: updated buffer with a different target than it was created with";
 		}
 		GLint boundTarget = 0;
-		glGetIntegerv(GL_VERTEX_ARRAY_BUFFER_BINDING, &boundTarget);
+		gl::GetIntegerv(gl::VERTEX_ARRAY_BINDING, &boundTarget);
 		if(boundTarget != _buffer) {
-			glBindBuffer(target, _buffer);
+			gl::BindBuffer(target, _buffer);
 		}
 		if(currentSize != size) {
-			glBufferData(target, size, data, usage);
+			gl::BufferData(target, size, data, usage);
 			currentSize = size;
 			return;
 		}
 		if(usage != lastUsage) {
 			std::cerr << "Warning - performence: changed usage on update, reallocateing buffer";
-			glBufferData(target, size, data, usage);
+			gl::BufferData(target, size, data, usage);
 			lastUsage = usage;
 			currentSize = size;
 			return;
 		}
-		glBufferSubData(target, 0, size, data);
+		
+		gl::BufferSubData(target, 0, size, data);
 
 
 	}
@@ -52,6 +53,6 @@ namespace LibOpenGL {
 	void GLBuffer::init() {
 		currentSize = 0;
 		lastUsage = 0;
-		glGenBuffers(1, &_buffer);
+		gl::GenBuffers(1, &_buffer);
 	}
 }

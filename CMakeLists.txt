@@ -101,3 +101,5 @@ ENDIF(USE_OPENGL)
 add_subdirectory(CrossplatApp)
 
 
+
+add_subdirectory(LibCairo)
