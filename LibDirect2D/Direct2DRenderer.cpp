@@ -60,15 +60,6 @@ CComPtr<ID2D1Bitmap1> Direct2DRenderer::getBackBufferBitmap(ID2D1DeviceContext* 
 	return retval;
 
 }
-Direct2DRenderingMessage* Direct2DRenderer::getRenderingMessage() {
-	if(lazyMessage == nullptr) {
-		lazyMessage.reset( new Direct2DRenderingMessage(pContext) );
-	}
-	return lazyMessage.get();
-}
-void Direct2DRenderer::Present() {
-	m_pSwapChain->Present(1,0);
-}
 
 CComPtr<ID2D1DeviceContext> Direct2DRenderer::getContext() {
 	return pContext;

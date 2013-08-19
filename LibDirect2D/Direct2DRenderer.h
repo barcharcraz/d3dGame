@@ -1,7 +1,6 @@
 #pragma once
 #include "stdafx.h"
 #include <d3d11_1.h>
-#include "Direct2DRenderingMessage.h"
 #include <atlbase.h>
 #include <LibCommon\IRenderer.h>
 namespace LibDirect2D {
@@ -9,7 +8,6 @@ class Direct2DRenderer : public LibCommon::IRenderer {
 public:
 	Direct2DRenderer(HWND target);
 	Direct2DRenderer(IDXGIDevice* pdxgidevice, HWND target);
-	LIBDIRECT2D_API virtual Direct2DRenderingMessage* getRenderingMessage() override;
 	void Present();
 
 	CComPtr<ID2D1DeviceContext> getContext();
@@ -27,7 +25,6 @@ private:
 	CComPtr<ID2D1Bitmap1> getBackBufferBitmap();
 	static CComPtr<ID2D1Bitmap1> getBackBufferBitmap(ID2D1DeviceContext* pContect, IDXGISwapChain1* pSwapChain);
 	
-	std::unique_ptr<Direct2DRenderingMessage> lazyMessage;
 	
 };
 }

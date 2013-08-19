@@ -67,7 +67,7 @@ add_subdirectory(LibCommon)
 add_subdirectory(assets)
 add_subdirectory(Utils)
 add_subdirectory(LibComponents)
-
+add_subdirectory(LibComponents2D)
 
 add_subdirectory(LibInput)
 add_subdirectory(LibSystems)
