@@ -10,22 +10,27 @@ namespace LibDirect2D {
 		: System({ typeid(Components::Transform2D) }), render(&render_arg)
 	{
 		HRESULT hr = S_OK;
-		hr = render->getContext()->CreateSolidColorBrush(D2D1::ColorF(1.0f, 1.0f, 1.0f, 1.0f), &brush);
+		hr = render->getContext()->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::White), &brush);
 		if (FAILED(hr)) {
 			throw std::system_error(hr, std::system_category());
 		}
+		priority = LibCommon::Priority::HIGH;
 	}
 	void Renderer::Init() {
 		
 	}
 	void Renderer::Process(LibCommon::Entity* ent) {
+		HRESULT hr = S_OK;
 		auto transform = ent->Get<Components::Transform2D>();
 		auto lines = ent->GetAll<Components::Line>();
 		auto circles = ent->GetAll<Components::Circle>();
 		auto rectangles = ent->GetAll<Components::Rectangle>();
 		auto context = render->getContext();
-		context->SetTransform(Affine2f_to_D2D1Matrix3x2f(transform->transform));
+		D2D1_TAG t1 = 0;
+		D2D1_TAG t2 = 0;
 		context->BeginDraw();
+		render->SetRenderTarget();
+		context->SetTransform(Affine2f_to_D2D1Matrix3x2f(transform->transform) * render->GetProjection());
 		for (auto line : lines) {
 			D2D1_POINT_2F a;
 			D2D1_POINT_2F b;
@@ -38,12 +43,15 @@ namespace LibDirect2D {
 			elm.point = PointConversion( circle->center );
 			elm.radiusX = circle->radius;
 			elm.radiusY = circle->radius;
-			context->DrawEllipse(elm, brush);
+			context->FillEllipse(elm, brush);
 		}
 		for (auto rectangle : rectangles) {
 			D2D1_RECT_F rect = RectConversion(*rectangle);
 			context->DrawRectangle(rect, brush);
 		}
-		context->EndDraw();
+		hr = context->EndDraw(&t1, &t2);
+		if (FAILED(hr)) {
+			throw std::system_error(hr, std::system_category());
+		}
 	}
 }

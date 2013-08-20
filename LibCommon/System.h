@@ -4,8 +4,8 @@
 #include <tuple>
 #include <typeindex>
 #include "Entity.h"
-#include "Scene.h"
 namespace LibCommon {
+	class Scene;
 	enum class Priority {
 		HIGH,
 		MEDIUM,

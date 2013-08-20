@@ -23,6 +23,8 @@ namespace LibDirect3D {
 		
 		CComPtr<ID3D11Device2> pDev;
 		CComPtr<ID3D11DeviceContext2> pCtx;
+		CComPtr<IDXGISwapChain2> GetSwapChain();
+		CComPtr<IDXGIDevice3> GetDXGIDevice();
 	private:
 		
 		void init(IDXGIAdapter* pAdapter,

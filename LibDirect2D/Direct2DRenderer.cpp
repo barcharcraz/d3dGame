@@ -4,44 +4,11 @@
 #include <stdexcept>
 using namespace LibDirect2D;
 
-Direct2DRenderer::Direct2DRenderer(HWND target) {
-	UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
-#ifdef _DEBUG
-	creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
-#endif
-	HRESULT hr = S_OK;
-	hr = D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, 0, creationFlags, nullptr, 0, D3D11_SDK_VERSION,
-		&p3Device, nullptr, &pD3DContext);
-	if(FAILED(hr)) {
-		//this is an OMGWTFBBQ panic
-		throw hr;
-	}
-	hr = p3Device.QueryInterface(&pDxgiDevice);
-	if(FAILED(hr)) {
-		throw hr;
-	}
-	init(pDxgiDevice, target);
+Direct2DRenderer::Direct2DRenderer(IDXGIDevice* pDev, IDXGISwapChain1* pSwap) {
+	init(pDev, pSwap);
 }
-
-Direct2DRenderer::Direct2DRenderer(IDXGIDevice* pdxgidevice, HWND target) {
-	init(pdxgidevice, target);
-	
-}
-void Direct2DRenderer::init(IDXGIDevice* pdxgidevice, HWND target) {
-	HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &pFactory);
-	if(FAILED(hr)) {
-		throw hr;
-	}
-	hr = pFactory->CreateDevice(pdxgidevice, &pDevice);
-	if(FAILED(hr)) {
-		throw hr;
-	}
-	hr = pDevice->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_NONE, &pContext);
-	if(FAILED(hr)) {
-		throw hr;
-	}
-	m_pSwapChain = LibDXGI::CreateSwapChain(pdxgidevice, target);
-	pContext->SetTarget(getBackBufferBitmap());
+void Direct2DRenderer::Clear() {
+	pContext->Clear(D2D1::ColorF{ D2D1::ColorF::Black });
 }
 void Direct2DRenderer::init(IDXGIDevice* pDev, IDXGISwapChain1* pSwap) {
 	HRESULT hr = S_OK;
@@ -57,26 +24,42 @@ void Direct2DRenderer::init(IDXGIDevice* pDev, IDXGISwapChain1* pSwap) {
 	if (FAILED(hr)) {
 		throw std::system_error(hr, std::system_category());
 	}
-	m_pSwapChain = pSwap;
-	pContext->SetTarget(getBackBufferBitmap());
-}
-CComPtr<ID2D1Bitmap1> Direct2DRenderer::getBackBufferBitmap() {
-	return getBackBufferBitmap(pContext, m_pSwapChain);
-}
-CComPtr<ID2D1Bitmap1> Direct2DRenderer::getBackBufferBitmap(ID2D1DeviceContext* pContext, IDXGISwapChain1* pSwapChain) {
-	
-	D2D1_BITMAP_PROPERTIES1 prop = D2D1::BitmapProperties1(
-		D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CANNOT_DRAW,
-		D2D1::PixelFormat(DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE_IGNORE));
-	CComPtr<IDXGISurface> backBuffer;
-	HRESULT hr = pSwapChain->GetBuffer(0,IID_PPV_ARGS(&backBuffer));
-	if(FAILED(hr)) {
-		throw hr;
-	}
-	CComPtr<ID2D1Bitmap1> retval;
-	pContext->CreateBitmapFromDxgiSurface(backBuffer, prop, &retval);
-	return retval;
 
+	m_pSwapChain = pSwap;
+	hr = m_pSwapChain->GetBuffer(0, IID_PPV_ARGS(&pSurface));
+	if (FAILED(hr)) {
+		throw std::system_error(hr, std::system_category());
+	}
+	float dpiX;
+	float dpiY;
+	pFactory->GetDesktopDpi(&dpiX, &dpiY);
+	D2D1_BITMAP_PROPERTIES1 props;
+	props.dpiX = dpiX;
+	props.dpiY = dpiY;
+	props.pixelFormat.alphaMode = D2D1_ALPHA_MODE_IGNORE;
+	props.pixelFormat.format = DXGI_FORMAT_B8G8R8A8_UNORM;
+	props.bitmapOptions = D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CANNOT_DRAW;
+	props.colorContext = nullptr;
+	hr = pContext->CreateBitmapFromDxgiSurface(pSurface, &props, &pBitmap);
+	if (FAILED(hr)) {
+		throw std::system_error(hr, std::system_category());
+	}
+	
+	
+}
+void Direct2DRenderer::SetRenderTarget() const {
+	pContext->SetTarget(pBitmap);
+}
+D2D1_MATRIX_3X2_F Direct2DRenderer::GetProjection() const {
+	DXGI_SWAP_CHAIN_DESC1 desc;
+	HRESULT hr = S_OK;
+	hr = m_pSwapChain->GetDesc1(&desc);
+	if (FAILED(hr)) {
+		throw std::system_error(hr, std::system_category());
+	}
+	auto proj = D2D1::Matrix3x2F::Scale(desc.Width / 2, desc.Height / 2);
+	proj = proj * D2D1::Matrix3x2F::Translation(desc.Width / 2, desc.Height / 2);
+	return proj;
 }
 
 CComPtr<ID2D1DeviceContext> Direct2DRenderer::getContext() const {

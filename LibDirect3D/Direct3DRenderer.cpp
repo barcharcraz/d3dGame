@@ -80,8 +80,12 @@ void Direct3DRenderer::createRenderTarget() {
 	if (FAILED(hr)) {
 		throw hr;
 	}
-	
-	hr = pDev->CreateRenderTargetView(buffer, NULL, &m_pRenderTarget);
+	D3D11_RENDER_TARGET_VIEW_DESC desc;
+	desc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+	desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+	desc.Texture2D.MipSlice = 0;
+
+	hr = pDev->CreateRenderTargetView(buffer, &desc, &m_pRenderTarget);
 	if (FAILED(hr)) {
 		throw hr;
 	}
@@ -171,16 +175,22 @@ void Direct3DRenderer::Present() {
 	
 	m_pSwapChain->Present1(1, 0, &params);
 	
+	
+	
+}
+void Direct3DRenderer::Clear() {
 	float color [] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	pCtx->OMSetRenderTargets(1, &m_pRenderTarget.p, _pdsView);
 	pCtx->ClearRenderTargetView(m_pRenderTarget, color);
 	pCtx->ClearDepthStencilView(_pdsView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-	
-}
-void Direct3DRenderer::Clear() {
-	
 }
 
+CComPtr<IDXGISwapChain2> Direct3DRenderer::GetSwapChain() {
+	return m_pSwapChain;
+}
+CComPtr<IDXGIDevice3> Direct3DRenderer::GetDXGIDevice() {
+	return m_pDXGIDevice;
+}
 //creation utilities
 CComPtr<ID3D11Buffer> Direct3DRenderer::CreateIndexBuffer(const Components::Model& model) const {
 	HRESULT hr = S_OK;

@@ -49,7 +49,7 @@ namespace LibCommon {
 			return false;
 		});
 		auto element = _systems.insert(insertPos, std::move(s));
-		(*element)->parent = this;
+		element->get()->parent = this;
 	}
 	void Scene::AddSystem(System* s) {
 		AddSystem(std::unique_ptr<System>(s));

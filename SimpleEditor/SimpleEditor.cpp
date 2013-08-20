@@ -41,6 +41,9 @@
 #include <LibEffects/EffectsManagement.h>
 #include <LibEffects/EffectCache.h>
 #include <Utils/functions.h>
+#include <LibPrefabs2D/Crosshair.h>
+#include <LibDirect2D/Direct2DRenderer.h>
+#include <LibDirect2D/Renderer.h>
 
 using namespace LibCommon;
 using namespace windows;
@@ -78,7 +81,7 @@ int main(int argc, char** argv)
 		pDebug->ReportLiveDeviceObjects(D3D11_RLDO_FLAGS::D3D11_RLDO_DETAIL);
 	});*/
 	auto render = std::make_unique<LibDirect3D::Direct3DRenderer>(win.Hwnd());
-	
+	auto render2d = std::make_unique<LibDirect2D::Direct2DRenderer>(render->GetDXGIDevice(), render->GetSwapChain());
 	//render->pDev->QueryInterface(IID_PPV_ARGS(&pDebug));
 	
 	Effects::EffectCache cache;
@@ -99,10 +102,12 @@ int main(int argc, char** argv)
 	LibDirect3D::ModelRenderer * renderComp = new LibDirect3D::ModelRenderer(*render);
 	auto sce = std::make_unique<Scene>();
 	sce->AddSystem(renderComp);
+	sce->AddSystem(std::make_unique<LibDirect2D::Renderer>(*render2d));
 	sce->AddSystem(control);
 	sce->AddEntity(model);
 	sce->AddEntity(coneMod);
 	sce->AddEntity(cam);
+	sce->AddEntity<Prefabs::Crosshair>();
 	sce->AddEntity<Prefabs::DirectionalLight>(Eigen::Vector4f{ 0.0f, 1.0f, 0.2f, 1.0f }, Eigen::Vector3f{ 0.0f, 0.0f, 1.0f });
 	sce->AddEntity<Prefabs::PointLight>(Eigen::Vector3f{ 0.0f, 0.0f, -5.0f }, Eigen::Vector4f{ 1.0f, 1.0f, 1.0f, 1.0f });
 	sce->AddEntity(std::make_unique<Prefabs::DirectionalLight>(Eigen::Vector4f{ 0.70f, 0.0f, 0.20f, 1.0f }, Eigen::Vector3f{ 0.0f, 0.0f, -100.0f }));
@@ -111,9 +116,13 @@ int main(int argc, char** argv)
 	//factory.getSwapChain()->Present(1,0);
 	
 	win.update = [&]() {
-		render->Clear();
+		
+		
 		sce->Update();
 		render->Present();
+
+		//render2d->Clear();
+		render->Clear();
 		
 		
 	};

@@ -26,8 +26,8 @@ namespace LibCommon {
 			if (_components.count(typeid(T)) != 0) {
 				throw std::runtime_error("ERROR: Entites may not have more than one component of a given type");
 			}
-            
-			_components[typeid(T)] = std::make_unique<T>(std::forward<Args>(args)...);
+			auto newElm = std::make_unique<T>(std::forward<Args>(args)...);
+			_components.emplace(typeid(T), std::move(newElm));
 		}
 		template<typename T>
 		T* Get() {
@@ -51,7 +51,7 @@ namespace LibCommon {
 			auto range = _components.equal_range(typeid(T));
 			std::vector<T*> retval;
 			for (auto i = range.first; i != range.second; i++) {
-				retval.push_back(i->second.get());
+				retval.push_back(static_cast<T*>(i->second.get()));
 			}
 			return retval;
 		}
