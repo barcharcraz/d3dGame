@@ -19,6 +19,7 @@ namespace LibCommon {
 		System();
 		System(const std::set<std::type_index>& types, Priority prio);
 		System(Priority prio);
+		virtual void OnEntityAdd(Entity* ent) {}
         virtual void Init() {}
 		virtual void Process(Entity* ent) = 0;
 		virtual void OnEntityRemove(Entity* ent) {}

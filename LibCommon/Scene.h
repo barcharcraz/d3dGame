@@ -50,7 +50,7 @@ namespace LibCommon {
 		//! \brief sends a removal message to all systems for the
 		//! entity e
 		void sendRemoveMessage(Entity* e);
-		
+		void sendAddMessage(Entity* e);
 		void UpdateSystems();
 		
 		std::chrono::system_clock _clock;

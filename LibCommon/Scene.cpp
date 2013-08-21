@@ -25,7 +25,7 @@ namespace LibCommon {
 		}
 	}
 	void Scene::AddEntity(Entity* e) {
-		_entities.push_back(std::unique_ptr<Entity>(e));
+		AddEntity(std::unique_ptr<Entity>(e));
 		
 	}
 	void Scene::AddEntity(std::unique_ptr<Entity> && e) {
@@ -94,6 +94,13 @@ namespace LibCommon {
 	void Scene::sendRemoveMessage(Entity *e) {
 		for(std::unique_ptr<System>& elm : _systems) {
 			elm->OnEntityRemove(e);
+		}
+	}
+	void Scene::sendAddMessage(Entity* e) {
+		for (auto& elm : _systems) {
+			if (e->HasAllComponents(elm->aspect)) {
+				elm->OnEntityAdd(e);
+			}
 		}
 	}
 }

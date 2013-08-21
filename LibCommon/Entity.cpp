@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Entity.h"
 #include <algorithm>
+#include <Utils/exceptions.h>
 namespace LibCommon {
 	using namespace Components;
 	Entity::Entity() {
@@ -18,6 +19,17 @@ namespace LibCommon {
 	void Entity::AddComponent(std::unique_ptr<IComponent> && c) {
 		using namespace std;
 		_components.emplace(typeid(*c.get()), std::move(c));
+	}
+	std::unique_ptr<IComponent> Entity::RemoveComponent(IComponent* comp) {
+		auto range = _components.equal_range(typeid(*comp));
+		for (auto i = range.first; i != range.second; ++i) {
+			if (i->second.get() == comp) {
+				std::unique_ptr<IComponent> rv = std::move(i->second);
+				_components.erase(i);
+				return rv;
+			}
+		}
+		throw utils::not_found_error("the component was not found in this entity");
 	}
 	bool Entity::HasComponent(std::type_index type) {
 		return _components.count(type) > 0;

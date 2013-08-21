@@ -55,6 +55,12 @@ namespace LibCommon {
 			}
 			return retval;
 		}
+		template<typename T>
+		std::unique_ptr<T> RemoveComponent(T* comp) {
+			std::unique_ptr<IComponent> rv = RemoveComponent(comp);
+			return std::unique_ptr<T>(static_cast<T*>(rv.release()));
+		}
+		std::unique_ptr<Components::IComponent> RemoveComponent(Components::IComponent* comp);
 		bool HasComponent(std::type_index type);
 		bool HasAllComponents(const std::set<std::type_index>& types);
 	private:

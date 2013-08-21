@@ -16,6 +16,12 @@ set(libcomponents_files
 	DirectionalLight.cpp
 	PointLight.h
 	PointLight.cpp
+	Projectile.h
+	Projectile.cpp
+	AxisAlignedBB.h
+	AxisAlignedBB.cpp
+	Collision.h
+	Collision.cpp
 	stdafx.h
 	stdafx.cpp
 	)
