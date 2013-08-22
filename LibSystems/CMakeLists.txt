@@ -5,8 +5,10 @@ set(system_files
 	VelocitySystem3D.cpp
 	MovementController3D.h
 	MovementController3D.cpp
-	CollisionSystem.h
-	CollisionSystem.cpp
+	CollisionDetectionSystem.h
+	CollisionDetectionSystem.cpp
+	SimpleCollisionSystem.h
+	SimpleCollisionSystem.cpp
 	Group.h
 	Group.cpp
 	stdafx.h

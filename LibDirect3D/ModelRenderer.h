@@ -13,7 +13,7 @@ namespace LibDirect3D {
 	public:
 		explicit ModelRenderer(const Direct3DRenderer& renderer);
 		virtual void Process(LibCommon::Entity * e) override;
-		virtual void Init() override;
+		virtual void PreProcess() override;
 		virtual void OnEntityRemove(LibCommon::Entity* e) override;
 	private:
 		struct res {

@@ -2,9 +2,46 @@
 #include <LibComponents/AxisAlignedBB.h>
 #include <LibComponents/Transform.h>
 #include <LibComponents/Model.h>
+#include <vector>
+#include <limits>
 namespace Systems {
 	namespace {
-		void squareAABB(Eigen::AlignedBox3f* other);
+		Eigen::AlignedBox3f transformAABB(const Eigen::AlignedBox3f& lhs, const Eigen::Affine3f& trans) {
+			std::vector<Eigen::Vector3f> transformedPoints;
+			for (int i = 0; i < 8; ++i) {
+				transformedPoints.push_back(trans * lhs.corner(static_cast<Eigen::AlignedBox3f::CornerType>(i)));
+			}
+			float minx = std::numeric_limits<float>::max();
+			float miny = std::numeric_limits<float>::max();
+			float minz = std::numeric_limits<float>::max();
+			float maxx = std::numeric_limits<float>::lowest();
+			float maxy = std::numeric_limits<float>::lowest();
+			float maxz = std::numeric_limits<float>::lowest();
+			for (auto& vec : transformedPoints) {
+				float x = vec.x();
+				float y = vec.y();
+				float z = vec.z();
+				if (vec.x() < minx) {
+					minx = vec.x();
+				}
+				if (vec.y() < miny) {
+					miny = vec.y();
+				}
+				if (vec.z() < minz) {
+					minz = vec.z();
+				}
+				if (vec.x() > maxx) {
+					maxx = vec.x();
+				}
+				if (vec.y() > maxy) {
+					maxy = vec.y();
+				}
+				if (vec.z() > maxz) {
+					maxz = vec.z();
+				}
+			}
+			return Eigen::AlignedBox3f(Eigen::Vector3f{ minx, miny, minz }, Eigen::Vector3f{ maxx, maxy, maxz });
+		}
 	}
 	AxisAlignedBBSystem::AxisAlignedBBSystem()
 		: System({ typeid(Components::AxisAlignedBB), typeid(Components::Transform3D) })
@@ -15,13 +52,10 @@ namespace Systems {
 		auto model = ent->GetOptional<Components::Model>();
 		auto aabb = ent->Get<Components::AxisAlignedBB>();
 		auto transform = ent->Get<Components::Transform3D>();
-		if (model && aabb->AABB.volume() == 0) {
-			aabb->AABB = calculateBox(*model);
-		} else {
-			Eigen::Affine3f translationPart(Eigen::Translation3f{transform->transform.translation()});
-			aabb->AABB.min() = translationPart * aabb->AABB.min();
-			aabb->AABB.max() = translationPart * aabb->AABB.max();
+		if (model && aabb->RestAABB.isNull()) {
+			aabb->RestAABB = calculateBox(*model);
 		}
+		aabb->CurAABB = transformAABB(aabb->RestAABB, transform->transform);
 	}
 	Eigen::AlignedBox3f AxisAlignedBBSystem::calculateBox(const Components::Model& mod) {
 		Eigen::AlignedBox3f rv;
@@ -31,22 +65,9 @@ namespace Systems {
 				rv.extend(threePos);
 			}
 		}
-		
-		squareAABB(&rv);
 		return rv;
 	}
 	
-	void squareAABB ( Eigen::AlignedBox3f* other ) {
-		if(other->min().x() < other->min().y()) {
-			other->min().y() = other->min().x();
-		} else {
-			other->min().x() = other->min().y();
-		}
-		if(other->max().x() < other->max().y()) {
-			other->max().y() = other->max().x();
-		} else {
-			other->max().x() = other->max().y();
-		}
-	}
+	
 
 }

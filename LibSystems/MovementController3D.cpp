@@ -9,7 +9,7 @@ namespace Systems {
 	MovementController3D::MovementController3D()
 		: System({ typeid(Components::Velocity3D), typeid(Input::Input), typeid(Components::Transform3D) })
 	{
-
+		priority = LibCommon::Priority::HIGH;
 	}
 	void MovementController3D::Process(LibCommon::Entity * e) {
 		using namespace Components;

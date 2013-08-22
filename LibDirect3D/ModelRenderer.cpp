@@ -23,7 +23,7 @@ namespace LibDirect3D {
 	{
 		
 	}
-	void ModelRenderer::Init() {
+	void ModelRenderer::PreProcess() {
 		auto camera = parent->SelectEntity({ typeid(Components::Camera), typeid(Components::Transform3D) });
 		directionalLights = parent->SelectComponents<Components::DirectionalLight>();
 		//_lights = render->CreateConstantBuffer(&directionalLights[0]->data, sizeof(Components::DirectionalLight::Data));

@@ -8,7 +8,8 @@ namespace Components {
 	public:
 		AxisAlignedBB(const Eigen::AlignedBox3f& bbox);
 		AxisAlignedBB(Eigen::AlignedBox3f && bbox);
-		Eigen::AlignedBox3f AABB;
+		Eigen::AlignedBox3f RestAABB;
+		Eigen::AlignedBox3f CurAABB;
 	};
 }
 

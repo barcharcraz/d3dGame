@@ -1,11 +1,11 @@
-#ifndef LIBSYSTEMS_COLLISIONSYSTEM_H
-#define LIBSYSTEMS_COLLISIONSYSTEM_H
+#ifndef LIBSYSTEMS_COLLISIONDETECTIONSYSTEM_H
+#define LIBSYSTEMS_COLLISIONDETECTIONSYSTEM_H
 #include <LibCommon/System.h>
 #include <LibCommon/Entity.h>
 namespace Systems {
-	class CollisionSystem : public LibCommon::System {
+	class CollisionDetectionSystem : public LibCommon::System {
 	public:
-		CollisionSystem();
+		CollisionDetectionSystem();
 		virtual void Init() override;
 		virtual void OnEntityAdd(LibCommon::Entity* ent) override;
 		virtual void OnEntityRemove(LibCommon::Entity* ent) override;

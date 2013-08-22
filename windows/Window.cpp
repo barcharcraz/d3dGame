@@ -8,7 +8,10 @@ namespace windows {
 	int Run() {
 		MSG msg{ 0 };
 		while (msg.message != WM_QUIT) {
-			Window * win = (Window*) GetWindowLongPtr(msg.hwnd, GWLP_USERDATA);
+			Window* win = nullptr;
+			if (msg.hwnd != 0) {
+				win = (Window*) GetWindowLongPtr(msg.hwnd, GWLP_USERDATA);
+			}
 			if (win == nullptr || win->update == nullptr) {
 				if (GetMessage(&msg, nullptr, 0, 0) > 0) {
 					TranslateMessage(&msg);
@@ -139,8 +142,8 @@ namespace windows {
 		}
 	}
 	int Window::handleRaw(HRAWINPUT raw) {
-		unsigned int size;
-		unsigned int errorc;
+		unsigned int size = 0;
+		unsigned int errorc = 0;
 		GetRawInputData(raw, RID_INPUT, nullptr, &size, sizeof(RAWINPUTHEADER));
 		if (size == 0) {
 			return 0;

@@ -25,8 +25,13 @@
 #include <LibComponents/Effect.h>
 #include <LibComponents/Texture.h>
 #include <LibComponents/DirectionalLight.h>
+#include <LibComponents/AxisAlignedBB.h>
+#include <LibComponents/Collision.h>
 #include <LibSystems/MovementController3D.h>
 #include <LibSystems/VelocitySystem3D.h>
+#include <LibSystems/SimpleCollisionSystem.h>
+#include <LibSystems/CollisionDetectionSystem.h>
+#include <LibSystems/AxisAlignedBBSystem.h>
 #include <windowing.h>
 #include <LibImage/targa.h>
 #include <map>
@@ -90,11 +95,14 @@ int main(int argc, char** argv)
 	LibCommon::ObjFile modelFile("TestObj.obj");
 	LibCommon::ObjFile cone("Cone.obj");
 	Prefabs::Camera * cam = new Prefabs::Camera();
+	cam->AddComponent<Components::AxisAlignedBB>(Eigen::AlignedBox3f{ Eigen::Vector3f{ -0.5f, -0.5f, -0.5f }, Eigen::Vector3f{ 0.5f, 0.5f, 0.5f } });
+	cam->AddComponent<Components::Collision>();
 	Prefabs::StaticModel * model = new Prefabs::StaticModel(modelFile.model(), Texture(&d3dTex));
 	Prefabs::StaticModel * coneMod = new Prefabs::StaticModel(cone.model(), Texture(&d3dTex));
 	model->Get<Transform3D>()->transform.translate(Eigen::Vector3f{ 0, 0, -10 });
 	model->AddComponent<Components::Velocity3D>(Eigen::Affine3f(Eigen::AngleAxisf(0.01f, Eigen::Vector3f::UnitY()) * Eigen::Affine3f::Identity()));
 	coneMod->AddComponent<Components::Velocity3D>(Eigen::Affine3f(Eigen::AngleAxisf(0.01f, Eigen::Vector3f::UnitX()) * Eigen::Affine3f::Identity()));
+	coneMod->Get<Transform3D>()->transform.translate(Eigen::Vector3f{ 0, 0, 10 });
 	MovementController3D * control = new MovementController3D();
 	VelocitySystem3D * velsys = new VelocitySystem3D();
 	
@@ -112,6 +120,9 @@ int main(int argc, char** argv)
 	sce->AddEntity<Prefabs::PointLight>(Eigen::Vector3f{ 0.0f, 0.0f, -5.0f }, Eigen::Vector4f{ 1.0f, 1.0f, 1.0f, 1.0f });
 	sce->AddEntity(std::make_unique<Prefabs::DirectionalLight>(Eigen::Vector4f{ 0.70f, 0.0f, 0.20f, 1.0f }, Eigen::Vector3f{ 0.0f, 0.0f, -100.0f }));
 	sce->AddSystem(velsys);
+	sce->AddSystem(std::make_unique<Systems::SimpleCollisionSystem>());
+	sce->AddSystem(std::make_unique<Systems::CollisionDetectionSystem>());
+	sce->AddSystem(std::make_unique<Systems::AxisAlignedBBSystem>());
 	//context.DrawShapes(commands);
 	//factory.getSwapChain()->Present(1,0);
 	
