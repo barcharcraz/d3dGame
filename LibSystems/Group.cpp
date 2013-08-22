@@ -41,7 +41,7 @@ namespace Systems {
 		}
 		
 	}
-	void Group::Init() {
+	void Group::PreProcess() {
 		for (auto& elm : _members) {
 			elm->Init();
 		}

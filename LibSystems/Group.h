@@ -18,7 +18,7 @@ namespace Systems {
 		void AddSystem(Args && ... args) {
 			AddSystem(std::make_unique<T>(std::forward<Args>(args)...));
 		}
-		virtual void Init() override;
+		virtual void PreProcess() override;
 		virtual void Process(LibCommon::Entity* ent) override;
 		virtual void OnEntityRemove(LibCommon::Entity* ent) override;
 	private:

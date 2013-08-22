@@ -17,7 +17,7 @@ namespace LibCommon {
 	}
 	void Scene::UpdateSystems() {
 		for (auto& sys : _systems) {
-			sys->Init();
+			sys->PreProcess();
 			auto input = SelectEntities(sys->aspect);
 			for (auto ent : input) {
 				sys->Process(ent);
@@ -50,6 +50,7 @@ namespace LibCommon {
 		});
 		auto element = _systems.insert(insertPos, std::move(s));
 		element->get()->parent = this;
+		(*element)->Init();
 	}
 	void Scene::AddSystem(System* s) {
 		AddSystem(std::unique_ptr<System>(s));
@@ -98,9 +99,7 @@ namespace LibCommon {
 	}
 	void Scene::sendAddMessage(Entity* e) {
 		for (auto& elm : _systems) {
-			if (e->HasAllComponents(elm->aspect)) {
-				elm->OnEntityAdd(e);
-			}
+			elm->OnEntityAdd(e);
 		}
 	}
 }

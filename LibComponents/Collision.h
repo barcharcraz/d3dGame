@@ -2,11 +2,12 @@
 #define LIBCOMPONENTS_COLLISION_H
 #include "IComponent.h"
 #include <LibCommon/Entity.h>
+#include <vector>
 namespace Components {
 	class Collision {
 	public:
-		Collision(LibCommon::Entity* const with_arg);
-		LibCommon::Entity* const with;
+		Collision();
+		std::vector<LibCommon::Entity*> with;
 	};
 }
 
