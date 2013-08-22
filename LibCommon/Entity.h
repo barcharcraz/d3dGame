@@ -57,7 +57,7 @@ namespace LibCommon {
 		}
 		template<typename T>
 		std::unique_ptr<T> RemoveComponent(T* comp) {
-			std::unique_ptr<IComponent> rv = RemoveComponent(comp);
+			std::unique_ptr<Components::IComponent> rv = RemoveComponent(comp);
 			return std::unique_ptr<T>(static_cast<T*>(rv.release()));
 		}
 		std::unique_ptr<Components::IComponent> RemoveComponent(Components::IComponent* comp);

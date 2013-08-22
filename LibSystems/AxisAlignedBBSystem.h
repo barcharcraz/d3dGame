@@ -1,5 +1,6 @@
 #ifndef LIBSYSTEMS_AXISALIGNEDBBSYSTEM_H
 #define LIBSYSTEMS_AXISALIGNEDBBSYSTEM_H
+#include <LibComponents/Model.h>
 #include <LibCommon/System.h>
 #include <LibCommon/Entity.h>
 #include <Eigen/Core>

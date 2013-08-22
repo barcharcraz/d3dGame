@@ -4,7 +4,7 @@
 #include <LibCommon/Entity.h>
 #include <vector>
 namespace Components {
-	class Collision {
+	class Collision : public IComponent {
 	public:
 		Collision();
 		std::vector<LibCommon::Entity*> with;
