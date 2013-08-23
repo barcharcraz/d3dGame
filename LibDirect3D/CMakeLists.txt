@@ -12,6 +12,8 @@ set(libd3d_src
 	Direct3DDevice.cpp
 	ShaderResource.h
 	ShaderResource.cpp
+	BoundingBoxRenderer.h
+	BoundingBoxRenderer.cpp
 	stdafx.h
 	stdafx.cpp
 	targetver.h

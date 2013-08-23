@@ -9,6 +9,7 @@
 #include <LibCommon\Scene.h>
 #include <LibCommon/Scene.h>
 #include <LibDirect3D\Direct3DRenderer.h>
+#include <LibDirect3D/BoundingBoxRenderer.h>
 #include <LibCommon/ObjFile.h>
 #include <LibDirect3D/ModelRenderer.h>
 #include <LibDirect3D/Direct3DTexture.h>
@@ -76,6 +77,12 @@ int main(int argc, char** argv)
 		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
+	const std::vector<Effects::ShaderDesc> debugLayout = {
+		{"POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
+	};
+	const std::set<Effects::ShaderCaps> debugCaps = {
+		Effects::ShaderCaps::DEBUG_SOLID
+	};
 	const std::set<Effects::ShaderCaps> defaultCaps = {
 		Effects::ShaderCaps::MESH_INDEXED,
 		Effects::ShaderCaps::TEXTURE_MAPPED,
@@ -91,11 +98,12 @@ int main(int argc, char** argv)
 	
 	Effects::EffectCache cache;
 	Effects::AddEffect({ "DefaultVS.cso", "DefaultPS.cso", defaultLayout, defaultCaps });
+	Effects::AddEffect({ "DebugVS.cso", "DebugPS.cso", debugLayout, debugCaps });
 	LibDirect3D::Direct3DTexture d3dTex{ Image::ImageData(f) };
 	LibCommon::ObjFile modelFile("TestObj.obj");
 	LibCommon::ObjFile cone("Cone.obj");
 	Prefabs::Camera * cam = new Prefabs::Camera();
-	cam->AddComponent<Components::AxisAlignedBB>(Eigen::AlignedBox3f{ Eigen::Vector3f{ -0.5f, -0.5f, -0.5f }, Eigen::Vector3f{ 0.5f, 0.5f, 0.5f } });
+	cam->AddComponent<Components::AxisAlignedBB>(Eigen::AlignedBox3f{ Eigen::Vector3f{ -1.5f, -1.5f, -1.5f }, Eigen::Vector3f{ 1.5f, 1.5f, 1.5f } });
 	cam->AddComponent<Components::Collision>();
 	Prefabs::StaticModel * model = new Prefabs::StaticModel(modelFile.model(), Texture(&d3dTex));
 	Prefabs::StaticModel * coneMod = new Prefabs::StaticModel(cone.model(), Texture(&d3dTex));
@@ -123,6 +131,7 @@ int main(int argc, char** argv)
 	sce->AddSystem(std::make_unique<Systems::SimpleCollisionSystem>());
 	sce->AddSystem(std::make_unique<Systems::CollisionDetectionSystem>());
 	sce->AddSystem(std::make_unique<Systems::AxisAlignedBBSystem>());
+	sce->AddSystem(std::make_unique<LibDirect3D::BoundingBoxRenderer>(*render));
 	//context.DrawShapes(commands);
 	//factory.getSwapChain()->Present(1,0);
 	

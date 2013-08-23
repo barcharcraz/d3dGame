@@ -29,7 +29,8 @@ namespace Effects {
 		LIT_POINT,
 		MAT_DIFFUSE,
 		MAT_SPEC,
-		MAT_AMBIANT
+		MAT_AMBIANT,
+		DEBUG_SOLID
 	};
 	struct VertexShader {
 		explicit VertexShader(const std::string& filename, const std::vector<ShaderDesc>& desc);

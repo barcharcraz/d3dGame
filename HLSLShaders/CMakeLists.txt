@@ -1,6 +1,8 @@
 set(hlsl_src
 	defaultPS.hlsl
 	defaultVS.hlsl
+	DebugPS.hlsl
+	DebugVS.hlsl
 	LightStructs.hlsl
 	ForwardLighting.hlsl
 	)
