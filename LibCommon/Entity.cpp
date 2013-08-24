@@ -21,7 +21,7 @@ namespace LibCommon {
 		_components.emplace(typeid(*c.get()), std::move(c));
 	}
 	void Entity::AddEvent(std::unique_ptr<IComponent> && e) {
-		auto iter = _components.emplace(typeid(*e.get()), e);
+		auto iter = _components.emplace(typeid(*e.get()), std::move(e));
 		_frameComponents.push_back(iter->second.get());
 	}
 	void Entity::ClearEvents() {

@@ -61,6 +61,7 @@ ENDIF(WIN32)
 IF(APPLE)
 	set(CMAKE_EXE_LINKER_FLAGS "-framework OpenGL -framework IOKit -framework Cocoa")
 ENDIF(APPLE)
+enable_testing()
 add_custom_target(Glue SOURCES windowing.h Components2D.h Components3D.h Components.h)
 
 add_subdirectory(LibCommon)
@@ -100,7 +101,5 @@ IF(USE_OPENGL)
 	add_subdirectory(LibGLSL)
 ENDIF(USE_OPENGL)
 add_subdirectory(CrossplatApp)
-
-
-
 add_subdirectory(LibCairo)
+add_subdirectory(Tests)

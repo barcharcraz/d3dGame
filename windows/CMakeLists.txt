@@ -11,3 +11,4 @@ set(windows_files
 	ComUtils.cpp
 	)
 add_library(windows ${windows_files})
+target_link_libraries(windows Input)

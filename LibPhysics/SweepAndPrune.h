@@ -7,8 +7,8 @@
 #include <map>
 namespace Physics {
 	struct BBox {
-		std::array<std::vector<EndPoint>::iterator, 3> min;
-		std::array<std::vector<EndPoint>::iterator, 3> max;
+		std::array<unsigned int, 3> min;
+		std::array<unsigned int, 3> max;
 		void* userRef;
 	};
 	struct EndPoint {
@@ -26,16 +26,20 @@ namespace Physics {
 		void AddObject(const Eigen::AlignedBox3f& box, void* obj);
 		void UpdateObject(const Eigen::AlignedBox3f& box, void* obj);
 		void RemoveObject(void* obj);
+		std::vector<void*> QueryObject(void* object);
 	private:
+		std::array<std::vector<EndPoint>*, 3 > _axis;
 		std::vector<EndPoint> _X;
 		std::vector<EndPoint> _Y;
 		std::vector<EndPoint> _Z;
 		std::vector<BBox> _objects;
 		std::map<void*, handle> _objectMap;
-		std::map<handle, handle> activePairs;
-		void updateAxis(unsigned int axis, std::vector<EndPoint>::iterator pos, float newval);
+		std::multimap<handle, handle> activePairs;
+		void updateAxis(unsigned int axis, unsigned int pos, float newval);
 		void checkAndAdd(handle obj1, handle obj2);
-		void swapEndPoints(unsigned int axis, std::vector<EndPoint>::iterator a, std::vector<EndPoint>::iterator b);
+		void swapEndPoints(unsigned int axis, unsigned int a, unsigned int b);
+		void fixRefs(unsigned int axis, unsigned int start);
+		void fixObjectRefs(unsigned int start);
 	};
 }
 
