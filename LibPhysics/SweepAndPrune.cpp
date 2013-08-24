@@ -1,5 +1,6 @@
 #include "SweepAndPrune.h"
 #include <numeric>
+#include <algorithm>
 namespace Physics {
 	namespace {
 		bool isMax(unsigned int box) {
@@ -40,6 +41,11 @@ namespace Physics {
 		BBox toAdd;
 		toAdd.userRef = obj;
 		_objects.push_back(toAdd);
+		std::vector<std::vector<EndPoint>* > axisvec;
+		//just defineing these to use the loop iterator to access the axis vectors
+		axisvec.push_back(&_X);
+		axisvec.push_back(&_Y);
+		axisvec.push_back(&_Z);
 		handle boxIdx = _objects.size() - 1;
 		for (unsigned int i = 0; i < 3; ++i) {
 			EndPoint min;
@@ -50,7 +56,10 @@ namespace Physics {
 			max.box = boxIdx | EndPoint::max;
 			min.value = minvec(i);
 			max.value = maxvec(i);
-
+			std::vector<EndPoint>* axis = axisvec[i];
+			std::find_if(axis->begin(), axis->end(), [&](EndPoint& e) {
+				max.value
+			});
 		}
 	}
 	void SweepAndPrune::updateAxis(unsigned int axis, std::vector<EndPoint>::iterator pos, float newval) {
