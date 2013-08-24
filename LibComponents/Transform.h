@@ -7,6 +7,6 @@ namespace Components {
 		Transform3D(const Eigen::Affine3f& trans) : transform(trans) {}
 		Eigen::Affine3f transform;
 	};
-	
+	class Transform3DUpdate : public IComponent {};
 }
 #endif

@@ -22,6 +22,8 @@ set(libcomponents_files
 	AxisAlignedBB.cpp
 	Collision.h
 	Collision.cpp
+	Messages.h
+	Messages.cpp
 	stdafx.h
 	stdafx.cpp
 	)

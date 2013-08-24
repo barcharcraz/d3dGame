@@ -23,6 +23,9 @@ namespace LibCommon {
 				sys->Process(ent);
 			}
 		}
+		for (auto& ent : _entities) {
+			ent->ClearEvents();
+		}
 	}
 	void Scene::AddEntity(Entity* e) {
 		AddEntity(std::unique_ptr<Entity>(e));

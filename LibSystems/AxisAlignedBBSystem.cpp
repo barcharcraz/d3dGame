@@ -44,7 +44,7 @@ namespace Systems {
 		}
 	}
 	AxisAlignedBBSystem::AxisAlignedBBSystem()
-		: System({ typeid(Components::AxisAlignedBB), typeid(Components::Transform3D) })
+		: System({ typeid(Components::AxisAlignedBB), typeid(Components::Transform3D), typeid(Components::Transform3DUpdate)})
 	{
 		priority = LibCommon::Priority::LOW;
 	}
@@ -56,6 +56,7 @@ namespace Systems {
 			aabb->RestAABB = calculateBox(*model);
 		}
 		aabb->CurAABB = transformAABB(aabb->RestAABB, transform->transform);
+		ent->AddEvent<Components::AxisAlignedBBUpdate>();
 	}
 	Eigen::AlignedBox3f AxisAlignedBBSystem::calculateBox(const Components::Model& mod) {
 		Eigen::AlignedBox3f rv;

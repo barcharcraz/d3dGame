@@ -11,7 +11,11 @@ namespace Systems {
 	void VelocitySystem3D::Process(Entity* e) {
 		auto& transform = e->Get<Transform3D>()->transform;
 		auto& velocity = e->Get<Velocity3D>()->velocity;
-		transform = transform * velocity;
+		if (velocity.matrix() != velocity.Identity().matrix()) {
+			transform = transform * velocity;
+			e->AddEvent<Components::Transform3DUpdate>();
+		}
+		
 		
 	}
 }

@@ -11,6 +11,7 @@ namespace Components {
 		Eigen::AlignedBox3f RestAABB;
 		Eigen::AlignedBox3f CurAABB;
 	};
+	class AxisAlignedBBUpdate : public IComponent {};
 }
 
 #endif

@@ -3,6 +3,9 @@
 #include <LibComponents/Collision.h>
 #include <LibComponents/AxisAlignedBB.h>
 namespace Systems {
+	namespace {
+
+	}
 	CollisionDetectionSystem::CollisionDetectionSystem()
 		: System({typeid(Components::Collision), typeid(Components::AxisAlignedBB)},
 		LibCommon::Priority::HIGH)
@@ -10,7 +13,7 @@ namespace Systems {
 
 	}
 	void CollisionDetectionSystem::Init() {
-		entCache = parent->SelectEntities({ typeid(Components::AxisAlignedBB) });
+		entCache = parent->SelectEntities({ typeid(Components::AxisAlignedBB), typeid(Components::AxisAlignedBBUpdate) });
 	}
 	void CollisionDetectionSystem::OnEntityAdd(LibCommon::Entity* e) {
 		if (e->HasAllComponents({ typeid(Components::AxisAlignedBB) })) {

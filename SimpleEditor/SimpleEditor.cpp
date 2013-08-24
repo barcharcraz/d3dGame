@@ -132,15 +132,10 @@ int main(int argc, char** argv)
 	sce->AddSystem(std::make_unique<Systems::CollisionDetectionSystem>());
 	sce->AddSystem(std::make_unique<Systems::AxisAlignedBBSystem>());
 	sce->AddSystem(std::make_unique<LibDirect3D::BoundingBoxRenderer>(*render));
-	//context.DrawShapes(commands);
-	//factory.getSwapChain()->Present(1,0);
 	
 	win.update = [&]() {
-		
-		
 		sce->Update();
 		render->Present();
-
 		//render2d->Clear();
 		render->Clear();
 		
