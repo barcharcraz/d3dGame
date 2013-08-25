@@ -20,16 +20,6 @@ namespace LibCommon {
 		using namespace std;
 		_components.emplace(typeid(*c.get()), std::move(c));
 	}
-	void Entity::AddEvent(std::unique_ptr<IComponent> && e) {
-		auto iter = _components.emplace(typeid(*e.get()), std::move(e));
-		_frameComponents.push_back(iter->second.get());
-	}
-	void Entity::ClearEvents() {
-		for (auto e : _frameComponents) {
-			RemoveComponent(e);
-		}
-		_frameComponents.clear();
-	}
 	std::unique_ptr<IComponent> Entity::RemoveComponent(IComponent* comp) {
 		auto rv = RemoveComponentIfExists(typeid(*comp), comp);
 		if (rv == nullptr) {

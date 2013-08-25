@@ -23,9 +23,6 @@ namespace LibCommon {
 				sys->Process(ent);
 			}
 		}
-		for (auto& ent : _entities) {
-			ent->ClearEvents();
-		}
 	}
 	void Scene::AddEntity(Entity* e) {
 		AddEntity(std::unique_ptr<Entity>(e));
@@ -33,6 +30,9 @@ namespace LibCommon {
 	}
 	void Scene::AddEntity(std::unique_ptr<Entity> && e) {
 		_entities.push_back(std::move(e));
+		for (auto& sys : _systems) {
+			sys->OnEntityAdd(_entities.back().get());
+		}
 	}
 	void Scene::RemoveEntity(Entity *e) {
 		for(auto i = _entities.begin(); i != _entities.end(); i++) {

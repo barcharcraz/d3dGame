@@ -29,18 +29,6 @@ namespace LibCommon {
 			auto newElm = std::make_unique<T>(std::forward<Args>(args)...);
 			_components.emplace(typeid(T), std::move(newElm));
 		}
-		void AddEvent(std::unique_ptr<Components::IComponent> && e);
-		template<typename T, typename... Args>
-		void AddEvent(Args && ... args) {
-			auto newElm = std::make_unique<T>(std::forward<Args>(args)...);
-			AddEvent(std::move(newElm));
-		}
-		void ClearEvents();
-		template<typename T>
-		T* Get() {
-			auto range = _components.equal_range(typeid(T));
-			return static_cast<T*>((*range.first).second.get());
-		}
 		template<typename T>
 		T* GetOptional() {
 			if (_components.count(typeid(T))) {
@@ -75,7 +63,6 @@ namespace LibCommon {
 		bool HasAllComponents(const std::set<std::type_index>& types);
 	private:
 		std::multimap<std::type_index, std::unique_ptr<Components::IComponent> > _components;
-		std::vector<Components::IComponent*> _frameComponents;
 	};
 }
 #endif

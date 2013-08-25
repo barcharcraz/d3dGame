@@ -9,6 +9,7 @@ namespace Components {
 		Collision();
 		std::vector<LibCommon::Entity*> with;
 	};
+	class CollisionUpdate : public IComponent {};
 }
 
 #endif

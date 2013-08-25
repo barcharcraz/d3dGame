@@ -7,34 +7,39 @@ namespace Systems {
 
 	}
 	CollisionDetectionSystem::CollisionDetectionSystem()
-		: System({typeid(Components::Collision), typeid(Components::AxisAlignedBB)},
+		: System({typeid(Components::Collision), typeid(Components::AxisAlignedBB), typeid(Components::AxisAlignedBBUpdate)},
 		LibCommon::Priority::HIGH)
 	{
 
 	}
 	void CollisionDetectionSystem::Init() {
-		entCache = parent->SelectEntities({ typeid(Components::AxisAlignedBB), typeid(Components::AxisAlignedBBUpdate) });
+		auto ents = parent->SelectEntities({ typeid(Components::AxisAlignedBB) });
+		for (auto elm : ents) {
+			sap.AddObject(elm->Get<Components::AxisAlignedBB>()->CurAABB, elm);
+		}
 	}
 	void CollisionDetectionSystem::OnEntityAdd(LibCommon::Entity* e) {
 		if (e->HasAllComponents({ typeid(Components::AxisAlignedBB) })) {
-			entCache.push_back(e);
+			sap.AddObject(e->Get<Components::AxisAlignedBB>()->CurAABB, e);
 		}
 	}
 	void CollisionDetectionSystem::OnEntityRemove(LibCommon::Entity* e) {
 		if (e->HasAllComponents({ typeid(Components::AxisAlignedBB) })) {
-			auto itr = std::find(entCache.begin(), entCache.end(), e);
-			entCache.erase(itr);
+			sap.RemoveObject(e);
 		}
 	}
 	void CollisionDetectionSystem::Process(LibCommon::Entity* ent) {
 		auto collision = ent->Get<Components::Collision>();
 		auto bbox = ent->Get<Components::AxisAlignedBB>();
-		for (auto elm : entCache) {
-			auto elmbbox = elm->Get<Components::AxisAlignedBB>();
-			auto intersection = elmbbox->CurAABB.exteriorDistance(bbox->CurAABB);
-			if (ent != elm && intersection == 0) {
-				collision->with.push_back(elm);
-			}
+		sap.UpdateObject(bbox->CurAABB, ent);
+		auto collidedEnts = sap.QueryObject(ent);
+		for (auto elm : collidedEnts) {
+			LibCommon::Entity* e = (LibCommon::Entity*) elm;
+			collision->with.push_back(e);
+			auto otherCollision = e->GetOptional<Components::Collision>();
+			otherCollision->with.push_back(ent);
+			e->AddEvent<Components::CollisionUpdate>();
 		}
+		ent->AddEvent<Components::CollisionUpdate>();
 	}
 }

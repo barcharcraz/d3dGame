@@ -2,6 +2,7 @@
 #define LIBSYSTEMS_COLLISIONDETECTIONSYSTEM_H
 #include <LibCommon/System.h>
 #include <LibCommon/Entity.h>
+#include <LibPhysics/SweepAndPrune.h>
 namespace Systems {
 	class CollisionDetectionSystem : public LibCommon::System {
 	public:
@@ -11,7 +12,7 @@ namespace Systems {
 		virtual void OnEntityRemove(LibCommon::Entity* ent) override;
 		virtual void Process(LibCommon::Entity* ent) override;
 	private:
-		std::vector<LibCommon::Entity*> entCache;
+		Physics::SweepAndPrune sap;
 	};
 }
 
