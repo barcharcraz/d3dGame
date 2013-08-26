@@ -3,15 +3,15 @@
 #include "IComponent.h"
 #include <Eigen/Core>
 #include <Eigen/Geometry>
+#include <Utils/event.h>
 namespace Components {
 	class AxisAlignedBB : public IComponent {
 	public:
 		AxisAlignedBB(const Eigen::AlignedBox3f& bbox);
-		AxisAlignedBB(Eigen::AlignedBox3f && bbox);
 		Eigen::AlignedBox3f RestAABB;
 		Eigen::AlignedBox3f CurAABB;
 	};
-	class AxisAlignedBBUpdate : public IComponent {};
+	
 }
 
 #endif

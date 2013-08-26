@@ -7,12 +7,13 @@ namespace Systems {
 
 	}
 	CollisionDetectionSystem::CollisionDetectionSystem()
-		: System({typeid(Components::Collision), typeid(Components::AxisAlignedBB), typeid(Components::AxisAlignedBBUpdate)},
+		: System({ typeid(Components::AxisAlignedBB) },
 		LibCommon::Priority::HIGH)
 	{
-
+		
 	}
 	void CollisionDetectionSystem::Init() {
+		EnableUpdate({ typeid(Components::AxisAlignedBB) });
 		auto ents = parent->SelectEntities({ typeid(Components::AxisAlignedBB) });
 		for (auto elm : ents) {
 			sap.AddObject(elm->Get<Components::AxisAlignedBB>()->CurAABB, elm);
@@ -28,18 +29,24 @@ namespace Systems {
 			sap.RemoveObject(e);
 		}
 	}
-	void CollisionDetectionSystem::Process(LibCommon::Entity* ent) {
-		auto collision = ent->Get<Components::Collision>();
+	void CollisionDetectionSystem::OnEntityUpdate(LibCommon::Entity* ent, Components::IComponent* comp) {
 		auto bbox = ent->Get<Components::AxisAlignedBB>();
 		sap.UpdateObject(bbox->CurAABB, ent);
 		auto collidedEnts = sap.QueryObject(ent);
+		auto collision = ent->GetOptional<Components::Collision>();
 		for (auto elm : collidedEnts) {
 			LibCommon::Entity* e = (LibCommon::Entity*) elm;
-			collision->with.push_back(e);
-			auto otherCollision = e->GetOptional<Components::Collision>();
-			otherCollision->with.push_back(ent);
-			e->AddEvent<Components::CollisionUpdate>();
+			if (e != ent) {
+				if (collision) {
+					collision->with.push_back(e);
+				}
+				Components::Collision* otherCollision = e->GetOptional<Components::Collision>();
+				if (otherCollision) {
+					otherCollision->with.push_back(ent);
+					NotifyUpdate(e, otherCollision);
+				}
+			}
 		}
-		ent->AddEvent<Components::CollisionUpdate>();
+		//NotifyUpdate(ent, collision);
 	}
 }

@@ -9,7 +9,8 @@ namespace Systems {
 	class AxisAlignedBBSystem : public LibCommon::System {
 	public:
 		AxisAlignedBBSystem();
-		virtual void Process(LibCommon::Entity* ent) override;
+		virtual void Init() override;
+		virtual void OnEntityUpdate(LibCommon::Entity* e, Components::IComponent* c) override;
 	private:
 		Eigen::AlignedBox3f calculateBox(const Components::Model& mod);
 

@@ -9,8 +9,8 @@ namespace Systems {
 		CollisionDetectionSystem();
 		virtual void Init() override;
 		virtual void OnEntityAdd(LibCommon::Entity* ent) override;
+		virtual void OnEntityUpdate(LibCommon::Entity* ent, Components::IComponent* comp) override;
 		virtual void OnEntityRemove(LibCommon::Entity* ent) override;
-		virtual void Process(LibCommon::Entity* ent) override;
 	private:
 		Physics::SweepAndPrune sap;
 	};

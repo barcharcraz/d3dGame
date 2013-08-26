@@ -59,6 +59,7 @@ namespace LibCommon {
 		AddSystem(std::unique_ptr<System>(s));
 	}
 	void Scene::RemoveSystem(System *s) {
+		removeSystemEvents(s);
 		for(auto i = _systems.begin(); i != _systems.end(); ++i) {
 			if(i->get() == s) {
 				_systems.erase(i);
@@ -67,7 +68,20 @@ namespace LibCommon {
 		}
 		throw utils::not_supported_error("could not find element in vector");
 	}
-
+	void Scene::SetSystemEvents(System* s, const std::set<std::type_index>& types) {
+		removeSystemEvents(s);
+		for (auto& elm : types) {
+			_eventRegistrations.emplace(elm, s);
+		}
+	}
+	void Scene::FireUpdateEvent(Entity* e, Components::IComponent* c) {
+		auto range = _eventRegistrations.equal_range(typeid(*c));
+		for (auto i = range.first; i != range.second; ++i) {
+			if (e->HasAllComponents(i->second->aspect)) {
+				i->second->OnEntityUpdate(e, c);
+			}
+		}
+	}
 	std::vector<Entity*> Scene::SelectEntities(const std::set<std::type_index>& info) {
 		//^| this function could really use some caching at some point
 		std::vector<Entity*> retval;
@@ -103,6 +117,13 @@ namespace LibCommon {
 	void Scene::sendAddMessage(Entity* e) {
 		for (auto& elm : _systems) {
 			elm->OnEntityAdd(e);
+		}
+	}
+	void Scene::removeSystemEvents(System* s) {
+		for (auto i = _eventRegistrations.begin(); i != _eventRegistrations.end(); ++i) {
+			if (i->second == s) {
+				_eventRegistrations.erase(i);
+			}
 		}
 	}
 }

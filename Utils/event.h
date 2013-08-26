@@ -4,21 +4,24 @@
 #include <list>
 #include <algorithm>
 namespace utils {
-	template<typename... Args>
-	class Slot {
+	template<class>
+	class Slot;
+	template<typename R, typename... Args>
+	class Slot<R(Args...)> {
 	public:
-		typedef typename std::list<std::function<void(Args...)>>::iterator handle;
+		typedef typename std::list<std::function<R(Args...)>>::iterator handle;
+		typedef typename std::function<R(Args...)> function_type;
 		void operator()(Args ... args) {
 			for (auto& fun : callbacks) {
 				fun(std::forward<Args>(args)...);
 			}
 		}
-		handle connect(const std::function<void(Args...)>& fun) {
+		handle connect(const std::function<R(Args...)>& fun) {
 			callbacks.push_back(fun);
 			return callbacks.end()--;
 		}
 		template<typename C>
-		handle connect(void(C::*fun)(Args...), C* thisptr) {
+		handle connect(R(C::*fun)(Args...), C* thisptr) {
 			return connect([=](Args... args) {
 				(thisptr->* fun)(std::forward<Args>(args)...);
 			});
@@ -30,7 +33,7 @@ namespace utils {
 			callbacks.erase(iter);
 		}
 	private:
-		std::list<std::function<void(Args...)>> callbacks;
+		std::list<std::function<R(Args...)>> callbacks;
 	};
 }
 #endif

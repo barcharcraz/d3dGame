@@ -18,9 +18,6 @@ namespace Systems {
 			float maxy = std::numeric_limits<float>::lowest();
 			float maxz = std::numeric_limits<float>::lowest();
 			for (auto& vec : transformedPoints) {
-				float x = vec.x();
-				float y = vec.y();
-				float z = vec.z();
 				if (vec.x() < minx) {
 					minx = vec.x();
 				}
@@ -43,20 +40,26 @@ namespace Systems {
 			return Eigen::AlignedBox3f(Eigen::Vector3f{ minx, miny, minz }, Eigen::Vector3f{ maxx, maxy, maxz });
 		}
 	}
+	
 	AxisAlignedBBSystem::AxisAlignedBBSystem()
-		: System({ typeid(Components::AxisAlignedBB), typeid(Components::Transform3D), typeid(Components::Transform3DUpdate)})
+		: System({ typeid(Components::AxisAlignedBB), typeid(Components::Transform3D)})
 	{
 		priority = LibCommon::Priority::LOW;
+		
 	}
-	void AxisAlignedBBSystem::Process(LibCommon::Entity* ent) {
+	void AxisAlignedBBSystem::Init() {
+		EnableUpdate({ typeid(Components::Transform3D) });
+	}
+	void AxisAlignedBBSystem::OnEntityUpdate(LibCommon::Entity* ent, Components::IComponent* comp) {
 		auto model = ent->GetOptional<Components::Model>();
 		auto aabb = ent->Get<Components::AxisAlignedBB>();
 		auto transform = ent->Get<Components::Transform3D>();
 		if (model && aabb->RestAABB.isNull()) {
 			aabb->RestAABB = calculateBox(*model);
+			aabb->CurAABB = aabb->RestAABB;
 		}
 		aabb->CurAABB = transformAABB(aabb->RestAABB, transform->transform);
-		ent->AddEvent<Components::AxisAlignedBBUpdate>();
+		NotifyUpdate(ent, aabb);
 	}
 	Eigen::AlignedBox3f AxisAlignedBBSystem::calculateBox(const Components::Model& mod) {
 		Eigen::AlignedBox3f rv;

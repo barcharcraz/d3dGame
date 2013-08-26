@@ -26,7 +26,9 @@ namespace LibCommon {
 		void AddSystem(System * s);
 		
 		void RemoveSystem(System* s);
-
+		void SetSystemEvents(System* s, const std::set<std::type_index>& types);
+		void FireUpdateEvent(Entity* e, Components::IComponent* c);
+		
 		std::vector<Components::IComponent*> SelectComponents(std::type_index type);
 		template<typename T>
 		std::vector<T*> SelectComponents() {
@@ -47,10 +49,12 @@ namespace LibCommon {
 	private:
 		std::vector<std::unique_ptr<System>> _systems;
 		std::vector<std::unique_ptr<Entity>> _entities;
+		std::multimap<std::type_index, System*> _eventRegistrations;
 		//! \brief sends a removal message to all systems for the
 		//! entity e
 		void sendRemoveMessage(Entity* e);
 		void sendAddMessage(Entity* e);
+		void removeSystemEvents(System* s);
 		void UpdateSystems();
 		
 		std::chrono::system_clock _clock;

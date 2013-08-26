@@ -32,10 +32,6 @@ namespace LibCommon {
 		for (auto i = range.first; i != range.second; ++i) {
 			if (i->second.get() == comp) {
 				std::unique_ptr<IComponent> rv = std::move(i->second);
-				auto msgPos = std::find(_frameComponents.begin(), _frameComponents.end(), comp);
-				if (msgPos != _frameComponents.end()) {
-					_frameComponents.erase(msgPos);
-				}
 				_components.erase(i);
 				return rv;
 			}

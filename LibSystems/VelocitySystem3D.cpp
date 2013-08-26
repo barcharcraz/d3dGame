@@ -13,7 +13,7 @@ namespace Systems {
 		auto& velocity = e->Get<Velocity3D>()->velocity;
 		if (velocity.matrix() != velocity.Identity().matrix()) {
 			transform = transform * velocity;
-			e->AddEvent<Components::Transform3DUpdate>();
+			NotifyUpdate(e, e->Get<Transform3D>());
 		}
 		
 		

@@ -24,6 +24,7 @@ set(libcomponents_files
 	Collision.cpp
 	Messages.h
 	Messages.cpp
+	NullComponent.h
 	stdafx.h
 	stdafx.cpp
 	)

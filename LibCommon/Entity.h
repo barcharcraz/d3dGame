@@ -30,6 +30,11 @@ namespace LibCommon {
 			_components.emplace(typeid(T), std::move(newElm));
 		}
 		template<typename T>
+		T* Get() {
+			auto range = _components.equal_range(typeid(T));
+			return static_cast<T*>((*range.first).second.get());
+		}
+		template<typename T>
 		T* GetOptional() {
 			if (_components.count(typeid(T))) {
 				return Get<T>();
