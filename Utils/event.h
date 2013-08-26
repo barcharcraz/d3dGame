@@ -27,7 +27,7 @@ namespace utils {
 			});
 		}
 		void disconnect(handle fun) {
-			auto iter = std::find_if(callbacks.begin(), callbacks.end(), [fun](std::function < T(Args...)>& f) {
+			auto iter = std::find_if(callbacks.begin(), callbacks.end(), [fun](std::function < R(Args...)>& f) {
 				return fun == &f;
 			});
 			callbacks.erase(iter);

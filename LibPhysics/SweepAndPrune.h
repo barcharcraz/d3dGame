@@ -26,6 +26,7 @@ namespace Physics {
 		void AddObject(const Eigen::AlignedBox3f& box, void* obj);
 		void UpdateObject(const Eigen::AlignedBox3f& box, void* obj);
 		void RemoveObject(void* obj);
+		unsigned int NumCollisions();
 		std::vector<void*> QueryObject(void* object);
 	private:
 		std::array<std::vector<EndPoint>*, 3 > _axis;
@@ -34,7 +35,7 @@ namespace Physics {
 		std::vector<EndPoint> _Z;
 		std::vector<BBox> _objects;
 		std::map<void*, handle> _objectMap;
-		std::multimap<handle, handle> activePairs;
+		std::vector<std::pair<handle, handle>> activePairs;
 		void updateAxis(unsigned int axis, unsigned int pos, float newval);
 		void checkAndAdd(handle obj1, handle obj2);
 		void swapEndPoints(unsigned int axis, unsigned int a, unsigned int b);

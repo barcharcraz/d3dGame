@@ -14,6 +14,7 @@ namespace Physics {
 		//add sentinals to the end point vectors
 		EndPoint max;
 		EndPoint min;
+		
 		max.box = std::numeric_limits<unsigned int>::max();
 		min.box = std::numeric_limits<unsigned int>::max();
 		max.value = std::numeric_limits<float>::max();
@@ -31,7 +32,6 @@ namespace Physics {
 	void SweepAndPrune::UpdateObject(const Eigen::AlignedBox3f& aabb, void* obj) {
 		auto min = aabb.min();
 		auto max = aabb.max();
-		handle boxIdx = _objectMap.at(obj);
 		auto& box = _objects[_objectMap.at(obj)];
 		for (unsigned int i = 0; i < 3; ++i) {
 			updateAxis(i, box.min[i], min(i));
@@ -68,18 +68,9 @@ namespace Physics {
 	}
 	void SweepAndPrune::RemoveObject(void* object) {
 		handle hand = _objectMap.at(object);
-		if (activePairs.count(hand) > 0) {
-			auto range = activePairs.equal_range(hand);
-			for (auto i = range.first; i != range.second; ++i) {
-				auto other_range = activePairs.equal_range(i->second);
-				for (auto j = other_range.first; i != other_range.second; ++j) {
-					if (j->second == hand) {
-						activePairs.erase(j);
-					}
-				}
-			}
-			activePairs.erase(hand);
-		}
+		std::remove_if(activePairs.begin(), activePairs.end(), [&](const std::pair<handle, handle>& elm) {
+			return elm.first == hand || elm.second == hand;
+		});
 		auto& box = _objects[hand];
 		for (unsigned int i = 3; i < 3; ++i) {
 			_axis[i]->erase(_axis[i]->begin() + box.max[i]);
@@ -128,45 +119,62 @@ namespace Physics {
 	std::vector<void*> SweepAndPrune::QueryObject(void* object) {
 		auto hand = _objectMap.at(object);
 		std::vector<void*> rv;
-		if (activePairs.count(hand) > 0) {
-			auto range = activePairs.equal_range(hand);
-			for (auto i = range.first; i != range.second; ++i) {
-				rv.push_back(_objects[i->second].userRef);
+		for(auto& elm : activePairs) {
+			if(elm.first == hand) {
+				rv.push_back(_objects[elm.second].userRef);
+			}
+			if(elm.second == hand) {
+				rv.push_back(_objects[elm.first].userRef);
 			}
 		}
 		return rv;
 	}
+	unsigned int SweepAndPrune::NumCollisions() {
+		return activePairs.size();
+	}
+
 	void SweepAndPrune::checkAndAdd(handle box1, handle box2) {
+		if(box1 == box2) {
+			return;
+		}
 		auto& bbox1 = _objects[box1];
 		auto& bbox2 = _objects[box2];
-		bool areIntersecting = true;
-		bool isActive = (activePairs.count(box1) > 0) && (activePairs.count(box2) > 0);
+		bool areIntersecting = false;
+		std::pair<handle, handle> collisionPair;
+		collisionPair.first = box1 < box2 ? box1 : box2;
+		collisionPair.second = box1 < box2 ? box2 : box1;
+		auto collisionidx = std::find(activePairs.begin(), activePairs.end(), collisionPair);
+		bool isActive = !(collisionidx == activePairs.end());
 		for (unsigned int i = 0; i < 3; ++i) {
-			if (!(bbox1.max[i] > bbox2.min[i]) && !(bbox1.min[i] < bbox2.max[i])) {
-				areIntersecting = false;
+			if ((bbox1.max[i] > bbox2.min[i]) && (bbox1.min[i] < bbox2.max[i])) {
+				areIntersecting = true;
 				break;
 			}
 		}
 		if (areIntersecting && isActive) {
 			return;
 		} else if (!areIntersecting && isActive) {
-			activePairs.erase(box1);
-			activePairs.erase(box2);
+			activePairs.erase(collisionidx);
 		} else if (areIntersecting) {
-			activePairs.emplace(box1, box2);
-			activePairs.emplace(box2, box1);
+			activePairs.push_back(std::move(collisionPair));
 		}
 	}
 	void SweepAndPrune::swapEndPoints(unsigned int axis, unsigned int a, unsigned int b) {
 		auto axisvec = _axis[axis];
-		EndPoint& aend = axisvec->at(a);
-		EndPoint& bend = axisvec->at(b);
+
+		EndPoint temp = axisvec->at(a);
+		axisvec->at(a) = axisvec->at(b);
+		axisvec->at(b) = temp;
+
+		EndPoint& aend = axisvec->at(b);
+		EndPoint& bend = axisvec->at(a);
 		auto amax = isMax(aend.box);
 		auto bmax = isMax(bend.box);
 		auto aidx = boxIndex(aend.box);
 		auto bidx = boxIndex(bend.box);
 		auto& abox = _objects[aidx];
 		auto& bbox = _objects[bidx];
+
 		if (amax)
 			abox.max[axis] = b;
 		else
@@ -176,7 +184,6 @@ namespace Physics {
 		else
 			bbox.min[axis] = a;
 
-		std::swap(axisvec->begin() + a, axisvec->begin() + b);
 	}
 	void SweepAndPrune::fixRefs(unsigned int axis, unsigned int start) {
 		auto axisvec = _axis[axis];
@@ -196,10 +203,12 @@ namespace Physics {
 			}
 		}
 		for (auto& elm : activePairs) {
-			if (elm.first > start)
+			if(elm.first > start) {
+				elm.first -= 1;
+			}
+			if(elm.second > start) {
 				elm.second -= 1;
-			if (elm.second > start)
-				elm.second -= 1;
+			}
 		}
 	}
 }

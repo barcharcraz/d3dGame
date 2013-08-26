@@ -16,7 +16,7 @@ Extra Arguments=
 Install Directory=file:///usr/local
 
 [Launch]
-Launch Configurations=Launch Configuration 0
+Launch Configurations=Launch Configuration 0,Launch Configuration 1
 
 [Launch][Launch Configuration 0]
 Configured Launch Modes=execute
@@ -27,6 +27,18 @@ Type=Native Application
 [Launch][Launch Configuration 0][Data]
 Configured from ProjectItem=d3dGame,CrossplatApp,CrossplatApp
 Project Target=d3dGame,CrossplatApp,CrossplatApp
+Working Directory=file:///home/charlie/d3dGame/build/output/
+isExecutable=false
+
+[Launch][Launch Configuration 1]
+Configured Launch Modes=debug
+Configured Launchers=gdb
+Name=PhysicsTests
+Type=Native Application
+
+[Launch][Launch Configuration 1][Data]
+Configured from ProjectItem=d3dGame,Tests,PhysicsTests,PhysicsTests
+Project Target=d3dGame,Tests,PhysicsTests,PhysicsTests
 Working Directory=file:///home/charlie/d3dGame/build/output/
 isExecutable=false
 

@@ -46,6 +46,21 @@ namespace {
 		ASSERT_EQ(sap.QueryObject(&testObjects[3]).size(), 1);
 	}
 	TEST_F(SweepAndPruneTest, ObjectUpdateUncollide) {
-
+		using namespace Eigen;
+		sap.AddObject(testObjects[0], &testObjects[0]);
+		sap.AddObject(testObjects[1], &testObjects[1]);
+		ASSERT_EQ(sap.QueryObject(&testObjects[0]).size(), 1);
+		ASSERT_EQ(sap.QueryObject(&testObjects[1]).size(), 1);
+		sap.UpdateObject(AlignedBox3f{Vector3f{3,3,3}, Vector3f{5,5,5}}, &testObjects[1]);
+		ASSERT_EQ(sap.NumCollisions(), 0);
+		ASSERT_EQ(sap.QueryObject(&testObjects[0]).size(), 0);
+		ASSERT_EQ(sap.QueryObject(&testObjects[1]).size(), 0);
+	}
+	TEST_F(SweepAndPruneTest, AllObjectAddTest) {
+		using namespace Eigen;
+		for(unsigned int i = 0; i < testObjects.size(); ++i) {
+			sap.AddObject(testObjects[i], &testObjects[i]);
+		}
+		ASSERT_EQ(sap.NumCollisions(), 1);
 	}
 }
