@@ -6,6 +6,8 @@ namespace Systems {
 	class SimpleCollisionSystem : public LibCommon::System {
 	public:
 		SimpleCollisionSystem();
+		virtual void Init() override;
+		virtual void OnEntityUpdate(LibCommon::Entity* ent, Components::IComponent* comp);
 		virtual void Process(LibCommon::Entity* ent);
 	};
 }
