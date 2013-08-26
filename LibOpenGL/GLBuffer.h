@@ -9,6 +9,7 @@ namespace LibOpenGL {
 		void UpdateData(GLenum target, GLsizeiptr size, const void* data, GLenum usage);
 		void UpdateData(GLenum target, GLsizeiptr size, const void *data);
 		void UpdateData(GLsizeiptr size, const void *data, GLenum usage);
+		GLuint GetBuffer();
 		~GLBuffer();
 	private:
 		GLenum lastUsage;

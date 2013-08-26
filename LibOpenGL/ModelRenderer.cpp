@@ -16,6 +16,8 @@ namespace LibOpenGL {
 		auto mod = ent->Get<Components::Model>();
 		auto& entBuf = buffer_map[ent];
 		entBuf.Vertex.UpdateData(mod->verts.size(), &mod->verts[0], gl::VERTEX_ARRAY_BUFFER_BINDING);
+		entBuf.Index.UpdateData(mod->indices.size(), &mod->indices[0], gl::INDEX_ARRAY_BUFFER_BINDING);
+		
 	}
 	void ModelRenderer::OnEntityRemove(LibCommon::Entity *ent) {
 		if(buffer_map.count(ent) != 0) {

@@ -11,7 +11,7 @@ namespace {
 			testObjects[0] = AlignedBox3f(Vector3f{ 0, 0, 0 }, Vector3f{ 1, 1, 1 });
 			testObjects[1] = AlignedBox3f(Vector3f{ 0.5, 0.5, 0.5 }, Vector3f{ 1, 1, 1, });
 			testObjects[2] = AlignedBox3f(Vector3f{ 3, 3, 3 }, Vector3f{ 3, 10, 13 });
-			testObjects[3] = AlignedBox3f(Vector3f{ 2, 100, 100 }, Vector3f{ 3, 120, 120 });
+			testObjects[3] = AlignedBox3f(Vector3f{ 2, 100, 100 }, Vector3f{ 4, 120, 120 });
 			testObjects[4] = AlignedBox3f(Vector3f{ -2, -2, -2 }, Vector3f{ -1, -1, -1 });
 		}
 		Physics::SweepAndPrune sap;

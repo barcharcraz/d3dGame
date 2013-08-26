@@ -49,6 +49,9 @@ namespace LibOpenGL {
 	void GLBuffer::UpdateData(GLsizeiptr size, const void *data, GLenum usage) {
 		UpdateData(initalTarget, size, data, usage);
 	}
+	GLuint GLBuffer::GetBuffer() {
+		return _buffer;
+	}
 
 	void GLBuffer::init() {
 		currentSize = 0;

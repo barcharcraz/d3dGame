@@ -1,5 +1,6 @@
 #include "SweepAndPrune.h"
 #include <numeric>
+#include <array>
 #include <algorithm>
 namespace Physics {
 	namespace {
@@ -140,6 +141,7 @@ namespace Physics {
 		auto& bbox1 = _objects[box1];
 		auto& bbox2 = _objects[box2];
 		bool areIntersecting = false;
+		std::array<bool, 3> axisIntersections;
 		std::pair<handle, handle> collisionPair;
 		collisionPair.first = box1 < box2 ? box1 : box2;
 		collisionPair.second = box1 < box2 ? box2 : box1;
@@ -147,10 +149,10 @@ namespace Physics {
 		bool isActive = !(collisionidx == activePairs.end());
 		for (unsigned int i = 0; i < 3; ++i) {
 			if ((bbox1.max[i] > bbox2.min[i]) && (bbox1.min[i] < bbox2.max[i])) {
-				areIntersecting = true;
-				break;
+				axisIntersections[i] = true;
 			}
 		}
+		areIntersecting = axisIntersections[0] && axisIntersections[1] && axisIntersections[2];
 		if (areIntersecting && isActive) {
 			return;
 		} else if (!areIntersecting && isActive) {
