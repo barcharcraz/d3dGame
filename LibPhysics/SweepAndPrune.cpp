@@ -5,7 +5,7 @@
 namespace Physics {
 	namespace {
 		bool isMax(unsigned int box) {
-			return box & EndPoint::max;
+			return (box & EndPoint::max) != 0;
 		}
 		unsigned int boxIndex(unsigned int box) {
 			return box & ~EndPoint::max;
@@ -46,7 +46,7 @@ namespace Physics {
 		BBox toAdd;
 		toAdd.userRef = obj;
 		_objects.push_back(toAdd);
-		auto boxIdx = _objects.size() - 1;
+		unsigned int boxIdx = static_cast<unsigned int>(_objects.size() - 1);
 		_objectMap[obj] = boxIdx;
 		for (unsigned int i = 0; i < 3; ++i) {
 			EndPoint min;
@@ -131,7 +131,10 @@ namespace Physics {
 		return rv;
 	}
 	unsigned int SweepAndPrune::NumCollisions() {
-		return activePairs.size();
+		//this cast is here since if you overflow
+		//an unsigned int you have other problems, namely
+		//the isMax bit gets clobbered
+		return static_cast<unsigned int>(activePairs.size());
 	}
 
 	void SweepAndPrune::checkAndAdd(handle box1, handle box2) {
