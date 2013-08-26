@@ -9,6 +9,8 @@ set(system_files
 	CollisionDetectionSystem.cpp
 	SimpleCollisionSystem.h
 	SimpleCollisionSystem.cpp
+	ProjectileSystem.h
+	ProjectileSystem.cpp
 	Group.h
 	Group.cpp
 	stdafx.h
