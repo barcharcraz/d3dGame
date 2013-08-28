@@ -25,6 +25,8 @@ set(libcomponents_files
 	Messages.h
 	Messages.cpp
 	NullComponent.h
+	Billboard.h
+	Billboard.cpp
 	stdafx.h
 	stdafx.cpp
 	)
