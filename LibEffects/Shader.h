@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <cstdint>
+#include <string>
 namespace Effects {
 	class HLSLPixelShader;
 	class GLSLPixelShader;
@@ -36,13 +37,14 @@ namespace Effects {
 		explicit VertexShader(const std::string& filename, const std::vector<ShaderDesc>& desc);
 		void Load(const std::string& filename, const std::vector<ShaderDesc>& desc);
 		HLSLVertexShader* hvs;
-		GLSLVertexShader* gvs;
+		std::string name;
+		
 	};
 	struct PixelShader {
 		explicit PixelShader(const std::string& filename);
 		void Load(const std::string& filename);
 		HLSLPixelShader* hps;
-		GLSLPixelShader* gps;
+		std::string name;
 	};
 }
 

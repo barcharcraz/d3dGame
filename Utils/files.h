@@ -17,6 +17,16 @@ namespace utils {
 		stream.read((char*) buffer.data(), size);
 		return buffer;
 	}
+	inline std::string slurpText(const std::string& filename) {
+		std::ifstream file(filename);
+		std::string rv;
+		file.seekg(0, std::ios::ate);
+		rv.reserve(file.tellg());
+		file.seekg(0, std::ios::beg);
+		rv.assign((std::istreambuf_iterator<char>(file)), 
+				  (std::istreambuf_iterator<char>()));
+		return rv;
+	}
 	inline std::string getFileExtension(const std::string& filename) {
 		using namespace std;
 		auto idx = filename.rfind('.');

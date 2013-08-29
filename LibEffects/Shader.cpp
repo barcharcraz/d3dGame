@@ -19,10 +19,6 @@ namespace Effects {
 	static std::map<std::string, HLSLPixelShader> hps_map;
 	static std::map<std::string, HLSLVertexShader> hvs_map;
 #endif
-#ifdef USE_OPENGL
-	static std::map<std::string, GLSLPixelShader> gps_map;
-	static std::map<std::string, GLSLVertexShader> gvs_map;
-#endif
 
 	VertexShader::VertexShader(const std::string& filename, const std::vector<ShaderDesc>& desc) {
 		auto ext = utils::getFileExtension(filename);
@@ -32,8 +28,6 @@ namespace Effects {
 				Load(filename + ".cso", desc);
 			}
 #endif
-		} else {
-			Load(filename, desc);
 		}
 	}
 	void VertexShader::Load(const std::string& filename, const std::vector<ShaderDesc>& desc) {
@@ -53,7 +47,8 @@ namespace Effects {
 	}
     
 	//Pixel shader stuff
-	PixelShader::PixelShader(const std::string& filename) {
+	PixelShader::PixelShader(const std::string& filename)
+		: name(filename) {
 		auto ext = utils::getFileExtension(filename);
 		if (filename == "") {
 #ifdef USE_DIRECT3D
@@ -61,8 +56,6 @@ namespace Effects {
 				Load(filename + ".cso");
 			}
 #endif
-		} else {
-			Load(filename);
 		}
 	}
 	void PixelShader::Load(const std::string& filename) {
