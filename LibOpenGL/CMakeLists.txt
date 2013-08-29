@@ -1,11 +1,15 @@
 set(LibOpenGL_files
 	OpenGLRenderer.h
-	ModelRenderer.h
-	ModelRenderer.cpp
+	GLModelRenderer.h
+	GLModelRenderer.cpp
 	GLBuffer.h
 	GLBuffer.cpp
 	GLShader.h
 	GLShader.cpp
+	GLProgram.h
+	GLProgram.cpp
+	GLAttribArray.h
+	GLAttribArray.cpp
 	stdafx.h
 	stdafx.cpp
 )

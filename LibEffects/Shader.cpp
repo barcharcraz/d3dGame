@@ -20,7 +20,8 @@ namespace Effects {
 	static std::map<std::string, HLSLVertexShader> hvs_map;
 #endif
 
-	VertexShader::VertexShader(const std::string& filename, const std::vector<ShaderDesc>& desc) {
+	VertexShader::VertexShader(const std::string& filename, const std::vector<ShaderDesc>& desc)
+		: name(filename) {
 		auto ext = utils::getFileExtension(filename);
 		if (ext == "") {
 #ifdef USE_DIRECT3D

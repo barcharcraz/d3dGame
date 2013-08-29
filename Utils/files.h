@@ -23,7 +23,7 @@ namespace utils {
 		file.seekg(0, std::ios::ate);
 		rv.reserve(file.tellg());
 		file.seekg(0, std::ios::beg);
-		rv.assign((std::istreambuf_iterator<char>(file)), 
+		rv.assign((std::istreambuf_iterator<char>(file)),
 				  (std::istreambuf_iterator<char>()));
 		return rv;
 	}

@@ -1,5 +1,6 @@
 #include "GLShader.h"
 #include <Utils/files.h>
+#include <Utils/exceptions.h>
 namespace {
 	std::string get_compile_errors(GLuint shader) {
 		std::string errMsg;
@@ -25,9 +26,22 @@ namespace LibOpenGL {
 			gl::CompileShader(_shader);
 			auto error = get_compile_errors(_shader);
 			if(error != "") {
-				
+				throw utils::graphics_api_error(error);
 			}
 			
+			
 	}
+	GLuint GLShader::ShaderID() {
+		return _shader;
+	}
+	GLenum GLShader::ShaderType() {
+		return _type;
+	}
+
+
+	GLShader::~GLShader() {
+		gl::DeleteShader(_shader);
+	}
+
 
 }
