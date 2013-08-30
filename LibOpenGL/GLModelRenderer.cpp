@@ -1,6 +1,7 @@
 #include "stdafx.h"
-#include "ModelRenderer.h"
+#include "GLModelRenderer.h"
 #include "GLShader.h"
+#include <set>
 #include <LibComponents/Model.h>
 #include <LibComponents/Camera.h>
 #include <LibComponents/Texture.h>
@@ -18,36 +19,40 @@ namespace LibOpenGL {
 		using namespace Components;
 		auto mod = ent->Get<Components::Model>();
 		auto effect = ent->Get<Components::Effect>();
-		buffers& entBuf = buffer_map[ent];
-		entBuf.Vertex.UpdateData(mod->verts.size(), &mod->verts[0], gl::VERTEX_ARRAY_BUFFER_BINDING);
-		entBuf.Index.UpdateData(mod->indices.size(), &mod->indices[0], gl::ELEMENT_ARRAY_BUFFER_BINDING);
-		std::map<Components::Effect*, GLProgram>::iterator program;
-		if(program_map.count(effect) == 0) {
-			program = program_map.emplace(GLShader(gl::VERTEX_SHADER, effect->vs.name).ShaderID(),
-								GLShader(gl::FRAGMENT_SHADER, effect->ps.name).ShaderID());
+		auto bufferItr = buffer_map.emplace(ent, buffers{}).first;
+		bufferItr->second.Vertex.UpdateData(mod->verts.size(), &mod->verts[0], gl::VERTEX_ARRAY_BUFFER_BINDING);
+		bufferItr->second.Index.UpdateData(mod->indices.size(), &mod->indices[0], gl::ELEMENT_ARRAY_BUFFER_BINDING);
+		boost::container::flat_map<Components::Effect*, GLProgram>::iterator program;
+		program = program_map.lower_bound(effect);
+		if(program->first != effect) {
+			program = program_map.emplace_hint(program, effect, GLProgram{GLShader(gl::VERTEX_SHADER, effect->vs.name).ShaderID(),
+								GLShader(gl::FRAGMENT_SHADER, effect->ps.name).ShaderID()});
 			
-		} else {
-			program = program_map.at(effect);
+			
 		}
 		if(render->ActiveProgram != program->second.ProgramID()) {
 			render->ActiveProgram = program->second.ProgramID();
 			gl::UseProgram(render->ActiveProgram);
 		}
-		entBuf.vao.Bind();
-		gl::BindBuffer(gl::ARRAY_BUFFER, entBuf.Vertex.GetBuffer());
-		gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, entBuf.Index.GetBuffer());
+		bufferItr->second.vao.Bind();
+		gl::BindBuffer(gl::ARRAY_BUFFER, bufferItr->second.Vertex.GetBuffer());
+		gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, bufferItr->second.Index.GetBuffer());
 		gl::EnableVertexAttribArray(0);
 		gl::VertexAttribPointer(0, 4, gl::FLOAT, gl::FALSE_, 0, 0);
 		gl::DrawElements(gl::TRIANGLES, mod->verts.size(), gl::UNSIGNED_INT, 0);
 		
 	}
 	void GLModelRenderer::OnEntityRemove(LibCommon::Entity *ent) {
-		if(buffer_map.count(ent) != 0) {
-			buffer_map.erase(ent);
+		auto bufferIter = buffer_map.find(ent);
+		if(bufferIter != buffer_map.end()) {
+			buffer_map.erase(bufferIter);
 		}
 		auto effect = ent->GetOptional<Components::Effect>();
-		if(effect && program_map.count(effect) > 0) {
-			program_map.erase(effect);
+		if(effect) {
+			auto effectItr = program_map.find(effect);
+			if(effectItr != program_map.end()) {
+				program_map.erase(effectItr);
+			}
 		}
 	}
 }

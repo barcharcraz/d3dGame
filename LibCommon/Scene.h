@@ -10,6 +10,7 @@
 #include <vector>
 #include <chrono>
 #include <functional>
+#include <Utils/make_unique.h>
 namespace LibCommon {
 	class Scene {
 	public:
@@ -24,6 +25,10 @@ namespace LibCommon {
 		void RemoveEntity(Entity* e);
 		void AddSystem(std::unique_ptr<System> && s);
 		void AddSystem(System * s);
+		template<typename T, typename... Args>
+		void AddSystem(Args&&... args) {
+			AddSystem(std::make_unique<T>(std::forward<Args>(args)...));
+		}
 		
 		void RemoveSystem(System* s);
 		void SetSystemEvents(System* s, const std::set<std::type_index>& types);

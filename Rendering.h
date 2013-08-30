@@ -1,3 +1,12 @@
+//! \brief includes renderers for the
+//! current platform and typedefs some
+//! default rendering types.
+//!
+//! \note this class MUST be #included before
+//! windowing.h and libraries like GLUT and GLFW
+//! this is because glLoadGen headers enforce this
+//! for compatibility
+
 #include "config.h"
 #ifdef USE_OPENGL
 #include "LibOpenGL/OpenGLRenderer.h"

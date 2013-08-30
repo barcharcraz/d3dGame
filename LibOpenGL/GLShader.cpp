@@ -4,13 +4,16 @@
 namespace {
 	std::string get_compile_errors(GLuint shader) {
 		std::string errMsg;
-		GLuint status;
+		GLint status;
 		gl::GetShaderiv(shader, gl::COMPILE_STATUS, &status);
 		if(status == gl::FALSE_) {
 			GLint infoLogLen;
 			gl::GetShaderiv(shader, gl::INFO_LOG_LENGTH, &infoLogLen);
-			errMsg->reserve(infoLogLen);
-			gl::GetShaderInfoLog(shader, infoLogLen, nullptr, &errMsg);
+			errMsg.reserve(infoLogLen);
+			GLchar *infoRaw = new GLchar[infoLogLen + 1];
+			gl::GetShaderInfoLog(shader, infoLogLen, nullptr, infoRaw);
+			errMsg.assign(infoRaw);
+			delete[] infoRaw;
 			return errMsg;
 		}
 		return "";
@@ -22,7 +25,8 @@ namespace LibOpenGL {
 		: _type(type) {
 			_shader = gl::CreateShader(_type);
 			std::string data = utils::slurpText(filename);
-			gl::ShaderSource(_shader, 1, &data.c_str(), nullptr);
+			const GLchar* dataRaw = data.c_str();
+			gl::ShaderSource(_shader, 1, &dataRaw, nullptr);
 			gl::CompileShader(_shader);
 			auto error = get_compile_errors(_shader);
 			if(error != "") {

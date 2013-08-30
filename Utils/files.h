@@ -20,7 +20,7 @@ namespace utils {
 	inline std::string slurpText(const std::string& filename) {
 		std::ifstream file(filename);
 		std::string rv;
-		file.seekg(0, std::ios::ate);
+		file.seekg(0, std::ios::end);
 		rv.reserve(file.tellg());
 		file.seekg(0, std::ios::beg);
 		rv.assign((std::istreambuf_iterator<char>(file)),

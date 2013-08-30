@@ -13,7 +13,7 @@ namespace Prefabs {
 		AddComponent<Components::Texture>(tex);
 		AddComponent<Components::Billboard>(width, height);
 		AddComponent<Components::Model>(utils::generate_quad(width, height));
-		AddComponent<Components::Eff
+		AddComponent<Components::Effect>(Effects::ChooseEffect({Effects::ShaderCaps::RENDER_BILLBOARD}));
 
 	}
 }

@@ -25,6 +25,7 @@ IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
     add_definitions(-std=c++11 -Wall)
 ENDIF()
 
+
 #openGL/DX options/defaults
 IF(WIN32)
 SET(USE_OPENGL OFF CACHE BOOL "build with OpenGL support")
@@ -99,8 +100,10 @@ IF(USE_OPENGL)
 	add_subdirectory(LibGLFW)
 	ENDIF(GLFW3_FOUND)
 	add_subdirectory(LibGLSL)
+	add_subdirectory(GLSLShaders)
 ENDIF(USE_OPENGL)
 add_subdirectory(CrossplatApp)
 add_subdirectory(LibCairo)
 add_subdirectory(RenderingUtils)
 add_subdirectory(Tests)
+add_subdirectory(LibAssets)

@@ -11,8 +11,9 @@ namespace Effects {
 	class GLSLVertexShader;
 	//! \brief this structure works in the same
 	//! way as a D3D11_INPUT_ELEMENT_DESC but is used
-	//! for GLSL attributes as well. For GLSL only the first
-	//! two fields are important
+	//! for GLSL attributes as well. For GLSL
+	//! these struct members match up to the params
+	//! of glVertexAttribPointer
 	struct ShaderDesc {
 		std::string ElementName;
 		unsigned int Index;
@@ -21,6 +22,14 @@ namespace Effects {
 		unsigned int AlignedByteOffset;
 		int InputSlotClass;
 		unsigned int InstanceDataStepRate;
+	};
+	enum class InputFormats {
+		R32G32B32A32_FLOAT,
+		R32B32G32_FLOAT
+	};
+	enum class SlotClass {
+		PER_INSTANCE,
+		PER_VERTEX
 	};
 	enum class ShaderCaps {
 		MESH_INDEXED,
@@ -31,6 +40,7 @@ namespace Effects {
 		MAT_DIFFUSE,
 		MAT_SPEC,
 		MAT_AMBIANT,
+		RENDER_BILLBOARD,
 		DEBUG_SOLID
 	};
 	struct VertexShader {

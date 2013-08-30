@@ -10,13 +10,16 @@ namespace {
 			GLint errLen;
 			gl::GetProgramiv(program, gl::INFO_LOG_LENGTH, &errLen);
 			errMsg->reserve(errLen);
-			gl::GetProgramInfoLog(program, errLen, nullptr, errMsg->data());
+			GLchar* rawInfo = new GLchar[errLen + 1];
+			gl::GetProgramInfoLog(program, errLen, nullptr, rawInfo);
+			errMsg->assign(rawInfo);
+			delete[] rawInfo;
 			
 		}
 		return rv;
 	}
 	GLuint CreateProgram(const std::vector<GLuint>& shaders) {
-		GLuint rv = ::gl::CreateProgram();
+		GLuint rv = gl::CreateProgram();
 		for(auto shader : shaders) {
 			gl::AttachShader(rv, shader);
 		}

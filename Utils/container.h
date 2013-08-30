@@ -17,16 +17,7 @@
 #define UTILS_CONTAINER_H
 
 namespace utils {
-#ifdef BOOST_USE_FLATMAPS
-	typedef boost::container::flat_map map;
-	typedef boost::container::flat_set set;
-	typedef boost::container::flat_multimap multimap;
-	typedef boost::container::flat_multiset multiset;
-#else
-	typedef std::map map;
-	typedef std::set set;
-	typedef std::multimap multimap;
-	typedef std::multiset multiset;
-#endif
+
+
 }
 #endif

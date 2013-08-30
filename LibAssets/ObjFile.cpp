@@ -6,16 +6,27 @@
 #include <algorithm>
 #include <cassert>
 #include <unordered_map>
-namespace LibCommon {
+namespace Assets {
 	ObjFile::ObjFile(const std::string& filename) {
 		read(filename);
 	}
 	ObjFile::ObjFile(std::istream& from) {
 		read(from);
 	}
-    Components::Model ObjFile::model() {
-		return std::move(constructModel());
+	std::vector< int >& ObjFile::Indices() {
+		if(modelCache.indices.size() == 0) {
+			modelCache = constructModel();
+		}
+		return modelCache;
 	}
+	std::vector< LibCommon::Vertex >& ObjFile::Verts() {
+		if(modelCache.verts.size() == 0) {
+			modelCache = constructModel();
+		}
+		return modelCache;
+	}
+
+
 	Components::Model ObjFile::constructModel() {
 		Components::Model retval;
 		//this map is used to speed up checks for duplicate values
