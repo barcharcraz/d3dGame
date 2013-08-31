@@ -10,10 +10,11 @@ static void load_effects();
 int main(int argc, char** argv) {
 	auto window = windowing::Window(nullptr);
 	Rendering::Renderer rend;
+	load_effects();
 	LibCommon::ObjFile cone{"Cone.obj"};
 	std::unique_ptr<LibCommon::Scene> scene(new LibCommon::Scene());
 	(*scene).AddSystem<Rendering::ModelRenderer>(&rend);
-	scene->AddEntity(cone.model());
+	scene->AddEntity<Components::Model>(cone);
 	window.Show();
 	window.update = [&]() {
 		(*scene).Update();

@@ -16,11 +16,13 @@ namespace LibCommon {
 	public:
 		Scene();
 		void Update();
-		void AddEntity(Entity* e);
-		void AddEntity(std::unique_ptr<Entity> && e);
+		Entity* AddEntity(Entity* e);
+		Entity* AddEntity(std::unique_ptr<Entity> && e);
 		template<typename T, typename... Args>
-		void AddEntity(Args && ... args) {
-			AddEntity(std::make_unique<T>(std::forward<Args>(args)...));
+		T* AddEntity(Args && ... args) {
+			return static_cast<T*>(
+				AddEntity(std::make_unique<T>(std::forward<Args>(args)...))
+				);
 		}
 		void RemoveEntity(Entity* e);
 		void AddSystem(std::unique_ptr<System> && s);
