@@ -30,6 +30,7 @@ namespace Effects {
 		MAT_DIFFUSE,
 		MAT_SPEC,
 		MAT_AMBIANT,
+		RENDER_BILLBOARD,
 		DEBUG_SOLID
 	};
 	struct VertexShader {
