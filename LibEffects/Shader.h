@@ -23,7 +23,7 @@ namespace Effects {
 		int InputSlotClass;
 		unsigned int InstanceDataStepRate;
 	};
-	enum class InputFormats {
+	enum InputFormats : uint32_t {
 		R32G32B32A32_FLOAT,
 		R32B32G32_FLOAT
 	};
