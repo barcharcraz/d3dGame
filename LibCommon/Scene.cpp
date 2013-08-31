@@ -33,7 +33,7 @@ namespace LibCommon {
 		for (auto& sys : _systems) {
 			sys->OnEntityAdd(_entities.back().get());
 		}
-		return _entities.back()->get();
+		return _entities.back().get();
 	}
 	void Scene::RemoveEntity(Entity *e) {
 		for(auto i = _entities.begin(); i != _entities.end(); i++) {

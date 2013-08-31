@@ -5,8 +5,8 @@
 namespace Assets {
 	class GeometryFile {
 	public:
-		virtual std::vector<int>& Indices() = 0;
-		virtual std::vector<LibCommon::Vertex>& Verts() = 0;
+		virtual const std::vector<unsigned int>& Indices() const = 0;
+		virtual const std::vector<LibCommon::Vertex>& Verts() const = 0;
 	};
 }
 

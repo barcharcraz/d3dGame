@@ -7,35 +7,44 @@
 #include <cassert>
 #include <unordered_map>
 namespace Assets {
+	namespace {
+		void reverseIndices(std::vector<unsigned int>& indices) {
+			for (unsigned int i = 0; i < indices.size(); i += 3) {
+				auto temp = indices[i];
+				indices[i] = indices[i + 1];
+				indices[i + 1] = temp;
+			}
+		}
+	}
 	ObjFile::ObjFile(const std::string& filename) {
 		read(filename);
 	}
 	ObjFile::ObjFile(std::istream& from) {
 		read(from);
 	}
-	std::vector< int >& ObjFile::Indices() {
+	const std::vector< unsigned int >& ObjFile::Indices() const {
 		if(modelCache.indices.size() == 0) {
 			modelCache = constructModel();
 		}
-		return modelCache;
+		return modelCache.indices;
 	}
-	std::vector< LibCommon::Vertex >& ObjFile::Verts() {
+	const std::vector< LibCommon::Vertex >& ObjFile::Verts() const {
 		if(modelCache.verts.size() == 0) {
 			modelCache = constructModel();
 		}
-		return modelCache;
+		return modelCache.verts;
 	}
 
 
-	Components::Model ObjFile::constructModel() {
+	Components::Model ObjFile::constructModel() const {
 		Components::Model retval;
 		//this map is used to speed up checks for duplicate values
 		//when we add a vertex to the return value we cache its index here
 		//this way we can get O(1) searches for duplicates
-		std::unordered_map<Vertex, int> indexMap;
+		std::unordered_map<LibCommon::Vertex, int> indexMap;
 		//assert(_vnIndices.size() == _indices.size() == _uvIndices.size());
 		for (unsigned int i = 0; i < _indices.size(); ++i) {
-			Vertex vert;
+			LibCommon::Vertex vert;
 			vert.pos = _points[_indices[i]];
 			vert.norm = _normals[_vnIndices[i]] * -1;
 			vert.norm.w() = 1;
@@ -189,12 +198,5 @@ namespace Assets {
 			w = 0.0f;
 		}
 		return Eigen::Vector3f(u, v, w);
-	}
-	void ObjFile::reverseIndices(std::vector<unsigned int>& indices) {
-		for (unsigned int i = 0; i < _indices.size(); i += 3) {
-			auto temp = indices[i];
-			indices[i] = indices[i + 1];
-			indices[i + 1] = temp;
-		}
 	}
 }

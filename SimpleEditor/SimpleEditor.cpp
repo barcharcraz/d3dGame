@@ -10,7 +10,7 @@
 #include <LibCommon/Scene.h>
 #include <LibDirect3D\Direct3DRenderer.h>
 #include <LibDirect3D/BoundingBoxRenderer.h>
-#include <LibCommon/ObjFile.h>
+#include <LibAssets/ObjFile.h>
 #include <LibDirect3D/ModelRenderer.h>
 #include <LibDirect3D/Direct3DTexture.h>
 #include <LibHLSL/HLSLShaderSet.h>
@@ -95,18 +95,17 @@ int main(int argc, char** argv)
 	auto render = std::make_unique<LibDirect3D::Direct3DRenderer>(win.Hwnd());
 	auto render2d = std::make_unique<LibDirect2D::Direct2DRenderer>(render->GetDXGIDevice(), render->GetSwapChain());
 	//render->pDev->QueryInterface(IID_PPV_ARGS(&pDebug));
-	
 	Effects::EffectCache cache;
 	Effects::AddEffect({ "DefaultVS.cso", "DefaultPS.cso", defaultLayout, defaultCaps });
 	Effects::AddEffect({ "DebugVS.cso", "DebugPS.cso", debugLayout, debugCaps });
 	LibDirect3D::Direct3DTexture d3dTex{ Image::ImageData(f) };
-	LibCommon::ObjFile modelFile("TestObj.obj");
-	LibCommon::ObjFile cone("Cone.obj");
+	Assets::ObjFile modelFile("TestObj.obj");
+	Assets::ObjFile cone("Cone.obj");
 	Prefabs::Camera * cam = new Prefabs::Camera();
 	cam->AddComponent<Components::AxisAlignedBB>(Eigen::AlignedBox3f{ Eigen::Vector3f{ -1.5f, -1.5f, -1.5f }, Eigen::Vector3f{ 1.5f, 1.5f, 1.5f } });
 	cam->AddComponent<Components::Collision>();
-	Prefabs::StaticModel * model = new Prefabs::StaticModel(modelFile.model(), Texture(&d3dTex));
-	Prefabs::StaticModel * coneMod = new Prefabs::StaticModel(cone.model(), Texture(&d3dTex));
+	Prefabs::StaticModel * model = new Prefabs::StaticModel(modelFile, Texture(&d3dTex));
+	Prefabs::StaticModel * coneMod = new Prefabs::StaticModel(cone, Texture(&d3dTex));
 	model->Get<Transform3D>()->transform.translate(Eigen::Vector3f{ 0, 0, -10 });
 	model->AddComponent<Components::Velocity3D>(Eigen::Affine3f(Eigen::AngleAxisf(0.01f, Eigen::Vector3f::UnitY()) * Eigen::Affine3f::Identity()));
 	coneMod->AddComponent<Components::Velocity3D>(Eigen::Affine3f(Eigen::AngleAxisf(0.01f, Eigen::Vector3f::UnitX()) * Eigen::Affine3f::Identity()));
