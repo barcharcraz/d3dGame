@@ -29,6 +29,8 @@ namespace Effects {
 				Load(filename + ".cso", desc);
 			}
 #endif
+		} else {
+			Load(filename, desc);
 		}
 	}
 	void VertexShader::Load(const std::string& filename, const std::vector<ShaderDesc>& desc) {
@@ -57,6 +59,8 @@ namespace Effects {
 				Load(filename + ".cso");
 			}
 #endif
+		} else {
+			Load(filename);
 		}
 	}
 	void PixelShader::Load(const std::string& filename) {

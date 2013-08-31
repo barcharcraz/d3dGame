@@ -5,6 +5,8 @@ set(hlsl_src
 	DebugVS.hlsl
 	LightStructs.hlsl
 	ForwardLighting.hlsl
+	BillboardPS.hlsl
+	BillboardVS.hlsl
 	)
 
 

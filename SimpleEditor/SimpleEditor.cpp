@@ -88,6 +88,10 @@ int main(int argc, char** argv)
 		Effects::ShaderCaps::TEXTURE_MAPPED,
 		Effects::ShaderCaps::LIT_DIRECTIONAL
 	};
+	const std::set<Effects::ShaderCaps> billboardCaps = {
+		Effects::ShaderCaps::MESH_INDEXED,
+		Effects::ShaderCaps::TEXTURE_MAPPED
+	};
 	//CComPtr<ID3D11Debug> pDebug;
 	/*utils::Defer<std::function<void()>> def([&](){
 		pDebug->ReportLiveDeviceObjects(D3D11_RLDO_FLAGS::D3D11_RLDO_DETAIL);
@@ -98,6 +102,7 @@ int main(int argc, char** argv)
 	Effects::EffectCache cache;
 	Effects::AddEffect({ "DefaultVS.cso", "DefaultPS.cso", defaultLayout, defaultCaps });
 	Effects::AddEffect({ "DebugVS.cso", "DebugPS.cso", debugLayout, debugCaps });
+	Effects::AddEffect({ "BillboardVS.cso", "BillboardPS.cso", defaultLayout, billboardCaps });
 	LibDirect3D::Direct3DTexture d3dTex{ Image::ImageData(f) };
 	Assets::ObjFile modelFile("TestObj.obj");
 	Assets::ObjFile cone("Cone.obj");
