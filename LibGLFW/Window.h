@@ -8,7 +8,7 @@ namespace LibGLFW {
     class Window {
         friend int Run();
     public:
-        Window();
+        Window(void*);
         ~Window();
         Window(int w ,int h);
         void Show();

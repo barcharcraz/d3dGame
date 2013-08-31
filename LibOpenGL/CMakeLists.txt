@@ -1,11 +1,20 @@
 set(LibOpenGL_files
 	OpenGLRenderer.h
-	ModelRenderer.h
-	ModelRenderer.cpp
+	OpenGLRenderer.cpp
+	GLModelRenderer.h
+	GLModelRenderer.cpp
 	GLBuffer.h
 	GLBuffer.cpp
+	GLShader.h
+	GLShader.cpp
+	GLProgram.h
+	GLProgram.cpp
+	GLAttribArray.h
+	GLAttribArray.cpp
+	gl_core_3_1.hpp
+	gl_core_3_1.cpp
 	stdafx.h
 	stdafx.cpp
 )
 add_library(LibOpenGL STATIC ${LibOpenGL_files})
-target_link_libraries(LibOpenGL ${OPEN_gl_LIBRARY} ${GLEW_LIBRARIES})
+target_link_libraries(LibOpenGL ${OPENGL_gl_LIBRARY} Systems LibCommon)

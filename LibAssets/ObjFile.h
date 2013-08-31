@@ -2,14 +2,15 @@
 #define LIBCOMMON_OBJFILE_H
 #include "stdafx.h"
 #include "GeometryFile.h"
-#include "Data.h"
+#include <LibCommon/Data.h>
 #include <LibComponents/Model.h>
-namespace LibCommon {
-	class ObjFile : public ModelFile {
+namespace Assets {
+	class ObjFile : public GeometryFile {
 	public:
 		ObjFile(const std::string& filename);
 		ObjFile(std::istream& from);
-		virtual Components::Model model() override;
+		virtual std::vector<int>& Indices() override;
+		virtual std::vector<LibCommon::Vertex>& Verts() override;
 		
 	private:
 		void read(const std::string& filename);
@@ -19,6 +20,7 @@ namespace LibCommon {
 		std::tuple<std::vector<int>, std::vector<int>, std::vector<int>> parseIndex(const std::string& line);
 		Eigen::Vector3f parseUV(const std::string& line);
 		Components::Model constructModel();
+		Components::Model modelCache;
 		std::vector<int> _indices;
 		std::vector<int> _uvIndices;
 		std::vector<int> _vnIndices;

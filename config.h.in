@@ -10,3 +10,4 @@
 #cmakedefine HAS_MAKE_UNIQUE
 #cmakedefine USE_OPENGL
 #cmakedefine USE_DIRECT3D
+#cmakedefine Boost_FOUND

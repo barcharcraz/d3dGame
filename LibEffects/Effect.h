@@ -17,5 +17,17 @@ namespace Effects {
 		PixelShader ps;
 	};
 }
+//hash specialization for effects
+namespace std {
+	template<>
+	struct hash<Effects::Effect> {
+		std::size_t operator()(const Effects::Effect& e) const {
+			auto& psname = e.ps.name;
+			auto& vsname = e.vs.name;
+			std::string both = psname + vsname;
+			return std::hash<std::string>()(both);
+		}
+	};
+}
 
 #endif

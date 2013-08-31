@@ -29,6 +29,14 @@ namespace utils {
 
 		}
 	};
+	class graphics_api_error : public std::runtime_error {
+	public:
+		explicit graphics_api_error(const std::string& what_arg)
+			: runtime_error(what_arg)
+		{
+			
+		}
+	};
 }
 
 #endif

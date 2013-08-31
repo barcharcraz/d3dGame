@@ -13,8 +13,9 @@ namespace LibGLFW {
         while(!glfwWindowShouldClose(ActiveWindow->_win)) {
             high_resolution_clock::time_point target_time = high_resolution_clock::now() + frameMax;
             if(ActiveWindow->update) {
-                ActiveWindow->update();
-            }
+				ActiveWindow->update();
+			}
+			glfwSwapBuffers(ActiveWindow->_win);
             glfwPollEvents();
             auto remaining = target_time - high_resolution_clock::now();
             if(remaining > high_resolution_clock::duration(0)) {
@@ -26,7 +27,7 @@ namespace LibGLFW {
         glfwTerminate();
         return 0;
     }
-    Window::Window() {
+    Window::Window( void* ) {
         init(640, 480);
     }
     Window::Window(int w, int h) {
@@ -45,6 +46,7 @@ namespace LibGLFW {
         glfwMakeContextCurrent(_win);
         ActiveWindow = this;
     }
+
     /* -----------PRIVATE------------- */
     void Window::init(int w, int h) {
         int result = 0;

@@ -29,5 +29,6 @@ namespace utils {
 		rv.verts.push_back(bottomLeft);
 		rv.verts.push_back(bottomRight);
 		rv.indices = { 0, 1, 2, 2, 1, 3 };
+		return rv;
 	}
 }

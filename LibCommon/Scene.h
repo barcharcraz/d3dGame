@@ -10,20 +10,27 @@
 #include <vector>
 #include <chrono>
 #include <functional>
+#include <Utils/make_unique.h>
 namespace LibCommon {
 	class Scene {
 	public:
 		Scene();
 		void Update();
-		void AddEntity(Entity* e);
-		void AddEntity(std::unique_ptr<Entity> && e);
+		Entity* AddEntity(Entity* e);
+		Entity* AddEntity(std::unique_ptr<Entity> && e);
 		template<typename T, typename... Args>
-		void AddEntity(Args && ... args) {
-			AddEntity(std::make_unique<T>(std::forward<Args>(args)...));
+		T* AddEntity(Args && ... args) {
+			return static_cast<T*>(
+				AddEntity(std::make_unique<T>(std::forward<Args>(args)...))
+				);
 		}
 		void RemoveEntity(Entity* e);
 		void AddSystem(std::unique_ptr<System> && s);
 		void AddSystem(System * s);
+		template<typename T, typename... Args>
+		void AddSystem(Args&&... args) {
+			AddSystem(std::make_unique<T>(std::forward<Args>(args)...));
+		}
 		
 		void RemoveSystem(System* s);
 		void SetSystemEvents(System* s, const std::set<std::type_index>& types);

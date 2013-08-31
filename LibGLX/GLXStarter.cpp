@@ -1,5 +1,5 @@
 #include "GLXStarter.h"
-
+#include <stdexcept>
 namespace LibGLX {
 	static GLXFBConfig findBestConfig(GLXFBConfig* configc, int numConfigs);
 	GLXStarter::GLXStarter ( const xwindows::Window& win ) {
