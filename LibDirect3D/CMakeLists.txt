@@ -14,6 +14,8 @@ set(libd3d_src
 	ShaderResource.cpp
 	BoundingBoxRenderer.h
 	BoundingBoxRenderer.cpp
+	BillboardRenderer.h
+	BillboardRenderer.cpp
 	stdafx.h
 	stdafx.cpp
 	targetver.h
