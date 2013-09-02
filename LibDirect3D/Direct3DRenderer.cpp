@@ -184,7 +184,35 @@ void Direct3DRenderer::Clear() {
 	pCtx->ClearRenderTargetView(m_pRenderTarget, color);
 	pCtx->ClearDepthStencilView(_pdsView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }
+void Direct3DRenderer::DisableAlphaBlending() {
+	pCtx->OMSetBlendState(nullptr, nullptr, 0xffffffff);
+}
+void Direct3DRenderer::EnableAlphaBlending() {
+	HRESULT hr = S_OK;
+	if (nullptr == _bsOn) {
+		D3D11_BLEND_DESC desc;
+		D3D11_RENDER_TARGET_BLEND_DESC rtBlend;
+		rtBlend.BlendEnable = true;
+		rtBlend.SrcBlend = D3D11_BLEND_SRC_ALPHA;
+		rtBlend.BlendOpAlpha = D3D11_BLEND_OP_ADD;
+		rtBlend.DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+		rtBlend.DestBlendAlpha = D3D11_BLEND_ZERO;
+		rtBlend.RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+		rtBlend.SrcBlendAlpha = D3D11_BLEND_ZERO;
+		rtBlend.BlendOp = D3D11_BLEND_OP_ADD;
+		desc.AlphaToCoverageEnable = false;
+		desc.IndependentBlendEnable = false;
+		for (unsigned int i = 0; i < 8; ++i) {
+			desc.RenderTarget[i] = rtBlend;
+		}
+		hr = pDev->CreateBlendState(&desc, &_bsOn);
+		if (FAILED(hr)) {
+			throw std::system_error(hr, std::system_category());
+		}
 
+	}
+	pCtx->OMSetBlendState(_bsOn, nullptr, 0xffffffff);
+}
 CComPtr<IDXGISwapChain2> Direct3DRenderer::GetSwapChain() {
 	return m_pSwapChain;
 }

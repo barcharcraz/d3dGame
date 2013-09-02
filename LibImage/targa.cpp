@@ -7,7 +7,6 @@
 namespace Image {
 	namespace Targa {
 		static void ValidateTarga(const TargaFile& file);
-		
 		TargaFile LoadTarga(const std::string& filename) {
 			using std::ifstream;
 			using std::ios;
@@ -76,9 +75,10 @@ namespace Image {
 			if (this->image_spec.pixel_depth == 24 && this->image_spec.alpha_depth == 0) {
 				retval.format = Formats::R8G8B8_UNORM;
 			} else if (this->image_spec.pixel_depth == 32 && this->image_spec.alpha_depth == 8) {
-				retval.format = Formats::R8G8B8A8_UNORM;
+				//note that things are stored in the "wrong" order
+				retval.format = Formats::A8R8G8B8_UNORM;
 			} else {
-				throw utils::not_supported_error("TARGA piexl format not supported");
+				throw utils::not_supported_error("TARGA pixel format not supported");
 			}
 			retval.width = this->image_spec.width;
 			retval.height = this->image_spec.height;

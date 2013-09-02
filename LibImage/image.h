@@ -6,7 +6,8 @@ namespace Image {
 
 	enum class Formats {
 		R8G8B8_UNORM,
-		R8G8B8A8_UNORM
+		R8G8B8A8_UNORM,
+		A8R8G8B8_UNORM
 	};
 	struct ImageData {
 		Formats format;

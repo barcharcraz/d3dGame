@@ -5,10 +5,6 @@
 #include <cstdint>
 #include <string>
 namespace Effects {
-	class HLSLPixelShader;
-	class GLSLPixelShader;
-	class HLSLVertexShader;
-	class GLSLVertexShader;
 	//! \brief this structure works in the same
 	//! way as a D3D11_INPUT_ELEMENT_DESC but is used
 	//! for GLSL attributes as well. For GLSL
@@ -45,15 +41,12 @@ namespace Effects {
 	};
 	struct VertexShader {
 		explicit VertexShader(const std::string& filename, const std::vector<ShaderDesc>& desc);
-		void Load(const std::string& filename, const std::vector<ShaderDesc>& desc);
-		HLSLVertexShader* hvs;
 		std::string name;
+		std::vector<ShaderDesc> inputDesc;
 		
 	};
 	struct PixelShader {
 		explicit PixelShader(const std::string& filename);
-		void Load(const std::string& filename);
-		HLSLPixelShader* hps;
 		std::string name;
 	};
 }

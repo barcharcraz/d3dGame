@@ -15,6 +15,7 @@
 #include <LibComponents/Effect.h>
 #include <LibComponents/Material.h>
 #include <LibComponents/PointLight.h>
+#include <LibHLSL/HLSLCache.h>
 #include <cstddef>
 namespace LibDirect3D {
 	ModelRenderer::ModelRenderer(const Direct3DRenderer& renderer)
@@ -54,12 +55,14 @@ namespace LibDirect3D {
 	void ModelRenderer::Process(LibCommon::Entity* e) {
 		using namespace Components;
 		auto model = e->Get<Model>();
-		auto ps = e->Get<Components::Effect>()->ps.hps;
-		auto vs = e->Get<Components::Effect>()->vs.hvs;
+		auto effect = e->Get<Effect>();
+		
 		auto transform = e->Get<Transform3D>();
 		auto texture = e->GetOptional<Texture>();
 		CComPtr<ID3D11DeviceContext> pCtx = render->pCtx;
 		CComPtr<ID3D11Device> pDev = render->pDev;
+		auto ps = Effects::GetHLSLPixelShader(pDev, effect->ps.name);
+		auto vs = Effects::GetHLSLVertexShader(pDev, effect->vs.name, effect->vs.inputDesc);
 		if (texture) {
 			texture->D3DTex()->SetRenderState(pDev, pCtx);
 		}

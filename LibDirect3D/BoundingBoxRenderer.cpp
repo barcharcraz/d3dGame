@@ -11,6 +11,7 @@
 #include <LibComponents/Transform.h>
 #include <LibHLSL/HLSLPixelShader.h>
 #include <LibHLSL/HLSLVertexShader.h>
+#include <LibHLSL/HLSLCache.h>
 namespace LibDirect3D {
 	namespace {
 		struct SimpleMesh {
@@ -84,14 +85,16 @@ namespace LibDirect3D {
 		memcpy(sub.pData, verts.data(), sizeof(Eigen::Vector4f) * verts.size());
 		render->pCtx->Unmap(buffers.vertexBuffer, 0);
 		auto transformBuffer = render->GetTransforms(trans);
-		render->pCtx->IASetInputLayout(shader.vs.hvs->getInputLayout(render->pDev.p));
+		auto ps = Effects::GetHLSLPixelShader(render->pDev, shader.ps.name);
+		auto vs = Effects::GetHLSLVertexShader(render->pDev, shader.vs.name, shader.vs.inputDesc);
+		render->pCtx->IASetInputLayout(vs->getInputLayout(render->pDev.p));
 		render->pCtx->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 		unsigned int stride = sizeof(Eigen::Vector4f);
 		unsigned int offset = 0;
 		render->pCtx->IASetVertexBuffers(0, 1, &buffers.vertexBuffer.p, &stride, &offset);
 		render->pCtx->IASetIndexBuffer(buffers.indexBuffer, DXGI_FORMAT_R32_UINT, 0);
-		render->pCtx->VSSetShader(shader.vs.hvs->getShader(render->pDev.p), nullptr, 0);
-		render->pCtx->PSSetShader(shader.ps.hps->getShader(render->pDev.p), nullptr, 0);
+		render->pCtx->VSSetShader(vs->getShader(render->pDev.p), nullptr, 0);
+		render->pCtx->PSSetShader(ps->getShader(render->pDev.p), nullptr, 0);
 		render->pCtx->PSSetConstantBuffers(0, 1, &transformBuffer.p);
 		render->pCtx->DrawIndexed(static_cast<UINT>(bbox_index.size()), 0, 0);
 	}

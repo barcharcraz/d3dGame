@@ -26,6 +26,7 @@ float4 main(VS_OUTPUT input) : SV_TARGET
 	texColor = tex.Sample(samp, input.uv.xy);
 	color = saturate(color);
 	color *= texColor;
+	color.a = 1;
 	//color = input.norm;
 	return color;
 }

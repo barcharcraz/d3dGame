@@ -22,5 +22,6 @@ Image
 Prefabs
 Prefabs2D
 Effects
-Assets
+AssetLoader
+RenderingUtils
 Physics)

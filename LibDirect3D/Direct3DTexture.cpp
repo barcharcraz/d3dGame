@@ -21,6 +21,24 @@ namespace LibDirect3D {
 		pCtx->PSSetShaderResources(0, 1, &_textureView.p);
 		pCtx->PSSetSamplers(0, 1, &_sampleState.p);
 	}
+	ID3D11Texture2D* Direct3DTexture::Texture(ID3D11Device* pDev) {
+		if (nullptr == _texture) {
+			initTexture(pDev);
+		}
+		return _texture;
+	}
+	ID3D11ShaderResourceView* Direct3DTexture::SRV(ID3D11Device* pDev) {
+		if (nullptr == _textureView) {
+			initView(pDev);
+		}
+		return _textureView;
+	}
+	ID3D11SamplerState* Direct3DTexture::SamplerState(ID3D11Device* pDev) {
+		if (nullptr == _sampleState) {
+			initSampleState(pDev);
+		}
+		return _sampleState;
+	}
 	//-------PRIVATE-----------
 	void Direct3DTexture::initTexture(CComPtr<ID3D11Device> pDev) {
 		using Image::ImageData;
@@ -51,6 +69,9 @@ namespace LibDirect3D {
 	}
 	void Direct3DTexture::initView(CComPtr<ID3D11Device> pDev) {
 		HRESULT hr = S_OK;
+		if (nullptr == _texture) {
+			initTexture(pDev);
+		}
 		hr = pDev->CreateShaderResourceView(_texture, nullptr, &_textureView);
 		if (FAILED(hr)) {
 			throw std::system_error(hr, std::system_category());

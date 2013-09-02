@@ -5,4 +5,4 @@ set(libassets_files
   stdafx.cpp
   stdafx.h
   )
-add_library(Assets STATIC ${libassets_files})
+add_library(AssetLoader STATIC ${libassets_files})

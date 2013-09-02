@@ -6,7 +6,7 @@
 namespace utils {
 	template<typename T>
 	bool includes(const T& lhs, const T& rhs) {
-		return std::includes(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+		return std::includes(rhs.begin(), rhs.end(), lhs.begin(), lhs.end());
 	}
 }
 
