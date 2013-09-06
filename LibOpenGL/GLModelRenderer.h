@@ -7,11 +7,11 @@
 #include "GLProgram.h"
 #include "GLAttribArray.h"
 #include <Utils/container.h>
-#include <boost/container/flat_map.hpp>
 #include <LibCommon/System.h>
 #include <LibCommon/Entity.h>
 #include <LibComponents/Effect.h>
 #include <LibCommon/System.h>
+#include <unordered_map>
 
 namespace LibOpenGL {
     class GLModelRenderer : public LibCommon::System {
@@ -27,8 +27,8 @@ namespace LibOpenGL {
 			GLAttribArray vao;
 		};
 		OpenGLRenderer* render;
-		boost::container::flat_map<Components::Effect*, GLProgram> program_map;
-		boost::container::flat_map<LibCommon::Entity*, buffers> buffer_map;
+		std::unordered_map<Components::Effect*, GLProgram> program_map;
+		std::unordered_map<LibCommon::Entity*, buffers> buffer_map;
 		
     };
 }

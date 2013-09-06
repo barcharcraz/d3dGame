@@ -4,12 +4,6 @@
 //! for selecting between multiple drop-in
 //! containers (eg. boost::flat_map instead of std::map
 #include "config.h"
-#ifdef BOOST_USE_FLATMAPS
-#include <boost/container/flat_map.hpp>
-#else
-#include <map>
-#include <set>
-#endif
 
 
 
