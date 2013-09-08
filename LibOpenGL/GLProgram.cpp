@@ -6,7 +6,7 @@ namespace {
 	GLint checkLinkStatus(GLuint program, std::string* errMsg) {
 		GLint rv;
 		gl::GetProgramiv(program, gl::LINK_STATUS, &rv);
-		if(rv = gl::FALSE_) {
+		if(rv == gl::FALSE_) {
 			GLint errLen;
 			gl::GetProgramiv(program, gl::INFO_LOG_LENGTH, &errLen);
 			errMsg->reserve(errLen);

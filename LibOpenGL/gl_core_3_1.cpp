@@ -2,12 +2,13 @@
 #include <vector>
 #include <string.h>
 #include <stddef.h>
+#include <stdlib.h>
 #include "gl_core_3_1.hpp"
 
 #if defined(__APPLE__)
 #include <mach-o/dyld.h>
 
-static void* AppleGLGetProcAddress (const GLubyte *name)
+static void* AppleGLGetProcAddress (const char *name)
 {
   static const struct mach_header* image = NULL;
   NSSymbol symbol;
@@ -17,7 +18,7 @@ static void* AppleGLGetProcAddress (const GLubyte *name)
     image = NSAddImage("/System/Library/Frameworks/OpenGL.framework/Versions/Current/OpenGL", NSADDIMAGE_OPTION_RETURN_ON_ERROR);
   }
   /* prepend a '_' for the Unix C symbol mangling convention */
-  symbolName = malloc(strlen((const char*)name) + 2);
+  symbolName = (char*)malloc(strlen((const char*)name) + 2);
   strcpy(symbolName+1, (const char*)name);
   symbolName[0] = '_';
   symbol = NULL;

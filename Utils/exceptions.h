@@ -21,6 +21,14 @@ namespace utils {
 
 		}
 	};
+	class unsupported_conversion_error : public std::runtime_error {
+	public:
+		explicit unsupported_conversion_error(const std::string& what_arg)
+			: runtime_error(what_arg)
+		{
+			
+		}
+	};
 	class precondition_error : public std::logic_error {
 	public:
 		explicit precondition_error(const std::string& what_arg)

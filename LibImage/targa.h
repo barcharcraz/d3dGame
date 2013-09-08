@@ -2,6 +2,7 @@
 #define LIBIMAGE_TARGA_H
 #include <vector>
 #include <string>
+#include "image.h"
 namespace Image {
 	struct ImageData;
 	namespace Targa {
@@ -50,9 +51,28 @@ namespace Image {
 			ImageSpec image_spec;
 			std::vector<unsigned char> color_map_data;
 			std::vector<unsigned char> image_data;
+			Formats format;
 			explicit operator ImageData();
 		};
 		TargaFile LoadTarga(const std::string& filename);
+		class Targa : public ImageFile {
+		public:
+			Targa(TargaFile file);
+			Targa(const std::string& filename);
+			
+			virtual Formats Format() const override;
+			virtual void Format(Formats fmt) override;
+			virtual unsigned short int width() const override;
+			virtual unsigned short int height() const override;
+			virtual void width(unsigned short int val) override;
+			virtual void height(unsigned short int val) override;
+			virtual std::vector<unsigned char>& data() override;
+			virtual const std::vector<unsigned char>& data() const override;
+		private:
+			TargaFile _file;
+				
+			
+		};
 	}
 
 }

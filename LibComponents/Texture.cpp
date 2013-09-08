@@ -1,6 +1,11 @@
 #include "Texture.h"
 #include <stdexcept>
 namespace Components {
+	Texture::Texture(Image::ImageData data)
+		: _imageData(std::move(data))
+	{
+		
+	}
 	Texture::Texture(LibDirect3D::Direct3DTexture* d3dTex)
 		: _d3dTex(d3dTex)
 	{
@@ -12,5 +17,6 @@ namespace Components {
 		}
 		return _d3dTex;
 	}
+	
 	
 }

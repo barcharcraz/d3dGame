@@ -46,6 +46,8 @@ namespace LibCommon {
 			auto range = _components.equal_range(type);
 			return range.second->second.get();
 		}
+		//! \brief Gets all components of type T
+		//         
 		template<typename T>
 		std::vector<T*> GetAll() {
 			auto range = _components.equal_range(typeid(T));

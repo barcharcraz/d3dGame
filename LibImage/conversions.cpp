@@ -85,5 +85,14 @@ namespace Image {
 			}
 
 		}
+		
+		ImageData ConvertImage(const ImageFile& file, Formats fmt) {
+			ImageData dataInput;
+			dataInput.format = file.Format();
+			dataInput.height = file.height();
+			dataInput.width = file.width();
+			dataInput.data = file.data(); //this can be a large copy
+			return ConvertImage(std::move(dataInput), fmt);
+		}
 	}
 }

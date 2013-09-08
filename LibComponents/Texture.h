@@ -11,9 +11,11 @@ namespace LibOpenGL {
 namespace Components {
 	class Texture : public IComponent {
 	public:
+		Texture(Image::ImageData data);
 		Texture(LibDirect3D::Direct3DTexture* d3dTex);
 		LibDirect3D::Direct3DTexture* D3DTex();
 	private:
+		Image::ImageData _imageData;
 		LibDirect3D::Direct3DTexture* _d3dTex;
 		LibOpenGL::OpenGLTexture* _oglTex;
 	};

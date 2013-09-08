@@ -9,6 +9,8 @@ namespace Image {
 		ImageData ConvertToR8G8B8A8_UNORM(const ImageData& dat);
 		ImageData ConvertToR8B8G8_UNORM(const ImageData& dat);
 		ImageData ConvertImage(const ImageData& dat, Formats fmt);
+		
+		ImageData ConvertImage(const ImageFile& file, Formats fmt);
 	}
 }
 

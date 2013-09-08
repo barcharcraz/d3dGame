@@ -7,6 +7,7 @@
 namespace Image {
 	namespace Targa {
 		static void ValidateTarga(const TargaFile& file);
+		static Formats FindFormat(const TargaFile& file);
 		TargaFile LoadTarga(const std::string& filename) {
 			using std::ifstream;
 			using std::ios;
@@ -38,6 +39,7 @@ namespace Image {
 			retval.image_spec.alpha_depth = alpha;
 			retval.image_spec.origin = (ImageOrigin)order;
 			ValidateTarga(retval); //makes sure our header is of a supported type
+			retval.format = FindFormat(retval);
 			std::vector<char> image_id_field(retval.ID_len);
 			retval.color_map_data.resize(retval.color_map_spec.length * retval.color_map_spec.bpp, 0);
 			if (retval.color_map_spec.length > 0) {
@@ -70,20 +72,56 @@ namespace Image {
 			}
 
 		}
-		TargaFile::operator Image::ImageData() {
-			ImageData retval;
-			if (this->image_spec.pixel_depth == 24 && this->image_spec.alpha_depth == 0) {
-				retval.format = Formats::R8G8B8_UNORM;
-			} else if (this->image_spec.pixel_depth == 32 && this->image_spec.alpha_depth == 8) {
-				//note that things are stored in the "wrong" order
-				retval.format = Formats::A8R8G8B8_UNORM;
+		Formats FindFormat(const TargaFile& file) {
+			if(file.image_spec.pixel_depth == 24 && file.image_spec.alpha_depth == 0) {
+				return Formats::R8G8B8_UNORM;
+			} else if(file.image_spec.pixel_depth == 32 && file.image_spec.alpha_depth == 8) {
+				return Formats::A8R8G8B8_UNORM;
 			} else {
 				throw utils::not_supported_error("TARGA pixel format not supported");
 			}
+		}
+		TargaFile::operator ImageData() {
+			ImageData retval;
+			retval.format = this->format;
 			retval.width = this->image_spec.width;
 			retval.height = this->image_spec.height;
 			retval.data = this->image_data; //this is a copy
 			return retval;
+		}
+		
+		//targa class
+		Targa::Targa(TargaFile file)
+			: _file(std::move(file))
+		{
+			
+		}
+		Targa::Targa(const std::string& filename) {
+			_file = LoadTarga(filename);
+		}
+		Formats Targa::Format() const {
+			return _file.format;
+		}
+		void Targa::Format(Formats fmt) {
+			_file.format = fmt;
+		}
+		unsigned short int Targa::width() const {
+			return _file.image_spec.width;
+		}
+		unsigned short int Targa::height() const {
+			return _file.image_spec.height;
+		}
+		void Targa::width(unsigned short val) {
+			_file.image_spec.width = val;
+		}
+		void Targa::height(unsigned short val) {
+			_file.image_spec.height = val;
+		}
+		std::vector<unsigned char>& Targa::data() {
+			return _file.image_data;
+		}
+		const std::vector<unsigned char>& Targa::data() const {
+			return _file.image_data;
 		}
 	}
 }

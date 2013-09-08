@@ -4,9 +4,6 @@
 #include "EffectsManagement.h"
 namespace Effects {
 	EffectCache::EffectCache() {
-		if (GetActiveCache() == nullptr) {
-			ActivateCache(this);
-		}
 	}
 	EffectCache::~EffectCache() {
 		if (GetActiveCache() == this) {

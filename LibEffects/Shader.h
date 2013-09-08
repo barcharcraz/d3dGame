@@ -23,7 +23,7 @@ namespace Effects {
 		R32G32B32A32_FLOAT,
 		R32B32G32_FLOAT
 	};
-	enum class SlotClass {
+	enum SlotClass : int {
 		PER_INSTANCE,
 		PER_VERTEX
 	};

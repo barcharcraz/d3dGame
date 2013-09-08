@@ -6,15 +6,19 @@
 #include <memory>
 #include <LibEffects/EffectsManagement.h>
 #include <LibAssets/ObjFile.h>
+#include <LibPrefabs/StaticModel.h>
+#include <LibImage/image.h>
+#include <LibImage/targa.h>
 static void load_effects();
 int main(int argc, char** argv) {
 	auto window = windowing::Window(nullptr);
 	Rendering::Renderer rend;
 	load_effects();
 	Assets::ObjFile cone{"Cone.obj"};
+	Image::Targa::Targa tex{"Textures/wood_black/diffuse.tga"};
 	std::unique_ptr<LibCommon::Scene> scene(new LibCommon::Scene());
 	(*scene).AddSystem<Rendering::ModelRenderer>(&rend);
-	scene->AddEntity<Components::Model>(cone);
+	scene->AddEntity<Prefabs::StaticModel>(cone, Image::ImageData(tex));
 	window.Show();
 	window.update = [&]() {
 		(*scene).Update();
@@ -33,6 +37,6 @@ void load_effects() {
 		ShaderCaps::TEXTURE_MAPPED,
 		ShaderCaps::LIT_DIRECTIONAL
 	};
-	Effects::AddEffect(Effects::Effect("DefaultVS.glsl", "DefaultPS.glsl", defaultLayout, defaultCaps);
+	Effects::AddEffect(Effects::Effect("DefaultVS.glsl", "DefaultPS.glsl", defaultLayout, defaultCaps));
 }
 

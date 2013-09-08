@@ -10,6 +10,7 @@ set(util_src
 	identifier.h
 	functions.h
 	event.h
+	maybe.h
 	)
 
 CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/config.h)
