@@ -37,7 +37,7 @@ namespace utils {
 	inline std::string narrow(const std::wstring& wstr) {
         std::mbstate_t state = std::mbstate_t();
         auto buffer = wstr.c_str();
-        size_t len = 1 + std::wcsrtombs(nullptr, &buffer, 0, &state);
+        size_t len = 1 + std::wcsrtombs(NULL, &buffer, 0, &state);
         std::vector<char> nstrbuf(len);
         std::wcsrtombs(&nstrbuf[0], &buffer, nstrbuf.size(), &state);
         return std::string(nstrbuf.data());
@@ -48,7 +48,7 @@ namespace utils {
 	inline std::wstring widen(const std::string& nstr) {
         std::mbstate_t state = std::mbstate_t();
         auto buffer = nstr.c_str();
-        size_t len = 1 + std::mbsrtowcs(nullptr, &buffer, 0, &state);
+        size_t len = 1 + std::mbsrtowcs(NULL, &buffer, 0, &state);
         std::vector<wchar_t> wstrbuf(len);
         std::mbsrtowcs(&wstrbuf[0], &buffer, wstrbuf.size(), &state);
         return std::wstring(wstrbuf.data());

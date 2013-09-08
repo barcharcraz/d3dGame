@@ -11,6 +11,9 @@
 #ifdef USE_OPENGL
 #include "LibOpenGL/OpenGLRenderer.h"
 #include "LibOpenGL/GLModelRenderer.h"
+#elif defined USE_DIRECT3D
+#include "LibDirect3D/Direct3DRenderer.h"
+#include "LibDirect3D/ModelRenderer.h"
 #endif
 
 #ifndef GLUE_RENDERING_H
@@ -19,6 +22,9 @@ namespace Rendering {
 #ifdef USE_OPENGL
 	typedef LibOpenGL::OpenGLRenderer Renderer;
 	typedef LibOpenGL::GLModelRenderer ModelRenderer;
+#elif defined USE_DIRECT3D
+	typedef LibDirect3D::Direct3DRenderer Renderer;
+	typedef LibDirect3D::ModelRenderer ModelRenderer;
 #endif
 }
 #endif

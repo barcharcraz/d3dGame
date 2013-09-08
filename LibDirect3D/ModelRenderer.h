@@ -8,10 +8,11 @@
 #include <LibComponents/Model.h>
 #include <LibComponents/DirectionalLight.h>
 #include <map>
+#include "Direct3DTexture.h"
 namespace LibDirect3D {
 	class ModelRenderer : public LibCommon::System {
 	public:
-		explicit ModelRenderer(const Direct3DRenderer& renderer);
+		explicit ModelRenderer(Direct3DRenderer* renderer);
 		virtual void Process(LibCommon::Entity * e) override;
 		virtual void PreProcess() override;
 		virtual void OnEntityRemove(LibCommon::Entity* e) override;
@@ -27,7 +28,8 @@ namespace LibDirect3D {
 		CComPtr<ID3D11Buffer> _lights;
 		CComPtr<ID3D11Buffer> _materials;
 		std::map<LibCommon::Entity*, res> entityCache;
-		const Direct3DRenderer* render;
+		std::unordered_map<LibCommon::Entity*, Direct3DTexture> texCache;
+		Direct3DRenderer* render;
 		CComPtr<ID3D11ShaderResourceView> _pointLights;
 		CComPtr<ID3D11ShaderResourceView> _dirLights;
 		void initPointLights();

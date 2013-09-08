@@ -59,7 +59,7 @@ namespace LibDirect3D {
 		D3D11_SUBRESOURCE_DATA subDesc;
 		subDesc.pSysMem = &dat.data[0];
 		subDesc.SysMemPitch = 4 * dat.width;
-		subDesc.SysMemSlicePitch = dat.data.size() * 4;
+		subDesc.SysMemSlicePitch = static_cast<UINT>(dat.data.size() * 4);
 
 		HRESULT hr = S_OK;
 		hr = pDev->CreateTexture2D(&desc, &subDesc, &_texture);

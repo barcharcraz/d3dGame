@@ -4,10 +4,11 @@
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 #include <unordered_map>
+#include "Direct3DTexture.h"
 namespace LibDirect3D {
 	class BillboardRenderer : public LibCommon::System {
 	public:
-		explicit BillboardRenderer(Direct3DRenderer& renderer);
+		explicit BillboardRenderer(Direct3DRenderer* renderer);
 		virtual void Process(LibCommon::Entity* e) override;
 		virtual void PreProcess() override;
 		virtual void OnEntityRemove(LibCommon::Entity* e) override;
@@ -17,8 +18,9 @@ namespace LibDirect3D {
 			CComPtr<ID3D11Buffer> vertexBuf;
 		};
 		std::unordered_map<LibCommon::Entity*, res> entCache;
+		std::unordered_map<LibCommon::Entity*, Direct3DTexture> texCache;
 		Eigen::Matrix4f view;
 		Eigen::Matrix4f proj;
-		Direct3DRenderer& render;
+		Direct3DRenderer* render;
 	};
 }

@@ -11,7 +11,7 @@
 #include <LibImage/targa.h>
 static void load_effects();
 int main(int argc, char** argv) {
-	auto window = windowing::Window(nullptr);
+	windowing::Window window;
 	Rendering::Renderer rend;
 	load_effects();
 	Assets::ObjFile cone{"Cone.obj"};

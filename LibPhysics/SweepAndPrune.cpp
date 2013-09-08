@@ -60,11 +60,11 @@ namespace Physics {
 			
 			//this stuff is slow as balls
 			_axis[i]->insert(_axis[i]->end() - 1, min);
-			_objects[boxIdx].min[i] = _axis[i]->size() - 2;
-			updateAxis(i, _axis[i]->size() - 2, minvec(i));
+			_objects[boxIdx].min[i] = static_cast<unsigned int>(_axis[i]->size()) - 2;
+			updateAxis(i, static_cast<unsigned int>(_axis[i]->size()) - 2, minvec(i));
 			_axis[i]->insert(_axis[i]->end() - 1, max);
-			_objects[boxIdx].max[i] = _axis[i]->size() - 2;
-			updateAxis(i, _axis[i]->size() - 2, maxvec(i));
+			_objects[boxIdx].max[i] = static_cast<unsigned int>(_axis[i]->size()) - 2;
+			updateAxis(i, static_cast<unsigned int>(_axis[i]->size()) - 2, maxvec(i));
 		}
 	}
 	void SweepAndPrune::RemoveObject(void* object) {

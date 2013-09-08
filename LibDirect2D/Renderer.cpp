@@ -36,6 +36,8 @@ namespace LibDirect2D {
 			D2D1_POINT_2F b;
 			a.x = line->a.x();
 			a.y = line->a.y();
+			b.x = line->b.x();
+			b.y = line->b.y();
 			context->DrawLine(a, b, brush);
 		}
 		for (auto circle : circles) {

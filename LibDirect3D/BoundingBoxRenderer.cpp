@@ -35,8 +35,8 @@ namespace LibDirect3D {
 			4,6,6,7,7,5
 		};
 	}
-	BoundingBoxRenderer::BoundingBoxRenderer(const Direct3DRenderer& renderer)
-		: System({ typeid(Components::AxisAlignedBB) }), render(&renderer)
+	BoundingBoxRenderer::BoundingBoxRenderer(Direct3DRenderer* renderer)
+		: System({ typeid(Components::AxisAlignedBB) }), render(renderer)
 	{
 
 	}

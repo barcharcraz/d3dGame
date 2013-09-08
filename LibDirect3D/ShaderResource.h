@@ -1,7 +1,7 @@
 #pragma once
 #include "stdafx.h"
 namespace LibDirect3D {
-	CComPtr<ID3D11ShaderResourceView> createStructuredBufferView(ID3D11Device* pDev, ID3D11Buffer* buffer, unsigned int numElm);
+	CComPtr<ID3D11ShaderResourceView> createStructuredBufferView(ID3D11Device* pDev, ID3D11Buffer* buffer, size_t numElm);
 	//! \brief this function creates a structured buffer view directly from data
 	//!
 	//! internally it is createing a buffer and than using that buffer to create the SRV

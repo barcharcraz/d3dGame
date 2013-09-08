@@ -57,8 +57,11 @@ using namespace LibCommon;
 using namespace windows;
 using namespace Components;
 using namespace Systems;
+using Image::Targa::Targa;
+using Image::ImageData;
 int main(int argc, char** argv)
 {
+	
 	Input::Input * input = new Input::Input();
 	input->AddAction("Left", Input::Keys::A);
 	input->AddAction("Right", Input::Keys::D);
@@ -72,8 +75,8 @@ int main(int argc, char** argv)
 	win.Show();
 	
 	//Direct3DRenderer d3dRender;
-	Image::Targa::TargaFile f = Image::Targa::LoadTarga("Textures/wood_flat/diffuse.tga");
-	Image::Targa::TargaFile laser = Image::Targa::LoadTarga("Textures/laser_test/diffuse.tga");
+	Targa f = Image::Targa::LoadTarga("Textures/wood_flat/diffuse.tga");
+	Targa laser = Image::Targa::LoadTarga("Textures/laser_test/diffuse.tga");
 	const std::vector<Effects::ShaderDesc> defaultLayout = {
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -106,16 +109,16 @@ int main(int argc, char** argv)
 	Effects::AddEffect({ "DefaultVS.cso", "DefaultPS.cso", defaultLayout, defaultCaps });
 	Effects::AddEffect({ "DebugVS.cso", "DebugPS.cso", debugLayout, debugCaps });
 	Effects::AddEffect({ "BillboardVS.cso", "BillboardPS.cso", defaultLayout, billboardCaps });
-	LibDirect3D::Direct3DTexture d3dTex{ Image::ImageData(f) };
-	LibDirect3D::Direct3DTexture d3dLaser{ Image::ImageData(laser) };
+	//LibDirect3D::Direct3DTexture d3dTex{ Image::ImageData(f) };
+	//LibDirect3D::Direct3DTexture d3dLaser{ Image::ImageData(laser) };
 	Assets::ObjFile modelFile("TestObj.obj");
 	Assets::ObjFile cone("Cone.obj");
 	Prefabs::Camera * cam = new Prefabs::Camera();
 	cam->AddComponent<Components::AxisAlignedBB>(Eigen::AlignedBox3f{ Eigen::Vector3f{ -1.5f, -1.5f, -1.5f }, Eigen::Vector3f{ 1.5f, 1.5f, 1.5f } });
 	cam->AddComponent<Components::Collision>();
-	Prefabs::StaticModel * model = new Prefabs::StaticModel(modelFile, Texture(&d3dTex));
-	Prefabs::StaticModel * coneMod = new Prefabs::StaticModel(cone, Texture(&d3dTex));
-	Prefabs::EnergyBullet * bulletTest = new Prefabs::EnergyBullet(10, 10, Texture(&d3dLaser));
+	Prefabs::StaticModel * model = new Prefabs::StaticModel(modelFile, ImageData(f));
+	Prefabs::StaticModel * coneMod = new Prefabs::StaticModel(cone, ImageData(f));
+	Prefabs::EnergyBullet * bulletTest = new Prefabs::EnergyBullet(1, 1, ImageData(laser));
 	model->Get<Transform3D>()->transform.translate(Eigen::Vector3f{ 0, 0, -10 });
 	model->AddComponent<Components::Velocity3D>(Eigen::Affine3f(Eigen::AngleAxisf(0.01f, Eigen::Vector3f::UnitY()) * Eigen::Affine3f::Identity()));
 	coneMod->AddComponent<Components::Velocity3D>(Eigen::Affine3f(Eigen::AngleAxisf(0.01f, Eigen::Vector3f::UnitX()) * Eigen::Affine3f::Identity()));
@@ -124,7 +127,7 @@ int main(int argc, char** argv)
 	VelocitySystem3D * velsys = new VelocitySystem3D();
 	
 	cam->AddComponent(input);
-	LibDirect3D::ModelRenderer * renderComp = new LibDirect3D::ModelRenderer(*render);
+	LibDirect3D::ModelRenderer * renderComp = new LibDirect3D::ModelRenderer(render.get());
 	auto sce = std::make_unique<Scene>();
 	sce->AddSystem(renderComp);
 	sce->AddSystem(std::make_unique<LibDirect2D::Renderer>(*render2d));
@@ -141,8 +144,8 @@ int main(int argc, char** argv)
 	sce->AddSystem(std::make_unique<Systems::SimpleCollisionSystem>());
 	sce->AddSystem(std::make_unique<Systems::CollisionDetectionSystem>());
 	sce->AddSystem(std::make_unique<Systems::AxisAlignedBBSystem>());
-	sce->AddSystem(std::make_unique<LibDirect3D::BoundingBoxRenderer>(*render));
-	sce->AddSystem<LibDirect3D::BillboardRenderer>(*render);
+	sce->AddSystem(std::make_unique<LibDirect3D::BoundingBoxRenderer>(render.get()));
+	sce->AddSystem<LibDirect3D::BillboardRenderer>(render.get());
 	
 	win.update = [&]() {
 		sce->Update();

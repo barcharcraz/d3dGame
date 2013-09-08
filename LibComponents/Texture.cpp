@@ -10,6 +10,9 @@ namespace Components {
 		: _d3dTex(d3dTex)
 	{
 	}
+	const Image::ImageData& Texture::data() const {
+		return _imageData;
+	}
 	LibDirect3D::Direct3DTexture* Texture::D3DTex() {
 		if (_d3dTex == nullptr) {
 			throw std::logic_error("Tried to ge a Direct3D texture from a component that does \

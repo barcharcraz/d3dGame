@@ -14,6 +14,7 @@ namespace Components {
 		Texture(Image::ImageData data);
 		Texture(LibDirect3D::Direct3DTexture* d3dTex);
 		LibDirect3D::Direct3DTexture* D3DTex();
+		const Image::ImageData& data() const;
 	private:
 		Image::ImageData _imageData;
 		LibDirect3D::Direct3DTexture* _d3dTex;

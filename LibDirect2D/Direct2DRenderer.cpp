@@ -57,8 +57,10 @@ D2D1_MATRIX_3X2_F Direct2DRenderer::GetProjection() const {
 	if (FAILED(hr)) {
 		throw std::system_error(hr, std::system_category());
 	}
-	auto proj = D2D1::Matrix3x2F::Scale(desc.Height / 2, desc.Height / 2);
-	proj = proj * D2D1::Matrix3x2F::Translation(desc.Width / 2, desc.Height / 2);
+	auto halfHeight = static_cast<float>(desc.Height / 2);
+	auto halfWidth = static_cast<float>(desc.Width / 2);
+	auto proj = D2D1::Matrix3x2F::Scale(halfHeight, halfHeight);
+	proj = proj * D2D1::Matrix3x2F::Translation(halfWidth, halfWidth);
 	return proj;
 }
 

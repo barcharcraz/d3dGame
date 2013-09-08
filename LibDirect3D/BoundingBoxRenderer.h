@@ -7,7 +7,7 @@
 namespace LibDirect3D {
 	class BoundingBoxRenderer : public LibCommon::System {
 	public:
-		BoundingBoxRenderer(const Direct3DRenderer& renderer);
+		BoundingBoxRenderer(Direct3DRenderer* renderer);
 		virtual void Init() override;
 		virtual void PreProcess() override;
 		virtual void Process(LibCommon::Entity* ent) override;
@@ -18,6 +18,6 @@ namespace LibDirect3D {
 		};
 		res buffers;
 		LibCommon::Transforms trans;
-		const Direct3DRenderer* render;
+		Direct3DRenderer* render;
 	};
 }

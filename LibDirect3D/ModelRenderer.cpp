@@ -18,9 +18,9 @@
 #include <LibHLSL/HLSLCache.h>
 #include <cstddef>
 namespace LibDirect3D {
-	ModelRenderer::ModelRenderer(const Direct3DRenderer& renderer)
+	ModelRenderer::ModelRenderer(Direct3DRenderer* renderer)
 		: System({ typeid(Components::Model), typeid(Components::Transform3D), typeid(Components::Material), typeid(Components::Effect) }), 
-		render(&renderer)
+		render(renderer)
 	{
 		
 	}
@@ -42,7 +42,8 @@ namespace LibDirect3D {
 		std::vector<LibCommon::point_light> lightStructs = LibCommon::fuse_point_lights(lights);
 		CComPtr<ID3D11Buffer> lightBuffer = createStructuredBuffer(render->pDev, &lightStructs[0], sizeof(LibCommon::point_light), lightStructs.size());
 		_pointLights.Release();
-		_pointLights = createStructuredBufferView(render->pDev, lightBuffer, lightStructs.size());
+		_pointLights = createStructuredBufferView(render->pDev, lightBuffer, 
+			static_cast<UINT>(lightStructs.size()));
 		
 	}
 	void ModelRenderer::initDirLights() {
@@ -64,7 +65,17 @@ namespace LibDirect3D {
 		auto ps = Effects::GetHLSLPixelShader(pDev, effect->ps.name);
 		auto vs = Effects::GetHLSLVertexShader(pDev, effect->vs.name, effect->vs.inputDesc);
 		if (texture) {
-			texture->D3DTex()->SetRenderState(pDev, pCtx);
+			Direct3DTexture* tex = nullptr;
+			if (texCache.count(e) > 0) {
+				tex = &texCache.at(e);
+			} else {
+				tex = &texCache.emplace(e, texture->data()).first->second;
+			}
+			auto srv = tex->SRV(pDev);
+			auto samp = tex->SamplerState(pDev);
+			pCtx->PSSetShaderResources(0, 1, &srv);
+			pCtx->PSSetSamplers(0, 1, &samp);
+
 		}
 		if (entityCache.count(e) == 0) {
 			entityCache[e].indexBuffer = render->CreateIndexBuffer(*model);
@@ -96,6 +107,9 @@ namespace LibDirect3D {
 	void ModelRenderer::OnEntityRemove(LibCommon::Entity* e) {
 		if (entityCache.count(e) > 0) {
 			entityCache.erase(e);
+		}
+		if (texCache.count(e) > 0) {
+			texCache.erase(e);
 		}
 	}
 }

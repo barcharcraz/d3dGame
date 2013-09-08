@@ -53,8 +53,8 @@ namespace Assets {
 			//unsigned int position = iter - retval.verts.begin();
 			if (indexMap.count(vert) == 0) {
 				retval.verts.push_back(vert);
-				retval.indices.push_back(retval.verts.size() - 1);
-				indexMap[vert] = retval.verts.size() - 1;
+				retval.indices.push_back(static_cast<unsigned int>(retval.verts.size() - 1));
+				indexMap[vert] = static_cast<unsigned int>(retval.verts.size() - 1);
 			} else {
 				retval.indices.push_back(indexMap.at(vert));
 			}
