@@ -61,7 +61,8 @@ using Image::Targa::Targa;
 using Image::ImageData;
 int main(int argc, char** argv)
 {
-	
+	argc;
+	argv;
 	Input::Input * input = new Input::Input();
 	input->AddAction("Left", Input::Keys::A);
 	input->AddAction("Right", Input::Keys::D);
@@ -109,8 +110,6 @@ int main(int argc, char** argv)
 	Effects::AddEffect({ "DefaultVS.cso", "DefaultPS.cso", defaultLayout, defaultCaps });
 	Effects::AddEffect({ "DebugVS.cso", "DebugPS.cso", debugLayout, debugCaps });
 	Effects::AddEffect({ "BillboardVS.cso", "BillboardPS.cso", defaultLayout, billboardCaps });
-	//LibDirect3D::Direct3DTexture d3dTex{ Image::ImageData(f) };
-	//LibDirect3D::Direct3DTexture d3dLaser{ Image::ImageData(laser) };
 	Assets::ObjFile modelFile("TestObj.obj");
 	Assets::ObjFile cone("Cone.obj");
 	Prefabs::Camera * cam = new Prefabs::Camera();

@@ -2,23 +2,13 @@
 #define LIBCOMPONENTS_TEXTURE_H
 #include "IComponent.h"
 #include <LibImage/image.h>
-namespace LibDirect3D {
-	class Direct3DTexture;
-}
-namespace LibOpenGL {
-	class OpenGLTexture;
-}
 namespace Components {
 	class Texture : public IComponent {
 	public:
 		Texture(Image::ImageData data);
-		Texture(LibDirect3D::Direct3DTexture* d3dTex);
-		LibDirect3D::Direct3DTexture* D3DTex();
 		const Image::ImageData& data() const;
 	private:
 		Image::ImageData _imageData;
-		LibDirect3D::Direct3DTexture* _d3dTex;
-		LibOpenGL::OpenGLTexture* _oglTex;
 	};
 }
 
