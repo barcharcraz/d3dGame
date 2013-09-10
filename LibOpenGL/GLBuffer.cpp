@@ -20,10 +20,11 @@ namespace LibOpenGL {
 	void GLBuffer::UpdateData(GLenum target, GLsizeiptr size, const void *data, GLenum usage) {
 		if(target != initalTarget) {
 			std::cerr << "Warning - performence: updated buffer with a different target than it was created with";
+			initalTarget = target;
 		}
 		GLint boundTarget = 0;
 		gl::GetIntegerv(gl::VERTEX_ARRAY_BINDING, &boundTarget);
-		if(boundTarget != _buffer) {
+		if(static_cast<unsigned int>(boundTarget) != _buffer) {
 			gl::BindBuffer(target, _buffer);
 		}
 		if(currentSize != size) {
@@ -56,6 +57,7 @@ namespace LibOpenGL {
 	void GLBuffer::init() {
 		currentSize = 0;
 		lastUsage = 0;
+		initalTarget = 0;
 		gl::GenBuffers(1, &_buffer);
 	}
 }

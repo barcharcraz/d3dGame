@@ -6,6 +6,7 @@
 #include <fstream>
 #include <vector>
 #include <exception>
+#include "exceptions.h"
 namespace utils {
 	inline std::vector<unsigned char> slurpBinary(const std::string& filename) {
 		std::ifstream stream;
@@ -19,8 +20,12 @@ namespace utils {
 	}
 	inline std::string slurpText(const std::string& filename) {
 		std::ifstream file(filename);
+		if(!file.is_open()) {
+			throw utils::not_found_error("file " + filename + " was not found");
+		}
 		std::string rv;
 		file.seekg(0, std::ios::end);
+		int size = file.tellg();
 		rv.reserve(file.tellg());
 		file.seekg(0, std::ios::beg);
 		rv.assign((std::istreambuf_iterator<char>(file)),

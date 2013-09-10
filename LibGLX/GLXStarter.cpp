@@ -46,6 +46,7 @@ namespace LibGLX {
 	GLXFBConfig findBestConfig(GLXFBConfig *configc, int numConfigs) {
 		//int best_fbc = -1;
 		//int worst_fbc = -1;
+
 	}
 
 

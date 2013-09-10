@@ -8,6 +8,9 @@ namespace LibOpenGL {
 		if(!res) {
 			throw utils::graphics_api_error("could not load OGL functions");
 		}
+		//glCreateProgram is garenteed to return a non-zero value
+		//so zero is a good "null" value
+		ActiveProgram = 0;
 	}
 
 }

@@ -17,7 +17,7 @@ Install Directory=file:///usr/local
 
 [CMake][CMake Build Directory 1]
 Build Directory Path=file:///home/charlie/d3dGame-build/
-Build Type=
+Build Type=Debug
 CMake Binary=file:///usr/bin/cmake
 Environment Profile=
 Extra Arguments=
@@ -33,8 +33,15 @@ Name=CrossplatApp
 Type=Native Application
 
 [Launch][Launch Configuration 0][Data]
+Arguments=
 Configured from ProjectItem=d3dGame,CrossplatApp,CrossplatApp
+Dependencies=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x00)
+Dependency Action=Nothing
+EnvironmentGroup=default
+Executable=
+External Terminal=konsole --noclose --workdir %workdir -e %exe
 Project Target=d3dGame,CrossplatApp,CrossplatApp
+Use External Terminal=false
 Working Directory=file:///home/charlie/d3dGame/build/output/
 isExecutable=false
 

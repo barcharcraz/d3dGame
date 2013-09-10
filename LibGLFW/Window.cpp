@@ -27,9 +27,14 @@ namespace LibGLFW {
         glfwTerminate();
         return 0;
     }
+	Window::Window() {
+		init(640,480);
+	}
+
     Window::Window( void* ) {
         init(640, 480);
     }
+    
     Window::Window(int w, int h) {
         init(w, h);
     }

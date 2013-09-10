@@ -22,6 +22,7 @@ int main(int argc, char** argv) {
 	window.Show();
 	window.update = [&]() {
 		(*scene).Update();
+		
 	};
 	return windowing::Run();
 }

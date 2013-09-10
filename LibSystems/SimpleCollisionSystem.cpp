@@ -23,7 +23,7 @@ namespace Systems {
 		auto transform = ent->Get<Components::Transform3D>();
 		auto thisAABB = ent->Get<Components::AxisAlignedBB>();
 		if (collisions->with.size() != 0) {
-			auto possiblePos = velocity->velocity * transform->transform;
+			//auto possiblePos = velocity->velocity * transform->transform;
 			for (auto& ents : collisions->with) {
 				auto aabb = ents->Get<Components::AxisAlignedBB>();
 				auto volume = thisAABB->CurAABB.intersection(aabb->CurAABB).volume();

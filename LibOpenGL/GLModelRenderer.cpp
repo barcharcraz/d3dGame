@@ -20,13 +20,13 @@ namespace LibOpenGL {
 		auto mod = ent->Get<Components::Model>();
 		auto effect = ent->Get<Components::Effect>();
 		auto bufferItr = buffer_map.emplace(ent, buffers{}).first;
-		bufferItr->second.Vertex.UpdateData(mod->verts.size(), &mod->verts[0], gl::VERTEX_ARRAY_BUFFER_BINDING);
-		bufferItr->second.Index.UpdateData(mod->indices.size(), &mod->indices[0], gl::ELEMENT_ARRAY_BUFFER_BINDING);
+		bufferItr->second.Vertex.UpdateData(gl::ARRAY_BUFFER, mod->verts.size(), &mod->verts[0], gl::STATIC_DRAW);
+		bufferItr->second.Index.UpdateData(gl::ELEMENT_ARRAY_BUFFER, mod->indices.size(), &mod->indices[0], gl::STATIC_DRAW);
 		std::unordered_map<Components::Effect*, GLProgram>::iterator program;
 		program = program_map.find(effect);
-		if(program->first != effect) {
-			program = program_map.emplace_hint(program, effect, GLProgram{GLShader(gl::VERTEX_SHADER, effect->vs.name).ShaderID(),
-								GLShader(gl::FRAGMENT_SHADER, effect->ps.name).ShaderID()});
+		if(program == program_map.end()) {
+			program = program_map.emplace(effect, GLProgram{GLShader(gl::VERTEX_SHADER, effect->vs.name).ShaderID(),
+								GLShader(gl::FRAGMENT_SHADER, effect->ps.name).ShaderID()}).first;
 			
 			
 		}

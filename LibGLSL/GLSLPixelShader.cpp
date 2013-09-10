@@ -11,6 +11,7 @@ namespace Effects {
 	}
 	//private functions
 	void GLSLPixelShader::init() {
-		_shader = glCreateShader(GL_VERTEX_SHADER);
+		
+		_shader = gl::CreateShader(gl::VERTEX_SHADER);
 	}
 }
