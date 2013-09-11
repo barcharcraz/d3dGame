@@ -8,6 +8,8 @@ namespace LibOpenGL {
 	public:
 		GLProgram(GLuint vertex, GLuint fragment);
 		GLProgram(GLuint vertex, GLuint geom, GLuint fragment);
+		GLProgram(GLProgram&& other);
+		GLProgram(const GLProgram& other) = delete;
 		GLuint ProgramID();
 		~GLProgram();
 	private:

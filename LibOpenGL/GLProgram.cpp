@@ -43,12 +43,19 @@ namespace LibOpenGL {
 	GLProgram::GLProgram ( GLuint vertex, GLuint geom, GLuint fragment ) {
 		_program = CreateProgram({vertex, geom, fragment});
 	}
+	GLProgram::GLProgram ( LibOpenGL::GLProgram && other ) {
+		_program = other._program;
+		other._program = 0;
+	}
+
 	GLuint GLProgram::ProgramID() {
 		return _program;
 	}
 
 	GLProgram::~GLProgram() {
-		gl::DeleteProgram(_program);
+		if(_program != 0) { 
+			gl::DeleteProgram(_program);
+		}
 	}
 
 

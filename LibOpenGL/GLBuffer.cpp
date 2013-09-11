@@ -7,13 +7,25 @@ namespace LibOpenGL {
 	}
 	GLBuffer::GLBuffer(GLenum target) {
 		init();
-		gl::BindBuffer(target, _buffer);
 
 		initalTarget = target;
 	}
+	GLBuffer::GLBuffer ( GLBuffer && other ) {
+		currentSize = other.currentSize;
+		initalTarget = other.initalTarget;
+		lastUsage = other.lastUsage;
+		_buffer = other._buffer;
+		other._buffer = 0;
+		
+	}
 
 	GLBuffer::~GLBuffer() {
-		gl::DeleteBuffers(1, &_buffer);
+		//this check is not strictly required
+		//but it increases clarity and prevents
+		//the call that would do nothing
+		if(_buffer != 0) {
+			gl::DeleteBuffers(1, &_buffer);
+		}
 
 	}
 	//PUBLIC UPDATE METHODS

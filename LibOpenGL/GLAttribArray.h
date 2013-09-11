@@ -6,7 +6,9 @@ namespace LibOpenGL {
 	class GLAttribArray {
 		public:
 			GLAttribArray();
-			GLuint AttribArrayID();
+			GLAttribArray(const GLAttribArray& other) = delete;
+			GLAttribArray(GLAttribArray&& other);
+			GLuint name();
 			void Bind();
 			~GLAttribArray();
 	private:

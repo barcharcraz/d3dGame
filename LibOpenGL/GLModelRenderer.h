@@ -12,7 +12,9 @@
 #include <LibComponents/Effect.h>
 #include <LibCommon/System.h>
 #include <unordered_map>
-
+namespace Components {
+	class Model;
+}
 namespace LibOpenGL {
     class GLModelRenderer : public LibCommon::System {
     public:
@@ -26,6 +28,8 @@ namespace LibOpenGL {
 			GLBuffer Index;
 			GLAttribArray vao;
 		};
+		buffers& updateBuffers(LibCommon::Entity* ent, Components::Model *mod);
+		GLBuffer generateUniform(LibCommon::Entity* ent)
 		OpenGLRenderer* render;
 		std::unordered_map<Components::Effect*, GLProgram> program_map;
 		std::unordered_map<LibCommon::Entity*, buffers> buffer_map;

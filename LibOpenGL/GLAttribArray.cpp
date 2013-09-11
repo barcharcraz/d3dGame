@@ -3,12 +3,21 @@
 
 namespace LibOpenGL {
 	GLAttribArray::GLAttribArray() {
+		_vao = 0;
 		gl::GenVertexArrays(1, &_vao);
 	}
-	GLAttribArray::~GLAttribArray() {
-		gl::DeleteVertexArrays(1, &_vao);
+	GLAttribArray::GLAttribArray ( GLAttribArray && other ) {
+		_vao = other._vao;
+		other._vao = 0;
+		
 	}
-	GLuint GLAttribArray::AttribArrayID() {
+
+	GLAttribArray::~GLAttribArray() {
+		if(_vao != 0) {
+			gl::DeleteVertexArrays(1, &_vao);
+		}
+	}
+	GLuint GLAttribArray::name() {
 		return _vao;
 	}
 	void GLAttribArray::Bind() {
