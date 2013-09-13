@@ -189,7 +189,7 @@ namespace Physics {
 		else
 			bbox.min[axis] = a;
 
-	}
+	}dd
 	void SweepAndPrune::fixRefs(unsigned int axis, unsigned int start) {
 		auto axisvec = _axis[axis];
 		for (unsigned int i = start; i < axisvec->size() - 1; ++i) {

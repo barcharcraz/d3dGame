@@ -2,19 +2,30 @@
 #include "GLModelRenderer.h"
 #include "GLShader.h"
 #include <set>
+#include <Eigen/Geometry>
+#include <Eigen/Core>
 #include <LibComponents/Model.h>
 #include <LibComponents/Camera.h>
 #include <LibComponents/Texture.h>
 #include <LibComponents/Transform.h>
 #include <LibComponents/Velocity.h>
+#include <LibCommon/Scene.h>
 namespace LibOpenGL {
     GLModelRenderer::GLModelRenderer( OpenGLRenderer* render_arg )
         : System({typeid(Components::Model), typeid(Components::Transform3D), typeid(Components::Effect)}),
 			render(render_arg)
 		
     {
-
+		
     }
+	void GLModelRenderer::PreProcess ( LibCommon::Entity* ent ) {
+		auto cament = parent->SelectEntity({typeid(Components::Camera), typeid(Components::Transform3D)});
+		auto cam = cament->Get<Components::Camera>();
+		auto camTrans = cament->Get<Components::Transform3D>();
+		_transforms.proj = cam->CameraMatrix;
+		_transforms.view = camTrans->transform.matrix();
+	}
+
 	void GLModelRenderer::Process(LibCommon::Entity *ent) {
 		using namespace Components;
 		auto mod = ent->Get<Components::Model>();
@@ -43,7 +54,9 @@ namespace LibOpenGL {
 		gl::DrawElements(gl::TRIANGLES, mod->indices.size(), gl::UNSIGNED_INT, &mod->indices[0]);
 		gl::BindVertexArray(0);
 	}
-	GLModelRenderer::buffers& GLModelRenderer::updateBuffers(LibCommon::Entity* ent, Components::Model *mod) {
+	GLModelRenderer::buffers& GLModelRenderer::updateBuffers(LibCommon::Entity* ent) {
+		auto mod = ent->Get<Components::Model>();
+		auto trans = ent->Get<Components::Transform3D>();
 		auto bufferItr = buffer_map.find(ent);
 		if(bufferItr == buffer_map.end()) {
 			bufferItr = buffer_map.emplace(ent, buffers{}).first;
