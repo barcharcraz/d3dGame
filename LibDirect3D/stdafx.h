@@ -22,6 +22,8 @@
 #pragma comment(lib, "d3dcompiler.lib")
 
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
+#define NOMINMAX						// get rid of the min and max macros, whoever defined
+										//these is evil and should feel bad
 // Windows Header Files:
 #include <windows.h>
 

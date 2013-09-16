@@ -3,15 +3,13 @@
 #include <string>
 #include <vector>
 #include <cstdint>
+#include <string>
 namespace Effects {
-	class HLSLPixelShader;
-	class GLSLPixelShader;
-	class HLSLVertexShader;
-	class GLSLVertexShader;
 	//! \brief this structure works in the same
 	//! way as a D3D11_INPUT_ELEMENT_DESC but is used
-	//! for GLSL attributes as well. For GLSL only the first
-	//! two fields are important
+	//! for GLSL attributes as well. For GLSL
+	//! these struct members match up to the params
+	//! of glVertexAttribPointer
 	struct ShaderDesc {
 		std::string ElementName;
 		unsigned int Index;
@@ -21,6 +19,14 @@ namespace Effects {
 		int InputSlotClass;
 		unsigned int InstanceDataStepRate;
 	};
+	enum InputFormats : uint32_t {
+		R32G32B32A32_FLOAT,
+		R32B32G32_FLOAT
+	};
+	enum SlotClass : int {
+		PER_INSTANCE,
+		PER_VERTEX
+	};
 	enum class ShaderCaps {
 		MESH_INDEXED,
 		MESH_UNINDEXED,
@@ -29,19 +35,19 @@ namespace Effects {
 		LIT_POINT,
 		MAT_DIFFUSE,
 		MAT_SPEC,
-		MAT_AMBIANT
+		MAT_AMBIANT,
+		RENDER_BILLBOARD,
+		DEBUG_SOLID
 	};
 	struct VertexShader {
 		explicit VertexShader(const std::string& filename, const std::vector<ShaderDesc>& desc);
-		void Load(const std::string& filename, const std::vector<ShaderDesc>& desc);
-		HLSLVertexShader* hvs;
-		GLSLVertexShader* gvs;
+		std::string name;
+		std::vector<ShaderDesc> inputDesc;
+		
 	};
 	struct PixelShader {
 		explicit PixelShader(const std::string& filename);
-		void Load(const std::string& filename);
-		HLSLPixelShader* hps;
-		GLSLPixelShader* gps;
+		std::string name;
 	};
 }
 

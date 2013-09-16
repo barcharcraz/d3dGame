@@ -22,7 +22,6 @@ namespace LibCommon {
 		componentConnections.erase(range.first, range.second);
 	}
 	void Event::send(IMessage * v) {
-		auto thistype = std::type_index(typeid(*v));
 		auto range = callbacks.equal_range(std::type_index(typeid(*v)));
 		for (auto i = range.first; i != range.second; ++i) {
 			i->second(v);

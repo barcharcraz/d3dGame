@@ -1,25 +1,42 @@
 #include "EffectsManagement.h"
+#include "EffectCache.h"
+#include "Effect.h"
 #include <map>
+#include <memory>
 #include <Utils/exceptions.h>
 #include <Utils/sets.h>
+#include <Utils/make_unique.h>
 namespace Effects {
-	static std::map<std::set<ShaderCaps>, Effect> shaderCache;
+	static EffectCache* activeCache;
+	static std::unique_ptr<EffectCache> _defaultCache;
 	void AddEffect(const Effect& effect) {
-        if(shaderCache.count(effect.caps) == 0) {
-            shaderCache.emplace(effect.caps, effect);
-        }
-    }
-	Effect ChooseEffect(const std::set<ShaderCaps>& requestedCaps) {
-		if (shaderCache.count(requestedCaps) != 0) {
-			//there is an exact match, we can just return that
-			return shaderCache.at(requestedCaps);
+		if (activeCache == nullptr) {
+			_defaultCache = std::make_unique<EffectCache>();
+			ActivateCache(_defaultCache.get());
 		}
-		for (auto& elm : shaderCache) {
-			if (utils::subset(requestedCaps, elm.first)) {
-				return elm.second;
-			}
+		activeCache->AddEffect(effect);
+	}
+	Effect ChooseEffect(const std::set<ShaderCaps>& caps) {
+		if (activeCache == nullptr) {
+			throw utils::precondition_error("there is no active shader cache");
 		}
-		throw utils::not_found_error("shader with requested caps was not found");
-		
+		return activeCache->ChooseEffect(caps);
+	}
+
+	EffectCache* GetActiveCache() {
+		return activeCache;
+	}
+
+	void ActivateCache(EffectCache* cache) {
+		// we delete the default cache, this will
+		// be recreated (a new copy) if someone takes
+		// their cache out then tries to add a new effect
+		if(activeCache == _defaultCache.get()) {
+			_defaultCache.reset();
+		}
+		activeCache = cache;
+	}
+	void DeactivateCache() {
+		activeCache = nullptr;
 	}
 }

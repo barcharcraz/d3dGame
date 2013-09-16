@@ -10,6 +10,12 @@ set(libd3d_src
 	Direct3DTexture.cpp
 	Direct3DDevice.h
 	Direct3DDevice.cpp
+	ShaderResource.h
+	ShaderResource.cpp
+	BoundingBoxRenderer.h
+	BoundingBoxRenderer.cpp
+	BillboardRenderer.h
+	BillboardRenderer.cpp
 	stdafx.h
 	stdafx.cpp
 	targetver.h

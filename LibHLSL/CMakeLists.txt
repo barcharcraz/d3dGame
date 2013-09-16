@@ -5,6 +5,8 @@ set(LibHLSL_files
 	HLSLVertexShader.cpp
 	HLSLPixelShader.h
 	HLSLPixelShader.cpp
+	HLSLCache.h
+	HLSLCache.cpp
 	stdafx.h
 	stdafx.cpp
 	)

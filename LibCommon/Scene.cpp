@@ -6,7 +6,7 @@
 #include <Utils/exceptions.h>
 
 namespace LibCommon {
-	Scene::Scene(IRenderer* pRenderer) : _pRenderer(pRenderer), _rate(34) {
+	Scene::Scene() : _rate(34) {
 		_lastUpdate = _clock.now();
 	}
 	void Scene::Update() {
@@ -17,19 +17,23 @@ namespace LibCommon {
 	}
 	void Scene::UpdateSystems() {
 		for (auto& sys : _systems) {
-			sys->Init();
+			sys->PreProcess();
 			auto input = SelectEntities(sys->aspect);
 			for (auto ent : input) {
 				sys->Process(ent);
 			}
 		}
 	}
-	void Scene::AddEntity(Entity* e) {
-		_entities.push_back(std::unique_ptr<Entity>(e));
+	Entity* Scene::AddEntity(Entity* e) {
+		return AddEntity(std::unique_ptr<Entity>(e));
 		
 	}
-	void Scene::AddEntity(std::unique_ptr<Entity> && e) {
+	Entity* Scene::AddEntity(std::unique_ptr<Entity> && e) {
 		_entities.push_back(std::move(e));
+		for (auto& sys : _systems) {
+			sys->OnEntityAdd(_entities.back().get());
+		}
+		return _entities.back().get();
 	}
 	void Scene::RemoveEntity(Entity *e) {
 		for(auto i = _entities.begin(); i != _entities.end(); i++) {
@@ -42,14 +46,21 @@ namespace LibCommon {
 	}
 
 	void Scene::AddSystem(std::unique_ptr<System> && s) {
-		_systems.push_back(std::move(s));
-		_systems.back()->parent = this;
+		auto insertPos = std::find_if(_systems.begin(), _systems.end(), [&](std::unique_ptr<System>& elm) {
+			if (s->priority > elm->priority) {
+				return true;
+			}
+			return false;
+		});
+		auto element = _systems.insert(insertPos, std::move(s));
+		element->get()->parent = this;
+		(*element)->Init();
 	}
 	void Scene::AddSystem(System* s) {
-		_systems.push_back(std::unique_ptr<System>(s));
-		_systems.back()->parent = this;
+		AddSystem(std::unique_ptr<System>(s));
 	}
 	void Scene::RemoveSystem(System *s) {
+		removeSystemEvents(s);
 		for(auto i = _systems.begin(); i != _systems.end(); ++i) {
 			if(i->get() == s) {
 				_systems.erase(i);
@@ -58,8 +69,21 @@ namespace LibCommon {
 		}
 		throw utils::not_supported_error("could not find element in vector");
 	}
-
-	std::vector<Entity*> Scene::SelectEntities(const std::vector<std::type_index>& info) {
+	void Scene::SetSystemEvents(System* s, const std::set<std::type_index>& types) {
+		removeSystemEvents(s);
+		for (auto& elm : types) {
+			_eventRegistrations.emplace(elm, s);
+		}
+	}
+	void Scene::FireUpdateEvent(Entity* e, Components::IComponent* c) {
+		auto range = _eventRegistrations.equal_range(typeid(*c));
+		for (auto i = range.first; i != range.second; ++i) {
+			if (e->HasAllComponents(i->second->aspect)) {
+				i->second->OnEntityUpdate(e, c);
+			}
+		}
+	}
+	std::vector<Entity*> Scene::SelectEntities(const std::set<std::type_index>& info) {
 		//^| this function could really use some caching at some point
 		std::vector<Entity*> retval;
 		for (auto& ent : _entities) {
@@ -69,7 +93,7 @@ namespace LibCommon {
 		}
 		return retval;
 	}
-	Entity* Scene::SelectEntity(const std::vector<std::type_index>& info) {
+	Entity* Scene::SelectEntity(const std::set<std::type_index>& info) {
 		for (auto& ent : _entities) {
 			if (ent->HasAllComponents(info)) {
 				return ent.get();
@@ -89,6 +113,18 @@ namespace LibCommon {
 	void Scene::sendRemoveMessage(Entity *e) {
 		for(std::unique_ptr<System>& elm : _systems) {
 			elm->OnEntityRemove(e);
+		}
+	}
+	void Scene::sendAddMessage(Entity* e) {
+		for (auto& elm : _systems) {
+			elm->OnEntityAdd(e);
+		}
+	}
+	void Scene::removeSystemEvents(System* s) {
+		for (auto i = _eventRegistrations.begin(); i != _eventRegistrations.end(); ++i) {
+			if (i->second == s) {
+				_eventRegistrations.erase(i);
+			}
 		}
 	}
 }

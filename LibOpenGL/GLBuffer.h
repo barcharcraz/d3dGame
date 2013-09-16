@@ -6,9 +6,12 @@ namespace LibOpenGL {
 	public:
 		GLBuffer();
 		GLBuffer(GLenum target);
+		GLBuffer(const GLBuffer& other) = delete;
+		GLBuffer(GLBuffer&& other);
 		void UpdateData(GLenum target, GLsizeiptr size, const void* data, GLenum usage);
 		void UpdateData(GLenum target, GLsizeiptr size, const void *data);
 		void UpdateData(GLsizeiptr size, const void *data, GLenum usage);
+		GLuint GetBuffer();
 		~GLBuffer();
 	private:
 		GLenum lastUsage;

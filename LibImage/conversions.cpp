@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "conversions.h"
 #include "image.h"
+#include <Utils/exceptions.h>
 #include <climits>
 namespace Image {
 	namespace Conversions {
@@ -35,13 +36,31 @@ namespace Image {
 			}
 			return retval;
 		}
-
+		ImageData A8R8G8B8_UNORM_to_R8G8B8A8_UNORM(const ImageData& dat) {
+			ImageData rv;
+			rv.format = Formats::R8G8B8A8_UNORM;
+			rv.width = dat.width;
+			rv.height = dat.height;
+			unsigned int newSize = 4 * rv.height * rv.width;
+			rv.data.resize(newSize);
+			for (unsigned int i = 0; i < dat.data.size(); i += 4) {
+				rv.data[i] = dat.data[i + 1];
+				rv.data[i + 1] = dat.data[i + 2];
+				rv.data[i + 2] = dat.data[i + 3];
+				rv.data[i + 3] = dat.data[i];
+			}
+			return rv;
+		}
 		ImageData ConvertToR8G8B8A8_UNORM(const ImageData &dat) {
 			switch(dat.format) {
 			case Formats::R8G8B8_UNORM:
 				return R8G8B8_UNORM_to_R8G8B8A8_UNORM(dat);
+			case Formats::A8R8G8B8_UNORM:
+				return A8R8G8B8_UNORM_to_R8G8B8A8_UNORM(dat);
 			case Formats::R8G8B8A8_UNORM:
 				return dat; //this is a copy
+			default:
+				throw utils::not_supported_error("unsupported conversion exception");
 			}
 		}
 		ImageData ConvertToR8B8G8_UNORM(const ImageData &dat) {
@@ -50,6 +69,8 @@ namespace Image {
 				return dat;
 			case Formats::R8G8B8A8_UNORM:
 				return R8G8B8A8_UNORM_to_R8G8B8_UNORM(dat);
+			default:
+				throw utils::not_supported_error("unsupported conversion exception");
 			}
 		}
 
@@ -59,7 +80,19 @@ namespace Image {
 				return ConvertToR8B8G8_UNORM(dat);
 			case Formats::R8G8B8A8_UNORM:
 				return ConvertToR8G8B8A8_UNORM(dat);
+			default:
+				throw utils::not_supported_error("unsupported conversion exception");
 			}
+
+		}
+		
+		ImageData ConvertImage(const ImageFile& file, Formats fmt) {
+			ImageData dataInput;
+			dataInput.format = file.Format();
+			dataInput.height = file.height();
+			dataInput.width = file.width();
+			dataInput.data = file.data(); //this can be a large copy
+			return ConvertImage(std::move(dataInput), fmt);
 		}
 	}
 }

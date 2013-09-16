@@ -48,7 +48,7 @@ namespace Effects {
 		if (FAILED(hr)) {
 			throw hr;
 		}
-		_pLayout = layout;
+		_pLayout = std::move(layout);
 		return vs;
 	}
 	CComPtr<ID3D11VertexShader> HLSLVertexShader::loadTextFile(CComPtr<ID3D11Device> pDev) {

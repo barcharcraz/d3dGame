@@ -6,6 +6,8 @@
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 #include "DataFormats.h"
+#include <unordered_map>
+#include <string>
 namespace LibDirect3D {
 	class Direct3DRenderer : public LibCommon::IRenderer {
 	public:
@@ -20,11 +22,12 @@ namespace LibDirect3D {
 		CComPtr<ID3D11Buffer> GetTransforms(const LibCommon::Transforms& transforms) const;
 		CComPtr<ID3D11Buffer> CreateConstantBuffer(const void* data, size_t size) const;
 		CComPtr<ID3D11Buffer> CreateConstantBuffer(size_t size) const;
-		void UpdateConstantBuffer(CComPtr<ID3D11Buffer> buffer, const void* data, size_t size) const;
-		size_t GetBufferSize(CComPtr<ID3D11Buffer> buffer) const;
-		
+		void EnableAlphaBlending();
+		void DisableAlphaBlending();
 		CComPtr<ID3D11Device2> pDev;
 		CComPtr<ID3D11DeviceContext2> pCtx;
+		CComPtr<IDXGISwapChain2> GetSwapChain();
+		CComPtr<IDXGIDevice3> GetDXGIDevice();
 	private:
 		
 		void init(IDXGIAdapter* pAdapter,
@@ -50,8 +53,8 @@ namespace LibDirect3D {
 		CComPtr<ID3D11DepthStencilState> _pdsState;
 		CComPtr<ID3D11DepthStencilView> _pdsView;
 		CComPtr<ID3D11Texture2D> _pDepthStencil;
-
-
+		CComPtr<ID3D11BlendState> _bsOn;
+		CComPtr<ID3D11BlendState> _bsOff;
 		mutable CComPtr<ID3D11Buffer> _transformBuffer;
 
 		

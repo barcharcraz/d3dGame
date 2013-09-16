@@ -1,8 +1,18 @@
 set(system_files
+	AxisAlignedBBSystem.h
+	AxisAlignedBBSystem.cpp
 	VelocitySystem3D.h
 	VelocitySystem3D.cpp
 	MovementController3D.h
 	MovementController3D.cpp
+	CollisionDetectionSystem.h
+	CollisionDetectionSystem.cpp
+	SimpleCollisionSystem.h
+	SimpleCollisionSystem.cpp
+	ProjectileSystem.h
+	ProjectileSystem.cpp
+	Group.h
+	Group.cpp
 	stdafx.h
 	stdafx.cpp
 	)

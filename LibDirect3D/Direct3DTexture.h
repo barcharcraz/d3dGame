@@ -6,6 +6,9 @@ namespace LibDirect3D {
 	public:
 		Direct3DTexture(const Image::ImageData& data);
 		void SetRenderState(CComPtr<ID3D11Device> pDev, CComPtr<ID3D11DeviceContext> pCtx);
+		ID3D11Texture2D* Texture(ID3D11Device* pDev);
+		ID3D11ShaderResourceView* SRV(ID3D11Device* pDev);
+		ID3D11SamplerState* SamplerState(ID3D11Device* pDev);
 	private:
 		void initTexture(CComPtr<ID3D11Device> pDev);
 		void initView(CComPtr<ID3D11Device> pDev);

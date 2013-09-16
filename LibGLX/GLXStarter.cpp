@@ -1,5 +1,5 @@
 #include "GLXStarter.h"
-
+#include <stdexcept>
 namespace LibGLX {
 	static GLXFBConfig findBestConfig(GLXFBConfig* configc, int numConfigs);
 	GLXStarter::GLXStarter ( const xwindows::Window& win ) {
@@ -37,15 +37,16 @@ namespace LibGLX {
 		if(!fbcs) {
 			throw std::runtime_error("could not choose FB configs");
 		}
-		int best_fbc = -1;
-		int worst_fbc = -1;
-		int
+		//int best_fbc = -1;
+		//int worst_fbc = -1;
+
 	}
 
 	/* ---static helpers----- */
 	GLXFBConfig findBestConfig(GLXFBConfig *configc, int numConfigs) {
-		int best_fbc = -1;
-		int worst_fbc = -1;
+		//int best_fbc = -1;
+		//int worst_fbc = -1;
+
 	}
 
 

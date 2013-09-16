@@ -1,0 +1,3 @@
+2d graphics are to be implemented in a similar way to 3d graphics. Drawing simple shapes should be possible in few lines of code. These shapes should be able to be drawn about a local axis and be transformed using the Transform2D component. On windows direct2D will be used since it can directly render to a IDXGISwapChain. On Linux and OSX the best option is probably cairo, this will involve an extera copy operation (bitblit).
+
+2D graphics will be done wtih each component having its own local transformation, and the whole shape, represented by an entity, will have a global transformation.

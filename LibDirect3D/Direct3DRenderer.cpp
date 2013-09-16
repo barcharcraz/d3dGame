@@ -80,8 +80,12 @@ void Direct3DRenderer::createRenderTarget() {
 	if (FAILED(hr)) {
 		throw hr;
 	}
-	
-	hr = pDev->CreateRenderTargetView(buffer, NULL, &m_pRenderTarget);
+	D3D11_RENDER_TARGET_VIEW_DESC desc;
+	desc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+	desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+	desc.Texture2D.MipSlice = 0;
+
+	hr = pDev->CreateRenderTargetView(buffer, &desc, &m_pRenderTarget);
 	if (FAILED(hr)) {
 		throw hr;
 	}
@@ -171,23 +175,57 @@ void Direct3DRenderer::Present() {
 	
 	m_pSwapChain->Present1(1, 0, &params);
 	
+	
+	
+}
+void Direct3DRenderer::Clear() {
 	float color [] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	pCtx->OMSetRenderTargets(1, &m_pRenderTarget.p, _pdsView);
 	pCtx->ClearRenderTargetView(m_pRenderTarget, color);
 	pCtx->ClearDepthStencilView(_pdsView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-	
 }
-void Direct3DRenderer::Clear() {
-	
+void Direct3DRenderer::DisableAlphaBlending() {
+	pCtx->OMSetBlendState(nullptr, nullptr, 0xffffffff);
 }
+void Direct3DRenderer::EnableAlphaBlending() {
+	HRESULT hr = S_OK;
+	if (nullptr == _bsOn) {
+		D3D11_BLEND_DESC desc;
+		D3D11_RENDER_TARGET_BLEND_DESC rtBlend;
+		rtBlend.BlendEnable = true;
+		rtBlend.SrcBlend = D3D11_BLEND_SRC_ALPHA;
+		rtBlend.BlendOpAlpha = D3D11_BLEND_OP_ADD;
+		rtBlend.DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+		rtBlend.DestBlendAlpha = D3D11_BLEND_ZERO;
+		rtBlend.RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+		rtBlend.SrcBlendAlpha = D3D11_BLEND_ZERO;
+		rtBlend.BlendOp = D3D11_BLEND_OP_ADD;
+		desc.AlphaToCoverageEnable = false;
+		desc.IndependentBlendEnable = false;
+		for (unsigned int i = 0; i < 8; ++i) {
+			desc.RenderTarget[i] = rtBlend;
+		}
+		hr = pDev->CreateBlendState(&desc, &_bsOn);
+		if (FAILED(hr)) {
+			throw std::system_error(hr, std::system_category());
+		}
 
+	}
+	pCtx->OMSetBlendState(_bsOn, nullptr, 0xffffffff);
+}
+CComPtr<IDXGISwapChain2> Direct3DRenderer::GetSwapChain() {
+	return m_pSwapChain;
+}
+CComPtr<IDXGIDevice3> Direct3DRenderer::GetDXGIDevice() {
+	return m_pDXGIDevice;
+}
 //creation utilities
 CComPtr<ID3D11Buffer> Direct3DRenderer::CreateIndexBuffer(const Components::Model& model) const {
 	HRESULT hr = S_OK;
 	CComPtr<ID3D11Buffer> indexBuffer;
 	D3D11_BUFFER_DESC indexDesc;
 	indexDesc.Usage = D3D11_USAGE_DEFAULT;
-	indexDesc.ByteWidth = static_cast<UINT>(sizeof(int) * model.indices.size());
+	indexDesc.ByteWidth = static_cast<UINT>(sizeof(unsigned int) * model.indices.size());
 	indexDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	indexDesc.CPUAccessFlags = 0;
 	indexDesc.MiscFlags = 0;
@@ -260,21 +298,7 @@ CComPtr<ID3D11Buffer> Direct3DRenderer::CreateConstantBuffer(const void* data, s
 	}
 	return retval;
 }
-void Direct3DRenderer::UpdateConstantBuffer(CComPtr<ID3D11Buffer> buffer, const void* data, size_t size) const {
-	HRESULT hr = S_OK;
-	D3D11_MAPPED_SUBRESOURCE map;
-	map.pData = 0;
-	map.DepthPitch = 0;
-	map.RowPitch = 0;
-	//do a bounds check on the buffer if we are in debug mode
-	assert(GetBufferSize(buffer) >= size);
-	hr = pCtx->Map(buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &map);
-	if (FAILED(hr)) {
-		throw std::system_error(hr, std::system_category());
-	}
-	memcpy(map.pData, data, size);
-	pCtx->Unmap(buffer, 0);
-}
+
 CComPtr<ID3D11Buffer> Direct3DRenderer::GetTransforms(const LibCommon::Transforms& transforms) const {
 	HRESULT hr = S_OK;
 	if (_transformBuffer == nullptr) {
@@ -291,10 +315,4 @@ CComPtr<ID3D11Buffer> Direct3DRenderer::GetTransforms(const LibCommon::Transform
 	memcpy(map.pData, &transforms, sizeof(transforms));
 	pCtx->Unmap(_transformBuffer, 0);
 	return _transformBuffer;
-}
-size_t Direct3DRenderer::GetBufferSize(CComPtr<ID3D11Buffer> buffer) const {
-	D3D11_BUFFER_DESC desc;
-	ZeroMemory(&desc, sizeof(desc));
-	buffer->GetDesc(&desc);
-	return desc.ByteWidth;
 }

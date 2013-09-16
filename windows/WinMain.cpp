@@ -2,6 +2,7 @@
 //to the program, it calls the main function
 #include "stdafx.h"
 #include <Utils/strings.h>
+#include "ComUtils.h"
 //the main function, if this is not
 //defined someplace you have bigger problems
 extern int main(int, char**);
@@ -10,8 +11,8 @@ extern int main(int, char**);
 //the unicode winmain entrypoint, note that we have to 
 //do some major fucking around with strings here to narrow the array
 //of widestrings
-extern "C" 
 int CALLBACK wWinMain(HINSTANCE hinstance, HINSTANCE hPrevInstance, LPWSTR cmdLine, int nCmdShow) {
+	windows::ComInitialize com;
 	int argc = __argc;
 	std::vector<std::string> narrowParams;
 	char ** argv = new char*[argc];

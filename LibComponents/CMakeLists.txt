@@ -10,7 +10,23 @@ set(libcomponents_files
 	Texture.h
 	Texture.cpp
 	Effect.h
+	Material.h
+	Material.cpp
 	DirectionalLight.h
+	DirectionalLight.cpp
+	PointLight.h
+	PointLight.cpp
+	Projectile.h
+	Projectile.cpp
+	AxisAlignedBB.h
+	AxisAlignedBB.cpp
+	Collision.h
+	Collision.cpp
+	Messages.h
+	Messages.cpp
+	NullComponent.h
+	Billboard.h
+	Billboard.cpp
 	stdafx.h
 	stdafx.cpp
 	)
