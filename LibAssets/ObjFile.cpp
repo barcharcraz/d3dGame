@@ -2,6 +2,7 @@
 #include "ObjFile.h"
 #include <fstream>
 #include <Utils/strings.h>
+#include <Utils/exceptions.h>
 #include <exception>
 #include <algorithm>
 #include <cassert>
@@ -66,6 +67,9 @@ namespace Assets {
 	}
 	void ObjFile::read(const std::string& filename) {
 		std::ifstream inFile(filename, std::ifstream::in);
+		if (!inFile.is_open()) {
+			throw utils::file_not_found_error("The file: " + filename + " was not found");
+		}
 		read(inFile);
 	}
 	void ObjFile::read(std::istream& from) {

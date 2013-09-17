@@ -25,7 +25,6 @@ namespace utils {
 		}
 		std::string rv;
 		file.seekg(0, std::ios::end);
-		int size = file.tellg();
 		rv.reserve(file.tellg());
 		file.seekg(0, std::ios::beg);
 		rv.assign((std::istreambuf_iterator<char>(file)),
