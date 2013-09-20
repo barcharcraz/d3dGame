@@ -71,7 +71,7 @@ int main(int argc, char** argv)
 	input->AddAxisAction("Horizontal", Input::MouseType, Input::AxisName::X);
 	input->AddAxisAction("Vertical", Input::MouseType, Input::AxisName::Y);
 	
-	Window win(1280, 768);
+	Window win(640, 480);
 	win.AttachInput(input);
 	win.Show();
 	

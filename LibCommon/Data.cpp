@@ -23,6 +23,7 @@ namespace LibCommon {
 			auto light = elm->Get<Components::DirectionalLight>();
 			directional_light new_light;
 			new_light.diffuse = light->Diffuse;
+			new_light.specular = light->Specular;
 			Eigen::Vector4f direction = Eigen::Vector4f::UnitY();
 			Eigen::Affine3f rotation(transform->transform.rotation());
 			direction = rotation * direction;

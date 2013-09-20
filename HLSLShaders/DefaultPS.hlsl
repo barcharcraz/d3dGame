@@ -22,7 +22,7 @@ float4 main(VS_OUTPUT input) : SV_TARGET
 	float intensity;
 	color = mat.ambiant;
 	color += pointLighting(pointLights, input.norm, input.wPos, mat);
-	color += directionalLighting(dirLights, input.norm, mat);
+	color += directionalLighting(dirLights, input.norm, input.wPos, mat);
 	texColor = tex.Sample(samp, input.uv.xy);
 	color = saturate(color);
 	color *= texColor;
