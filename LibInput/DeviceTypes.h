@@ -22,6 +22,8 @@ namespace Input {
 	const DeviceType MouseType = { 0x01, 0x02 };
 	
 }
+#pragma clang diagnostics push
+#pragma clang diagnostics ignored "-Wmismatched-tags"
 namespace std {
 	template<>
 	struct hash<Input::DeviceType> {
@@ -33,4 +35,5 @@ namespace std {
 		}
 	};
 }
+#pragma clang diagnostics pop
 #endif

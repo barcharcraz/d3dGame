@@ -2,6 +2,7 @@
 #include "GLModelRenderer.h"
 #include "GLShader.h"
 #include <set>
+#include <system_error>
 #include <Eigen/Geometry>
 #include <Eigen/Core>
 #include <LibComponents/Model.h>
@@ -18,7 +19,7 @@ namespace LibOpenGL {
     {
 		
     }
-	void GLModelRenderer::PreProcess ( LibCommon::Entity* ent ) {
+	void GLModelRenderer::PreProcess () {
 		auto cament = parent->SelectEntity({typeid(Components::Camera), typeid(Components::Transform3D)});
 		auto cam = cament->Get<Components::Camera>();
 		auto camTrans = cament->Get<Components::Transform3D>();
@@ -30,7 +31,9 @@ namespace LibOpenGL {
 		using namespace Components;
 		auto mod = ent->Get<Components::Model>();
 		auto effect = ent->Get<Components::Effect>();
-		auto& buffer = updateBuffers(ent, mod);
+		auto transform = ent->Get<Components::Transform3D>();
+		_transforms.model = transform->transform.matrix();
+		auto& buffer = updateBuffers(ent);
 		std::unordered_map<Components::Effect*, GLProgram>::iterator program;
 		program = program_map.find(effect);
 		if(program == program_map.end()) {
@@ -42,10 +45,11 @@ namespace LibOpenGL {
 		if(render->ActiveProgram != program->second.ProgramID()) {
 			render->ActiveProgram = program->second.ProgramID();
 			gl::UseProgram(render->ActiveProgram);
+			bindUinforms(render->ActiveProgram);
 		}
+		bindModel(render->ActiveProgram);
 		gl::EnableVertexAttribArray(0);
 		gl::BindVertexArray(buffer.vao.name());
-		
 		
 		gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, buffer.Index.GetBuffer());
 		gl::BindBuffer(gl::ARRAY_BUFFER, buffer.Vertex.GetBuffer());
@@ -53,10 +57,10 @@ namespace LibOpenGL {
 		
 		gl::DrawElements(gl::TRIANGLES, mod->indices.size(), gl::UNSIGNED_INT, &mod->indices[0]);
 		gl::BindVertexArray(0);
+		
 	}
 	GLModelRenderer::buffers& GLModelRenderer::updateBuffers(LibCommon::Entity* ent) {
 		auto mod = ent->Get<Components::Model>();
-		auto trans = ent->Get<Components::Transform3D>();
 		auto bufferItr = buffer_map.find(ent);
 		if(bufferItr == buffer_map.end()) {
 			bufferItr = buffer_map.emplace(ent, buffers{}).first;
@@ -82,4 +86,24 @@ namespace LibOpenGL {
 			}
 		}
 	}
+	void GLModelRenderer::bindUinforms(GLuint program) {
+		GLuint viewidx = gl::GetUniformLocation(program, "mvp.view");
+		GLuint projidx = gl::GetUniformLocation(program, "mvp.proj");
+		gl::UniformMatrix4fv(viewidx, 1, false, _transforms.view.data());
+		gl::UniformMatrix4fv(projidx, 1, false, _transforms.proj.data());
+		GLenum err = gl::GetError();
+		if(err != gl::NO_ERROR_) {
+			throw std::system_error(err, std::system_category());
+		}
+	}
+	void GLModelRenderer::bindModel ( GLuint program ) {
+		GLuint modelidx = gl::GetUniformLocation(program, "mvp.model");
+		gl::UniformMatrix4fv(modelidx, 1, false, _transforms.model.data());
+        GLenum err = gl::GetError();
+        if(err != gl::NO_ERROR_) {
+            throw std::system_error(err, std::system_category());
+        }
+	}
+
+
 }

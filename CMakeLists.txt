@@ -23,7 +23,7 @@ IF(CMAKE_COMPILER_IS_GNUCXX)
 	add_definitions(-std=c++11 -Wall)
 ENDIF(CMAKE_COMPILER_IS_GNUCXX)
 IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
-    add_definitions(-std=c++11 -Wall)
+    add_definitions(-std=c++11 -Wall -pedantic -Wno-missing-braces)
 ENDIF()
 
 

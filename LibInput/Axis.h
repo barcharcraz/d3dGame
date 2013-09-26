@@ -9,7 +9,6 @@ namespace Input {
 		void SetPosition(long newPos);
 	private:
 		long _ceil;
-		float _deadzone;
 		long _pos;
 	};
 }

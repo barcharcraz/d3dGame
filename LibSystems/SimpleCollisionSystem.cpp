@@ -20,7 +20,7 @@ namespace Systems {
 	void SimpleCollisionSystem::OnEntityUpdate(LibCommon::Entity* ent, Components::IComponent* comp) {
 		auto collisions = ent->Get<Components::Collision>();
 		auto velocity = ent->Get<Components::Velocity3D>();
-		auto transform = ent->Get<Components::Transform3D>();
+		//auto transform = ent->Get<Components::Transform3D>();
 		auto thisAABB = ent->Get<Components::AxisAlignedBB>();
 		if (collisions->with.size() != 0) {
 			//auto possiblePos = velocity->velocity * transform->transform;

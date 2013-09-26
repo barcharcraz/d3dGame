@@ -4,7 +4,7 @@
 #include <cmath>
 namespace Input {
 	Axis::Axis()
-		: _ceil(100), _deadzone(0.00f), _pos(0)
+		: _ceil(100), _pos(0)
 	{
 
 	}

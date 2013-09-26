@@ -1,5 +1,7 @@
 #include <Rendering.h>
 #include <windowing.h>
+#include <Eigen/Core>
+#include <Eigen/Geometry>
 #include <LibCommon/Scene.h>
 #include <Components.h>
 #include <Utils/make_unique.h>
@@ -7,6 +9,7 @@
 #include <LibEffects/EffectsManagement.h>
 #include <LibAssets/ObjFile.h>
 #include <LibPrefabs/StaticModel.h>
+#include <LibPrefabs/Camera.h>
 #include <LibImage/image.h>
 #include <LibImage/targa.h>
 static void load_effects();
@@ -17,8 +20,12 @@ int main(int argc, char** argv) {
 	Assets::ObjFile cone{"Cone.obj"};
 	Image::Targa::Targa tex{"Textures/wood_black/diffuse.tga"};
 	std::unique_ptr<LibCommon::Scene> scene(new LibCommon::Scene());
+	auto mod = std::make_unique<Prefabs::StaticModel>(cone, Image::ImageData(tex)); 
 	(*scene).AddSystem<Rendering::ModelRenderer>(&rend);
-	scene->AddEntity<Prefabs::StaticModel>(cone, Image::ImageData(tex));
+	(*scene).AddEntity<Prefabs::Camera>();
+    mod->Get<Components::Transform3D>()->transform.translate(Eigen::Vector3f{0,0,-10});
+	scene->AddEntity(std::move(mod));
+	
 	window.Show();
 	window.update = [&]() {
 		(*scene).Update();

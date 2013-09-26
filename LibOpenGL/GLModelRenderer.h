@@ -14,13 +14,13 @@
 #include <LibCommon/Data.h>
 #include <unordered_map>
 namespace Components {
-	class Model;
+	struct Model;
 }
 namespace LibOpenGL {
     class GLModelRenderer : public LibCommon::System {
     public:
         GLModelRenderer( LibOpenGL::OpenGLRenderer* render_arg );
-		virtual void PreProcess(LibCommon::Entity* ent) override;
+		virtual void PreProcess() override;
         virtual void Process(LibCommon::Entity * ent) override;
         virtual void OnEntityRemove(LibCommon::Entity *ent) override;
 	private:
@@ -30,8 +30,9 @@ namespace LibOpenGL {
 			GLBuffer Index;
 			GLAttribArray vao;
 		};
-		buffers& updateBuffers(LibCommon::Entity* ent, Components::Model *mod);
-		GLBuffer generateUniform(LibCommon::Entity* ent);
+		buffers& updateBuffers( LibCommon::Entity* ent );
+		void bindUinforms(GLuint program);
+		void bindModel(GLuint program);
 		OpenGLRenderer* render;
 		std::unordered_map<Components::Effect*, GLProgram> program_map;
 		std::unordered_map<LibCommon::Entity*, buffers> buffer_map;

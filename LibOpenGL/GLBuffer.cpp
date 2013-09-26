@@ -31,7 +31,7 @@ namespace LibOpenGL {
 	//PUBLIC UPDATE METHODS
 	void GLBuffer::UpdateData(GLenum target, GLsizeiptr size, const void *data, GLenum usage) {
 		if(target != initalTarget) {
-			std::cerr << "Warning - performence: updated buffer with a different target than it was created with";
+			std::cerr << "Warning - performence: updated buffer with a different target than it was created with" << std::endl;
 			initalTarget = target;
 		}
 		GLint boundTarget = 0;
@@ -45,7 +45,7 @@ namespace LibOpenGL {
 			return;
 		}
 		if(usage != lastUsage) {
-			std::cerr << "Warning - performence: changed usage on update, reallocateing buffer";
+			std::cerr << "Warning - performence: changed usage on update, reallocateing buffer" << std::endl;
 			gl::BufferData(target, size, data, usage);
 			lastUsage = usage;
 			currentSize = size;
