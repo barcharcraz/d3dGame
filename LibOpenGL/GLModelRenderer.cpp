@@ -2,6 +2,7 @@
 #include "GLModelRenderer.h"
 #include "GLShader.h"
 #include <set>
+#include <iostream>
 #include <system_error>
 #include <Eigen/Geometry>
 #include <Eigen/Core>
@@ -50,13 +51,13 @@ namespace LibOpenGL {
 		bindModel(render->ActiveProgram);
 		gl::EnableVertexAttribArray(0);
 		gl::BindVertexArray(buffer.vao.name());
-		
+	    	
 		gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, buffer.Index.GetBuffer());
 		gl::BindBuffer(gl::ARRAY_BUFFER, buffer.Vertex.GetBuffer());
 		gl::VertexAttribPointer(0, 4, gl::FLOAT, gl::FALSE_, 0, 0);
 		
 		gl::DrawElements(gl::TRIANGLES, mod->indices.size(), gl::UNSIGNED_INT, &mod->indices[0]);
-		gl::BindVertexArray(0);
+		
 		
 	}
 	GLModelRenderer::buffers& GLModelRenderer::updateBuffers(LibCommon::Entity* ent) {
@@ -87,8 +88,14 @@ namespace LibOpenGL {
 		}
 	}
 	void GLModelRenderer::bindUinforms(GLuint program) {
-		GLuint viewidx = gl::GetUniformLocation(program, "mvp.view");
-		GLuint projidx = gl::GetUniformLocation(program, "mvp.proj");
+		GLint viewidx = gl::GetUniformLocation(program, "mvp.view");
+		GLint projidx = gl::GetUniformLocation(program, "mvp.proj");
+        if(projidx == -1) {
+            std::cerr << "WARNING: glGetUniformLocation returned -1" << std::endl;
+        }
+        if(viewidx == -1) {
+            std::cerr << "WARNING: glGetUniformLocation returned -1" << std::endl;
+        }
 		gl::UniformMatrix4fv(viewidx, 1, false, _transforms.view.data());
 		gl::UniformMatrix4fv(projidx, 1, false, _transforms.proj.data());
 		GLenum err = gl::GetError();

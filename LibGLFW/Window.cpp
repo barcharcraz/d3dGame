@@ -3,13 +3,18 @@
 #include <stdexcept>
 #include <chrono>
 #include <thread>
+#include <LibInput/Input.h>
 namespace LibGLFW {
     static Window* ActiveWindow;
+    void HandleKey(GLFWwindow* win, int key, int scancode, int action, int mods) {
+
+    }
     int Run() {
         using namespace std::chrono;
         high_resolution_clock::time_point last_frame;
         last_frame = high_resolution_clock::now();
         milliseconds frameMax(16);
+        glfwMakeContextCurrent(ActiveWindow->_win);
         while(!glfwWindowShouldClose(ActiveWindow->_win)) {
             high_resolution_clock::time_point target_time = high_resolution_clock::now() + frameMax;
             if(ActiveWindow->update) {
@@ -43,6 +48,9 @@ namespace LibGLFW {
             ActiveWindow = nullptr;
         }
         glfwDestroyWindow(_win);
+    }
+    void Window::AttachInput(Input::Input* in) {
+        _input = in; 
     }
     void Window::Show() {
         return; //we dont need to do anything for GLFW

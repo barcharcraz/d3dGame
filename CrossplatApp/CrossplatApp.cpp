@@ -6,6 +6,7 @@
 #include <Components.h>
 #include <Utils/make_unique.h>
 #include <memory>
+#include <iostream>
 #include <LibEffects/EffectsManagement.h>
 #include <LibAssets/ObjFile.h>
 #include <LibPrefabs/StaticModel.h>
@@ -17,15 +18,14 @@ int main(int argc, char** argv) {
 	windowing::Window window;
 	Rendering::Renderer rend;
 	load_effects();
-	Assets::ObjFile cone{"Cone.obj"};
+    Assets::ObjFile cone{"Cone.obj"};
 	Image::Targa::Targa tex{"Textures/wood_black/diffuse.tga"};
 	std::unique_ptr<LibCommon::Scene> scene(new LibCommon::Scene());
 	auto mod = std::make_unique<Prefabs::StaticModel>(cone, Image::ImageData(tex)); 
 	(*scene).AddSystem<Rendering::ModelRenderer>(&rend);
 	(*scene).AddEntity<Prefabs::Camera>();
-    mod->Get<Components::Transform3D>()->transform.translate(Eigen::Vector3f{0,0,-10});
 	scene->AddEntity(std::move(mod));
-	
+	std::cerr << (gl::IsEnabled(gl::CULL_FACE) ? "true" : "false")  << std::endl;
 	window.Show();
 	window.update = [&]() {
 		(*scene).Update();

@@ -43,8 +43,7 @@ namespace LibCommon {
 	//! GPU
 	std::vector<directional_light> fuse_dir_lights(const std::vector<Entity*>& lights);
 }
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wmismatched-tags"
+
 namespace std {
 	template<>
 	struct hash<LibCommon::Vertex> {
@@ -72,5 +71,5 @@ namespace std {
 		}
 	};
 }
-#pragma clang diagnostic pop
+
 #endif

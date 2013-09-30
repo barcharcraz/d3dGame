@@ -4,6 +4,7 @@
 namespace Input {
 	//names of keys in no particular order
 	enum Keys {
+        UNKNOWN,
 		A,
 		B,
 		C,
@@ -54,6 +55,7 @@ namespace Input {
 		Down,
 		Left,
 		Right,
+        Space,
 		Count
 	};
 	
