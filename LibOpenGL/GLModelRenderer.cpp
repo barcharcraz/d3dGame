@@ -55,8 +55,8 @@ namespace LibOpenGL {
 		gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, buffer.Index.GetBuffer());
 		gl::BindBuffer(gl::ARRAY_BUFFER, buffer.Vertex.GetBuffer());
 		gl::VertexAttribPointer(0, 4, gl::FLOAT, gl::FALSE_, 0, 0);
-		
-		gl::DrawElements(gl::TRIANGLES, mod->indices.size(), gl::UNSIGNED_INT, &mod->indices[0]);
+        
+		gl::DrawElements(gl::TRIANGLES, mod->indices.size(), gl::UNSIGNED_INT, 0);
 		
 		
 	}

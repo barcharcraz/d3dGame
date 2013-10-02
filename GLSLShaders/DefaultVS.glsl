@@ -7,8 +7,8 @@ struct matrices_t {
 };
 uniform matrices_t mvp;
 void main() {
-  vec4 rv = pos * mvp.model;
-  rv = rv * mvp.view;
-  rv = rv * mvp.proj;
+  vec4 rv = mvp.model * pos;
+  rv = mvp.view * rv;
+  rv = mvp.proj * rv;
   gl_Position = rv;
 }

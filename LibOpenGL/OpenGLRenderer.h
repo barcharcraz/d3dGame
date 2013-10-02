@@ -6,8 +6,13 @@ namespace LibOpenGL {
 	class OpenGLRenderer {
 	public:
 		OpenGLRenderer();
+        
 		GLuint ActiveProgram;
 	};
+
+    //global functions to manipulate the openGL context
+    void EnableDepthBuffer();
+    void DisableDepthBuffer();
 }
 
 #endif

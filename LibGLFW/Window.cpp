@@ -3,31 +3,31 @@
 #include <stdexcept>
 #include <chrono>
 #include <thread>
+#include <iostream>
 #include <LibInput/Input.h>
 namespace LibGLFW {
-    static Window* ActiveWindow;
+    namespace {
+        Window* ActiveWindow;
+        void resizeWindow(GLFWwindow* win, int w, int h);
+        
+        void resizeWindow(GLFWwindow* win, int w, int h) {
+            glViewport(0,0,w,h);
+        }
+    }
+
     void HandleKey(GLFWwindow* win, int key, int scancode, int action, int mods) {
 
     }
     int Run() {
-        using namespace std::chrono;
-        high_resolution_clock::time_point last_frame;
-        last_frame = high_resolution_clock::now();
-        milliseconds frameMax(16);
         glfwMakeContextCurrent(ActiveWindow->_win);
-        while(!glfwWindowShouldClose(ActiveWindow->_win)) {
-            high_resolution_clock::time_point target_time = high_resolution_clock::now() + frameMax;
+        glfwSwapInterval(1);
+        while(!glfwWindowShouldClose(ActiveWindow->_win)) { 
             if(ActiveWindow->update) {
 				ActiveWindow->update();
 			}
 			glfwSwapBuffers(ActiveWindow->_win);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
             glfwPollEvents();
-            auto remaining = target_time - high_resolution_clock::now();
-            if(remaining > high_resolution_clock::duration(0)) {
-                std::this_thread::sleep_for(remaining);
-            }
-            
-            
         }
         glfwTerminate();
         return 0;
@@ -57,6 +57,7 @@ namespace LibGLFW {
     }
     void Window::SetAsActive() {
         glfwMakeContextCurrent(_win);
+        glfwSetWindowSizeCallback(_win, &resizeWindow);
         ActiveWindow = this;
     }
 
@@ -72,5 +73,6 @@ namespace LibGLFW {
             throw std::runtime_error("could not create a GLFW window");
         }
         SetAsActive();
+        glViewport(0,0,w,h);
     }
 }

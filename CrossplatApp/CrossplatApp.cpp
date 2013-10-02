@@ -6,13 +6,13 @@
 #include <Components.h>
 #include <Utils/make_unique.h>
 #include <memory>
-#include <iostream>
 #include <LibEffects/EffectsManagement.h>
 #include <LibAssets/ObjFile.h>
 #include <LibPrefabs/StaticModel.h>
 #include <LibPrefabs/Camera.h>
 #include <LibImage/image.h>
 #include <LibImage/targa.h>
+#include <LibSystems/VelocitySystem3D.h>
 static void load_effects();
 int main(int argc, char** argv) {
 	windowing::Window window;
@@ -24,8 +24,10 @@ int main(int argc, char** argv) {
 	auto mod = std::make_unique<Prefabs::StaticModel>(cone, Image::ImageData(tex)); 
 	(*scene).AddSystem<Rendering::ModelRenderer>(&rend);
 	(*scene).AddEntity<Prefabs::Camera>();
+    mod->Get<Components::Transform3D>()->transform.translate(Eigen::Vector3f{0,0,-10});
+    mod->AddComponent<Components::Velocity3D>(Eigen::Affine3f{Eigen::AngleAxisf{0.01f, Eigen::Vector3f::UnitZ()}});
 	scene->AddEntity(std::move(mod));
-	std::cerr << (gl::IsEnabled(gl::CULL_FACE) ? "true" : "false")  << std::endl;
+    scene->AddSystem<Systems::VelocitySystem3D>();
 	window.Show();
 	window.update = [&]() {
 		(*scene).Update();
