@@ -34,11 +34,7 @@ namespace LibOpenGL {
 			std::cerr << "Warning - performence: updated buffer with a different target than it was created with" << std::endl;
 			initalTarget = target;
 		}
-		GLint boundTarget = 0;
-		gl::GetIntegerv(gl::VERTEX_ARRAY_BINDING, &boundTarget);
-		if(static_cast<unsigned int>(boundTarget) != _buffer) {
-			gl::BindBuffer(target, _buffer);
-		}
+		gl::BindBuffer(target, _buffer);
 		if(currentSize != size) {
 			gl::BufferData(target, size, data, usage);
 			currentSize = size;

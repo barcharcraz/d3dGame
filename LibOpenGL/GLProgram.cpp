@@ -32,6 +32,7 @@ namespace {
 		for(auto shader : shaders) {
 			gl::DetachShader(rv, shader);
 		}
+		
 		return rv;
 	}
 }

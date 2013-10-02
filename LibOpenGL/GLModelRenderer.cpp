@@ -13,6 +13,8 @@
 #include <LibComponents/Velocity.h>
 #include <LibCommon/Scene.h>
 namespace LibOpenGL {
+	
+
     GLModelRenderer::GLModelRenderer( OpenGLRenderer* render_arg )
         : System({typeid(Components::Model), typeid(Components::Transform3D), typeid(Components::Effect)}),
 			render(render_arg)
@@ -43,6 +45,7 @@ namespace LibOpenGL {
 			
 			
 		}
+		CheckError();
 		if(render->ActiveProgram != program->second.ProgramID()) {
 			render->ActiveProgram = program->second.ProgramID();
 			gl::UseProgram(render->ActiveProgram);
@@ -58,17 +61,16 @@ namespace LibOpenGL {
         
 		gl::DrawElements(gl::TRIANGLES, mod->indices.size(), gl::UNSIGNED_INT, 0);
 		
-		
 	}
 	GLModelRenderer::buffers& GLModelRenderer::updateBuffers(LibCommon::Entity* ent) {
 		auto mod = ent->Get<Components::Model>();
 		auto bufferItr = buffer_map.find(ent);
-		if(bufferItr == buffer_map.end()) {
-			bufferItr = buffer_map.emplace(ent, buffers{}).first;
+		if (bufferItr == buffer_map.end()) {
+			bufferItr = buffer_map.emplace(ent, buffers()).first;
+			CheckError();
 			size_t vert_size = sizeof(LibCommon::Vertex) * mod->verts.size();
 			size_t index_size = sizeof(unsigned int) * mod->indices.size();
 			bufferItr->second.Vertex.UpdateData(gl::ARRAY_BUFFER, vert_size, &mod->verts[0], gl::DYNAMIC_DRAW);
-
 			bufferItr->second.Index.UpdateData(gl::ELEMENT_ARRAY_BUFFER, index_size, &mod->indices[0], gl::DYNAMIC_DRAW);
 		}
 		return bufferItr->second;
@@ -90,6 +92,7 @@ namespace LibOpenGL {
 	void GLModelRenderer::bindUinforms(GLuint program) {
 		GLint viewidx = gl::GetUniformLocation(program, "mvp.view");
 		GLint projidx = gl::GetUniformLocation(program, "mvp.proj");
+		CheckError();
         if(projidx == -1) {
             std::cerr << "WARNING: glGetUniformLocation returned -1" << std::endl;
         }
@@ -98,18 +101,13 @@ namespace LibOpenGL {
         }
 		gl::UniformMatrix4fv(viewidx, 1, false, _transforms.view.data());
 		gl::UniformMatrix4fv(projidx, 1, false, _transforms.proj.data());
-		GLenum err = gl::GetError();
-		if(err != gl::NO_ERROR_) {
-			throw std::system_error(err, std::system_category());
-		}
+		CheckError();
 	}
 	void GLModelRenderer::bindModel ( GLuint program ) {
 		GLuint modelidx = gl::GetUniformLocation(program, "mvp.model");
 		gl::UniformMatrix4fv(modelidx, 1, false, _transforms.model.data());
         GLenum err = gl::GetError();
-        if(err != gl::NO_ERROR_) {
-            throw std::system_error(err, std::system_category());
-        }
+		CheckError();
 	}
 
 

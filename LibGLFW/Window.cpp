@@ -20,7 +20,7 @@ namespace LibGLFW {
     }
     int Run() {
         glfwMakeContextCurrent(ActiveWindow->_win);
-        glfwSwapInterval(1);
+        glfwSwapInterval(2);
         while(!glfwWindowShouldClose(ActiveWindow->_win)) { 
             if(ActiveWindow->update) {
 				ActiveWindow->update();
@@ -68,6 +68,9 @@ namespace LibGLFW {
         if(!result) {
             throw std::runtime_error("could not initialize glfw");
         }
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
         _win = glfwCreateWindow(w, h, "GLFW Winodow", nullptr, nullptr);
         if(!_win) {
             throw std::runtime_error("could not create a GLFW window");
