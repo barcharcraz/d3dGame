@@ -4,6 +4,15 @@
 #include <LibComponents/PointLight.h>
 #include <LibComponents/DirectionalLight.h>
 namespace LibCommon {
+    std::vector<Eigen::Vector4f> fuse_verts(const std::vector<Vertex>& verts) {
+        std::vector<Eigen::Vector4f> rv;
+        rv.reserve(verts.size());
+        for(auto& elm : verts) {
+            //we move here since we copied in the loop!
+            rv.push_back(elm.pos);
+        }
+        return rv;
+    }
 	std::vector<point_light> fuse_point_lights(const std::vector<Entity*>& lights) {
 		std::vector<point_light> retval;
 		for (auto elm : lights) {

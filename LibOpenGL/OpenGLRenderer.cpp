@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "OpenGLRenderer.h"
 #include <Utils/exceptions.h>
-#include <stdexcept>
+#include <system_error>
 namespace LibOpenGL {
 	OpenGLRenderer::OpenGLRenderer() {
 		auto res = gl::sys::LoadFunctions();
@@ -26,7 +26,7 @@ namespace LibOpenGL {
         gl::Disable(gl::DEPTH_TEST);
     }
 	void CheckError() {
-		GLenum err = gl::NO_ERROR_;
+		GLenum err;
 		err = gl::GetError();
 		if (err != gl::NO_ERROR_) {
 			throw std::system_error(err, std::system_category());

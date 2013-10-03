@@ -38,7 +38,7 @@ namespace LibOpenGL {
 			GLAttribArray vao;
 		};
 		buffers& updateBuffers( LibCommon::Entity* ent );
-		void bindUinforms(GLuint program);
+		void bindUniforms(GLuint program);
 		void bindModel(GLuint program);
 		OpenGLRenderer* render;
 		std::unordered_map<Components::Effect*, GLProgram> program_map;
