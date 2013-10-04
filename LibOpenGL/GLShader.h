@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include <string>
+#include <vector>
+#include <sstream>
 #ifndef LIBOPENGL_GLSHADER_H
 #define LIBOPENGL_GLSHADER_H
 
@@ -15,6 +17,7 @@ namespace LibOpenGL {
 		GLenum _type;
 		GLuint _shader;
 	};
+    
 }
 
 #endif

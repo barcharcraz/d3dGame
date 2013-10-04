@@ -15,38 +15,39 @@
 #include <LibSystems/VelocitySystem3D.h>
 static void load_effects();
 int main(int argc, char** argv) {
-	windowing::Window window;
-	Rendering::Renderer rend;
-	load_effects();
+    windowing::Window window;
+    Rendering::Renderer rend;
+    load_effects();
     Assets::ObjFile cone{"Cone.obj"};
-	Image::Targa::Targa tex{"Textures/wood_black/diffuse.tga"};
-	std::unique_ptr<LibCommon::Scene> scene(new LibCommon::Scene());
-	auto mod = std::make_unique<Prefabs::StaticModel>(cone, Image::ImageData(tex)); 
-	(*scene).AddSystem<Rendering::ModelRenderer>(&rend);
-	(*scene).AddEntity<Prefabs::Camera>();
+    Image::Targa::Targa tex{"Textures/wood_black/diffuse.tga"};
+    std::unique_ptr<LibCommon::Scene> scene(new LibCommon::Scene());
+    auto mod = std::make_unique<Prefabs::StaticModel>(cone, Image::ImageData(tex)); 
+    (*scene).AddSystem<Rendering::ModelRenderer>(&rend);
+    (*scene).AddEntity<Prefabs::Camera>();
     mod->Get<Components::Transform3D>()->transform.translate(Eigen::Vector3f{0,0,-10});
     mod->AddComponent<Components::Velocity3D>(Eigen::Affine3f{Eigen::AngleAxisf{0.01f, Eigen::Vector3f::UnitZ()}});
-	scene->AddEntity(std::move(mod));
+
+    scene->AddEntity(std::move(mod));
     scene->AddSystem<Systems::VelocitySystem3D>();
-	window.Show();
-	window.update = [&]() {
-		(*scene).Update();
-		
-	};
-	return windowing::Run();
+    window.Show();
+    window.update = [&]() {
+        (*scene).Update();
+        
+    };
+    return windowing::Run();
 }
 void load_effects() {
-	using Effects::InputFormats;
-	using Effects::SlotClass;
-	using Effects::ShaderCaps;
-	const std::vector<Effects::ShaderDesc> defaultLayout = {
-		Effects::ShaderDesc{ "POSITION", 0, InputFormats::R32G32B32A32_FLOAT, 0, 0, SlotClass::PER_VERTEX, 0}
-	};
-	const std::set<Effects::ShaderCaps> defaultCaps = {
-		ShaderCaps::MESH_INDEXED,
-		ShaderCaps::TEXTURE_MAPPED,
-		ShaderCaps::LIT_DIRECTIONAL
-	};
-	Effects::AddEffect(Effects::Effect("DefaultVS.glsl", "DefaultPS.glsl", defaultLayout, defaultCaps));
+    using Effects::InputFormats;
+    using Effects::SlotClass;
+    using Effects::ShaderCaps;
+    const std::vector<Effects::ShaderDesc> defaultLayout = {
+        Effects::ShaderDesc{ "POSITION", 0, InputFormats::R32G32B32A32_FLOAT, 0, 0, SlotClass::PER_VERTEX, 0}
+    };
+    const std::set<Effects::ShaderCaps> defaultCaps = {
+        ShaderCaps::MESH_INDEXED,
+        ShaderCaps::TEXTURE_MAPPED,
+        ShaderCaps::LIT_DIRECTIONAL
+    };
+    Effects::AddEffect(Effects::Effect("DefaultVS.glsl", "DefaultPS.glsl", defaultLayout, defaultCaps));
 }
 

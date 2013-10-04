@@ -31,6 +31,21 @@ namespace utils {
 				  (std::istreambuf_iterator<char>()));
 		return rv;
 	}
+    inline std::vector<std::string> slurpByLines(const std::string& filename) {
+        std::ifstream file(filename);
+        if(!file.is_open()) {
+            throw utils::file_not_found_error(filename);
+        }
+        std::vector<std::string> rv;
+        std::string next = "";
+        while(file) {
+            std::getline(file, next);
+            next += '\n';
+            rv.push_back(std::move(next));
+        }
+        rv.shrink_to_fit();
+        return rv;
+    }
 	inline std::string getFileExtension(const std::string& filename) {
 		using namespace std;
 		auto idx = filename.rfind('.');

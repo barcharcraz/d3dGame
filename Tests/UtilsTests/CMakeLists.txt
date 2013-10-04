@@ -1,6 +1,8 @@
 set(utilstests_files
 	UtilsTests.cpp
 	eventTests.cpp
+    PreprocessorTests.cpp
+    stringsTests.cpp
 	)
 add_executable(utilsTests ${utilstests_files})
 target_link_libraries(utilsTests ${GTEST_LIBRARIES})
