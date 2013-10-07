@@ -59,7 +59,7 @@ void load_effects() {
         ShaderCaps::TEXTURE_MAPPED,
         ShaderCaps::LIT_DIRECTIONAL
     };
-    Effects::AddEffect(Effects::Effect("DefaultVS.cso", "DefaultPS.cso", defaultLayout, defaultCaps));
+    Effects::AddEffect(Effects::Effect("DefaultVS.glsl", "DefaultPS.glsl", defaultLayout, defaultCaps));
 }
 std::unique_ptr<Input::Input> construct_input() {
 	auto rv = std::make_unique<Input::Input>();
