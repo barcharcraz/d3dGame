@@ -6,10 +6,9 @@ namespace Input {
 	public:
 		Axis();
 		explicit operator float() const;
-		void SetPosition(long newPos);
+		void SetPosition(float newPos);
 	private:
-		long _ceil;
-		long _pos;
+		float _pos;
 	};
 }
 

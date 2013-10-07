@@ -34,8 +34,9 @@ int main(int argc, char** argv) {
     mod->AddComponent<Components::Velocity3D>(Eigen::Affine3f{Eigen::AngleAxisf{0.001f, Eigen::Vector3f::UnitZ()}});
 
     scene->AddEntity(std::move(mod));
-	scene->AddSystem<Systems::VelocitySystem3D>();
 	scene->AddSystem<Systems::MovementController3D>();
+	scene->AddSystem<Systems::VelocitySystem3D>();
+	
     
 	(*scene).AddSystem<Rendering::ModelRenderer>(&rend);
 	
@@ -58,7 +59,7 @@ void load_effects() {
         ShaderCaps::TEXTURE_MAPPED,
         ShaderCaps::LIT_DIRECTIONAL
     };
-    Effects::AddEffect(Effects::Effect("DefaultVS.glsl", "DefaultPS.glsl", defaultLayout, defaultCaps));
+    Effects::AddEffect(Effects::Effect("DefaultVS.cso", "DefaultPS.cso", defaultLayout, defaultCaps));
 }
 std::unique_ptr<Input::Input> construct_input() {
 	auto rv = std::make_unique<Input::Input>();

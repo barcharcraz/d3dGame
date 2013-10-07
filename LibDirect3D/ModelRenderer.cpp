@@ -39,6 +39,9 @@ namespace LibDirect3D {
 	}
 	void ModelRenderer::initPointLights() {
 		auto lights = parent->SelectEntities({ typeid(Components::PointLight), typeid(Components::Transform3D) });
+		if (lights.empty()) {
+			return;
+		}
 		std::vector<LibCommon::point_light> lightStructs = LibCommon::fuse_point_lights(lights);
 		CComPtr<ID3D11Buffer> lightBuffer = createStructuredBuffer(render->pDev, &lightStructs[0], sizeof(LibCommon::point_light), lightStructs.size());
 		_pointLights.Release();
@@ -48,6 +51,9 @@ namespace LibDirect3D {
 	}
 	void ModelRenderer::initDirLights() {
 		auto lights = parent->SelectEntities({ typeid(Components::DirectionalLight), typeid(Components::Transform3D) });
+		if (lights.empty()) {
+			return;
+		}
 		auto lightStructs = LibCommon::fuse_dir_lights(lights);
 		_dirLights.Release();
 		_dirLights = createStructuredBufferView(render->pDev, &lightStructs[0], sizeof(LibCommon::directional_light), lightStructs.size());

@@ -17,6 +17,7 @@ namespace LibGLFW {
             glViewport(0,0,w,h);
         }
 		
+		
     }
 
 	void HandleKey(GLFWwindow* win, int key, int scancode, int action, int mods) {
@@ -34,6 +35,18 @@ namespace LibGLFW {
 			ActiveWindow->_input->ActivateKey(keyItr->second);
 		} else if (GLFW_RELEASE == action) {
 			ActiveWindow->_input->DeactivateKey(keyItr->second);
+		}
+	}
+	void HandleCursorEnter(GLFWwindow* win, int entered) {
+		win;
+		entered;
+		if (ActiveWindow != nullptr && ActiveWindow->_win == win) {
+			if (GL_TRUE == entered) {
+				double newX, newY;
+				glfwGetCursorPos(win, &newX, &newY);
+				ActiveWindow->lastX = newX;
+				ActiveWindow->lastY = newY;
+			}
 		}
 	}
     int Run() {
@@ -78,6 +91,8 @@ namespace LibGLFW {
     void Window::SetAsActive() {
         glfwMakeContextCurrent(_win);
         glfwSetWindowSizeCallback(_win, &resizeWindow);
+		glfwSetCursorEnterCallback(_win, &HandleCursorEnter);
+		glfwSetInputMode(_win, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         ActiveWindow = this;
     }
 
@@ -101,14 +116,17 @@ namespace LibGLFW {
 	void Window::HandleMouseMovement() {
 		if (_input != nullptr) {
 			double x, y = 0;
+			int winx, winy = 0;
 			double dx, dy;
 			glfwGetCursorPos(_win, &x, &y);
-			dx = x - lastX;
-			dy = y - lastY;
-		
+			glfwGetWindowSize(_win, &winx, &winy);
+			dx = lastX - x;
+			dy = lastY - y;
+			lastX = x;
+			lastY = y;
 			auto mouse = _input->Device(Input::MouseType);
-			mouse->axes[Input::AxisName::X].SetPosition(dx);
-			mouse->axes[Input::AxisName::Y].SetPosition(dy);
+			mouse->axes[Input::AxisName::X].SetPosition(dx/winx);
+			mouse->axes[Input::AxisName::Y].SetPosition(dy/winy);
 		}
 	}
 }

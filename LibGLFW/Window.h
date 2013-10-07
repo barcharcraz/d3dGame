@@ -7,9 +7,11 @@ namespace Input {
 }
 namespace LibGLFW {
 	void HandleKey(GLFWwindow* win, int key, int scancode, int action, int mods);
+	void HandleCursorEnter(GLFWwindow* win, int entered);
     int Run();
     class Window {
 		friend void HandleKey(GLFWwindow*, int, int, int, int);
+		friend void HandleCursorEnter(GLFWwindow*, int);
         friend int Run();
     public:
         Window(void*);
@@ -25,8 +27,8 @@ namespace LibGLFW {
         void SetAsActive();
         std::function<void()> update;
     private:
-		double lastX;
-		double lastY;
+		double lastX = 0;
+		double lastY = 0;
 		void HandleMouseMovement();
         void init(int w, int h);
         GLFWwindow *_win = nullptr;

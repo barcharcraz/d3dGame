@@ -14,6 +14,8 @@ void main() {
   vec4 rv = mvp.model * pos;
   rv = mvp.view * rv;
   rv = mvp.proj * rv;
-  normal = normTrans * norm;
+  normal.xyz = mat3(mvp.model * mvp.view) * norm.xyz;
+  normal.w = 1;
+  normal = normTrans * normal;
   gl_Position = rv;
 }

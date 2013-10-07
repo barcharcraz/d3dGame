@@ -155,11 +155,11 @@ namespace windows {
 		}
 		RAWINPUT* praw = (RAWINPUT*) (data.data());
 		if (praw->header.dwType == RIM_TYPEMOUSE) {
-			long dx = praw->data.mouse.lLastX;
-			long dy = praw->data.mouse.lLastY;
+			double dx = praw->data.mouse.lLastX;
+			double dy = praw->data.mouse.lLastY;
 			auto device = _input->Device({ 0x01, 0x02 });
-			device->axes[Input::AxisName::X].SetPosition(dx);
-			device->axes[Input::AxisName::Y].SetPosition(dy);
+			device->axes[Input::AxisName::X].SetPosition(dx / 100);
+			device->axes[Input::AxisName::Y].SetPosition(dy / 100);
 			
 		}
 		return 0;
