@@ -6,9 +6,10 @@ namespace Input {
     class Input;
 }
 namespace LibGLFW {
-    void HandleKey(GLFWwindow* win, int key, int scancode, int action, int mods);
+	void HandleKey(GLFWwindow* win, int key, int scancode, int action, int mods);
     int Run();
     class Window {
+		friend void HandleKey(GLFWwindow*, int, int, int, int);
         friend int Run();
     public:
         Window(void*);
@@ -24,9 +25,12 @@ namespace LibGLFW {
         void SetAsActive();
         std::function<void()> update;
     private:
+		double lastX;
+		double lastY;
+		void HandleMouseMovement();
         void init(int w, int h);
-        GLFWwindow *_win;
-        Input::Input* _input;
+        GLFWwindow *_win = nullptr;
+        Input::Input* _input = nullptr;
     };
     
     

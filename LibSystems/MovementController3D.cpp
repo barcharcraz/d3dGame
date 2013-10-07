@@ -21,19 +21,19 @@ namespace Systems {
 		Affine3f newVel( Affine3f::Identity() );
 		auto rotY = inp->AxisAction("Horizontal");
 		auto rotX = inp->AxisAction("Vertical");
-		float speed = 0.25f;
+		float speed = 0.025f;
 		
 		if (inp->Action("Left")) {
-			newVel.translate(-Eigen::Vector3f::UnitX() * speed);
-		}
-		if (inp->Action("Right")) {
 			newVel.translate(Eigen::Vector3f::UnitX() * speed);
 		}
+		if (inp->Action("Right")) {
+			newVel.translate(-Eigen::Vector3f::UnitX() * speed);
+		}
 		if (inp->Action("Forward")) {
-			newVel.translate(-Eigen::Vector3f::UnitZ() * speed);
+			newVel.translate(Eigen::Vector3f::UnitZ() * speed);
 		}
 		if (inp->Action("Backward")) {
-			newVel.translate(Eigen::Vector3f::UnitZ() * speed);
+			newVel.translate(-Eigen::Vector3f::UnitZ() * speed);
 		}
 		//Eigen::Vector3f transUp = trans->transform.rotation() * Eigen::Vector3f::UnitY();
 		

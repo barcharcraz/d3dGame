@@ -13,22 +13,32 @@
 #include <LibImage/image.h>
 #include <LibImage/targa.h>
 #include <LibSystems/VelocitySystem3D.h>
+#include <LibSystems/MovementController3D.h>
+#include <LibInput/Input.h>
 static void load_effects();
+static std::unique_ptr<Input::Input> construct_input();
 int main(int argc, char** argv) {
     windowing::Window window;
     Rendering::Renderer rend;
+	auto input = construct_input();
+	window.AttachInput(input.get());
     load_effects();
     Assets::ObjFile cone{"Cone.obj"};
     Image::Targa::Targa tex{"Textures/wood_black/diffuse.tga"};
     std::unique_ptr<LibCommon::Scene> scene(new LibCommon::Scene());
     auto mod = std::make_unique<Prefabs::StaticModel>(cone, Image::ImageData(tex)); 
-    (*scene).AddSystem<Rendering::ModelRenderer>(&rend);
-    (*scene).AddEntity<Prefabs::Camera>();
+
+    auto camera = (*scene).AddEntity<Prefabs::Camera>();
+	camera->AddComponent(std::move(input));
     mod->Get<Components::Transform3D>()->transform.translate(Eigen::Vector3f{0,0,-10});
-    mod->AddComponent<Components::Velocity3D>(Eigen::Affine3f{Eigen::AngleAxisf{0.01f, Eigen::Vector3f::UnitZ()}});
+    mod->AddComponent<Components::Velocity3D>(Eigen::Affine3f{Eigen::AngleAxisf{0.001f, Eigen::Vector3f::UnitZ()}});
 
     scene->AddEntity(std::move(mod));
-    scene->AddSystem<Systems::VelocitySystem3D>();
+	scene->AddSystem<Systems::VelocitySystem3D>();
+	scene->AddSystem<Systems::MovementController3D>();
+    
+	(*scene).AddSystem<Rendering::ModelRenderer>(&rend);
+	
     window.Show();
     window.update = [&]() {
         (*scene).Update();
@@ -50,4 +60,13 @@ void load_effects() {
     };
     Effects::AddEffect(Effects::Effect("DefaultVS.glsl", "DefaultPS.glsl", defaultLayout, defaultCaps));
 }
-
+std::unique_ptr<Input::Input> construct_input() {
+	auto rv = std::make_unique<Input::Input>();
+	rv->AddAction("Left", Input::A);
+	rv->AddAction("Right", Input::D);
+	rv->AddAction("Forward", Input::W);
+	rv->AddAction("Backward", Input::S);
+	rv->AddAxisAction("Horizontal", Input::MouseType, Input::AxisName::X);
+	rv->AddAxisAction("Vertical", Input::MouseType, Input::AxisName::Y);
+	return rv;
+}

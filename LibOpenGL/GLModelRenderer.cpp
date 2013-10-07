@@ -50,14 +50,14 @@ namespace LibOpenGL {
         if(render->ActiveProgram != program->second.ProgramID()) {
             render->ActiveProgram = program->second.ProgramID();
             gl::UseProgram(render->ActiveProgram);
-            bindUniforms(render->ActiveProgram);
+            
         }
-        
+		bindUniforms(render->ActiveProgram);
         bindModel(render->ActiveProgram);
         gl::BindVertexArray(buffer.vao.name());
         gl::EnableVertexAttribArray(0);
         gl::EnableVertexAttribArray(1);
-        gl::EnableVertexAttribArray(2);
+        //gl::EnableVertexAttribArray(2);
         GLint posLoc = gl::GetAttribLocation(render->ActiveProgram, "pos");
         GLint normLoc = gl::GetAttribLocation(render->ActiveProgram, "norm");
         GLint uvLoc = gl::GetAttribLocation(render->ActiveProgram, "uv");
@@ -65,10 +65,10 @@ namespace LibOpenGL {
         gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, buffer.Index.GetBuffer());
         gl::BindBuffer(gl::ARRAY_BUFFER, buffer.Vertex.GetBuffer());
         gl::VertexAttribPointer(posLoc, 4, gl::FLOAT, gl::FALSE_, sizeof(LibCommon::Vertex), 0);
-        //gl::VertexAttribPointer(normLoc, 4, gl::FLOAT, gl::FALSE_, sizeof(LibCommon::Vertex), 0);
+        gl::VertexAttribPointer(normLoc, 4, gl::FLOAT, gl::FALSE_, sizeof(LibCommon::Vertex), 0);
         //gl::VertexAttribPointer(uvLoc, 3, gl::FLOAT, gl::FALSE_, sizeof(LibCommon::Vertex), 0);
         
-        gl::DrawElements(gl::TRIANGLES, mod->indices.size(), gl::UNSIGNED_INT, 0);
+        gl::DrawElements(gl::TRIANGLES, static_cast<GLsizei>(mod->indices.size()), gl::UNSIGNED_INT, 0);
         
     }
     GLModelRenderer::buffers& GLModelRenderer::updateBuffers(LibCommon::Entity* ent) {
@@ -101,6 +101,7 @@ namespace LibOpenGL {
     void GLModelRenderer::bindUniforms(GLuint program) {
         GLint viewidx = gl::GetUniformLocation(program, "mvp.view");
         GLint projidx = gl::GetUniformLocation(program, "mvp.proj");
+		GLint invTransIdx = gl::GetUniformLocation(program, "normTrans");
         CheckError();
         if(projidx == -1) {
             std::cerr << "WARNING: glGetUniformLocation returned -1" << std::endl;
@@ -108,8 +109,12 @@ namespace LibOpenGL {
         if(viewidx == -1) {
             std::cerr << "WARNING: glGetUniformLocation returned -1" << std::endl;
         }
+		Eigen::Matrix4f invTrans = _transforms.model * _transforms.view;
+		invTrans.reverseInPlace();
+		invTrans.transposeInPlace();
         gl::UniformMatrix4fv(viewidx, 1, false, _transforms.view.data());
         gl::UniformMatrix4fv(projidx, 1, false, _transforms.proj.data());
+		gl::UniformMatrix4fv(invTransIdx, 1, false, invTrans.data());
         CheckError();
     }
     void GLModelRenderer::bindModel ( GLuint program ) {

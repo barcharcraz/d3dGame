@@ -5,6 +5,14 @@
 #include <string>
 
 namespace utils {
+	class unsupported_format_error : public std::runtime_error {
+	public:
+		explicit unsupported_format_error(const std::string& what_arg)
+			: runtime_error(what_arg)
+		{
+
+		}
+	};
 	class not_found_error : public std::runtime_error {
 	public:
 		explicit not_found_error(const std::string& what_arg)

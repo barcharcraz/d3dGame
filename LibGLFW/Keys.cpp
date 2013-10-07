@@ -4,6 +4,10 @@ namespace LibGLFW {
     std::unordered_map<int, Input::Keys> glfw_keymap = {
         { GLFW_KEY_UNKNOWN, Input::UNKNOWN },
         { GLFW_KEY_SPACE, Input::Space },
+		{ GLFW_KEY_UP, Input::Up },
+		{ GLFW_KEY_DOWN, Input::Down },
+		{ GLFW_KEY_LEFT, Input::Left },
+		{ GLFW_KEY_RIGHT, Input::Right },
         { GLFW_KEY_0, Input::Num0 },
         { GLFW_KEY_1, Input::Num1 },
         { GLFW_KEY_2, Input::Num2 },
