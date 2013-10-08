@@ -28,9 +28,8 @@ namespace LibOpenGL {
         : _type(type) {
             _shader = gl::CreateShader(_type);
             auto data = utils::slurpByLines(filename);
-            utils::preprocess(&data);
-            auto cdata = utils::convert_array(data);
-            std::cerr << cdata.size();
+            utils::SourceFile shader(std::move(data));
+            auto cdata = shader.cdata();
             for(auto& str : cdata) {
                 std::cerr << str;
             }
