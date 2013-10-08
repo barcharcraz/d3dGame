@@ -109,7 +109,7 @@ namespace LibOpenGL {
         if(viewidx == -1) {
             std::cerr << "WARNING: glGetUniformLocation returned -1" << std::endl;
         }
-		Eigen::Matrix4f invTrans = _transforms.model * _transforms.view;
+		Eigen::Matrix4f invTrans =_transforms.model * _transforms.view;
 		invTrans.reverseInPlace();
 		invTrans.transposeInPlace();
         gl::UniformMatrix4fv(viewidx, 1, false, _transforms.view.data());

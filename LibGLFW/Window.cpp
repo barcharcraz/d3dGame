@@ -21,9 +21,7 @@ namespace LibGLFW {
     }
 
 	void HandleKey(GLFWwindow* win, int key, int scancode, int action, int mods) {
-		win;
-		scancode;
-		mods;
+		
 		if (nullptr == ActiveWindow) {
 			return;
 		}
@@ -51,8 +49,12 @@ namespace LibGLFW {
 	}
     int Run() {
         glfwMakeContextCurrent(ActiveWindow->_win);
-        glfwSwapInterval(2);
+        glfwSwapInterval(1);
+        std::chrono::high_resolution_clock clock;
+        std::chrono::high_resolution_clock::time_point start, end;
+        std::chrono::milliseconds frame_time(0);
         while(!glfwWindowShouldClose(ActiveWindow->_win)) { 
+            start = clock.now();
             if(ActiveWindow->update) {
 				ActiveWindow->update();
 			}
@@ -60,6 +62,9 @@ namespace LibGLFW {
 			glfwSwapBuffers(ActiveWindow->_win);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
             glfwPollEvents();
+            end = clock.now();
+            frame_time = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+            std::cerr << frame_time.count() << std::endl;
         }
         glfwTerminate();
         return 0;
