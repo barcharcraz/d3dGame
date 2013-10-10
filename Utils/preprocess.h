@@ -9,6 +9,7 @@ namespace utils {
 
     class SourceFile {
     public:
+        SourceFile() = default;
         SourceFile(std::vector<std::string> source) 
             : shader_src(std::move(source))
         {

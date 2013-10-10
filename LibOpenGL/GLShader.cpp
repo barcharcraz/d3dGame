@@ -28,19 +28,17 @@ namespace LibOpenGL {
         : _type(type) {
             _shader = gl::CreateShader(_type);
             auto data = utils::slurpByLines(filename);
-            utils::SourceFile shader(std::move(data));
-            auto cdata = shader.cdata();
-            for(auto& str : cdata) {
-                std::cerr << str;
-            }
-            gl::ShaderSource(_shader, cdata.size(), &cdata[0], nullptr);
-            gl::CompileShader(_shader);
-            auto error = get_compile_errors(_shader);
-            if(error != "") {
-                throw utils::graphics_api_error(error);
-            }
+            shader_src = utils::SourceFile(std::move(data)); 
+            compileSrc();
             
-            
+    }
+    void GLShader::SetDefine(std::string define, std::string value) {
+        shader_src.add_define(std::move(define), std::move(value));
+        compileSrc();
+    }
+    void GLShader::SetDefine(std::string define) {
+        shader_src.add_define(std::move(define));
+        compileSrc();
     }
     GLuint GLShader::ShaderID() {
         return _shader;
@@ -52,6 +50,17 @@ namespace LibOpenGL {
 
     GLShader::~GLShader() {
         gl::DeleteShader(_shader);
+    }
+
+    //---PRIVATE METHODS-----
+    void GLShader::compileSrc() {
+        auto cdata = shader_src.cdata();
+        gl::ShaderSource(_shader, cdata.size(), &cdata[0], nullptr);
+        gl::CompileShader(_shader);
+        auto error = get_compile_errors(_shader);
+        if(error != "") {
+            throw utils::graphics_api_error(error);
+        }
     }
 
     
