@@ -58,8 +58,10 @@ void load_effects() {
         ShaderCaps::MESH_INDEXED,
         ShaderCaps::TEXTURE_MAPPED,
         ShaderCaps::LIT_DIRECTIONAL
-    };
-    Effects::AddEffect(Effects::Effect("DefaultVS.glsl", "DefaultPS.glsl", defaultLayout, defaultCaps));
+	};
+	Effects::Effect DefaultEffect{ "DefaultVS.glsl", "DefaultPS.glsl", defaultLayout, defaultCaps };
+	DefaultEffect.defines = { { "NUM_DIRECTIONAL", 8 }, { "NUM_POINT", 8 } };
+    Effects::AddEffect(DefaultEffect);
 }
 std::unique_ptr<Input::Input> construct_input() {
 	auto rv = std::make_unique<Input::Input>();

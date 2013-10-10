@@ -1,4 +1,6 @@
 #include "GLProgram.h"
+#include "GLShader.h"
+#include <LibEffects/Effect.h>
 #include <Utils/exceptions.h>
 #include <vector>
 #include <string>
@@ -48,7 +50,17 @@ namespace LibOpenGL {
 		_program = other._program;
 		other._program = 0;
 	}
-
+	GLProgram::GLProgram(const Effects::Effect& effect) {
+		GLShader vs{ gl::VERTEX_SHADER, effect.vs.name };
+		GLShader ps{ gl::FRAGMENT_SHADER, effect.ps.name };
+		for (auto& def : effect.defines) {
+			vs.SetDefine(def.first, def.second);
+			ps.SetDefine(def.first, def.second);
+		}
+		vs.Compile();
+		ps.Compile();
+		_program = CreateProgram({ vs.ShaderID(), ps.ShaderID() });
+	}
 	GLuint GLProgram::ProgramID() {
 		return _program;
 	}

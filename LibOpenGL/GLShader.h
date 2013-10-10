@@ -12,11 +12,13 @@ namespace LibOpenGL {
 		GLShader(GLenum type, const std::string& filename);
 		~GLShader();
 		void SetDefine(std::string define, std::string value);
+		void SetDefine(std::string define, int value);
         void SetDefine(std::string define);
 		GLuint ShaderID();
 		GLenum ShaderType();
+		void Compile();
 	private:
-        void compileSrc();
+        
         utils::SourceFile shader_src;
 		GLenum _type;
 		GLuint _shader;

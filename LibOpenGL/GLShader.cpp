@@ -29,16 +29,16 @@ namespace LibOpenGL {
             _shader = gl::CreateShader(_type);
             auto data = utils::slurpByLines(filename);
             shader_src = utils::SourceFile(std::move(data)); 
-            compileSrc();
             
     }
     void GLShader::SetDefine(std::string define, std::string value) {
         shader_src.add_define(std::move(define), std::move(value));
-        compileSrc();
     }
+	void GLShader::SetDefine(std::string define, int value) {
+		SetDefine(std::move(define), std::to_string(value));
+	}
     void GLShader::SetDefine(std::string define) {
         shader_src.add_define(std::move(define));
-        compileSrc();
     }
     GLuint GLShader::ShaderID() {
         return _shader;

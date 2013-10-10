@@ -13,6 +13,7 @@ namespace Effects {
 			const std::vector<ShaderDesc>& desc,
 			const std::set<ShaderCaps>& scaps);
 		std::set<ShaderCaps> caps;
+		std::vector<std::pair<std::string, int>> defines;
 		VertexShader vs;
 		PixelShader ps;
 	};
