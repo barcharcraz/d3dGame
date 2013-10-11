@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <string>
 namespace Effects {
+	const unsigned int APPEND_ALIGNED_ELEMENT = 0xFFFFFFFF;
 	//! \brief this structure works in the same
 	//! way as a D3D11_INPUT_ELEMENT_DESC but is used
 	//! for GLSL attributes as well. For GLSL
@@ -20,8 +21,8 @@ namespace Effects {
 		unsigned int InstanceDataStepRate;
 	};
 	enum InputFormats : uint32_t {
-		R32G32B32A32_FLOAT,
-		R32B32G32_FLOAT
+		R32G32B32A32_FLOAT = 2,
+		R32G32B32_FLOAT = 6
 	};
 	enum SlotClass : int {
 		PER_INSTANCE,

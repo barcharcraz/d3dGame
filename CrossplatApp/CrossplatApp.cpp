@@ -19,7 +19,7 @@ static void load_effects();
 static std::unique_ptr<Input::Input> construct_input();
 int main(int argc, char** argv) {
     windowing::Window window;
-    Rendering::Renderer rend;
+    Rendering::Renderer rend(window.Hwnd());
 	auto input = construct_input();
 	window.AttachInput(input.get());
     load_effects();
@@ -43,6 +43,8 @@ int main(int argc, char** argv) {
     window.Show();
     window.update = [&]() {
         (*scene).Update();
+		rend.Present();
+		rend.Clear();
         
     };
     return windowing::Run();
@@ -52,14 +54,16 @@ void load_effects() {
     using Effects::SlotClass;
     using Effects::ShaderCaps;
     const std::vector<Effects::ShaderDesc> defaultLayout = {
-        Effects::ShaderDesc{ "POSITION", 0, InputFormats::R32G32B32A32_FLOAT, 0, 0, SlotClass::PER_VERTEX, 0}
+		Effects::ShaderDesc{ "POSITION", 0, InputFormats::R32G32B32A32_FLOAT, 0, 0, SlotClass::PER_VERTEX, 0 },
+		Effects::ShaderDesc{ "NORMAL", 0, InputFormats::R32G32B32A32_FLOAT, 0, Effects::APPEND_ALIGNED_ELEMENT, SlotClass::PER_VERTEX, 0 },
+		Effects::ShaderDesc{ "TEXCOORD", 0, InputFormats::R32G32B32_FLOAT, 0, Effects::APPEND_ALIGNED_ELEMENT, SlotClass::PER_VERTEX, 0 }
     };
     const std::set<Effects::ShaderCaps> defaultCaps = {
         ShaderCaps::MESH_INDEXED,
         ShaderCaps::TEXTURE_MAPPED,
         ShaderCaps::LIT_DIRECTIONAL
 	};
-	Effects::Effect DefaultEffect{ "DefaultVS.glsl", "DefaultPS.glsl", defaultLayout, defaultCaps };
+	Effects::Effect DefaultEffect{ "DefaultVS.cso", "DefaultPS.cso", defaultLayout, defaultCaps };
 	DefaultEffect.defines = { { "NUM_DIRECTIONAL", 8 }, { "NUM_POINT", 8 } };
     Effects::AddEffect(DefaultEffect);
 }
