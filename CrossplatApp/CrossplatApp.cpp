@@ -19,7 +19,7 @@ static void load_effects();
 static std::unique_ptr<Input::Input> construct_input();
 int main(int argc, char** argv) {
     windowing::Window window;
-    Rendering::Renderer rend(window.Hwnd());
+    Rendering::Renderer rend(window.Handle());
 	auto input = construct_input();
 	window.AttachInput(input.get());
     load_effects();
@@ -31,7 +31,7 @@ int main(int argc, char** argv) {
     auto camera = (*scene).AddEntity<Prefabs::Camera>();
 	camera->AddComponent(std::move(input));
     mod->Get<Components::Transform3D>()->transform.translate(Eigen::Vector3f{0,0,-10});
-    mod->AddComponent<Components::Velocity3D>(Eigen::Affine3f{Eigen::AngleAxisf{0.001f, Eigen::Vector3f::UnitZ()}});
+    //mod->AddComponent<Components::Velocity3D>(Eigen::Affine3f{Eigen::AngleAxisf{0.001f, Eigen::Vector3f::UnitZ()}});
 
     scene->AddEntity(std::move(mod));
 	scene->AddSystem<Systems::MovementController3D>();

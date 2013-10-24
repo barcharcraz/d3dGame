@@ -91,6 +91,12 @@ namespace windows {
 		onKeyUp = nullptr;
 		onKeyDown = nullptr;
 	}
+	HWND Window::Hwnd() {
+		return _hwnd;
+	}
+	HWND Window::Handle() {
+		return Hwnd();
+	}
 	//-----------PRIVATE-------------------
 	void Window::init(int w, int h) {
 		_hwnd = CreateWindowEx(
@@ -164,9 +170,7 @@ namespace windows {
 		}
 		return 0;
 	}
-	HWND Window::Hwnd() {
-		return _hwnd;
-	}
+
 
 	
 }

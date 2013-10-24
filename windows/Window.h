@@ -12,6 +12,7 @@ namespace windows {
 		Window();
 		Window(int w, int h);
 		HWND Hwnd();
+		HWND Handle();
 		void Show();
 		void AttachInput(Input::Input* input);
 		void ClearInput();
