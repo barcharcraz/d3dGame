@@ -3,16 +3,34 @@ set(CMAKE_USER_MAKE_RULES_OVERRIDE_CXX ${CMAKE_CURRENT_SOURCE_DIR}/cmake/cxx_fla
 project (d3dgame)
 cmake_minimum_required(VERSION 2.8)
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
-find_package(Eigen3 REQUIRED)
-find_package(GLFW3)
-find_package(OpenGL)
-include_directories(${EIGEN3_INCLUDE_DIR} ${PROJECT_SOURCE_DIR})
-IF(GLFW3_FOUND)
-include_directories( ${GLFW3_INCLUDE_PATH} )
-ENDIF(GLFW3_FOUND)
-IF(GLEW_FOUND)
-include_directories( ${GLEW_INCLUDE_DIRS} )
-ENDIF(GLEW_FOUND)
+if(NOT DEFINED DEPENDENCIES_DOWNLOADALL)
+    SET(DEPENDENCIES_DOWNLOADALL OFF CACHE BOOL "Download all dependencies with ExtenalProject")
+    return()
+endif(NOT DEFINED DEPENDENCIES_DOWNLOADALL)
+if(DEPENDENCIES_DOWNLOADALL)
+    include(ExternalProject)
+    ExternalProject_Add(Eigen3
+                        PREFIX eigen3
+                        HG_REPOSITORY https://bitbucket.org/eigen/eigen/
+                        HG_TAG 3.2.0
+                        )
+    ExternalProject_Add(glfw3
+                        PREFIX glfw3
+                        GIT_REPOSITORY https://github.com/glfw/glfw.git
+                        GIT_TAG 3.0.3
+                        )
+else(DEPENDENCIES_DOWNLOADALL) 
+    find_package(Eigen3 REQUIRED)
+    find_package(GLFW3)
+    find_package(OpenGL)
+    include_directories(${EIGEN3_INCLUDE_DIR} ${PROJECT_SOURCE_DIR})
+    IF(GLFW3_FOUND)
+    include_directories( ${GLFW3_INCLUDE_PATH} )
+    ENDIF(GLFW3_FOUND)
+    IF(GLEW_FOUND)
+    include_directories( ${GLEW_INCLUDE_DIRS} )
+    ENDIF(GLEW_FOUND)
+endif(DEPENDENCIES_DOWNLOADALL)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/output)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/output)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/output)
