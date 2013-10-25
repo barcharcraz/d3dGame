@@ -10,6 +10,8 @@
 #include <LibAssets/ObjFile.h>
 #include <LibPrefabs/StaticModel.h>
 #include <LibPrefabs/Camera.h>
+#include <LibPrefabs/PointLight.h>
+#include <LibPrefabs/DirectionalLight.h>
 #include <LibImage/image.h>
 #include <LibImage/targa.h>
 #include <LibSystems/VelocitySystem3D.h>
@@ -36,7 +38,7 @@ int main(int argc, char** argv) {
     scene->AddEntity(std::move(mod));
 	scene->AddSystem<Systems::MovementController3D>();
 	scene->AddSystem<Systems::VelocitySystem3D>();
-	
+	scene->AddEntity<Prefabs::DirectionalLight>(Eigen::Vector4f{ 0.0f, 1.0f, 0.2f, 1.0f }, Eigen::Vector3f{ 0.0f, 0.0f, -100.0f });
     
 	(*scene).AddSystem<Rendering::ModelRenderer>(&rend);
 	

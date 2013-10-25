@@ -25,8 +25,8 @@ namespace Effects {
 		R32G32B32_FLOAT = 6
 	};
 	enum SlotClass : int {
-		PER_INSTANCE,
-		PER_VERTEX
+		PER_VERTEX,
+		PER_INSTANCE
 	};
 	enum class ShaderCaps {
 		MESH_INDEXED,
