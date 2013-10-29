@@ -25,6 +25,9 @@ namespace LibGLFW {
         //! current context as well, note that this is
         //! an OpenGL window specific function
         void SetAsActive();
+        //! \brief get the handle to the window.
+        //! in this case it is a GLFWwindow pointer
+        GLFWwindow* Handle();
         std::function<void()> update;
     private:
 		double lastX = 0;

@@ -52,8 +52,7 @@ namespace LibOpenGL {
         gl::DeleteShader(_shader);
     }
 
-    //---PRIVATE METHODS-----
-    void GLShader::compileSrc() {
+    void GLShader::Compile() {
         auto cdata = shader_src.cdata();
         gl::ShaderSource(_shader, cdata.size(), &cdata[0], nullptr);
         gl::CompileShader(_shader);

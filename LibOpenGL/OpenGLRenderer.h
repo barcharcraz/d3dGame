@@ -6,8 +6,11 @@ namespace LibOpenGL {
 	class OpenGLRenderer {
 	public:
 		OpenGLRenderer();
+        OpenGLRenderer(void*);
         
 		GLuint ActiveProgram;
+    private:
+        init();
 	};
 
     //global functions to manipulate the openGL context

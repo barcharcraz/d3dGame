@@ -14,7 +14,10 @@ namespace LibOpenGL {
 		//so zero is a good "null" value
 		ActiveProgram = 0;
 	}
+    OpenGLRenderer::OpenGLRenderer(void*) {
 
+    }
+    //PRIVATE
     //freestanding functions
     void EnableDepthBuffer() {
         gl::Enable(gl::DEPTH_TEST);
