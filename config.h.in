@@ -5,8 +5,7 @@
 
 #cmakedefine HAS_X11
 #cmakedefine HAS_WIN32
-#cmakedefine GLFW3_FOUND
-#cmakedefine GLEW_FOUND
+#cmakedefine USE_GLFW
 #cmakedefine HAS_MAKE_UNIQUE
 #cmakedefine USE_OPENGL
 #cmakedefine USE_DIRECT3D

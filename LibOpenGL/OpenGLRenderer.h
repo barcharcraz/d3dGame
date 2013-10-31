@@ -1,16 +1,19 @@
 #ifndef LIBOPENGL_RENDERER_H
 #define LIBOPENGL_RENDERER_H
 #include "stdafx.h"
-class GLFWindow;
+#include <windowing.h>
 namespace LibOpenGL {
 	class OpenGLRenderer {
 	public:
-		OpenGLRenderer();
-        OpenGLRenderer(void*);
+        OpenGLRenderer(windowing::IWindow* win);
         
+        void Present();
+        void Clear();
+
 		GLuint ActiveProgram;
     private:
-        init();
+        void init();
+        windowing::IWindow* _win;
 	};
 
     //global functions to manipulate the openGL context

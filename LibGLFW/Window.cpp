@@ -10,10 +10,9 @@
 namespace LibGLFW {
     namespace {
         Window* ActiveWindow;
-        void resizeWindow(GLFWwindow* win, int w, int h);
+        void resizeWindow(GLFWwindow*, int w, int h);
 		
-        void resizeWindow(GLFWwindow* win, int w, int h) {
-			win;
+        void resizeWindow(GLFWwindow*, int w, int h) {
             glViewport(0,0,w,h);
         }
 		
@@ -36,8 +35,6 @@ namespace LibGLFW {
 		}
 	}
 	void HandleCursorEnter(GLFWwindow* win, int entered) {
-		win;
-		entered;
 		if (ActiveWindow != nullptr && ActiveWindow->_win == win) {
 			if (GL_TRUE == entered) {
 				double newX, newY;
@@ -50,21 +47,13 @@ namespace LibGLFW {
     int Run() {
         glfwMakeContextCurrent(ActiveWindow->_win);
         glfwSwapInterval(1);
-        std::chrono::high_resolution_clock clock;
-        std::chrono::high_resolution_clock::time_point start, end;
-        std::chrono::milliseconds frame_time(0);
+        
         while(!glfwWindowShouldClose(ActiveWindow->_win)) { 
-            start = clock.now();
             if(ActiveWindow->update) {
 				ActiveWindow->update();
 			}
 			ActiveWindow->HandleMouseMovement();
-			glfwSwapBuffers(ActiveWindow->_win);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
             glfwPollEvents();
-            end = clock.now();
-            frame_time = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-            std::cerr << frame_time.count() << std::endl;
         }
         glfwTerminate();
         return 0;
@@ -93,6 +82,12 @@ namespace LibGLFW {
     void Window::Show() {
         return; //we dont need to do anything for GLFW
     }
+    void Window::Present() {
+        glfwSwapBuffers(_win);
+    }
+    void Window::Clear() {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    }
     void Window::SetAsActive() {
         glfwMakeContextCurrent(_win);
         glfwSetWindowSizeCallback(_win, &resizeWindow);
@@ -100,9 +95,7 @@ namespace LibGLFW {
 		glfwSetInputMode(_win, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         ActiveWindow = this;
     }
-    GLFWwindow* Window::Handle() {
-        return this->_win;
-    }
+    
     /* -----------PRIVATE------------- */
     void Window::init(int w, int h) {
         int result = 0;

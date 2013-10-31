@@ -2,6 +2,7 @@
 #define LIBGLFW_WINDOW_H
 #include <GLFW/glfw3.h>
 #include <functional>
+#include <windowing/IWindow.h>
 namespace Input {
     class Input;
 }
@@ -9,7 +10,7 @@ namespace LibGLFW {
 	void HandleKey(GLFWwindow* win, int key, int scancode, int action, int mods);
 	void HandleCursorEnter(GLFWwindow* win, int entered);
     int Run();
-    class Window {
+    class Window : public windowing::IWindow {
 		friend void HandleKey(GLFWwindow*, int, int, int, int);
 		friend void HandleCursorEnter(GLFWwindow*, int);
         friend int Run();
@@ -18,16 +19,16 @@ namespace LibGLFW {
 		Window();
         ~Window();
         Window(int w ,int h);
-        void AttachInput(Input::Input* in);
-        void Show();
+        virtual void AttachInput(Input::Input* in) override;
+        virtual void Show() override;
+        virtual void Present() override;
+        virtual void Clear() override;
         //! \brief note that this function
         //! sets a given context as the OpenGL
         //! current context as well, note that this is
         //! an OpenGL window specific function
         void SetAsActive();
-        //! \brief get the handle to the window.
-        //! in this case it is a GLFWwindow pointer
-        GLFWwindow* Handle();
+        
         std::function<void()> update;
     private:
 		double lastX = 0;

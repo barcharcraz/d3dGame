@@ -8,4 +8,6 @@ set(glfw_files
     Keys.cpp
 	)
 add_library(LibGLFW STATIC ${glfw_files})
-target_link_libraries(LibGLFW ${GLFW3_LIBRARY})
+
+
+target_link_libraries(LibGLFW glfw)

@@ -3,21 +3,29 @@
 #include <Utils/exceptions.h>
 #include <system_error>
 namespace LibOpenGL {
-	OpenGLRenderer::OpenGLRenderer() {
-		auto res = gl::sys::LoadFunctions();
-        
-		if(!res) {
-			throw utils::graphics_api_error("could not load OGL functions");
-		}
-        EnableDepthBuffer();
-		//glCreateProgram is garenteed to return a non-zero value
-		//so zero is a good "null" value
-		ActiveProgram = 0;
-	}
-    OpenGLRenderer::OpenGLRenderer(void*) {
-
+	
+    OpenGLRenderer::OpenGLRenderer(windowing::IWindow* win)
+        : _win(win)
+    {
+        init();
     }
     //PRIVATE
+    void OpenGLRenderer::init() {
+        auto res = gl::sys::LoadFunctions();
+        if(!res) {
+            throw utils::graphics_api_error("could not load OGL functions");
+        }
+        EnableDepthBuffer();
+        //we are using zero as a "null" value, since
+        //gl will not return that when creating a program
+        ActiveProgram = 0;
+    }
+    void OpenGLRenderer::Present() {
+        _win->Present();
+    }
+    void OpenGLRenderer::Clear() {
+        gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT | gl::STENCIL_BUFFER_BIT);
+    }
     //freestanding functions
     void EnableDepthBuffer() {
         gl::Enable(gl::DEPTH_TEST);

@@ -56,6 +56,7 @@ namespace LibOpenGL {
         auto cdata = shader_src.cdata();
         gl::ShaderSource(_shader, cdata.size(), &cdata[0], nullptr);
         gl::CompileShader(_shader);
+        
         auto error = get_compile_errors(_shader);
         if(error != "") {
             throw utils::graphics_api_error(error);

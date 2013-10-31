@@ -16,12 +16,20 @@ if(DEPENDENCIES_DOWNLOADALL)
 endif(DEPENDENCIES_DOWNLOADALL) 
 
 find_package(Eigen3 CONFIG)
-find_package(GLFW3)
+find_package(glfw CONFIG)
+find_package(GTest)
 find_package(OpenGL)
+
+if(GTEST_FOUND)
+    message("gtest found with link libs ${GTEST_LIBRARIES}")
+else()
+    message("gtest not found")
+endif()
+
 include_directories(${EIGEN_INCLUDE_DIR} ${PROJECT_SOURCE_DIR})
-IF(GLFW3_FOUND)
-include_directories( ${GLFW3_INCLUDE_PATH} )
-ENDIF(GLFW3_FOUND)
+IF(USE_GLFW)
+include_directories( ${GLFW_INCLUDE_DIR} )
+ENDIF()
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/output)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/output)
@@ -36,25 +44,16 @@ IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
     add_definitions(-std=c++11 -Wall -pedantic -Wno-missing-braces)
 ENDIF()
 
-
+include(CMakeDependentOption)
 #openGL/DX options/defaults
-IF(WIN32)
-SET(USE_OPENGL OFF CACHE BOOL "build with OpenGL support")
-SET(USE_DIRECT3D ON CACHE BOOL "build with Direct3D support")
-ELSE(WIN32)
-SET(USE_OPENGL ON CACHE BOOL "build with OpenGL support")
-SET(USE_DIRECT3D OFF CACHE BOOL "build with direct3D support")
-ENDIF(WIN32)
+OPTION(USE_OPENGL "build with opengl support" ON)
+OPTION(USE_DIRECT3D "build with direct3d support" OFF)
+OPTION(USE_GLFW "use glfw for windowing" ON)
+
+
 
 #config.h configuration
-INCLUDE(CheckIncludeFiles)
 INCLUDE(CheckCXXSourceCompiles)
-CHECK_INCLUDE_FILES(X11/Xlib.h HAS_X11)
-CHECK_INCLUDE_FILES(windows.h HAS_WIN32)
-CHECK_INCLUDE_FILES(GL/gl.h HAS_GL)
-CHECK_INCLUDE_FILES(GL/glx.h HAS_GLX)
-CHECK_INCLUDE_FILES(OpenGL/gl.h HAS_OPENGL) #screw you OSX
-
 #check for make_unique
 CHECK_CXX_SOURCE_COMPILES(
 "
@@ -73,9 +72,13 @@ ENDIF(WIN32)
 IF(APPLE)
 	set(CMAKE_EXE_LINKER_FLAGS "-framework OpenGL -framework IOKit -framework Cocoa")
 ENDIF(APPLE)
-enable_testing()
 add_custom_target(Glue SOURCES windowing.h Components2D.h Components3D.h Components.h Rendering.h)
 
+
+if(GTEST_FOUND)
+    enable_testing()
+    add_subdirectory(Tests)
+endif(GTEST_FOUND)
 add_subdirectory(LibCommon)
 add_subdirectory(assets)
 add_subdirectory(Utils)
@@ -107,14 +110,13 @@ IF(USE_OPENGL)
 	IF(HAS_GLX)
 	add_subdirectory(LibGLX)
 	ENDIF(HAS_GLX)
-	IF(GLFW3_FOUND)
+	IF(USE_GLFW)
 	add_subdirectory(LibGLFW)
-	ENDIF(GLFW3_FOUND)
+	ENDIF(USE_GLFW)
 	add_subdirectory(LibGLSL)
 	add_subdirectory(GLSLShaders)
 ENDIF(USE_OPENGL)
 add_subdirectory(CrossplatApp)
 add_subdirectory(LibCairo)
 add_subdirectory(RenderingUtils)
-add_subdirectory(Tests)
 add_subdirectory(LibAssets)

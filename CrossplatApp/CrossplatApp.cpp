@@ -21,7 +21,7 @@ static void load_effects();
 static std::unique_ptr<Input::Input> construct_input();
 int main(int argc, char** argv) {
     windowing::Window window;
-    Rendering::Renderer rend(window.Handle());
+    Rendering::Renderer rend(&window);
 	auto input = construct_input();
 	window.AttachInput(input.get());
     load_effects();
@@ -65,7 +65,7 @@ void load_effects() {
         ShaderCaps::TEXTURE_MAPPED,
         ShaderCaps::LIT_DIRECTIONAL
 	};
-	Effects::Effect DefaultEffect{ "DefaultVS.cso", "DefaultPS.cso", defaultLayout, defaultCaps };
+	Effects::Effect DefaultEffect{ "DefaultVS.glsl", "DefaultPS.glsl", defaultLayout, defaultCaps };
 	DefaultEffect.defines = { { "NUM_DIRECTIONAL", 8 }, { "NUM_POINT", 8 } };
     Effects::AddEffect(DefaultEffect);
 }
