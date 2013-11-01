@@ -19,7 +19,7 @@ namespace LibGLFW {
 		
     }
 
-	void HandleKey(GLFWwindow* win, int key, int scancode, int action, int mods) {
+	void HandleKey(GLFWwindow*, int key, int, int action, int) {
 		
 		if (nullptr == ActiveWindow) {
 			return;

@@ -50,7 +50,7 @@ namespace Systems {
 	void AxisAlignedBBSystem::Init() {
 		EnableUpdate({ typeid(Components::Transform3D) });
 	}
-	void AxisAlignedBBSystem::OnEntityUpdate(LibCommon::Entity* ent, Components::IComponent* comp) {
+	void AxisAlignedBBSystem::OnEntityUpdate(LibCommon::Entity* ent, Components::IComponent*) {
 		auto model = ent->GetOptional<Components::Model>();
 		auto aabb = ent->Get<Components::AxisAlignedBB>();
 		auto transform = ent->Get<Components::Transform3D>();

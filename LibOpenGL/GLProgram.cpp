@@ -64,7 +64,9 @@ namespace LibOpenGL {
 	GLuint GLProgram::ProgramID() {
 		return _program;
 	}
-
+	GLuint GLProgram::GetUniformLocation(const std::string& name) {
+		return gl::GetUniformLocation(_program, name.c_str());
+	}
 	GLProgram::~GLProgram() {
 		if(_program != 0) { 
 			gl::DeleteProgram(_program);

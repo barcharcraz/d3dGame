@@ -29,7 +29,7 @@ namespace Systems {
 			sap.RemoveObject(e);
 		}
 	}
-	void CollisionDetectionSystem::OnEntityUpdate(LibCommon::Entity* ent, Components::IComponent* comp) {
+	void CollisionDetectionSystem::OnEntityUpdate(LibCommon::Entity* ent, Components::IComponent*) {
 		auto bbox = ent->Get<Components::AxisAlignedBB>();
 		sap.UpdateObject(bbox->CurAABB, ent);
 		auto collidedEnts = sap.QueryObject(ent);

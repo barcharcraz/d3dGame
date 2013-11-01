@@ -10,4 +10,4 @@ set(glfw_files
 add_library(LibGLFW STATIC ${glfw_files})
 
 
-target_link_libraries(LibGLFW glfw)
+target_link_libraries(LibGLFW ${GLFW_LIBRARY})

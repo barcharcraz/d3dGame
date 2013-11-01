@@ -40,6 +40,7 @@ namespace LibOpenGL {
 		buffers& updateBuffers( LibCommon::Entity* ent );
 		void bindUniforms(GLuint program);
 		void bindModel(GLuint program);
+		void bindTextures(GLuint program);
 		OpenGLRenderer* render;
 		std::unordered_map<Components::Effect*, GLProgram> program_map;
 		std::unordered_map<LibCommon::Entity*, buffers> buffer_map;

@@ -10,10 +10,11 @@ namespace LibOpenGL {
 	public:
 		GLProgram(GLuint vertex, GLuint fragment);
 		GLProgram(GLuint vertex, GLuint geom, GLuint fragment);
-		GLProgram(const Effects::Effect& effect);
+		explicit GLProgram(const Effects::Effect& effect);
 		GLProgram(GLProgram&& other);
 		GLProgram(const GLProgram& other) = delete;
 		GLuint ProgramID();
+		GLuint GetUniformLocation(const std::string& name);
 		~GLProgram();
 	private:
 		GLuint _program;

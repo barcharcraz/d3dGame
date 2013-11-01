@@ -19,7 +19,7 @@
 #include <LibInput/Input.h>
 static void load_effects();
 static std::unique_ptr<Input::Input> construct_input();
-int main(int argc, char** argv) {
+int main(int, char**) {
     windowing::Window window;
     Rendering::Renderer rend(&window);
 	auto input = construct_input();

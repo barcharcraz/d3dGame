@@ -10,33 +10,42 @@ namespace utils {
     class SourceFile {
     public:
         SourceFile() = default;
+		explicit SourceFile(int offset_arg) : offset(offset_arg) {}
         SourceFile(std::vector<std::string> source) 
             : shader_src(std::move(source))
         {
-            include_parse();
         }
+		int Offset() const {
+			return offset;
+		}
+		void Offset(int newOffset) {
+			offset = newOffset;
+		}
         std::vector<const char*> cdata() const {
             return utils::convert_array(shader_src);
         }
         void include_parse() { 
             std::vector<std::string> includes;
             std::string compareTo = "#include ";
-            for(auto& str : shader_src) {
-                if(str.compare(0, compareTo.size(), compareTo) == 0) {
+			for (auto str = begin(shader_src) + offset; str != end(shader_src); ++str) {
+                if(str->compare(0, compareTo.size(), compareTo) == 0) {
                     //get the contents of the other file
-                    std::string filename = str.substr(compareTo.size(), str.size());
+                    std::string filename = str->substr(compareTo.size(), str->size());
                     filename.erase(find(begin(filename), end(filename), '\n'));
                     //first we trim off the spaces than we trim off the "s, we do not
                     //support include paths
                     trim(&filename);
                     trim(&filename, '"');
                     std::cerr << filename << std::endl;
-                    str = utils::slurpText(filename);
+                    *str = utils::slurpText(filename);
                 }
             }
         }
         void add_text(std::string text) {
-            shader_src.insert(begin(shader_src), std::move(text));
+			if (text.back() != '\n') {
+				text.push_back('\n');
+			}
+            shader_src.insert(begin(shader_src) + offset, std::move(text));
         }
         void add_define(std::string name) {
             add_text("#define " + name);
@@ -56,6 +65,7 @@ namespace utils {
         }
     private:
         std::vector<std::string> shader_src;
+		int offset = 0;
     };
 }
 

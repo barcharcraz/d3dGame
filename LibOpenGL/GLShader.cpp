@@ -21,6 +21,11 @@ namespace {
         }
         return "";
     }
+	bool get_is_compiled(GLuint shader) {
+		int rv = 0;
+		gl::GetShaderiv(shader, gl::COMPILE_STATUS, &rv);
+		return rv != 0; //convert the int to a bool
+	}
 }
 
 namespace LibOpenGL {
@@ -29,6 +34,8 @@ namespace LibOpenGL {
             _shader = gl::CreateShader(_type);
             auto data = utils::slurpByLines(filename);
             shader_src = utils::SourceFile(std::move(data)); 
+			shader_src.Offset(1);
+			shader_src.include_parse();
             
     }
     void GLShader::SetDefine(std::string define, std::string value) {
@@ -56,11 +63,13 @@ namespace LibOpenGL {
         auto cdata = shader_src.cdata();
         gl::ShaderSource(_shader, cdata.size(), &cdata[0], nullptr);
         gl::CompileShader(_shader);
-        
-        auto error = get_compile_errors(_shader);
-        if(error != "") {
-            throw utils::graphics_api_error(error);
-        }
+		auto error = get_compile_errors(_shader);
+		if (error != "") {
+			std::cerr << error;
+		}
+		if (get_is_compiled(_shader) == false) {
+			throw utils::graphics_api_error(error);
+		}
     }
 
     

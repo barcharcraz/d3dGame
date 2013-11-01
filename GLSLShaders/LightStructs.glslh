@@ -1,3 +1,4 @@
+
 struct pointLight_t {
     vec4 diffuse;
     vec4 specular;

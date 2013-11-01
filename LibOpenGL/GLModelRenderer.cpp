@@ -40,9 +40,8 @@ namespace LibOpenGL {
         auto& buffer = updateBuffers(ent);
         std::unordered_map<Components::Effect*, GLProgram>::iterator program;
         program = program_map.find(effect);
-        if(program == program_map.end()) {
-            program = program_map.emplace(effect, GLProgram{GLShader(gl::VERTEX_SHADER, effect->vs.name).ShaderID(),
-                                GLShader(gl::FRAGMENT_SHADER, effect->ps.name).ShaderID()}).first;
+		if (program == program_map.end()) {
+			program = program_map.emplace(effect, GLProgram{ *effect }).first;
             
             
         }
@@ -98,6 +97,7 @@ namespace LibOpenGL {
             }
         }
     }
+
     void GLModelRenderer::bindUniforms(GLuint program) {
         GLint viewidx = gl::GetUniformLocation(program, "mvp.view");
         GLint projidx = gl::GetUniformLocation(program, "mvp.proj");
