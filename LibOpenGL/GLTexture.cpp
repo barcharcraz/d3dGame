@@ -1,6 +1,33 @@
 #include "GLTexture.h"
 #include <Utils/exceptions.h>
 namespace LibOpenGL {
+	GLTexture::GLTexture() {
+		init();
+	}
+	GLTexture::GLTexture(GLTexture&& other) {
+		*this = std::move(other);
+	}
+	GLTexture& GLTexture::operator=(GLTexture&& other) {
+		_texture = other._texture;
+		_image = std::move(other._image);
+		other._texture = 0;
+	}
+	GLTexture::GLTexture(Image::ImageData image)
+		: _image(std::move(image)) 
+	{
+		init();
+		SetTexImage(_texture, _image);
+	}
+
+	GLTexture::~GLTexture() {
+		gl::DeleteTextures(1, &_texture);
+	}
+
+	void GLTexture::init() {
+		gl::GenTextures(1, &_texture);
+	}
+
+	//freestanding functions
 	void SetTexImage(GLuint texture, const Image::ImageData& dat) {
 		gl::ActiveTexture(gl::TEXTURE0);
 		gl::BindTexture(gl::TEXTURE_2D, texture);
@@ -12,6 +39,8 @@ namespace LibOpenGL {
 			GetType(dat.format),
 			&dat.data[0]
 			);
+		gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_BASE_LEVEL, 0);
+		gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_MAX_LEVEL, 0);
 	}
 	GLint GetInternalFormat(Image::Formats fmt) {
 		switch (fmt) {
