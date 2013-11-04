@@ -16,7 +16,7 @@ namespace Input {
 		void ActivateKey(Keys key);
 		void DeactivateKey(Keys key);
 		DeviceData* Device(DeviceType type);
-		float AxisAction(const std::string& action);
+		double AxisAction(const std::string& action);
 		bool Action(const std::string& action);
 	private:
 		KeyCombination _pressed;

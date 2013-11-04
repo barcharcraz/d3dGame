@@ -19,8 +19,8 @@ namespace Input {
 	bool Input::Action(const std::string& action) {
 		return _pressed.Match(_actions.at(action));
 	}
-	float Input::AxisAction(const std::string& action) {
-		return float(_axisActions.at(action));
+	double Input::AxisAction(const std::string& action) {
+		return double(_axisActions.at(action));
 	}
 	DeviceData* Input::Device(DeviceType type) {
 		return &_devices[type];

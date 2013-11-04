@@ -24,8 +24,13 @@ namespace LibOpenGL {
 	GLTexture::~GLTexture() {
 		gl::DeleteTextures(1, &_texture);
 	}
+    
+    void GLTexture::Bind() {
+        gl::ActiveTexture(gl::TEXTURE0);
+        gl::BindTexture(gl::TEXTURE_2D, _texture);
+    }
 
-	void GLTexture::init() {
+   	void GLTexture::init() {
 		gl::GenTextures(1, &_texture);
 	}
 
@@ -50,29 +55,32 @@ namespace LibOpenGL {
 			return gl::RGBA;
 		case Image::Formats::R8G8B8_UNORM:
 			return gl::RGB;
+        default:
+            throw utils::unsupported_format_error("format is not supported");
 		}
-		throw utils::unsupported_format_error("ARGB is not supported");
+		
 	}
 	GLenum GetFormat(Image::Formats fmt) {
-		switch (fmt)
-		{
+		switch (fmt) {
 		case Image::Formats::R8G8B8_UNORM:
 			return gl::RGB8;
 		case Image::Formats::R8G8B8A8_UNORM:
 			return gl::RGBA8;
+        default:
+            throw utils::unsupported_format_error("format is not supported");
 		}
-		throw utils::unsupported_format_error("ARGB not supported");
+		
 	}
 	GLenum GetType(Image::Formats fmt) {
-		switch (fmt)
-		{
+		switch (fmt) {
 		case Image::Formats::R8G8B8_UNORM:
 			return gl::UNSIGNED_BYTE;
 		case Image::Formats::R8G8B8A8_UNORM:
 			return gl::UNSIGNED_BYTE;
 		case Image::Formats::A8R8G8B8_UNORM:
 			return gl::UNSIGNED_BYTE;
+        default:
+            throw utils::unsupported_format_error("unknown format");
 		}
-		throw utils::unsupported_format_error("unknown format");
 	}
 }

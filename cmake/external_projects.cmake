@@ -12,7 +12,7 @@ macro(install_eigen)
 endmacro()
 macro(install_glfw3)
 	ExternalProject_Add(glfw3
-						URL https://github.com/glfw/glfw/archive/master.zip
+						GIT_REPOSITORY https://github.com/barcharcraz/glfw.git
 						CMAKE_CACHE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
 										 -DUSE_MSVC_RUNTIME_LIBRARY_DLL:BOOL=OFF
 						)
