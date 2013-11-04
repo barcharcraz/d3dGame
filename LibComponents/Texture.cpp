@@ -10,6 +10,9 @@ namespace Components {
 	const Image::ImageData& Texture::data() const {
 		return _imageData;
 	}
+	Image::ImageData& Texture::data() {
+		return _imageData;
+	}
 	
 	
 }

@@ -1,5 +1,5 @@
 #include "stdafx.h"
-
+#include <string>
 #ifndef LIBOPENGL_GLPROGRAM_H
 #define LIBOPENGL_GLPROGRAM_H
 namespace Effects {

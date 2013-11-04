@@ -10,7 +10,7 @@ namespace LibOpenGL {
 	class GLTexture {
 	public:
 		GLTexture();
-		GLTexture(Image::ImageData image);
+		GLTexture(Image::ImageData* image);
 		GLTexture(const GLTexture& other) = delete;
 		GLTexture(GLTexture&& other);
 
@@ -23,7 +23,7 @@ namespace LibOpenGL {
 	private:
 		void init();
 		GLuint _texture;
-		Image::ImageData _image;
+		Image::ImageData* _image = nullptr;
 	};
 	//! \brief Upload an image to an openGL texture
 	//!

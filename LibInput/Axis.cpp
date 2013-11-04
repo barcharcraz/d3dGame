@@ -8,10 +8,10 @@ namespace Input {
 	{
 
 	}
-	Axis::operator float() const {
+	Axis::operator double() const {
 		return _pos;
 	}
-	void Axis::SetPosition(float newPos) {
+	void Axis::SetPosition(double newPos) {
 		_pos = newPos;
 	}
 }

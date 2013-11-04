@@ -17,7 +17,7 @@ namespace LibOpenGL {
     
 
     GLModelRenderer::GLModelRenderer( OpenGLRenderer* render_arg )
-        : System({typeid(Components::Model), typeid(Components::Transform3D), typeid(Components::Effect)}),
+        : System({typeid(Components::Model), typeid(Components::Transform3D), typeid(Components::Effect), typeid(Components::Texture)}),
             render(render_arg)
         
     {
@@ -38,25 +38,20 @@ namespace LibOpenGL {
         auto transform = ent->Get<Components::Transform3D>();
         _transforms.model = transform->transform.matrix();
         auto& buffer = updateBuffers(ent);
-        std::unordered_map<Components::Effect*, GLProgram>::iterator program;
-        program = program_map.find(effect);
-		if (program == program_map.end()) {
-			program = program_map.emplace(effect, GLProgram{ *effect }).first;
-            
-            
-        }
+		auto& program = program_map.at(effect);
+		auto& tex = tex_map.at(ent);
         CheckError();
-        if(render->ActiveProgram != program->second.ProgramID()) {
-            render->ActiveProgram = program->second.ProgramID();
+        if(render->ActiveProgram != program.ProgramID()) {
+            render->ActiveProgram = program.ProgramID();
             gl::UseProgram(render->ActiveProgram);
-            
         }
+		tex.Bind();
 		bindUniforms(render->ActiveProgram);
         bindModel(render->ActiveProgram);
         gl::BindVertexArray(buffer.vao.name());
         gl::EnableVertexAttribArray(0);
         gl::EnableVertexAttribArray(1);
-        //gl::EnableVertexAttribArray(2);
+        gl::EnableVertexAttribArray(2);
         GLint posLoc = gl::GetAttribLocation(render->ActiveProgram, "pos");
         GLint normLoc = gl::GetAttribLocation(render->ActiveProgram, "norm");
         GLint uvLoc = gl::GetAttribLocation(render->ActiveProgram, "uv");
@@ -65,7 +60,7 @@ namespace LibOpenGL {
         gl::BindBuffer(gl::ARRAY_BUFFER, buffer.Vertex.GetBuffer());
         gl::VertexAttribPointer(posLoc, 4, gl::FLOAT, gl::FALSE_, sizeof(LibCommon::Vertex), 0);
         gl::VertexAttribPointer(normLoc, 4, gl::FLOAT, gl::FALSE_, sizeof(LibCommon::Vertex), 0);
-        //gl::VertexAttribPointer(uvLoc, 3, gl::FLOAT, gl::FALSE_, sizeof(LibCommon::Vertex), 0);
+        gl::VertexAttribPointer(uvLoc, 3, gl::FLOAT, gl::FALSE_, sizeof(LibCommon::Vertex), 0);
         
         gl::DrawElements(gl::TRIANGLES, static_cast<GLsizei>(mod->indices.size()), gl::UNSIGNED_INT, 0);
         
@@ -83,7 +78,12 @@ namespace LibOpenGL {
         }
         return bufferItr->second;
     }
-
+	void GLModelRenderer::OnEntityAdd(LibCommon::Entity* ent) {
+		auto entEffect = ent->Get<Components::Effect>();
+		auto texture = ent->Get<Components::Texture>();
+		program_map.emplace(entEffect, GLProgram{ *entEffect });
+		tex_map.emplace(ent, GLTexture{ &texture->data() });
+	}
     void GLModelRenderer::OnEntityRemove(LibCommon::Entity *ent) {
         auto bufferIter = buffer_map.find(ent);
         if(bufferIter != buffer_map.end()) {
@@ -96,6 +96,10 @@ namespace LibOpenGL {
                 program_map.erase(effectItr);
             }
         }
+		auto texIter = tex_map.find(ent);
+		if (texIter != tex_map.end()) {
+			tex_map.erase(texIter);
+		}
     }
 
     void GLModelRenderer::bindUniforms(GLuint program) {

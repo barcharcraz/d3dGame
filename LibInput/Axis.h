@@ -5,10 +5,10 @@ namespace Input {
 	class Axis {
 	public:
 		Axis();
-		explicit operator float() const;
-		void SetPosition(float newPos);
+		explicit operator double() const;
+		void SetPosition(double newPos);
 	private:
-		float _pos;
+		double _pos;
 	};
 }
 

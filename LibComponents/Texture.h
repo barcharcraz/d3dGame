@@ -7,6 +7,7 @@ namespace Components {
 	public:
 		Texture(Image::ImageData data);
 		const Image::ImageData& data() const;
+		Image::ImageData& data();
 	private:
 		Image::ImageData _imageData;
 	};

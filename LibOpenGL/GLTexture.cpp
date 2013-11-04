@@ -9,14 +9,16 @@ namespace LibOpenGL {
 	}
 	GLTexture& GLTexture::operator=(GLTexture&& other) {
 		_texture = other._texture;
-		_image = std::move(other._image);
+		_image = other._image;
+		other._image = nullptr;
 		other._texture = 0;
+		return *this;
 	}
-	GLTexture::GLTexture(Image::ImageData image)
-		: _image(std::move(image)) 
+	GLTexture::GLTexture(Image::ImageData* image)
+		: _image(image) 
 	{
 		init();
-		SetTexImage(_texture, _image);
+		SetTexImage(_texture, *_image);
 	}
 
 	GLTexture::~GLTexture() {
@@ -48,9 +50,8 @@ namespace LibOpenGL {
 			return gl::RGBA;
 		case Image::Formats::R8G8B8_UNORM:
 			return gl::RGB;
-		case Image::Formats::A8R8G8B8_UNORM:
-			throw utils::unsupported_format_error("ARGB is not supported");
 		}
+		throw utils::unsupported_format_error("ARGB is not supported");
 	}
 	GLenum GetFormat(Image::Formats fmt) {
 		switch (fmt)
@@ -59,9 +60,8 @@ namespace LibOpenGL {
 			return gl::RGB8;
 		case Image::Formats::R8G8B8A8_UNORM:
 			return gl::RGBA8;
-		case Image::Formats::A8R8G8B8_UNORM:
-			throw utils::unsupported_format_error("ARGB not supported");
 		}
+		throw utils::unsupported_format_error("ARGB not supported");
 	}
 	GLenum GetType(Image::Formats fmt) {
 		switch (fmt)
@@ -73,5 +73,6 @@ namespace LibOpenGL {
 		case Image::Formats::A8R8G8B8_UNORM:
 			return gl::UNSIGNED_BYTE;
 		}
+		throw utils::unsupported_format_error("unknown format");
 	}
 }
