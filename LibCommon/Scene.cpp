@@ -30,10 +30,8 @@ namespace LibCommon {
 	}
 	Entity* Scene::AddEntity(std::unique_ptr<Entity> && e) {
 		_entities.push_back(std::move(e));
-		for (auto& sys : _systems) {
-			sys->OnEntityAdd(_entities.back().get());
-		}
-		return _entities.back().get();
+		sendAddMessage(_entities.back().get());
+        return _entities.back().get();
 	}
 	void Scene::RemoveEntity(Entity *e) {
 		for(auto i = _entities.begin(); i != _entities.end(); i++) {
@@ -55,6 +53,12 @@ namespace LibCommon {
 		auto element = _systems.insert(insertPos, std::move(s));
 		element->get()->parent = this;
 		(*element)->Init();
+        //we want to send add messages for the backlog of entities
+        auto backlog = SelectEntities((*element)->aspect);
+        for(auto elm : backlog) {
+            (*element)->OnEntityAdd(elm);
+        }
+        
 	}
 	void Scene::AddSystem(System* s) {
 		AddSystem(std::unique_ptr<System>(s));
