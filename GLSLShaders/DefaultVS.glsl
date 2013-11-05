@@ -1,4 +1,4 @@
-#version 150
+#version 140
 
 struct matrices_t {
     mat4 model;

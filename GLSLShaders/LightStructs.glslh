@@ -1,4 +1,5 @@
-
+#if !defined ( GLSL_LIGHTSTRUCTS_H )
+#define GLSL_LIGHT_STRUCTS_H
 struct pointLight_t {
     vec4 diffuse;
     vec4 specular;
@@ -16,3 +17,4 @@ struct material_t {
     float shine;
 };
 
+#endif

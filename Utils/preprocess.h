@@ -6,7 +6,9 @@
 
 namespace utils {
     //freestanding parsing functions
-
+    inline std::string parse_includes(const std::string& filename) {
+        
+    }
     class SourceFile {
     public:
         SourceFile() = default;

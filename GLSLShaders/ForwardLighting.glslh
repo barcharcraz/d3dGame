@@ -1,0 +1,49 @@
+#include "LightStructs.glslh"
+#if !defined ( GLSL_FORWARDLIGHTING_H )
+#define GLSL_FORWARDLIGHTING
+vec4 phongLight(in material_t mat,
+                in vec4 viewDir,
+                in vec4 lvec,
+                in vec4 norm,
+                in vec4 ldiffuse,
+                in vec4 lspec)
+{
+    vec4 rv = (mat.diffuse * dot(lvec, norm) * ldiffuse);
+    rv += (mat.specular * pow(dot(reflect(lvec, norm), viewDir), mat.shine) * lspec);
+    rv = clamp(rv, 0.0, 1.0);
+    return rv; 
+}
+vec4 pointLighting(in pointLight_t[] lights,
+                   in vec4 normal,
+                   in vec4 viewPos,
+                   in material_t mat)
+{
+    uint size = lights.length();
+    vec4 retval = vec4(0,0,0,0);
+    vec4 diffuse;
+    vec4 spec;
+    vec4 lpos;
+    vec4 lvec;
+    for(uint i = 0; i < size; ++i) {
+        diffuse = lights[i].diffuse;
+        spec = lights[i].specular;
+        lpos = lights[i].position;
+        lvec = normalize(lpos - viewPos) * -1;
+        retval += phoneLight(mat, normalize(viewPos), lvec, normal, diffuse, spec);
+    }
+    return retval;
+}
+
+vec4 directionalLighting(in directionalLight_t[] lights,
+                         in vec4 norm,
+                         in vec4 viewPos,
+                         in material_t mat)
+{
+    vec4 retval = vec4(0,0,0,0);
+    uint size = lights.size();
+    for(uint i = 0; i < size; ++i) {
+        retval += phongLight(mat, normalize(viewPos), lights[i].direction, norm, lights[i].diffuse, lights[i].specular);
+    }
+    return retval;
+}
+#endif

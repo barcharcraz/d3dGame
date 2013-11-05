@@ -65,7 +65,11 @@ namespace LibOpenGL {
         gl::CompileShader(_shader);
 		auto error = get_compile_errors(_shader);
 		if (error != "") {
-			std::cerr << error;
+			std::cerr << error << std::endl;
+            std::cerr << "Source was: \n" << std::endl;
+            for(auto& src : cdata) {
+                std::cerr << src;
+            }
 		}
 		if (get_is_compiled(_shader) == false) {
 			throw utils::graphics_api_error(error);
