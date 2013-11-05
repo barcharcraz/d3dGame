@@ -1,4 +1,4 @@
-#version 130
+#version 150
 
 struct matrices_t {
     mat4 model;
@@ -14,7 +14,7 @@ in vec3 uv;
 out vec4 normal;
 out vec4 uvOut;
 void main() {
-	uvOut = uv;
+	uvOut = vec4(uv, 1);
 	vec4 rv = mvp.model * pos;
 	rv = mvp.view * rv;
 	rv = mvp.proj * rv;
@@ -23,5 +23,4 @@ void main() {
 	normal.w = float(1);
 	normal = normTrans * normal;
 	gl_Position = rv;
-	uv = 
 }

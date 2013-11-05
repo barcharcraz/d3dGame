@@ -11,9 +11,15 @@ namespace LibGLFW {
     namespace {
         Window* ActiveWindow;
         void resizeWindow(GLFWwindow*, int w, int h);
-		
+		void reportGlfwError(int code, const char* error);
         void resizeWindow(GLFWwindow*, int w, int h) {
             glViewport(0,0,w,h);
+        }
+        void reportGlfwError(int code, const char* error) {
+            std::string err(error);
+            std::cout << "GLFW Error with code: " <<
+            code << " and description: " << err << std::endl;
+            throw std::runtime_error(err);
         }
 		
 		
@@ -98,14 +104,18 @@ namespace LibGLFW {
     
     /* -----------PRIVATE------------- */
     void Window::init(int w, int h) {
+        glfwSetErrorCallback(&reportGlfwError);
         int result = 0;
         result = glfwInit();
         if(!result) {
             throw std::runtime_error("could not initialize glfw");
         }
+        
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
 		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         _win = glfwCreateWindow(w, h, "GLFW Winodow", nullptr, nullptr);
         if(!_win) {
             throw std::runtime_error("could not create a GLFW window");

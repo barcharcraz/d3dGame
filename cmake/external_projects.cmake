@@ -3,8 +3,10 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 macro(install_eigen)
 	ExternalProject_Add(Eigen3
 						URL http://bitbucket.org/eigen/eigen/get/default.tar.gz
-						CMAKE_CACHE_ARGS -DEIGEN_INCLUDE_INSTALL_DIR:path=<INSTALL_DIR>
+						CMAKE_ARGS -DEIGEN_INCLUDE_INSTALL_DIR:path=<INSTALL_DIR>
 										 -DCMAKE_INSTALL_PREFIX:path=<INSTALL_DIR>
+										 -DEIGEN_LEAVE_TEST_IN_ALL_TARGET:BOOL=OFF
+										 -DCMAKE_Fortran_COMPILER=CMAKE_Fortran_COMPILER-NOTFOUND
 						)
 	ExternalProject_Get_Property(Eigen3 install_dir)
 	set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${install_dir})
@@ -13,8 +15,9 @@ endmacro()
 macro(install_glfw3)
 	ExternalProject_Add(glfw3
 						GIT_REPOSITORY https://github.com/barcharcraz/glfw.git
-						CMAKE_CACHE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
-										 -DUSE_MSVC_RUNTIME_LIBRARY_DLL:BOOL=OFF
+						CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
+								   -DUSE_MSVC_RUNTIME_LIBRARY_DLL:BOOL=OFF
+								   -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
 						)
     ExternalProject_Get_Property(glfw3 install_dir)
     set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${install_dir})
