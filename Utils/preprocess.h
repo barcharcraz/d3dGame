@@ -29,56 +29,47 @@ namespace utils {
         std::ifstream file(filename);
         return preprocess_includes(file);
     }
-    inline void add_text(std::string* const self, std::string text, int offset) {
+	/*
+	* these functions work on strings, hence the strange self parameter
+	* there /could/ be a source file class, but it would add boilerplate
+	*/
+
+
+	//! \brief adds a line of text to a string
+	//! 	   
+	//! this is essentially just an insert call.
+	//!	but we append a newline if text does not have one
+	//!	
+	//! \param self the string to add text to, this will be
+	//!        mutated but the pointer will not move
+	//!	\param text the text to add
+	//!	\param offset the line to add the text (Optional) default is 0
+    inline void add_text(std::string* const self, std::string text, int offset = 0) {
         if(text.back() != '\n') {
             text.push_back('\n');
         }
         self->insert(offset, std::move(text));
     }
-    class SourceFile {
-    public:
-        SourceFile() = default;
-		explicit SourceFile(int offset_arg) : offset(offset_arg) {}
-        SourceFile(std::string source)
-        {
-            std::stringstream instr(source);
-            shader_src = preprocess_includes(instr);
-        }
-		int Offset() const {
-			return offset;
+
+	//! \brief adds a define to self
+	//!
+	//!	by define we mean a string of the form #define name
+	inline void add_define(std::string* const self, const std::string& name, int offset = 0) {
+		add_text(self, "#define " + name, offset);
+	}
+	inline void add_define(std::string* const self, const std::string name, const std::string value, int offset = 0) {
+		add_text(self, "#define " + value, offset);
+	}
+	inline void add_defines(std::string* const self, const std::vector<std::string>& defines, int offset = 0) {
+		for (auto& elm : defines) {
+			add_define(self, elm, offset);
 		}
-		void Offset(int newOffset) {
-			offset = newOffset;
+	}
+	inline void add_defines(std::string* const self, const std::vector<std::pair<std::string, std::string>>& defines, int offset = 0) {
+		for (auto& elm : defines) {
+			add_define(self, elm.first, elm.second, offset);
 		}
-        const char* cdata() const {
-            return shader_src.c_str();
-        }
-        void add_text(std::string text) {
-			if (text.back() != '\n') {
-				text.push_back('\n');
-			}
-            shader_src.insert(offset, std::move(text));
-        }
-        void add_define(std::string name) {
-            add_text("#define " + name);
-        }
-        void add_define(std::string name, std::string value) {
-            add_text("#define " + name + " " + value);
-        }
-        void add_defines(std::vector<std::pair<std::string, std::string>> defines) {
-            for(auto& def : defines) {
-                add_define(def.first, def.second);
-            }
-        }
-        void add_defines(std::vector<std::string> defines) {
-            for(auto& def : defines) {
-                add_define(def);
-            }
-        }
-    private:
-        std::string shader_src;
-		int offset = 0;
-    };
+	}
 }
 
 #endif
