@@ -11,6 +11,8 @@
 #include <LibComponents/Texture.h>
 #include <LibComponents/Transform.h>
 #include <LibComponents/Velocity.h>
+#include <LibComponents/PointLight.h>
+#include <LibComponents/DirectionalLight.h>
 #include <LibCommon/Scene.h>
 #include <LibCommon/Data.h>
 namespace LibOpenGL {
@@ -77,6 +79,9 @@ namespace LibOpenGL {
             bufferItr->second.Index.UpdateData(gl::ELEMENT_ARRAY_BUFFER, index_size, &mod->indices[0], gl::DYNAMIC_DRAW);
         }
         return bufferItr->second;
+    }
+    void GLModelRenderer::bindDirLights(GLuint program) {
+        auto lights = parent->SelectEntities({typeid(Components::
     }
 	void GLModelRenderer::OnEntityAdd(LibCommon::Entity* ent) {
 		auto entEffect = ent->Get<Components::Effect>();

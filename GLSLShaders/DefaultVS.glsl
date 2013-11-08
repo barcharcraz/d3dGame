@@ -13,10 +13,12 @@ in vec4 norm;
 in vec3 uv;
 out vec4 normal;
 out vec4 uvOut;
+out vec4 viewPos;
 void main() {
 	uvOut = vec4(uv, 1);
 	vec4 rv = mvp.model * pos;
 	rv = mvp.view * rv;
+    viewPos = rv;
 	rv = mvp.proj * rv;
 	mat4 modelView = mvp.model * mvp.view;
 	normal.xyz = mat3(modelView) * norm.xyz;

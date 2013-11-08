@@ -32,20 +32,17 @@ namespace LibOpenGL {
     GLShader::GLShader ( GLenum type, const std::string& filename )
         : _type(type) {
             _shader = gl::CreateShader(_type);
-            auto data = utils::slurpByLines(filename);
-            shader_src = utils::SourceFile(std::move(data)); 
-			shader_src.Offset(1);
-			shader_src.include_parse();
+            shader_src = utils::load_source_file(filename);
             
     }
     void GLShader::SetDefine(std::string define, std::string value) {
-        shader_src.add_define(std::move(define), std::move(value));
+        utils::add_define(&shader_src, std::move(define), std::move(value), 1);
     }
 	void GLShader::SetDefine(std::string define, int value) {
 		SetDefine(std::move(define), std::to_string(value));
 	}
     void GLShader::SetDefine(std::string define) {
-        shader_src.add_define(std::move(define));
+        utils::add_define(&shader_src, std::move(define), 1);
     }
     GLuint GLShader::ShaderID() {
         return _shader;
@@ -60,16 +57,14 @@ namespace LibOpenGL {
     }
 
     void GLShader::Compile() {
-        auto cdata = shader_src.cdata();
-        gl::ShaderSource(_shader, cdata.size(), &cdata[0], nullptr);
+        const char* cdata = shader_src.c_str();
+        gl::ShaderSource(_shader, 1, &cdata, nullptr);
         gl::CompileShader(_shader);
 		auto error = get_compile_errors(_shader);
 		if (error != "") {
 			std::cerr << error << std::endl;
             std::cerr << "Source was: \n" << std::endl;
-            for(auto& src : cdata) {
-                std::cerr << src;
-            }
+            std::cerr << cdata;
 		}
 		if (get_is_compiled(_shader) == false) {
 			throw utils::graphics_api_error(error);

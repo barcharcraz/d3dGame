@@ -62,6 +62,7 @@ namespace LibGLFW {
             glfwPollEvents();
         }
         glfwTerminate();
+        ActiveWindow->_win = nullptr;
         return 0;
     }
 	Window::Window() {
@@ -79,7 +80,9 @@ namespace LibGLFW {
         if(ActiveWindow == this) {
             ActiveWindow = nullptr;
         }
-        glfwDestroyWindow(_win);
+        if(_win != nullptr) {
+            glfwDestroyWindow(_win);
+        }
     }
     void Window::AttachInput(Input::Input* in) {
         _input = in; 
@@ -89,6 +92,7 @@ namespace LibGLFW {
         return; //we dont need to do anything for GLFW
     }
     void Window::Present() {
+        glFinish();
         glfwSwapBuffers(_win);
     }
     void Window::Clear() {

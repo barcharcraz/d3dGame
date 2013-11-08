@@ -1,4 +1,4 @@
-#if !defined ( GLSL_LIGHTSTRUCTS_H )
+#ifndef GLSL_LIGHT_STRUCTS_H
 #define GLSL_LIGHT_STRUCTS_H
 struct pointLight_t {
     vec4 diffuse;

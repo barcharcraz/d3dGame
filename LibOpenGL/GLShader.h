@@ -19,7 +19,7 @@ namespace LibOpenGL {
 		void Compile();
 	private:
         
-        utils::SourceFile shader_src;
+        std::string shader_src;
 		GLenum _type;
 		GLuint _shader;
 	};

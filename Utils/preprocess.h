@@ -20,9 +20,13 @@ namespace utils {
                 trim(&filename, '"');
                 std::cerr << filename << std::endl;
                 std::ifstream file{filename};
-                output << preprocess_includes(file);
+                output << preprocess_includes(file) << '\n';
+                output << "#line 0\n";
+            } else {
+                output << line << '\n';
             }
         }
+        
         return output.str();
     }
     inline std::string load_source_file(const std::string& filename) {
@@ -48,7 +52,15 @@ namespace utils {
         if(text.back() != '\n') {
             text.push_back('\n');
         }
-        self->insert(offset, std::move(text));
+        int insertPos = 0;
+        int line = 0;
+        //search for the position to insert the string
+        for(insertPos = 0; line < offset; ++insertPos) {
+            if((*self)[insertPos] == '\n') {
+                line++;
+            }
+        }
+        self->insert(insertPos, std::move(text));
     }
 
 	//! \brief adds a define to self
@@ -58,7 +70,7 @@ namespace utils {
 		add_text(self, "#define " + name, offset);
 	}
 	inline void add_define(std::string* const self, const std::string name, const std::string value, int offset = 0) {
-		add_text(self, "#define " + value, offset);
+		add_text(self, "#define " + name + " " + value, offset);
 	}
 	inline void add_defines(std::string* const self, const std::vector<std::string>& defines, int offset = 0) {
 		for (auto& elm : defines) {
