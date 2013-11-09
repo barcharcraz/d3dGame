@@ -43,9 +43,11 @@ namespace LibOpenGL {
 		void bindUniforms(GLuint program);
 		void bindModel(GLuint program);
 		void bindTextures(GLuint program);
-        void bindDirLights(GLuint program);
-        void bindPointLights(GLuint program);
+        void bindDirLights(GLuint program, int numLights);
+        void bindPointLights(GLuint program, int numLights);
 		OpenGLRenderer* render;
+		GLBuffer plights;
+		GLBuffer dlights;
 		std::unordered_map<Components::Effect*, GLProgram> program_map;
 		std::unordered_map<LibCommon::Entity*, buffers> buffer_map;
 		std::unordered_map<LibCommon::Entity*, GLTexture> tex_map;

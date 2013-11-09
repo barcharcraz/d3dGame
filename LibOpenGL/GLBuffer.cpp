@@ -28,6 +28,13 @@ namespace LibOpenGL {
 		}
 
 	}
+	bool GLBuffer::HasData() {
+		if (currentSize == 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 	//PUBLIC UPDATE METHODS
 	void GLBuffer::UpdateData(GLenum target, GLsizeiptr size, const void *data, GLenum usage) {
 		if(target != initalTarget) {

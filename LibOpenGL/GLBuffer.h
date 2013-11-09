@@ -8,6 +8,7 @@ namespace LibOpenGL {
 		GLBuffer(GLenum target);
 		GLBuffer(const GLBuffer& other) = delete;
 		GLBuffer(GLBuffer&& other);
+		bool HasData();
 		void UpdateData(GLenum target, GLsizeiptr size, const void* data, GLenum usage);
 		void UpdateData(GLenum target, GLsizeiptr size, const void *data);
 		void UpdateData(GLsizeiptr size, const void *data, GLenum usage);

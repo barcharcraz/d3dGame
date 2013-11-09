@@ -47,9 +47,11 @@ namespace LibOpenGL {
             render->ActiveProgram = program.ProgramID();
             gl::UseProgram(render->ActiveProgram);
         }
+		
 		tex.Bind();
 		bindUniforms(render->ActiveProgram);
         bindModel(render->ActiveProgram);
+		bindDirLights(render->ActiveProgram, effect->defines["NUM_DIRECTIONAL"]);
         gl::BindVertexArray(buffer.vao.name());
         gl::EnableVertexAttribArray(0);
         gl::EnableVertexAttribArray(1);
@@ -80,9 +82,40 @@ namespace LibOpenGL {
         }
         return bufferItr->second;
     }
-    void GLModelRenderer::bindDirLights(GLuint program) {
-        auto lights = parent->SelectEntities({typeid(Components::
+    void GLModelRenderer::bindPointLights(GLuint program, int numLights) {
+		auto lights = parent->SelectEntities({ typeid(Components::PointLight), typeid(Components::Transform3D) });
+		if (lights.empty()) {
+			return;
+		}
+		auto lightStructs = LibCommon::fuse_point_lights(lights);
+		GLuint plightsidx = gl::GetUniformBlockIndex(program, "pointLightBlock");
+		CheckError();
+		if (plightsidx == gl::INVALID_INDEX) {
+			std::cerr << "WARNING: glGetUniformBlockIndex returned INVALID_INDEX for point lights" << std::endl;
+		}
+		plights.UpdateData(gl::UNIFORM_BUFFER, sizeof(LibCommon::point_light) * numLights, 
+			&lightStructs[0], gl::DYNAMIC_DRAW);
+		gl::UniformBlockBinding(program, plightsidx, 1);
+		gl::BindBufferBase(gl::UNIFORM_BUFFER, plightsidx, plights.GetBuffer());
     }
+	void GLModelRenderer::bindDirLights(GLuint program, int numLights) {
+		auto lights = parent->SelectEntities({ typeid(Components::DirectionalLight), typeid(Components::Transform3D) });
+		if (lights.empty()) {
+			return;
+		}
+		auto lightStructs = LibCommon::fuse_dir_lights(lights);
+		GLuint dlightidx = gl::GetUniformBlockIndex(program, "dirLightBlock");
+		CheckError();
+		if (dlightidx == gl::INVALID_INDEX) {
+			std::cerr <<
+				"WARNING: glGetUniformBlockIndex returned "
+				"INVALID_INDEX for directional lights" << std::endl;
+		}
+		plights.UpdateData(gl::UNIFORM_BUFFER, sizeof(LibCommon::directional_light) * numLights, 
+			&lightStructs[0], gl::DYNAMIC_DRAW);
+		gl::UniformBlockBinding(program, dlightidx, 2);
+		gl::BindBufferBase(gl::UNIFORM_BUFFER, dlightidx, dlights.GetBuffer());
+	}
 	void GLModelRenderer::OnEntityAdd(LibCommon::Entity* ent) {
 		auto entEffect = ent->Get<Components::Effect>();
 		auto texture = ent->Get<Components::Texture>();
