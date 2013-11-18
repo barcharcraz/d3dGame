@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <set>
+#include <unordered_map>
 namespace Effects {
 	
 	class Effect {
@@ -13,7 +14,7 @@ namespace Effects {
 			const std::vector<ShaderDesc>& desc,
 			const std::set<ShaderCaps>& scaps);
 		std::set<ShaderCaps> caps;
-		std::vector<std::pair<std::string, int>> defines;
+        std::unordered_map<std::string, int> defines;
 		VertexShader vs;
 		PixelShader ps;
 	};

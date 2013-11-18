@@ -51,7 +51,9 @@ namespace LibOpenGL {
 		tex.Bind();
 		bindUniforms(render->ActiveProgram);
         bindModel(render->ActiveProgram);
+        
 		bindDirLights(render->ActiveProgram, effect->defines["NUM_DIRECTIONAL"]);
+        bindPointLights(render->ActiveProgram, effect->defines["NUM_POINT"]);
         gl::BindVertexArray(buffer.vao.name());
         gl::EnableVertexAttribArray(0);
         gl::EnableVertexAttribArray(1);

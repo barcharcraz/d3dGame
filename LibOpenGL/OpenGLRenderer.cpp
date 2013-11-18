@@ -40,6 +40,7 @@ namespace LibOpenGL {
 		GLenum err;
 		err = gl::GetError();
 		if (err != gl::NO_ERROR_) {
+            gl
 			throw std::system_error(err, std::system_category());
 		}
 	}
