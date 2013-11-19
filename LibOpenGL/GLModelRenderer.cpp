@@ -101,8 +101,9 @@ namespace LibOpenGL {
 		gl::BindBuffer(gl::UNIFORM_BUFFER, dlights.GetBuffer());
 		plights.UpdateData(gl::UNIFORM_BUFFER, sizeof(LibCommon::point_light) * realNumLights, 
 			&lightStructs[0], gl::DYNAMIC_DRAW);
+		gl::BindBufferBase(gl::UNIFORM_BUFFER, plightsidx, plights.GetBuffer());
 		gl::UniformBlockBinding(program, plightsidx, 1);
-		gl::BindBufferBase(gl::UNIFORM_BUFFER, 1, plights.GetBuffer());
+		
 		CheckError();
     }
 	void GLModelRenderer::bindDirLights(GLuint program, int numLights) {
@@ -124,8 +125,9 @@ namespace LibOpenGL {
 		gl::BindBuffer(gl::UNIFORM_BUFFER, plights.GetBuffer());
 		plights.UpdateData(gl::UNIFORM_BUFFER, sizeof(LibCommon::directional_light) * realNumLights, 
 			&lightStructs[0], gl::DYNAMIC_DRAW);
-		gl::UniformBlockBinding(program, dlightidx, 2);
-		gl::BindBufferBase(gl::UNIFORM_BUFFER, 2, dlights.GetBuffer());
+		gl::BindBufferBase(gl::UNIFORM_BUFFER, dlightidx, dlights.GetBuffer());
+		gl::UniformBlockBinding(program, dlightidx, 0);
+		
 		CheckError();
 	}
 	void GLModelRenderer::OnEntityAdd(LibCommon::Entity* ent) {

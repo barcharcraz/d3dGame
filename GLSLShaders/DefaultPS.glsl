@@ -6,11 +6,11 @@ in vec4 normal;
 in vec4 viewPos;
 in vec3 uvout;
 out vec4 outputColor;
-uniform dirLightBlock {
+layout(std140) uniform dirLightBlock {
 	directionalLight_t dlights[NUM_DIRECTIONAL];
 };
 
-uniform pointLightBlock {
+layout(std140) uniform pointLightBlock {
 	pointLight_t plights[NUM_POINT];
 };
 
