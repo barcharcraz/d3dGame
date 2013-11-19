@@ -66,7 +66,7 @@ void load_effects() {
         ShaderCaps::LIT_DIRECTIONAL
 	};
 	Effects::Effect DefaultEffect{ "DefaultVS.glsl", "DefaultPS.glsl", defaultLayout, defaultCaps };
-	DefaultEffect.defines = { { "NUM_DIRECTIONAL", 8 }, { "NUM_POINT", 8 } };
+	DefaultEffect.defines = std::unordered_map<std::string, int>{{ { "NUM_DIRECTIONAL", 8 }, { "NUM_POINT", 8 } }};
     Effects::AddEffect(DefaultEffect);
 }
 std::unique_ptr<Input::Input> construct_input() {

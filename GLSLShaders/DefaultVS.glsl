@@ -12,10 +12,10 @@ in vec4 pos;
 in vec4 norm;
 in vec3 uv;
 out vec4 normal;
-out vec4 uvOut;
 out vec4 viewPos;
+out vec3 uvout;
 void main() {
-	uvOut = vec4(uv, 1);
+	uvout = uv;
 	vec4 rv = mvp.model * pos;
 	rv = mvp.view * rv;
     viewPos = rv;

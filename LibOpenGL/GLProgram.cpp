@@ -1,5 +1,6 @@
 #include "GLProgram.h"
 #include "GLShader.h"
+#include "stdafx.h"
 #include <LibEffects/Effect.h>
 #include <Utils/exceptions.h>
 #include <vector>
@@ -67,6 +68,9 @@ namespace LibOpenGL {
 	GLuint GLProgram::GetUniformLocation(const std::string& name) {
 		return gl::GetUniformLocation(_program, name.c_str());
 	}
+
+
+
 	GLProgram::~GLProgram() {
 		if(_program != 0) { 
 			gl::DeleteProgram(_program);

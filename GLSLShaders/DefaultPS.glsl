@@ -3,8 +3,8 @@
 #include "LightStructs.glslh"
 #include "ForwardLighting.glslh"
 in vec4 normal;
-in vec4 uvOut;
 in vec4 viewPos;
+in vec3 uvout;
 out vec4 outputColor;
 uniform dirLightBlock {
 	directionalLight_t dlights[NUM_DIRECTIONAL];
@@ -24,11 +24,9 @@ void main() {
     for(int i = 0; i < NUM_DIRECTIONAL; ++i) {
         outputColor += directionalLight(dlights[i], normal, viewPos, mat); 
     }
-	/*
     outputColor = clamp(outputColor, 0.0, 1.0);
-    outputColor = outputColor * texture(tex, uvOut.xy);
+    outputColor = outputColor * texture(tex, uvout.xy);
     outputColor.a = 1;
-	*/
-	outputColor = dlights[0].diffuse;
+	outputColor.xyz = dlights[0].diffuse.xyz;
   
 }

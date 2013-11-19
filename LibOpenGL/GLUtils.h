@@ -1,6 +1,6 @@
 #ifndef LIBOPENGL_GLUTILS_H
 #define LIBOPENGL_GLUTILS_H
-#include <stdafx.h>
+#include "stdafx.h"
 namespace LibOpenGL {
     //throws a graphics_api_error on an exception
     void CheckError();

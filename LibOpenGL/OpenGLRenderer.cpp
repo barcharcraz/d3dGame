@@ -36,13 +36,5 @@ namespace LibOpenGL {
     void DisableDepthBuffer() {
         gl::Disable(gl::DEPTH_TEST);
     }
-	void CheckError() {
-		GLenum err;
-		err = gl::GetError();
-		if (err != gl::NO_ERROR_) {
-            gl
-			throw std::system_error(err, std::system_category());
-		}
-	}
 
 }

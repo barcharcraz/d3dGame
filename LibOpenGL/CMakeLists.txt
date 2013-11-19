@@ -15,6 +15,8 @@ set(LibOpenGL_files
 	GLUniforms.cpp
 	GLTexture.h
 	GLTexture.cpp
+	GLUtils.h
+	GLUtils.cpp
 	gl_core_3_1.hpp
 	gl_core_3_1.cpp
 	stdafx.h

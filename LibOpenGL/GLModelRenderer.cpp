@@ -1,9 +1,11 @@
 #include "stdafx.h"
 #include "GLModelRenderer.h"
 #include "GLShader.h"
+#include "GLUtils.h"
 #include <set>
 #include <iostream>
 #include <system_error>
+#include <algorithm>
 #include <Eigen/Geometry>
 #include <Eigen/Core>
 #include <LibComponents/Model.h>
@@ -57,17 +59,16 @@ namespace LibOpenGL {
         gl::BindVertexArray(buffer.vao.name());
         gl::EnableVertexAttribArray(0);
         gl::EnableVertexAttribArray(1);
-        gl::EnableVertexAttribArray(2);
+        //gl::EnableVertexAttribArray(2);
         GLint posLoc = gl::GetAttribLocation(render->ActiveProgram, "pos");
         GLint normLoc = gl::GetAttribLocation(render->ActiveProgram, "norm");
-        GLint uvLoc = gl::GetAttribLocation(render->ActiveProgram, "uv");
+        //GLint uvLoc = gl::GetAttribLocation(render->ActiveProgram, "uv");
         
         gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, buffer.Index.GetBuffer());
         gl::BindBuffer(gl::ARRAY_BUFFER, buffer.Vertex.GetBuffer());
         gl::VertexAttribPointer(posLoc, 4, gl::FLOAT, gl::FALSE_, sizeof(LibCommon::Vertex), 0);
         gl::VertexAttribPointer(normLoc, 4, gl::FLOAT, gl::FALSE_, sizeof(LibCommon::Vertex), 0);
-        gl::VertexAttribPointer(uvLoc, 3, gl::FLOAT, gl::FALSE_, sizeof(LibCommon::Vertex), 0);
-        
+        //gl::VertexAttribPointer(uvLoc, 4, gl::FLOAT, gl::FALSE_, sizeof(LibCommon::Vertex), 0);
         gl::DrawElements(gl::TRIANGLES, static_cast<GLsizei>(mod->indices.size()), gl::UNSIGNED_INT, 0);
         
     }
@@ -90,15 +91,19 @@ namespace LibOpenGL {
 			return;
 		}
 		auto lightStructs = LibCommon::fuse_point_lights(lights);
+		//treat numlights as a max
+		auto realNumLights = std::min<int>(numLights, lightStructs.size());
 		GLuint plightsidx = gl::GetUniformBlockIndex(program, "pointLightBlock");
 		CheckError();
 		if (plightsidx == gl::INVALID_INDEX) {
 			std::cerr << "WARNING: glGetUniformBlockIndex returned INVALID_INDEX for point lights" << std::endl;
 		}
-		plights.UpdateData(gl::UNIFORM_BUFFER, sizeof(LibCommon::point_light) * numLights, 
+		gl::BindBuffer(gl::UNIFORM_BUFFER, dlights.GetBuffer());
+		plights.UpdateData(gl::UNIFORM_BUFFER, sizeof(LibCommon::point_light) * realNumLights, 
 			&lightStructs[0], gl::DYNAMIC_DRAW);
 		gl::UniformBlockBinding(program, plightsidx, 1);
-		gl::BindBufferBase(gl::UNIFORM_BUFFER, plightsidx, plights.GetBuffer());
+		gl::BindBufferBase(gl::UNIFORM_BUFFER, 1, plights.GetBuffer());
+		CheckError();
     }
 	void GLModelRenderer::bindDirLights(GLuint program, int numLights) {
 		auto lights = parent->SelectEntities({ typeid(Components::DirectionalLight), typeid(Components::Transform3D) });
@@ -106,6 +111,9 @@ namespace LibOpenGL {
 			return;
 		}
 		auto lightStructs = LibCommon::fuse_dir_lights(lights);
+		//we want to treat the numlights param as a max so that we don't
+		//cruse off the end of the array
+		auto realNumLights = std::min<int>(numLights, lightStructs.size());
 		GLuint dlightidx = gl::GetUniformBlockIndex(program, "dirLightBlock");
 		CheckError();
 		if (dlightidx == gl::INVALID_INDEX) {
@@ -113,10 +121,12 @@ namespace LibOpenGL {
 				"WARNING: glGetUniformBlockIndex returned "
 				"INVALID_INDEX for directional lights" << std::endl;
 		}
-		plights.UpdateData(gl::UNIFORM_BUFFER, sizeof(LibCommon::directional_light) * numLights, 
+		gl::BindBuffer(gl::UNIFORM_BUFFER, plights.GetBuffer());
+		plights.UpdateData(gl::UNIFORM_BUFFER, sizeof(LibCommon::directional_light) * realNumLights, 
 			&lightStructs[0], gl::DYNAMIC_DRAW);
 		gl::UniformBlockBinding(program, dlightidx, 2);
-		gl::BindBufferBase(gl::UNIFORM_BUFFER, dlightidx, dlights.GetBuffer());
+		gl::BindBufferBase(gl::UNIFORM_BUFFER, 2, dlights.GetBuffer());
+		CheckError();
 	}
 	void GLModelRenderer::OnEntityAdd(LibCommon::Entity* ent) {
 		auto entEffect = ent->Get<Components::Effect>();
