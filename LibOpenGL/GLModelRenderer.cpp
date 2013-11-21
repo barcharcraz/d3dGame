@@ -42,19 +42,19 @@ namespace LibOpenGL {
         auto transform = ent->Get<Components::Transform3D>();
         _transforms.model = transform->transform.matrix();
         auto& buffer = updateBuffers(ent);
-		auto& program = program_map.at(effect);
-		auto& tex = tex_map.at(ent);
+        auto& program = program_map.at(effect);
+        auto& tex = tex_map.at(ent);
         CheckError();
         if(render->ActiveProgram != program.ProgramID()) {
             render->ActiveProgram = program.ProgramID();
             gl::UseProgram(render->ActiveProgram);
         }
-		
-		tex.Bind();
-		bindUniforms(render->ActiveProgram);
+        
+        tex.Bind();
+        bindUniforms(render->ActiveProgram);
         bindModel(render->ActiveProgram);
         
-		bindDirLights(render->ActiveProgram, effect->defines["NUM_DIRECTIONAL"]);
+        bindDirLights(render->ActiveProgram, effect->defines["NUM_DIRECTIONAL"]);
         bindPointLights(render->ActiveProgram, effect->defines["NUM_POINT"]);
         gl::BindVertexArray(buffer.vao.name());
         gl::EnableVertexAttribArray(0);
@@ -86,43 +86,43 @@ namespace LibOpenGL {
         return bufferItr->second;
     }
     void GLModelRenderer::bindPointLights(GLuint program, int numLights) {
-		auto lights = parent->SelectEntities({ typeid(Components::PointLight), typeid(Components::Transform3D) });
-		if (lights.empty()) {
-			return;
-		}
-		auto lightStructs = LibCommon::fuse_point_lights(lights);
-		//treat numlights as a max
-		auto realNumLights = std::min<int>(numLights, lightStructs.size());
-		GLuint plightsidx = gl::GetUniformBlockIndex(program, "pointLightBlock");
-		CheckError();
-		if (plightsidx == gl::INVALID_INDEX) {
-			std::cerr << "WARNING: glGetUniformBlockIndex returned INVALID_INDEX for point lights" << std::endl;
-		}
-		gl::BindBuffer(gl::UNIFORM_BUFFER, dlights.GetBuffer());
-		plights.UpdateData(gl::UNIFORM_BUFFER, sizeof(LibCommon::point_light) * realNumLights, 
-			&lightStructs[0], gl::DYNAMIC_DRAW);
-		gl::BindBufferBase(gl::UNIFORM_BUFFER, plightsidx, plights.GetBuffer());
-		gl::UniformBlockBinding(program, plightsidx, 1);
-		
-		CheckError();
-    }
-	void GLModelRenderer::bindDirLights(GLuint program, int numLights) {
-		auto lights = parent->SelectEntities({ typeid(Components::DirectionalLight), typeid(Components::Transform3D) });
-		if (lights.empty()) {
-			return;
-		}
-		auto lightStructs = LibCommon::fuse_dir_lights(lights);
-		//we want to treat the numlights param as a max so that we don't
-		//cruse off the end of the array
-		auto realNumLights = std::min<int>(numLights, lightStructs.size());
-		GLuint dlightidx = gl::GetUniformBlockIndex(program, "dirLightBlock");
-		CheckError();
+        auto lights = parent->SelectEntities({ typeid(Components::PointLight), typeid(Components::Transform3D) });
+        if (lights.empty()) {
+            return;
+        }
+        auto lightStructs = LibCommon::fuse_point_lights(lights);
+        //treat numlights as a max
+        auto realNumLights = std::min<int>(numLights, lightStructs.size());
+        GLuint plightsidx = gl::GetUniformBlockIndex(program, "pointLightBlock");
+        CheckError();
+        if (plightsidx == gl::INVALID_INDEX) {
+            std::cerr << "WARNING: glGetUniformBlockIndex returned INVALID_INDEX for point lights" << std::endl;
+        }
+        gl::BindBuffer(gl::UNIFORM_BUFFER, dlights.GetBuffer());
+        plights.UpdateData(gl::UNIFORM_BUFFER, sizeof(LibCommon::point_light) * realNumLights, 
+            &lightStructs[0], gl::DYNAMIC_DRAW);
+        gl::BindBufferBase(gl::UNIFORM_BUFFER, plightsidx, plights.GetBuffer());
+        gl::UniformBlockBinding(program, plightsidx, 1);
         
-		if (dlightidx == gl::INVALID_INDEX) {
-			std::cerr <<
-				"WARNING: glGetUniformBlockIndex returned "
-				"INVALID_INDEX for directional lights" << std::endl;
-		}
+        CheckError();
+    }
+    void GLModelRenderer::bindDirLights(GLuint program, int numLights) {
+        auto lights = parent->SelectEntities({ typeid(Components::DirectionalLight), typeid(Components::Transform3D) });
+        if (lights.empty()) {
+            return;
+        }
+        auto lightStructs = LibCommon::fuse_dir_lights(lights);
+        //we want to treat the numlights param as a max so that we don't
+        //cruse off the end of the array
+        auto realNumLights = std::min<int>(numLights, lightStructs.size());
+        GLuint dlightidx = gl::GetUniformBlockIndex(program, "dirLightBlock");
+        CheckError();
+        
+        if (dlightidx == gl::INVALID_INDEX) {
+            std::cerr <<
+                "WARNING: glGetUniformBlockIndex returned "
+                "INVALID_INDEX for directional lights" << std::endl;
+        }
         void* buffer = nullptr;
         int size = 0;
         gl::GetActiveUniformBlockiv(program, dlightidx, 
@@ -139,17 +139,17 @@ namespace LibOpenGL {
         }
         CheckError();
 
-		gl::UniformBlockBinding(program, dlightidx, 1);
-		gl::BindBufferRange(gl::UNIFORM_BUFFER, 1, dlights.GetBuffer(), 0, size);
+        gl::UniformBlockBinding(program, dlightidx, 1);
+        gl::BindBufferRange(gl::UNIFORM_BUFFER, 1, dlights.GetBuffer(), 0, size);
         CheckError();
         
-	}
-	void GLModelRenderer::OnEntityAdd(LibCommon::Entity* ent) {
-		auto entEffect = ent->Get<Components::Effect>();
-		auto texture = ent->Get<Components::Texture>();
-		program_map.emplace(entEffect, GLProgram{ *entEffect });
-		tex_map.emplace(ent, GLTexture{ &texture->data() });
-	}
+    }
+    void GLModelRenderer::OnEntityAdd(LibCommon::Entity* ent) {
+        auto entEffect = ent->Get<Components::Effect>();
+        auto texture = ent->Get<Components::Texture>();
+        program_map.emplace(entEffect, GLProgram{ *entEffect });
+        tex_map.emplace(ent, GLTexture{ &texture->data() });
+    }
     void GLModelRenderer::OnEntityRemove(LibCommon::Entity *ent) {
         auto bufferIter = buffer_map.find(ent);
         if(bufferIter != buffer_map.end()) {
@@ -162,16 +162,16 @@ namespace LibOpenGL {
                 program_map.erase(effectItr);
             }
         }
-		auto texIter = tex_map.find(ent);
-		if (texIter != tex_map.end()) {
-			tex_map.erase(texIter);
-		}
+        auto texIter = tex_map.find(ent);
+        if (texIter != tex_map.end()) {
+            tex_map.erase(texIter);
+        }
     }
 
     void GLModelRenderer::bindUniforms(GLuint program) {
         GLint viewidx = gl::GetUniformLocation(program, "mvp.view");
         GLint projidx = gl::GetUniformLocation(program, "mvp.proj");
-		GLint invTransIdx = gl::GetUniformLocation(program, "normTrans");
+        GLint invTransIdx = gl::GetUniformLocation(program, "normTrans");
         CheckError();
         if(projidx == -1) {
             std::cerr << "WARNING: glGetUniformLocation returned -1" << std::endl;
@@ -179,12 +179,12 @@ namespace LibOpenGL {
         if(viewidx == -1) {
             std::cerr << "WARNING: glGetUniformLocation returned -1" << std::endl;
         }
-		Eigen::Matrix4f invTrans =_transforms.model * _transforms.view;
-		invTrans.reverseInPlace();
-		invTrans.transposeInPlace();
+        Eigen::Matrix4f invTrans =_transforms.model * _transforms.view;
+        invTrans.reverseInPlace();
+        invTrans.transposeInPlace();
         gl::UniformMatrix4fv(viewidx, 1, false, _transforms.view.data());
         gl::UniformMatrix4fv(projidx, 1, false, _transforms.proj.data());
-		gl::UniformMatrix4fv(invTransIdx, 1, false, invTrans.data());
+        gl::UniformMatrix4fv(invTransIdx, 1, false, invTrans.data());
         CheckError();
     }
     void GLModelRenderer::bindModel ( GLuint program ) {
