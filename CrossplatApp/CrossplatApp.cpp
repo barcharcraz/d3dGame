@@ -38,7 +38,7 @@ int main(int, char**) {
     scene->AddEntity(std::move(mod));
 	scene->AddSystem<Systems::MovementController3D>();
 	scene->AddSystem<Systems::VelocitySystem3D>();
-	scene->AddEntity<Prefabs::DirectionalLight>(Eigen::Vector4f{ 0.0f, 1.0f, 0.2f, 1.0f }, Eigen::Vector3f{ 0.0f, 0.0f, -100.0f });
+	scene->AddEntity<Prefabs::DirectionalLight>(Eigen::Vector4f{ 1.0f, 1.0f, 1.0f, 1.0f }, Eigen::Vector3f{ 0.0f, 0.0f, -100.0f });
     
 	(*scene).AddSystem<Rendering::ModelRenderer>(&rend);
 	

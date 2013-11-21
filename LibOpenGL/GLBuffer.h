@@ -9,6 +9,8 @@ namespace LibOpenGL {
 		GLBuffer(const GLBuffer& other) = delete;
 		GLBuffer(GLBuffer&& other);
 		bool HasData();
+        void Allocate(GLenum target, GLsizeiptr size, GLenum usage);
+        void AllocateOnce(GLenum target, GLsizeiptr size, GLenum usage);
 		void UpdateData(GLenum target, GLsizeiptr size, const void* data, GLenum usage);
 		void UpdateData(GLenum target, GLsizeiptr size, const void *data);
 		void UpdateData(GLsizeiptr size, const void *data, GLenum usage);
@@ -16,7 +18,7 @@ namespace LibOpenGL {
 		~GLBuffer();
 	private:
 		GLenum lastUsage;
-		GLenum initalTarget;
+		GLenum initialTarget;
 		GLsizeiptr currentSize;
 		void init();
 		GLuint _buffer;

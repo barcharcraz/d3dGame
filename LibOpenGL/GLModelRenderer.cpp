@@ -70,7 +70,7 @@ namespace LibOpenGL {
         gl::VertexAttribPointer(normLoc, 4, gl::FLOAT, gl::FALSE_, sizeof(LibCommon::Vertex), 0);
         //gl::VertexAttribPointer(uvLoc, 4, gl::FLOAT, gl::FALSE_, sizeof(LibCommon::Vertex), 0);
         gl::DrawElements(gl::TRIANGLES, static_cast<GLsizei>(mod->indices.size()), gl::UNSIGNED_INT, 0);
-        
+        CheckError(); 
     }
     GLModelRenderer::buffers& GLModelRenderer::updateBuffers(LibCommon::Entity* ent) {
         auto mod = ent->Get<Components::Model>();
@@ -117,18 +117,32 @@ namespace LibOpenGL {
 		auto realNumLights = std::min<int>(numLights, lightStructs.size());
 		GLuint dlightidx = gl::GetUniformBlockIndex(program, "dirLightBlock");
 		CheckError();
+        
 		if (dlightidx == gl::INVALID_INDEX) {
 			std::cerr <<
 				"WARNING: glGetUniformBlockIndex returned "
 				"INVALID_INDEX for directional lights" << std::endl;
 		}
-		gl::BindBuffer(gl::UNIFORM_BUFFER, plights.GetBuffer());
-		plights.UpdateData(gl::UNIFORM_BUFFER, sizeof(LibCommon::directional_light) * realNumLights, 
-			&lightStructs[0], gl::DYNAMIC_DRAW);
-		gl::BindBufferBase(gl::UNIFORM_BUFFER, dlightidx, dlights.GetBuffer());
-		gl::UniformBlockBinding(program, dlightidx, 0);
-		
-		CheckError();
+        void* buffer = nullptr;
+        int size = 0;
+        gl::GetActiveUniformBlockiv(program, dlightidx, 
+                        gl::UNIFORM_BLOCK_DATA_SIZE, &size);
+        dlights.AllocateOnce(gl::UNIFORM_BUFFER, size, gl::DYNAMIC_DRAW);
+        gl::BindBuffer(gl::UNIFORM_BUFFER, dlights.GetBuffer());
+        buffer = gl::MapBuffer(gl::UNIFORM_BUFFER, gl::WRITE_ONLY);
+        memset(buffer, 0x3f800000, size); //zero memory
+        //memcpy(buffer, &lightStructs[0], sizeof(LibCommon::directional_light) * realNumLights);
+        bool unmapResult = gl::UnmapBuffer(gl::UNIFORM_BUFFER);
+        gl::BindBuffer(gl::UNIFORM_BUFFER, 0);
+        if(!unmapResult) {
+            throw utils::graphics_api_error("unmap failed");
+        }
+        CheckError();
+
+		gl::UniformBlockBinding(program, dlightidx, 1);
+		gl::BindBufferRange(gl::UNIFORM_BUFFER, 1, dlights.GetBuffer(), 0, size);
+        CheckError();
+        
 	}
 	void GLModelRenderer::OnEntityAdd(LibCommon::Entity* ent) {
 		auto entEffect = ent->Get<Components::Effect>();

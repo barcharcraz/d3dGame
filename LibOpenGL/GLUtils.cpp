@@ -7,6 +7,10 @@ namespace LibOpenGL {
 		{
 		case gl::INVALID_ENUM:
 			return "GL_INVALID_ENUM";
+        case gl::INVALID_OPERATION:
+            return "GL_INVALID_OPERATION";
+        case gl::INVALID_VALUE:
+            return "GL_INVALID_VALUE";
 		default:
 			return "ENUM NOT RECOGNISED";
 		}

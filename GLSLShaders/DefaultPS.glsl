@@ -8,10 +8,12 @@ in vec3 uvout;
 out vec4 outputColor;
 layout(std140) uniform dirLightBlock {
 	directionalLight_t dlights[NUM_DIRECTIONAL];
+    int numdlights;
 };
 
 layout(std140) uniform pointLightBlock {
 	pointLight_t plights[NUM_POINT];
+    int numdlights;
 };
 
 uniform material_t mat;
@@ -27,6 +29,7 @@ void main() {
     outputColor = clamp(outputColor, 0.0, 1.0);
     outputColor = outputColor * texture(tex, uvout.xy);
     outputColor.a = 1;
-	outputColor.xyz = dlights[0].diffuse.xyz;
+    outputColor.yz = vec2(1.0f, 1.0f);
+	outputColor.x = dlights[0].diffuse.x;
   
 }
