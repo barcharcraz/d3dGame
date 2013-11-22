@@ -17,6 +17,9 @@
 #include <LibSystems/VelocitySystem3D.h>
 #include <LibSystems/MovementController3D.h>
 #include <LibInput/Input.h>
+#include <windows/Window.h>
+#include <LibDirect3D/Direct3DRenderer.h>
+#include <LibDirect3D/ModelRenderer.h>
 static void load_effects();
 static std::unique_ptr<Input::Input> construct_input();
 int main(int, char**) {

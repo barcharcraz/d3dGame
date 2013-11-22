@@ -16,10 +16,10 @@ out vec4 viewPos;
 out vec3 uvout;
 void main() {
 	uvout = uv;
-	vec4 rv = mvp.model * pos;
+	vec4 rv = mvp.proj * pos;
 	rv = mvp.view * rv;
     viewPos = rv;
-	rv = mvp.proj * rv;
+	rv = mvp.model * rv;
 	mat4 modelView = mvp.model * mvp.view;
 	normal.xyz = mat3(modelView) * norm.xyz;
 	normal.w = float(1);

@@ -10,6 +10,7 @@ namespace windowing {
         virtual void Clear() = 0;
         virtual void AttachInput(Input::Input* in) = 0;
         virtual void Show() = 0;
+        virtual void* Handle() = 0;
         virtual ~IWindow() {}
     };
 }

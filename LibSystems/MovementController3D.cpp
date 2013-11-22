@@ -22,7 +22,7 @@ namespace Systems {
 		auto rotY = inp->AxisAction("Horizontal");
 		auto rotX = inp->AxisAction("Vertical");
 		float speed = 0.025f;
-		
+        
 		if (inp->Action("Left")) {
 			newVel.translate(Eigen::Vector3f::UnitX() * speed);
 		}
@@ -37,9 +37,9 @@ namespace Systems {
 		}
 		//Eigen::Vector3f transUp = trans->transform.rotation() * Eigen::Vector3f::UnitY();
 		
-		newVel.rotate(AngleAxisf(rotX, -Vector3f::UnitX()));
-		newVel.rotate(AngleAxisf(rotY, -Vector3f::UnitY()));
 		
+        newVel.rotate(AngleAxisf(rotX, -Vector3f::UnitX()));
+        newVel.rotate(AngleAxisf(rotY, -Vector3f::UnitY()));
 		
 		vel->velocity = std::move(newVel);
 

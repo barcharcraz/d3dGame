@@ -59,16 +59,16 @@ namespace LibOpenGL {
         gl::BindVertexArray(buffer.vao.name());
         gl::EnableVertexAttribArray(0);
         gl::EnableVertexAttribArray(1);
-        //gl::EnableVertexAttribArray(2);
+        gl::EnableVertexAttribArray(2);
         GLint posLoc = gl::GetAttribLocation(render->ActiveProgram, "pos");
         GLint normLoc = gl::GetAttribLocation(render->ActiveProgram, "norm");
-        //GLint uvLoc = gl::GetAttribLocation(render->ActiveProgram, "uv");
+        GLint uvLoc = gl::GetAttribLocation(render->ActiveProgram, "uv");
         
         gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, buffer.Index.GetBuffer());
         gl::BindBuffer(gl::ARRAY_BUFFER, buffer.Vertex.GetBuffer());
         gl::VertexAttribPointer(posLoc, 4, gl::FLOAT, gl::FALSE_, sizeof(LibCommon::Vertex), 0);
         gl::VertexAttribPointer(normLoc, 4, gl::FLOAT, gl::FALSE_, sizeof(LibCommon::Vertex), 0);
-        //gl::VertexAttribPointer(uvLoc, 4, gl::FLOAT, gl::FALSE_, sizeof(LibCommon::Vertex), 0);
+        gl::VertexAttribPointer(uvLoc, 4, gl::FLOAT, gl::FALSE_, sizeof(LibCommon::Vertex), 0);
         gl::DrawElements(gl::TRIANGLES, static_cast<GLsizei>(mod->indices.size()), gl::UNSIGNED_INT, 0);
         CheckError(); 
     }
@@ -116,8 +116,7 @@ namespace LibOpenGL {
         //cruse off the end of the array
         auto realNumLights = std::min<int>(numLights, lightStructs.size());
         GLuint dlightidx = gl::GetUniformBlockIndex(program, "dirLightBlock");
-        CheckError();
-        
+        lightStructs.resize(numLights);
         if (dlightidx == gl::INVALID_INDEX) {
             std::cerr <<
                 "WARNING: glGetUniformBlockIndex returned "
@@ -127,21 +126,11 @@ namespace LibOpenGL {
         int size = 0;
         gl::GetActiveUniformBlockiv(program, dlightidx, 
                         gl::UNIFORM_BLOCK_DATA_SIZE, &size);
-        dlights.AllocateOnce(gl::UNIFORM_BUFFER, size, gl::DYNAMIC_DRAW);
         gl::BindBuffer(gl::UNIFORM_BUFFER, dlights.GetBuffer());
-        buffer = gl::MapBuffer(gl::UNIFORM_BUFFER, gl::WRITE_ONLY);
-        memset(buffer, 0x3f800000, size); //zero memory
-        //memcpy(buffer, &lightStructs[0], sizeof(LibCommon::directional_light) * realNumLights);
-        bool unmapResult = gl::UnmapBuffer(gl::UNIFORM_BUFFER);
+        dlights.UpdateData(gl::UNIFORM_BUFFER, sizeof(LibCommon::directional_light) * numLights, &lightStructs[0], gl::DYNAMIC_DRAW);
         gl::BindBuffer(gl::UNIFORM_BUFFER, 0);
-        if(!unmapResult) {
-            throw utils::graphics_api_error("unmap failed");
-        }
-        CheckError();
-
-        gl::UniformBlockBinding(program, dlightidx, 1);
-        gl::BindBufferRange(gl::UNIFORM_BUFFER, 1, dlights.GetBuffer(), 0, size);
-        CheckError();
+        gl::UniformBlockBinding(program, dlightidx, 0);
+        gl::BindBufferRange(gl::UNIFORM_BUFFER, 0, dlights.GetBuffer(), 0, size);
         
     }
     void GLModelRenderer::OnEntityAdd(LibCommon::Entity* ent) {

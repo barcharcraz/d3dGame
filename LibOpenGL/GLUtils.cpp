@@ -19,7 +19,8 @@ namespace LibOpenGL {
 		GLenum err;
 		err = gl::GetError();
 		if (err != gl::NO_ERROR_) {
-			fprintf(stderr, "OpenGL error %u: %s", err, EnumString(err));
+            const char* errStr = EnumString(err);
+			fprintf(stderr, "OpenGL error %u: %s", err, errStr);
 			throw std::system_error(err, std::system_category());
 		}
 	}

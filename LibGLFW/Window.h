@@ -23,12 +23,16 @@ namespace LibGLFW {
         virtual void Show() override;
         virtual void Present() override;
         virtual void Clear() override;
+        virtual void* Handle() override;
         //! \brief note that this function
         //! sets a given context as the OpenGL
         //! current context as well, note that this is
         //! an OpenGL window specific function
         void SetAsActive();
-        
+        // \brief initializes OpenGL and sets
+        // this window as active, this is NOT
+        // called be default as one may want to
+        // use a GLFW window with direct3D
         std::function<void()> update;
     private:
 		double lastX = 0;

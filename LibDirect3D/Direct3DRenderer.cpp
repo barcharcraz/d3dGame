@@ -18,6 +18,17 @@ Direct3DRenderer::Direct3DRenderer(HWND target) {
 	init(nullptr, D3D_DRIVER_TYPE_WARP, 0, creationFlags, defaultFeatureLevels, defaultNumFeatureLevels, D3D11_SDK_VERSION, nullptr);
 	bindToHwnd(target);
 }
+Direct3DRenderer::Direct3DRenderer(windowing::IWindow* win)
+: Direct3DRenderer()
+{
+    auto hwnd = win->Handle();
+    //this should always work
+    //we do not return an hwnd
+    //from win::Handle because
+    //sometimes we may want to return
+    //some other platform handle
+    bindToHwnd(reinterpret_cast<HWND>(hwnd));
+}
 void Direct3DRenderer::init(IDXGIAdapter* pAdapter,
 			D3D_DRIVER_TYPE type,
 			HMODULE software,

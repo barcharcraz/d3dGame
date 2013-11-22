@@ -9,13 +9,15 @@ namespace {
         std::string errMsg;
         GLint status;
         gl::GetShaderiv(shader, gl::COMPILE_STATUS, &status);
-        GLint infoLogLen;
-        gl::GetShaderiv(shader, gl::INFO_LOG_LENGTH, &infoLogLen);
-        errMsg.reserve(infoLogLen);
-        GLchar *infoRaw = new GLchar[infoLogLen + 1];
-        gl::GetShaderInfoLog(shader, infoLogLen, nullptr, infoRaw);
-        errMsg.assign(infoRaw);
-        delete[] infoRaw;
+        if (status != gl::NO_ERROR_) {
+            GLint infoLogLen;
+            gl::GetShaderiv(shader, gl::INFO_LOG_LENGTH, &infoLogLen);
+            errMsg.reserve(infoLogLen);
+            GLchar *infoRaw = new GLchar[infoLogLen + 1];
+            gl::GetShaderInfoLog(shader, infoLogLen, nullptr, infoRaw);
+            errMsg.assign(infoRaw);
+            delete [] infoRaw;
+        }
         return errMsg;
     }
 	bool get_is_compiled(GLuint shader) {

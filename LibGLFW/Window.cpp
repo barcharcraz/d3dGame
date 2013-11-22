@@ -105,7 +105,6 @@ namespace LibGLFW {
 		glfwSetInputMode(_win, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         ActiveWindow = this;
     }
-    
     /* -----------PRIVATE------------- */
     void Window::init(int w, int h) {
         glfwSetErrorCallback(&reportGlfwError);

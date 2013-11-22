@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include <LibDXGI/LibDXGI.h>
+#include <windowing/IWindow.h>
 #include <LibCommon/IRenderer.h>
 #include <LibComponents/Model.h>
 #include <Eigen/Core>
@@ -13,6 +14,7 @@ namespace LibDirect3D {
 	public:
 		Direct3DRenderer();
 		Direct3DRenderer(HWND target);
+        Direct3DRenderer(windowing::IWindow* win);
 
 		void Present();
 		void Clear();
