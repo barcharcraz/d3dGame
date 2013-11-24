@@ -17,10 +17,11 @@ struct VertexOutput {
 VertexOutput main( VertexInput input )
 {
 	VertexOutput retval;
-	retval.pos = mul(world, input.pos);
+	float4x4 mv = mul(mul(proj,view), world);
 	retval.wPos = mul(world, input.pos);
-	retval.pos = mul(view, retval.pos);
-	retval.pos = mul(proj, retval.pos);
+	retval.pos = mul(mv, input.pos);
+	//retval.pos = mul(view, retval.pos);
+	//retval.pos = mul(proj, retval.pos);
 	retval.uv = input.uv;
 	retval.norm.xyz = mul((float3x3)world, input.norm.xyz);
 	retval.norm.w = 1;

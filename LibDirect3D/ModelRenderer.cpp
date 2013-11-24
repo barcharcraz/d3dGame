@@ -50,7 +50,7 @@ namespace LibDirect3D {
 		
 	}
 	void ModelRenderer::initDirLights() {
-		auto lights = parent->SelectEntities({ typeid(Components::DirectionalLight), typeid(Components::Transform3D) });
+		auto lights = parent->SelectEntities({ typeid(Components::DirectionalLight) });
 		if (lights.empty()) {
 			return;
 		}

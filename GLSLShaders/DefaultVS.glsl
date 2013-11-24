@@ -6,7 +6,7 @@ struct matrices_t {
     mat4 proj;
 };
 uniform matrices_t mvp;
-uniform mat4 normTrans;
+uniform mat3 normTrans;
 
 in vec4 pos;
 in vec4 norm;
@@ -16,13 +16,15 @@ out vec4 viewPos;
 out vec3 uvout;
 void main() {
 	uvout = uv;
-	vec4 rv = mvp.proj * pos;
-	rv = mvp.view * rv;
-    viewPos = rv;
-	rv = mvp.model * rv;
-	mat4 modelView = mvp.model * mvp.view;
-	normal.xyz = mat3(modelView) * norm.xyz;
+	mat4 modelviewproj = mvp.proj * mvp.view * mvp.model;
+	mat4 modelview = mvp.view * mvp.model;
+	
+	vec4 rv = modelviewproj * pos;
+	viewPos = modelview * pos;
+	
+	normal.xyz = norm.xyz;
 	normal.w = float(1);
-	normal = normTrans * normal;
+	normal.xyz = normTrans * normal.xyz;
+	normal = normalize(normal);
 	gl_Position = rv;
 }

@@ -14,13 +14,8 @@ namespace Components {
 			Eigen::Vector4f diffuse;
 			Eigen::Vector4f specular;
 			float shine;
-		};
-		Data data;
-		Eigen::Vector4f& Ambiant;
-		Eigen::Vector4f& Diffuse;
-		Eigen::Vector4f& Specular;
-		float& Shine;
-
+		} data;
+		
 	};
 }
 

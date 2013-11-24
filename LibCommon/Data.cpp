@@ -28,16 +28,11 @@ namespace LibCommon {
 	std::vector<directional_light> fuse_dir_lights(const std::vector<Entity*>& lights) {
 		std::vector<directional_light> retval;
 		for (auto elm : lights) {
-			auto transform = elm->Get<Components::Transform3D>();
 			auto light = elm->Get<Components::DirectionalLight>();
 			directional_light new_light;
 			new_light.diffuse = light->Diffuse;
 			new_light.specular = light->Specular;
-			Eigen::Vector4f direction = Eigen::Vector4f::UnitY();
-			Eigen::Affine3f rotation(transform->transform.rotation());
-			direction = rotation * direction;
-			direction.normalize();
-			new_light.direction = direction;
+			new_light.direction = light->Direction;
 			retval.push_back(std::move(new_light));
 		}
 		return retval;

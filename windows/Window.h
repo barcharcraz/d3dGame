@@ -2,19 +2,20 @@
 #include "stdafx.h"
 #include <LibInput/Keys.h>
 #include <LibInput/Input.h>
+#include <windowing/IWindow.h>
 namespace windows {
 	LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 	int Run();
 
-	class Window {
+	class Window : public windowing::IDXWindow {
 		friend LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 	public:
 		Window();
 		Window(int w, int h);
 		HWND Hwnd();
-		HWND Handle();
-		void Show();
-		void AttachInput(Input::Input* input);
+		virtual void* Handle() override;
+		virtual void Show() override;
+		virtual void AttachInput(Input::Input* input) override;
 		void ClearInput();
 		void Update();
 		std::function<void(Input::Keys)> onKeyDown;

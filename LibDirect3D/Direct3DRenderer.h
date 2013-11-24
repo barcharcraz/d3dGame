@@ -14,7 +14,7 @@ namespace LibDirect3D {
 	public:
 		Direct3DRenderer();
 		Direct3DRenderer(HWND target);
-        Direct3DRenderer(windowing::IWindow* win);
+        Direct3DRenderer(windowing::IDXWindow* win);
 
 		void Present();
 		void Clear();

@@ -24,22 +24,22 @@ namespace Systems {
 		float speed = 0.025f;
         
 		if (inp->Action("Left")) {
-			newVel.translate(Eigen::Vector3f::UnitX() * speed);
-		}
-		if (inp->Action("Right")) {
 			newVel.translate(-Eigen::Vector3f::UnitX() * speed);
 		}
+		if (inp->Action("Right")) {
+			newVel.translate(Eigen::Vector3f::UnitX() * speed);
+		}
 		if (inp->Action("Forward")) {
-			newVel.translate(Eigen::Vector3f::UnitZ() * speed);
+			newVel.translate(-Eigen::Vector3f::UnitZ() * speed);
 		}
 		if (inp->Action("Backward")) {
-			newVel.translate(-Eigen::Vector3f::UnitZ() * speed);
+			newVel.translate(Eigen::Vector3f::UnitZ() * speed);
 		}
 		//Eigen::Vector3f transUp = trans->transform.rotation() * Eigen::Vector3f::UnitY();
 		
 		
-        newVel.rotate(AngleAxisf(rotX, -Vector3f::UnitX()));
-        newVel.rotate(AngleAxisf(rotY, -Vector3f::UnitY()));
+        newVel.rotate(AngleAxisf(static_cast<float>(rotX), -Vector3f::UnitX()));
+        newVel.rotate(AngleAxisf(static_cast<float>(rotY), -Vector3f::UnitY()));
 		
 		vel->velocity = std::move(newVel);
 

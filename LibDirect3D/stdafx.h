@@ -21,7 +21,11 @@
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
 
-#define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
+//we use the ifndef to squelch the annoying C4005 macro redefinition warning,
+//the previous definition is from gl_core_3_1
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN // Exclude rarely-used stuff from Windows headers
+#endif
 #define NOMINMAX						// get rid of the min and max macros, whoever defined
 										//these is evil and should feel bad
 // Windows Header Files:

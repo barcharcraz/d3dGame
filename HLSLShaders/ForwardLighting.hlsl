@@ -3,7 +3,10 @@
 #if !defined ( HLSL_FORWARDLIGHTING_H )
 #define HLSL_FORWARDLIGHTING_H
 inline float4 phongLight(in material mat, in float4 viewDir, in float4 lvec, in float4 norm, in float4 ldiffuse, in float4 lspec) {
-	return saturate((mat.diffuse * dot(lvec, norm) * ldiffuse) + (mat.specular * pow(dot(reflect(lvec, norm), viewDir), mat.shine) * lspec));
+	float4 rv = (mat.diffuse * dot(lvec, norm) * ldiffuse);
+	rv += mat.specular * pow(dot(reflect(lvec, norm), viewDir), mat.shine) * lspec;
+	rv = saturate(rv);
+	return rv;
 }
 inline float4 pointLighting(in StructuredBuffer<pointLight> lights, 
 	in float4 normal,

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "GLModelRenderer.h"
 #include "GLShader.h"
+#include "GLUniforms.h"
 #include "GLUtils.h"
 #include <set>
 #include <iostream>
@@ -15,13 +16,18 @@
 #include <LibComponents/Velocity.h>
 #include <LibComponents/PointLight.h>
 #include <LibComponents/DirectionalLight.h>
+#include <LibComponents/Material.h>
 #include <LibCommon/Scene.h>
 #include <LibCommon/Data.h>
 namespace LibOpenGL {
     
 
     GLModelRenderer::GLModelRenderer( OpenGLRenderer* render_arg )
-        : System({typeid(Components::Model), typeid(Components::Transform3D), typeid(Components::Effect), typeid(Components::Texture)}),
+        : System({typeid(Components::Model), 
+		typeid(Components::Transform3D), 
+		typeid(Components::Effect), 
+		typeid(Components::Texture),
+		typeid(Components::Material)}),
             render(render_arg)
         
     {
@@ -40,6 +46,7 @@ namespace LibOpenGL {
         auto mod = ent->Get<Components::Model>();
         auto effect = ent->Get<Components::Effect>();
         auto transform = ent->Get<Components::Transform3D>();
+		auto mat = ent->Get<Components::Material>();
         _transforms.model = transform->transform.matrix();
         auto& buffer = updateBuffers(ent);
         auto& program = program_map.at(effect);
@@ -53,7 +60,7 @@ namespace LibOpenGL {
         tex.Bind();
         bindUniforms(render->ActiveProgram);
         bindModel(render->ActiveProgram);
-        
+		BindMaterial(render->ActiveProgram, "mat", *mat);
         bindDirLights(render->ActiveProgram, effect->defines["NUM_DIRECTIONAL"]);
         bindPointLights(render->ActiveProgram, effect->defines["NUM_POINT"]);
         gl::BindVertexArray(buffer.vao.name());
@@ -107,23 +114,28 @@ namespace LibOpenGL {
         CheckError();
     }
     void GLModelRenderer::bindDirLights(GLuint program, int numLights) {
-        auto lights = parent->SelectEntities({ typeid(Components::DirectionalLight), typeid(Components::Transform3D) });
+        auto lights = parent->SelectEntities({ typeid(Components::DirectionalLight) });
         if (lights.empty()) {
             return;
         }
         auto lightStructs = LibCommon::fuse_dir_lights(lights);
-        //we want to treat the numlights param as a max so that we don't
-        //cruse off the end of the array
-        auto realNumLights = std::min<int>(numLights, lightStructs.size());
+		Eigen::Matrix4f mvtrans = _transforms.view;
+		mvtrans.col(3) = Eigen::Vector4f{ 0, 0, 0, 1 };
+		for (auto& elm : lightStructs) {
+			elm.direction = mvtrans * elm.direction;
+			
+			elm.direction.normalize();
+			elm.direction.w() = 1;
+		}
         GLuint dlightidx = gl::GetUniformBlockIndex(program, "dirLightBlock");
-        lightStructs.resize(numLights);
+		lightStructs.resize(numLights, { Eigen::Vector4f::Zero(), Eigen::Vector4f::Zero(), Eigen::Vector4f::Zero() });
         if (dlightidx == gl::INVALID_INDEX) {
             std::cerr <<
                 "WARNING: glGetUniformBlockIndex returned "
                 "INVALID_INDEX for directional lights" << std::endl;
         }
-        void* buffer = nullptr;
         int size = 0;
+		int structSize = sizeof(LibCommon::directional_light) * numLights;
         gl::GetActiveUniformBlockiv(program, dlightidx, 
                         gl::UNIFORM_BLOCK_DATA_SIZE, &size);
         gl::BindBuffer(gl::UNIFORM_BUFFER, dlights.GetBuffer());
@@ -168,12 +180,11 @@ namespace LibOpenGL {
         if(viewidx == -1) {
             std::cerr << "WARNING: glGetUniformLocation returned -1" << std::endl;
         }
-        Eigen::Matrix4f invTrans =_transforms.model * _transforms.view;
-        invTrans.reverseInPlace();
-        invTrans.transposeInPlace();
+		Eigen::Affine3f mvtrans(_transforms.model * _transforms.view);
+		Eigen::Matrix3f invTrans = mvtrans.linear().inverse().transpose();
         gl::UniformMatrix4fv(viewidx, 1, false, _transforms.view.data());
         gl::UniformMatrix4fv(projidx, 1, false, _transforms.proj.data());
-        gl::UniformMatrix4fv(invTransIdx, 1, false, invTrans.data());
+        gl::UniformMatrix3fv(invTransIdx, 1, false, invTrans.data());
         CheckError();
     }
     void GLModelRenderer::bindModel ( GLuint program ) {

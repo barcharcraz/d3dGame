@@ -1,5 +1,6 @@
 #include "GLTexture.h"
 #include <Utils/exceptions.h>
+#include "GLUtils.h"
 namespace LibOpenGL {
 	GLTexture::GLTexture() {
 		init();

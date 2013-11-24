@@ -6,10 +6,11 @@
 namespace Components {
 	class DirectionalLight : public IComponent {
 	public:
-		DirectionalLight(const Eigen::Vector4f& color);
-		DirectionalLight(const Eigen::Vector4f& diffuse_arg, const Eigen::Vector4f& specular_arg);
+		DirectionalLight(const Eigen::Vector4f& color, const Eigen::Vector4f& dir_arg);
+		DirectionalLight(const Eigen::Vector4f& diffuse_arg, const Eigen::Vector4f& specular_arg, const Eigen::Vector4f& dir_arg);
 		Eigen::Vector4f Diffuse;
 		Eigen::Vector4f Specular;
+		Eigen::Vector4f Direction;
 	};
 }
 

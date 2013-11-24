@@ -5,7 +5,7 @@
 namespace LibOpenGL {
 	class OpenGLRenderer {
 	public:
-        OpenGLRenderer(windowing::IWindow* win);
+        OpenGLRenderer(windowing::IGLWindow* win);
         
         void Present();
         void Clear();
@@ -13,7 +13,7 @@ namespace LibOpenGL {
 		GLuint ActiveProgram;
     private:
         void init();
-        windowing::IWindow* _win;
+        windowing::IGLWindow* _win;
 	};
 
     //global functions to manipulate the openGL context

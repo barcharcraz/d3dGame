@@ -94,7 +94,7 @@ namespace windows {
 	HWND Window::Hwnd() {
 		return _hwnd;
 	}
-	HWND Window::Handle() {
+	void* Window::Handle() {
 		return Hwnd();
 	}
 	//-----------PRIVATE-------------------

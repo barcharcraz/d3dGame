@@ -18,7 +18,7 @@ Direct3DRenderer::Direct3DRenderer(HWND target) {
 	init(nullptr, D3D_DRIVER_TYPE_WARP, 0, creationFlags, defaultFeatureLevels, defaultNumFeatureLevels, D3D11_SDK_VERSION, nullptr);
 	bindToHwnd(target);
 }
-Direct3DRenderer::Direct3DRenderer(windowing::IWindow* win)
+Direct3DRenderer::Direct3DRenderer(windowing::IDXWindow* win)
 : Direct3DRenderer()
 {
     auto hwnd = win->Handle();

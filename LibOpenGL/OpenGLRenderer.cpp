@@ -4,7 +4,7 @@
 #include <system_error>
 namespace LibOpenGL {
 	
-    OpenGLRenderer::OpenGLRenderer(windowing::IWindow* win)
+    OpenGLRenderer::OpenGLRenderer(windowing::IGLWindow* win)
         : _win(win)
     {
         init();

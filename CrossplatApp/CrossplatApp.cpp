@@ -23,8 +23,8 @@
 static void load_effects();
 static std::unique_ptr<Input::Input> construct_input();
 int main(int, char**) {
-    windowing::Window window;
-    Rendering::Renderer rend(&window);
+    windows::Window window;
+    LibDirect3D::Direct3DRenderer rend(&window);
 	auto input = construct_input();
 	window.AttachInput(input.get());
     load_effects();
@@ -41,9 +41,9 @@ int main(int, char**) {
     scene->AddEntity(std::move(mod));
 	scene->AddSystem<Systems::MovementController3D>();
 	scene->AddSystem<Systems::VelocitySystem3D>();
-	scene->AddEntity<Prefabs::DirectionalLight>(Eigen::Vector4f{ 1.0f, 1.0f, 1.0f, 1.0f }, Eigen::Vector3f{ 0.0f, 0.0f, -100.0f });
+	scene->AddEntity<Prefabs::DirectionalLight>(Eigen::Vector4f{ 1.0f, 1.0f, 1.0f, 1.0f }, Eigen::Vector3f{ 0.0f, 0.0f, 1.0f });
     
-	(*scene).AddSystem<Rendering::ModelRenderer>(&rend);
+	(*scene).AddSystem<LibDirect3D::ModelRenderer>(&rend);
 	
     window.Show();
     window.update = [&]() {
@@ -52,7 +52,7 @@ int main(int, char**) {
 		rend.Clear();
         
     };
-    return windowing::Run();
+    return windows::Run();
 }
 void load_effects() {
     using Effects::InputFormats;
@@ -68,7 +68,7 @@ void load_effects() {
         ShaderCaps::TEXTURE_MAPPED,
         ShaderCaps::LIT_DIRECTIONAL
 	};
-	Effects::Effect DefaultEffect{ "DefaultVS.glsl", "DefaultPS.glsl", defaultLayout, defaultCaps };
+	Effects::Effect DefaultEffect{ "DefaultVS.cso", "DefaultPS.cso", defaultLayout, defaultCaps };
 	DefaultEffect.defines = std::unordered_map<std::string, int>{{ { "NUM_DIRECTIONAL", 8 }, { "NUM_POINT", 8 } }};
     Effects::AddEffect(DefaultEffect);
 }
