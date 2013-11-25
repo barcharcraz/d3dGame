@@ -17,7 +17,7 @@ protected:
 };
 
 TEST_F(PreprocessorTests, DefineTest) {
-    utils::add_define(&testStr, "TEST_DEFINE"
+	utils::add_define(&testStr, "TEST_DEFINE");
     ASSERT_STREQ("#define TEST_DEFINE", &testStr[0]);
 }
 TEST_F(PreprocessorTests, DefineValTest) {
@@ -25,7 +25,7 @@ TEST_F(PreprocessorTests, DefineValTest) {
     ASSERT_STREQ("#define TEST_DEFINE 12", &testStr[0]);
 }
 TEST_F(PreprocessorTests, DefineMulTest) {
-    utils::add_defines(&testStr, {"TEST_DEFINE1", "TEST_DEFINE2"});
+    utils::add_defines(&testStr, std::vector<std::string>{"TEST_DEFINE1", "TEST_DEFINE2"});
     ASSERT_STREQ("#define TEST_DEFINE1\n#define TEST_DEFINE2", &testStr[0]);
 
 }

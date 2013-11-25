@@ -4,7 +4,7 @@
 #include "Camera.h"
 namespace Components {
 	Camera::Camera() {
-		init(1,100, 60);
+		init(3,100, 60);
 	}
 	Camera::Camera(float near, float far) {
 		init(near, far, 60);
