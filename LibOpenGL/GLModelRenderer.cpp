@@ -39,6 +39,10 @@ namespace LibOpenGL {
         auto camTrans = cament->Get<Components::Transform3D>();
         _transforms.proj = cam->CameraMatrix;
         _transforms.view = camTrans->transform.matrix();
+        //_transforms.view(0,3) *= -1;
+        //_transforms.view(1,3) *= -1;
+        //_transforms.view(2,3) *= -1;
+        //_transforms.view(3,3) *= -1;
     }
 
     void GLModelRenderer::Process(LibCommon::Entity *ent) {

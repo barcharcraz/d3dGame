@@ -24,10 +24,11 @@ namespace Components {
 		float scale = (1 / (float)tan(fov * 0.5 * (M_PI / 180)));
 			
 		CameraMatrix << 
-			scale, 0,    0,   0,
+			-scale, 0,    0,   0,
 			0,    scale, 0,   0,
 			0,    0,    -m33, -m34,
 			0,    0,    -1,   0;
+
 		
 	}
 }
