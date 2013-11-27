@@ -7,12 +7,12 @@ in vec4 viewPos;
 in vec3 uvout;
 out vec4 outputColor;
 layout(std140) uniform dirLightBlock {
-	directionalLight_t dlights[NUM_DIRECTIONAL];
+    directionalLight_t dlights[NUM_DIRECTIONAL];
     //int numdlights;
 };
 
 layout(std140) uniform pointLightBlock {
-	pointLight_t plights[NUM_POINT];
+    pointLight_t plights[NUM_POINT];
     //int numdlights;
 };
 uniform material_t mat;
@@ -23,10 +23,10 @@ void main() {
     //    outputColor += pointLight(plights[i], normal, viewPos * -1, mat);
     //}
     for(int i = 0; i < NUM_DIRECTIONAL; ++i) {
-        outputColor += directionalLight(dlights[i], normal, viewPos * -1, mat); 
+        outputColor += directionalLight(dlights[i], normal, -viewPos, mat); 
     }
     outputColor = clamp(outputColor, 0.0, 1.0);
     outputColor = outputColor * texture(tex, uvout.xy);
-	//outputColor.xyz = normal.xyz;
+    //outputColor.xyz = normal.xyz;
   
 }

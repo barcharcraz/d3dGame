@@ -38,10 +38,11 @@ namespace LibOpenGL {
         auto cam = cament->Get<Components::Camera>();
         auto camTrans = cament->Get<Components::Transform3D>();
         _transforms.proj = cam->CameraMatrix;
-        _transforms.view = camTrans->transform.matrix();
-        //_transforms.view(0,3) *= -1;
-        //_transforms.view(1,3) *= -1;
-        //_transforms.view(2,3) *= -1;
+		_transforms.view = camTrans->transform.matrix();
+		//_transforms.view(0, 3) *= -1;
+        _transforms.view(0,3) *= -1;
+        _transforms.view(1,3) *= -1;
+        _transforms.view(2,3) *= -1;
         //_transforms.view(3,3) *= -1;
     }
 
@@ -129,7 +130,7 @@ namespace LibOpenGL {
 			elm.direction = mvtrans * elm.direction;
 			
 			elm.direction.normalize();
-			elm.direction.w() = 1;
+			elm.direction.w() = 0;
 		}
         GLuint dlightidx = gl::GetUniformBlockIndex(program, "dirLightBlock");
 		lightStructs.resize(numLights, { Eigen::Vector4f::Zero(), Eigen::Vector4f::Zero(), Eigen::Vector4f::Zero() });

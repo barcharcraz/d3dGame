@@ -5,7 +5,7 @@ namespace Prefabs {
 	DirectionalLight::DirectionalLight(const Eigen::Vector4f& color, const Eigen::Vector3f& dir) {
 		using namespace Eigen;
 		Eigen::Vector4f newDir;
-		newDir << dir, 1;
-		AddComponent<Components::DirectionalLight>(color, newDir);
+		newDir << dir, 0;
+		AddComponent<Components::DirectionalLight>(color, color, newDir);
 	}
 }

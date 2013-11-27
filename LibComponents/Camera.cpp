@@ -17,14 +17,14 @@ namespace Components {
 	}
 	void Camera::init(float near, float far, float fov) {
 		//m33 is the third column and third row
-		float m33 = (far / (far - near));
-		float m34 = ((far * near) / (far - near));
+		float m33 = ((far + near) / (far - near));
+		float m34 = ((2 * far * near) / (far - near));
 
 		//calculate the scale from the fov
 		float scale = (1 / (float)tan(fov * 0.5 * (M_PI / 180)));
 			
 		CameraMatrix << 
-			-scale, 0,    0,   0,
+			scale, 0,    0,   0,
 			0,    scale, 0,   0,
 			0,    0,    -m33, -m34,
 			0,    0,    -1,   0;

@@ -27,6 +27,7 @@ namespace LibOpenGL {
 		gl::Uniform4fv(ambiantidx, 1, mat.data.ambiant.data());
 		gl::Uniform4fv(diffuseidx, 1, mat.data.diffuse.data());
 		gl::Uniform4fv(specularidx, 1, mat.data.specular.data());
+		gl::Uniform1fv(shineidx, 1, &mat.data.shine);
 		CheckError();
 	}
 }

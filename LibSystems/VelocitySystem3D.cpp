@@ -12,7 +12,7 @@ namespace Systems {
 		auto& transform = e->Get<Transform3D>()->transform;
 		auto& velocity = e->Get<Velocity3D>()->velocity;
 		if (velocity.matrix() != velocity.Identity().matrix()) {
-            transform = velocity * transform;
+			transform = velocity * transform;
 			NotifyUpdate(e, e->Get<Transform3D>());
 		}
 	}
