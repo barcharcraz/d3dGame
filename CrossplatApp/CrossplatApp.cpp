@@ -25,7 +25,7 @@ int main(int, char**) {
     auto input = construct_input();
     window.AttachInput(input.get());
     load_effects();
-    Assets::ObjFile cone{"Cone.obj"};
+    Assets::ObjFile cone{"TestObj.obj"};
     Image::Targa::Targa tex{"Textures/wood_light/diffuse.tga"};
     std::unique_ptr<LibCommon::Scene> scene(new LibCommon::Scene());
     auto mod = std::make_unique<Prefabs::StaticModel>(cone, Image::ImageData(tex)); 
