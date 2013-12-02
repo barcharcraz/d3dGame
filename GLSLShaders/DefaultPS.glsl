@@ -23,10 +23,12 @@ void main() {
     //    outputColor += pointLight(plights[i], normal, viewPos * -1, mat);
     //}
     for(int i = 0; i < NUM_DIRECTIONAL; ++i) {
-        outputColor += directionalLight(dlights[i], normal, -viewPos, mat); 
+        outputColor += directionalLight(dlights[i], normal, viewPos, mat); 
     }
     outputColor = clamp(outputColor, 0.0, 1.0);
     outputColor = outputColor * texture(tex, uvout.xy);
-    //outputColor.xyz = normal.xyz;
-  
+    //outputColor.x = dot(normalize(-dlights[0].direction), normalize(normal)); 
+    //outputColor.y = 0;
+    //outputColor.z = 0;
+    //outputColor.xyz = normalize(normal).xyz; 
 }

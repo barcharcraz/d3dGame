@@ -23,8 +23,7 @@ void main() {
 	viewPos = modelview * pos;
 	
 	normal.xyz = norm.xyz;
-	normal.w = float(1);
+	normal.w = float(0);
 	normal.xyz = normTrans * normal.xyz;
-	normal = normalize(normal);
 	gl_Position = rv;
 }

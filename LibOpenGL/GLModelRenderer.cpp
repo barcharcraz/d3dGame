@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <Eigen/Geometry>
 #include <Eigen/Core>
+#include <Eigen/LU>
 #include <LibComponents/Model.h>
 #include <LibComponents/Camera.h>
 #include <LibComponents/Texture.h>
@@ -128,9 +129,9 @@ namespace LibOpenGL {
 		mvtrans.col(3) = Eigen::Vector4f{ 0, 0, 0, 1 };
 		for (auto& elm : lightStructs) {
 			elm.direction = mvtrans * elm.direction;
-			
 			elm.direction.normalize();
-			elm.direction.w() = 0;
+            //elm.direction *= -1;
+			//elm.direction.w() = 0;
 		}
         GLuint dlightidx = gl::GetUniformBlockIndex(program, "dirLightBlock");
 		lightStructs.resize(numLights, { Eigen::Vector4f::Zero(), Eigen::Vector4f::Zero(), Eigen::Vector4f::Zero() });
@@ -185,8 +186,10 @@ namespace LibOpenGL {
         if(viewidx == -1) {
             std::cerr << "WARNING: glGetUniformLocation returned -1" << std::endl;
         }
-		Eigen::Affine3f mvtrans(_transforms.model * _transforms.view);
-		Eigen::Matrix3f invTrans = mvtrans.linear().inverse().transpose();
+		Eigen::Matrix4f mvtrans(_transforms.view * _transforms.model);
+		Eigen::Matrix3f invTrans = mvtrans.topLeftCorner<3,3>();
+        invTrans = invTrans.inverse().eval();
+        invTrans.transposeInPlace();
         gl::UniformMatrix4fv(viewidx, 1, false, _transforms.view.data());
         gl::UniformMatrix4fv(projidx, 1, false, _transforms.proj.data());
         gl::UniformMatrix3fv(invTransIdx, 1, false, invTrans.data());

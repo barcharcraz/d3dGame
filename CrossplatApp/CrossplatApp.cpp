@@ -25,7 +25,7 @@ int main(int, char**) {
     auto input = construct_input();
     window.AttachInput(input.get());
     load_effects();
-    Assets::ObjFile cone{"TestObj.obj"};
+    Assets::ObjFile cone{"Cone.obj"};
     Image::Targa::Targa tex{"Textures/wood_light/diffuse.tga"};
     std::unique_ptr<LibCommon::Scene> scene(new LibCommon::Scene());
     auto mod = std::make_unique<Prefabs::StaticModel>(cone, Image::ImageData(tex)); 
@@ -38,7 +38,7 @@ int main(int, char**) {
     scene->AddEntity(std::move(mod));
     scene->AddSystem<Systems::MovementController3D>();
     scene->AddSystem<Systems::VelocitySystem3D>();
-    scene->AddEntity<Prefabs::DirectionalLight>(Eigen::Vector4f{ 1.0f, 1.0f, 1.0f, 1.0f }, Eigen::Vector3f{ 0.0f, 0.0f, 1.0f });
+    scene->AddEntity<Prefabs::DirectionalLight>(Eigen::Vector4f{ 1.0f, 1.0f, 1.0f, 1.0f }, Eigen::Vector3f{ 0.0f, 0.0f, -1.0f });
     
     (*scene).AddSystem<Rendering::ModelRenderer>(&rend);
     

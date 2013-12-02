@@ -12,10 +12,10 @@ vec4 phongLight(in material_t mat,
 	clamp(cosAngIncidence, 0,1);
     vec4 rv = (mat.diffuse * cosAngIncidence * ldiffuse);
 	if(cosAngIncidence > 0) {
-		vec4 refvec = reflect(-lvec, norm);
+		vec4 refvec = reflect(lvec, norm);
 		float phong = dot(refvec, viewDir);
 		//phong = clamp(phong, 0.0, 1.0);
-		phong = pow(phong, mat.shine);
+		phong = pow(max(phong,0.0), 50);
 		vec4 spec = mat.specular * phong * lspec;
 		spec = clamp(spec, 0.0, 1.0);
 		rv += spec;
