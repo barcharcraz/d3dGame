@@ -25,17 +25,31 @@ int main(int, char**) {
     auto input = construct_input();
     window.AttachInput(input.get());
     load_effects();
-    Assets::ObjFile cone{"Cone.obj"};
-    Image::Targa::Targa tex{"Textures/wood_light/diffuse.tga"};
+    Assets::ObjFile teapot{ "TestObj.obj" };
+    Assets::ObjFile cone{ "Cone.obj" };
+    Assets::ObjFile helix{ "Helix.obj" };
+    Image::Targa::Targa tex{ "Textures/wood_light/diffuse.tga" };
     std::unique_ptr<LibCommon::Scene> scene(new LibCommon::Scene());
-    auto mod = std::make_unique<Prefabs::StaticModel>(cone, Image::ImageData(tex)); 
-
+    auto mod = std::make_unique<Prefabs::StaticModel>(cone, Image::ImageData(tex));
+    auto leftMod = std::make_unique<Prefabs::StaticModel>(teapot, Image::ImageData(tex));
+    auto rightMod = std::make_unique<Prefabs::StaticModel>(cone, Image::ImageData(tex));
+    auto topMod = std::make_unique<Prefabs::StaticModel>(helix, Image::ImageData(tex));
+    auto bottomMod = std::make_unique<Prefabs::StaticModel>(cone, Image::ImageData(tex));
     auto camera = (*scene).AddEntity<Prefabs::Camera>();
     camera->AddComponent(std::move(input));
-    mod->Get<Components::Transform3D>()->transform.translate(Eigen::Vector3f{0,0,-10});
-    //mod->AddComponent<Components::Velocity3D>(Eigen::Affine3f{Eigen::AngleAxisf{0.001f, Eigen::Vector3f::UnitZ()}});
+    mod->Get<Components::Transform3D>()->transform.translate(Eigen::Vector3f{ 0, 0, -10 });
+    leftMod->Get<Components::Transform3D>()->transform.translate(Eigen::Vector3f{ -10, 0, -10 });
+    rightMod->Get<Components::Transform3D>()->transform.translate(Eigen::Vector3f{ 10, 0, -10 });
+    topMod->Get<Components::Transform3D>()->transform.translate(Eigen::Vector3f{ 0, 10, -10 });
+    bottomMod->Get<Components::Transform3D>()->transform.translate(Eigen::Vector3f{ 0, -10, -10 });
+    mod->AddComponent<Components::Velocity3D>(Eigen::Affine3f{ Eigen::AngleAxisf{ 0.001f, Eigen::Vector3f::UnitZ() } });
+    topMod->AddComponent<Components::Velocity3D>(Eigen::Affine3f{ Eigen::AngleAxisf{ 0.01f, Eigen::Vector3f::UnitX() } });
 
     scene->AddEntity(std::move(mod));
+    scene->AddEntity(std::move(leftMod));
+    scene->AddEntity(std::move(rightMod));
+    scene->AddEntity(std::move(topMod));
+    scene->AddEntity(std::move(bottomMod));
     scene->AddSystem<Systems::MovementController3D>();
     scene->AddSystem<Systems::VelocitySystem3D>();
     scene->AddEntity<Prefabs::DirectionalLight>(Eigen::Vector4f{ 1.0f, 1.0f, 1.0f, 1.0f }, Eigen::Vector3f{ 0.0f, 0.0f, -1.0f });

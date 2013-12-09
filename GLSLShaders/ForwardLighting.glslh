@@ -36,7 +36,9 @@ vec4 directionalLight(in directionalLight_t light,
                       in vec4 viewPos,
                       in material_t mat)
 {
-    return phongLight(mat, normalize(-viewPos), normalize(-light.direction), normalize(norm), light.diffuse, light.specular);
+	vec4 reversednorm = norm;
+	reversednorm *= -1;
+    return phongLight(mat, normalize(-viewPos), normalize(light.direction), normalize(reversednorm), light.diffuse, light.specular);
 }
 
 

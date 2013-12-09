@@ -7,13 +7,14 @@ namespace windowing {
     using LibGLFW::Window;
     using LibGLFW::Run;
 }
-#elif defined HAS_WIN32
+#elif defined USE_WIN32
 #include "windows/Window.h"
 #include "windows/Keys.h"
 #include "windows/WinMain.h"
 #include "windows/ComUtils.h"
 namespace windowing {
-    using Window = windows::Window;
+    using windows::Window;
+    using windows::Run;
 }
 #elif defined HAS_X11
 #include "LibXWindows/Window.h"

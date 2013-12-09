@@ -17,13 +17,12 @@ out vec3 uvout;
 void main() {
 	uvout = uv;
 	mat4 modelviewproj = mvp.proj * mvp.view * mvp.model;
-	mat4 modelview = mvp.view * mvp.model;
+	mat4 modelview =  mvp.view * mvp.model;
 	
 	vec4 rv = modelviewproj * pos;
 	viewPos = modelview * pos;
 	
-	normal.xyz = norm.xyz;
+	normal.xyz = mat3(modelview) * norm.xyz;
 	normal.w = float(0);
-	normal.xyz = normTrans * normal.xyz;
 	gl_Position = rv;
 }

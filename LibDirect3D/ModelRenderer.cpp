@@ -32,6 +32,9 @@ namespace LibDirect3D {
 		auto camtrans = camera->Get<Components::Transform3D>();
 		cameraTransform = camcomp->CameraMatrix;
 		camPos = camtrans->transform.matrix();
+        camPos(0, 3) *= -1;
+        camPos(1, 3) *= -1;
+        camPos(2, 3) *= -1;
 		_materials = render->CreateConstantBuffer(sizeof(Components::Material::Data));
 		//render->pCtx->PSSetConstantBuffers(0, 1, &_lights.p);
 		initPointLights();
@@ -42,8 +45,10 @@ namespace LibDirect3D {
 		if (lights.empty()) {
 			return;
 		}
+        
 		std::vector<LibCommon::point_light> lightStructs = LibCommon::fuse_point_lights(lights);
-		CComPtr<ID3D11Buffer> lightBuffer = createStructuredBuffer(render->pDev, &lightStructs[0], sizeof(LibCommon::point_light), lightStructs.size());
+
+        CComPtr<ID3D11Buffer> lightBuffer = createStructuredBuffer(render->pDev, &lightStructs[0], sizeof(LibCommon::point_light), lightStructs.size());
 		_pointLights.Release();
 		_pointLights = createStructuredBufferView(render->pDev, lightBuffer, 
 			static_cast<UINT>(lightStructs.size()));
@@ -55,6 +60,12 @@ namespace LibDirect3D {
 			return;
 		}
 		auto lightStructs = LibCommon::fuse_dir_lights(lights);
+        Eigen::Matrix4f viewtrans = camPos;
+        viewtrans.col(3) = Eigen::Vector4f{ 0, 0, 0, 1 };
+        for (auto& elm : lightStructs) {
+            elm.direction = viewtrans * elm.direction;
+            elm.direction.normalize();
+        }
 		_dirLights.Release();
 		_dirLights = createStructuredBufferView(render->pDev, &lightStructs[0], sizeof(LibCommon::directional_light), lightStructs.size());
 		render->pCtx->PSSetShaderResources(2, 1, &_dirLights.p);
@@ -93,7 +104,7 @@ namespace LibDirect3D {
 		updateBuffer(render->pCtx, _materials, &material, sizeof(Components::Material::Data));
 		LibCommon::Transforms trans;
 		trans.model = transform->transform.matrix();
-		trans.view = camPos.inverse();
+		trans.view = camPos;
 		trans.proj = cameraTransform;
 		auto transformBuffer = render->GetTransforms(trans);
 		pCtx->IASetInputLayout(vs->getInputLayout(pDev));

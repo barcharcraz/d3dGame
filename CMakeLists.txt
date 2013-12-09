@@ -45,6 +45,7 @@ include(CMakeDependentOption)
 OPTION(USE_OPENGL "build with opengl support" ON)
 OPTION(USE_DIRECT3D "build with direct3d support" OFF)
 OPTION(USE_GLFW "use glfw for windowing" ON)
+OPTION(USE_WIN32 "use win32 for windowing" OFF)
 
 
 

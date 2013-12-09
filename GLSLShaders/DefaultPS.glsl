@@ -13,7 +13,6 @@ layout(std140) uniform dirLightBlock {
 
 layout(std140) uniform pointLightBlock {
     pointLight_t plights[NUM_POINT];
-    //int numdlights;
 };
 uniform material_t mat;
 uniform sampler2D tex;
@@ -24,11 +23,11 @@ void main() {
     //}
     for(int i = 0; i < NUM_DIRECTIONAL; ++i) {
         outputColor += directionalLight(dlights[i], normal, viewPos, mat); 
-    }
+    } 
     outputColor = clamp(outputColor, 0.0, 1.0);
     outputColor = outputColor * texture(tex, uvout.xy);
     //outputColor.x = dot(normalize(-dlights[0].direction), normalize(normal)); 
     //outputColor.y = 0;
     //outputColor.z = 0;
-    //outputColor.xyz = normalize(normal).xyz; 
+    //outputColor.xyz = normalize(-normal).xyz; 
 }

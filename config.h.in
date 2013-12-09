@@ -4,7 +4,7 @@
 */
 
 #cmakedefine HAS_X11
-#cmakedefine HAS_WIN32
+#cmakedefine USE_WIN32
 #cmakedefine USE_GLFW
 #cmakedefine HAS_MAKE_UNIQUE
 #cmakedefine USE_OPENGL
