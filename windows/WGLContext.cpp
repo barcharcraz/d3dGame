@@ -1,8 +1,19 @@
 #include "stdafx.h"
 #include "WGLContext.h"
 #include <Utils/exceptions.h>
+#include <gl/GL.h>
 namespace windows {
     typedef HGLRC(WINAPI * PFNWGLCREATECONTEXTATTRIBSARBPROC) (HDC hDC, HGLRC hShareContext, const int *attribList);
+#define WGL_CONTEXT_MAJOR_VERSION_ARB 0x2091
+#define WGL_CONTEXT_MINOR_VERSION_ARB 0x2092
+#define WGL_CONTEXT_LAYER_PLANE_ARB 0x2093
+#define WGL_CONTEXT_FLAGS_ARB 0x2094
+#define WGL_CONTEXT_PROFILE_MASK_ARB 0x9126
+#define WGL_CONTEXT_DEBUG_BIT_ARB 0x0001
+#define WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB 0x0002
+#define WGL_CONTEXT_CORE_PROFILE_BIT_ARB 0x00000001
+#define WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB 0x00000002
+
     HGLRC WinGLCreateInitialContext(HDC wnd) {
         HGLRC rv = nullptr;
         PIXELFORMATDESCRIPTOR pfd;
@@ -33,6 +44,7 @@ namespace windows {
         return rv;
     }
     HGLRC WinGLCreateContext(HDC wnd) {
+        HGLRC rv = nullptr;
         HGLRC temp = WinGLCreateInitialContext(wnd);
         BOOL wglCurrentResult = wglMakeCurrent(wnd, temp);
         if (FALSE == wglCurrentResult) {
@@ -40,11 +52,24 @@ namespace windows {
             wglDeleteContext(temp);
             throw std::system_error(GetLastError(), std::system_category());
         }
-        PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)wglGetProcAddress("WGL_ARB_create_context");
+        PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)wglGetProcAddress("wglCreateContextAttribsARB");
         if (nullptr == wglCreateContextAttribsARB) {
             wglMakeCurrent(wnd, nullptr);
             wglDeleteContext(temp);
             throw std::system_error(GetLastError(), std::system_category());
         }
+        const int attriblist [] = {
+            WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
+            WGL_CONTEXT_MINOR_VERSION_ARB, 1,
+            0 //end
+        };
+        rv = wglCreateContextAttribsARB(wnd, nullptr, attriblist);
+        if (nullptr == rv) {
+            wglMakeCurrent(wnd, nullptr);
+            wglDeleteContext(temp);
+            wglDeleteContext(rv);
+            throw std::system_error(GetLastError(), std::system_category());
+        }
+        return rv;
     }
 }
