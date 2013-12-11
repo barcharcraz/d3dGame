@@ -7,4 +7,5 @@
 #include <Windows.h>
 
 #include <exception>
+#include <system_error>
 #include <functional>

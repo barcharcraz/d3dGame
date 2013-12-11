@@ -44,6 +44,11 @@ namespace LibOpenGL {
         _transforms.view(0,3) *= -1;
         _transforms.view(1,3) *= -1;
         _transforms.view(2,3) *= -1;
+        //openGL uses a clip space with Z from -1 to 1 while
+        //directX uses a clip space with Z from 0 to 1, 
+        //the camera uses the DX convention so we need to multiply
+        //the relevant component by two
+        _transforms.proj(2, 3) *= 2;
         //_transforms.view(3,3) *= -1;
     }
 

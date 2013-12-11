@@ -15,7 +15,16 @@
 #include <LibGLSL/GLSLVertexShader.h>
 #endif
 namespace Effects {
-
+    const char* shader_extension(ShaderTypes type) {
+        switch (type) {
+        case ShaderTypes::GLSL:
+            return "glsl";
+        case ShaderTypes::HLSL:
+            return "cso";
+        default:
+            throw std::logic_error("unknown shader type");
+        }
+    }
 	VertexShader::VertexShader(const std::string& filename, const std::vector<ShaderDesc>& desc)
 		: name(filename), inputDesc(desc) {
 		//auto ext = utils::getFileExtension(filename);

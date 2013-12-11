@@ -15,6 +15,7 @@
 #include <LibImage/image.h>
 #include <LibImage/targa.h>
 #include <LibSystems/VelocitySystem3D.h>
+#include <LibSystems/PremulVelocitySystem3D.h>
 #include <LibSystems/MovementController3D.h>
 #include <LibInput/Input.h>
 static void load_effects();
@@ -52,6 +53,7 @@ int main(int, char**) {
     scene->AddEntity(std::move(bottomMod));
     scene->AddSystem<Systems::MovementController3D>();
     scene->AddSystem<Systems::VelocitySystem3D>();
+    scene->AddSystem<Systems::PremulVelocitySystem3D>();
     scene->AddEntity<Prefabs::DirectionalLight>(Eigen::Vector4f{ 1.0f, 1.0f, 1.0f, 1.0f }, Eigen::Vector3f{ 0.0f, 0.0f, -1.0f });
     
     (*scene).AddSystem<Rendering::ModelRenderer>(&rend);

@@ -25,7 +25,7 @@ void main() {
         outputColor += directionalLight(dlights[i], normal, viewPos, mat); 
     } 
     outputColor = clamp(outputColor, 0.0, 1.0);
-    outputColor = outputColor * texture(tex, uvout.xy);
+    outputColor = outputColor * texture(tex, vec2(uvout.x, 1 - uvout.y));
     //outputColor.x = dot(normalize(-dlights[0].direction), normalize(normal)); 
     //outputColor.y = 0;
     //outputColor.z = 0;
