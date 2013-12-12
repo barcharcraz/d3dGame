@@ -24,7 +24,7 @@ namespace LibCommon {
 				AddEntity(std::make_unique<T>(std::forward<Args>(args)...))
 				);
 		}
-		void RemoveEntity(Entity* e);
+		std::unique_ptr<Entity> RemoveEntity(Entity* e);
 		void AddSystem(std::unique_ptr<System> && s);
 		void AddSystem(System * s);
 		template<typename T, typename... Args>
@@ -32,7 +32,7 @@ namespace LibCommon {
 			AddSystem(std::make_unique<T>(std::forward<Args>(args)...));
 		}
 		
-		void RemoveSystem(System* s);
+		std::unique_ptr<System> RemoveSystem(System* s);
 		void SetSystemEvents(System* s, const std::set<std::type_index>& types);
 		void FireUpdateEvent(Entity* e, Components::IComponent* c);
 		

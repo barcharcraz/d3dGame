@@ -8,16 +8,19 @@ namespace windowing {
     public:
         virtual void AttachInput(Input::Input* in) = 0;
         virtual void Show() = 0;
+        virtual void Present() = 0;
+        virtual void Clear() = 0;
     };
     class IGLWindow : public IWindow {
     public:
-        virtual void Present() = 0;
-        virtual void Clear() = 0;
-        
+        virtual void MakeGLActive() = 0;
+        virtual void MakeGLInactive() = 0;
     };
     class IDXWindow : public IWindow {
     public:
         virtual void* Handle() = 0;
+        virtual void SetPresentOverride(std::function<void()> present) = 0;
+        virtual void SetClearOverride(std::function<void()> clear) = 0;
     };
 }
 

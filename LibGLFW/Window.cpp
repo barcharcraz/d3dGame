@@ -98,6 +98,12 @@ namespace LibGLFW {
     void Window::Clear() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     }
+    void Window::MakeGLActive() {
+        SetAsActive();
+    }
+    void Window::MakeGLInactive() {
+        glfwMakeContextCurrent(nullptr);
+    }
     void Window::SetAsActive() {
         glfwMakeContextCurrent(_win);
         glfwSetWindowSizeCallback(_win, &resizeWindow);
@@ -133,8 +139,8 @@ namespace LibGLFW {
 			double dx, dy;
 			glfwGetCursorPos(_win, &x, &y);
 			glfwGetWindowSize(_win, &winx, &winy);
-			dx = lastX - x;
-			dy = lastY - y;
+            dx = x - lastX;
+            dy = y - lastY;
 			lastX = x;
 			lastY = y;
 			auto mouse = _input->Device(Input::MouseType);

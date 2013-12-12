@@ -13,6 +13,8 @@ set(system_files
 	SimpleCollisionSystem.cpp
 	ProjectileSystem.h
 	ProjectileSystem.cpp
+	SystemSwapper.h
+	SystemSwapper.cpp
 	Group.h
 	Group.cpp
 	stdafx.h

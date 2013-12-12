@@ -18,11 +18,18 @@
 #include <LibSystems/PremulVelocitySystem3D.h>
 #include <LibSystems/MovementController3D.h>
 #include <LibInput/Input.h>
+#include <windows/Window.h>
+#include <LibDirect3D/Direct3DRenderer.h>
+#include <LibDirect3D/ModelRenderer.h>
+#include <LibSystems/SystemSwapper.h>
 static void load_effects();
 static std::unique_ptr<Input::Input> construct_input();
 int main(int, char**) {
-    windowing::Window window;
-    Rendering::Renderer rend(&window);
+    windows::Window window;
+    LibOpenGL::OpenGLRenderer glrend(&window);
+    LibDirect3D::Direct3DRenderer dxrend(&window);
+    auto dxrendsys = std::make_unique<LibDirect3D::ModelRenderer>(&dxrend);
+    auto glrendsys = std::make_unique<LibOpenGL::GLModelRenderer>(&glrend);
     auto input = construct_input();
     window.AttachInput(input.get());
     load_effects();
@@ -56,7 +63,7 @@ int main(int, char**) {
     scene->AddSystem<Systems::PremulVelocitySystem3D>();
     scene->AddEntity<Prefabs::DirectionalLight>(Eigen::Vector4f{ 1.0f, 1.0f, 1.0f, 1.0f }, Eigen::Vector3f{ 0.0f, 0.0f, -1.0f });
     
-    (*scene).AddSystem<Rendering::ModelRenderer>(&rend);
+    (*scene).AddSystem<Systems::SystemSwapper>(glrendsys, dxrendsys, "api_toggle");
     
     window.Show();
     window.update = [&]() {
@@ -65,7 +72,7 @@ int main(int, char**) {
         rend.Clear();
         
     };
-    return windowing::Run();
+    return windows::Run();
 }
 void load_effects() {
     using Effects::InputFormats;

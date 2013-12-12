@@ -70,6 +70,8 @@ namespace windows {
             wglDeleteContext(rv);
             throw std::system_error(GetLastError(), std::system_category());
         }
+        wglMakeCurrent(wnd, nullptr);
+        wglDeleteContext(temp);
         return rv;
     }
 }

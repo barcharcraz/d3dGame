@@ -33,12 +33,14 @@ namespace LibCommon {
 		sendAddMessage(_entities.back().get());
         return _entities.back().get();
 	}
-	void Scene::RemoveEntity(Entity *e) {
+	std::unique_ptr<Entity> Scene::RemoveEntity(Entity *e) {
+        std::unique_ptr<Entity> rv = nullptr;
 		for(auto i = _entities.begin(); i != _entities.end(); i++) {
 			if(i->get() == e) {
 				sendRemoveMessage(e);
+                rv = std::move(*i);
 				_entities.erase(i);
-				return;
+				return rv;
 			}
 		}
 	}
@@ -63,12 +65,14 @@ namespace LibCommon {
 	void Scene::AddSystem(System* s) {
 		AddSystem(std::unique_ptr<System>(s));
 	}
-	void Scene::RemoveSystem(System *s) {
+	std::unique_ptr<System> Scene::RemoveSystem(System *s) {
+        std::unique_ptr<System> rv = nullptr;
 		removeSystemEvents(s);
 		for(auto i = _systems.begin(); i != _systems.end(); ++i) {
 			if(i->get() == s) {
+                rv = std::move(*i);
 				_systems.erase(i);
-				return;
+                return rv;
 			}
 		}
 		throw utils::not_supported_error("could not find element in vector");

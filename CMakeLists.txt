@@ -46,7 +46,7 @@ OPTION(USE_OPENGL "build with opengl support" ON)
 OPTION(USE_DIRECT3D "build with direct3d support" OFF)
 OPTION(USE_GLFW "use glfw for windowing" ON)
 OPTION(USE_WIN32 "use win32 for windowing" OFF)
-
+OPTION(USE_MULTIRENDER "enable support for runtime renderer switch" OFF)
 
 
 #config.h configuration
@@ -113,6 +113,9 @@ IF(USE_OPENGL)
 	add_subdirectory(LibGLSL)
 	add_subdirectory(GLSLShaders)
 ENDIF(USE_OPENGL)
+if(USE_MULTIRENDER)
+	add_subdirectory(LibMultiRender)
+endif(USE_MULTIRENDER)
 add_subdirectory(windowing)
 add_subdirectory(CrossplatApp)
 add_subdirectory(LibCairo)

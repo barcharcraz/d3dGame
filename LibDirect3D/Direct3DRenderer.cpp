@@ -22,6 +22,8 @@ Direct3DRenderer::Direct3DRenderer(windowing::IDXWindow* win)
 : Direct3DRenderer()
 {
     auto hwnd = win->Handle();
+    win->SetPresentOverride([this](){this->Present(); });
+    win->SetClearOverride([this](){this->Clear(); });
     //this should always work
     //we do not return an hwnd
     //from win::Handle because

@@ -11,6 +11,7 @@ namespace LibOpenGL {
     }
     //PRIVATE
     void OpenGLRenderer::init() {
+        _win->MakeGLActive();
         auto res = gl::sys::LoadFunctions();
         if(!res) {
             throw utils::graphics_api_error("could not load OGL functions");

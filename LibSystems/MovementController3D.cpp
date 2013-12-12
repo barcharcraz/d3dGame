@@ -19,8 +19,8 @@ namespace Systems {
         auto inp = e->Get<In::Input>();
         //auto trans = e->Get<Components::Transform3D>();
         Affine3f newVel( Affine3f::Identity() );
-        auto rotY = inp->AxisAction("Horizontal");
-        auto rotX = inp->AxisAction("Vertical");
+        auto rotY = -inp->AxisAction("Horizontal");
+        auto rotX = -inp->AxisAction("Vertical");
         float speed = 0.025f;
         
         if (inp->Action("Left")) {
