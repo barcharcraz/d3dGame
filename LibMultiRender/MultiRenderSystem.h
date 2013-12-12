@@ -10,7 +10,10 @@
 namespace Systems {
     class MultiRenderSystem : public LibCommon::System {
     public:
-        MultiRenderSystem(windowing::)
+        MultiRenderSystem(windowing::IMultiWindow* win);
+    private:
+        std::unique_ptr<LibDirect3D::Direct3DRenderer> dxrend = nullptr;
+        std::unique_ptr<LibOpenGL::OpenGLRenderer> glrend = nullptr;
     };
 }
 
