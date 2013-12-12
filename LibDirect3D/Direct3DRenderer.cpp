@@ -21,7 +21,11 @@ Direct3DRenderer::Direct3DRenderer(HWND target) {
 Direct3DRenderer::Direct3DRenderer(windowing::IDXWindow* win)
 : Direct3DRenderer()
 {
+    bindToHwnd(reinterpret_cast<HWND>(win->Handle()));
     Attach(win);
+}
+Direct3DRenderer::~Direct3DRenderer() {
+    Detach();
 }
 void Direct3DRenderer::init(IDXGIAdapter* pAdapter,
             D3D_DRIVER_TYPE type,
@@ -77,25 +81,17 @@ void Direct3DRenderer::bindToHwnd(HWND target) {
     
 }
 void Direct3DRenderer::Attach(windowing::IDXWindow* target) {
-    bindToHwnd(reinterpret_cast<HWND>(target->Handle()));
+    if (m_win != nullptr) {
+        Detach();
+    }
+    m_win = target;
     target->SetPresentOverride([this](){this->Present(); });
     target->SetClearOverride([this](){this->Clear(); });
 }
-void Direct3DRenderer::Detach(windowing::IDXWindow* target) {
-    _pDepthStencil.Release();
-    _pdsView.Release();
-    _pdsState.Release();
-    m_pRenderTarget.Release();
-    m_pSwapChain.Release();
-    m_pDXGIFactory.Release();
-    m_pDXGIDevice.Release();
-    _bsOn.Release();
-    _bsOff.Release();
-    _transformBuffer.Release();
-    pDev.Release();
-    pCtx.Release();
-    target->SetPresentOverride(nullptr);
-    target->SetClearOverride(nullptr);
+void Direct3DRenderer::Detach() {
+    m_win->SetPresentOverride(nullptr);
+    m_win->SetClearOverride(nullptr);
+    m_win = nullptr;
 }
 void Direct3DRenderer::createRenderTarget() {
     HRESULT hr = S_OK;

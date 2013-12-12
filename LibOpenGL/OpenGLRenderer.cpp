@@ -7,11 +7,33 @@ namespace LibOpenGL {
     OpenGLRenderer::OpenGLRenderer(windowing::IGLWindow* win)
         : _win(win)
     {
+        _win->MakeGLActive();
         init();
+    }
+    OpenGLRenderer::OpenGLRenderer() {
+    }
+    OpenGLRenderer::~OpenGLRenderer() {
+        Detach();
+    }
+    void OpenGLRenderer::Attach(windowing::IGLWindow* target) {
+        if (nullptr != _win) {
+            Detach();
+        }
+        _win = target;
+        _win->MakeGLActive();
+        init();
+    }
+    void OpenGLRenderer::Detach() {
+        if (_win == nullptr) {
+            return;
+        }
+        _win->MakeGLInactive();
+        _win = nullptr;
+        
     }
     //PRIVATE
     void OpenGLRenderer::init() {
-        _win->MakeGLActive();
+
         auto res = gl::sys::LoadFunctions();
         if(!res) {
             throw utils::graphics_api_error("could not load OGL functions");
@@ -20,12 +42,6 @@ namespace LibOpenGL {
         //we are using zero as a "null" value, since
         //gl will not return that when creating a program
         ActiveProgram = 0;
-    }
-    void OpenGLRenderer::Present() {
-        _win->Present();
-    }
-    void OpenGLRenderer::Clear() {
-        gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT | gl::STENCIL_BUFFER_BIT);
     }
     //freestanding functions
     void EnableDepthBuffer() {

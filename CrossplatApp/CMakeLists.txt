@@ -4,7 +4,7 @@ set(app_files
 	stdafx.cpp
 	stdafx.h
 )
-set(app_libs Systems LibComponents LibCommon Image Input AssetLoader Effects Prefabs)
+set(app_libs Systems LibComponents LibCommon Image Input AssetLoader Effects Prefabs MultiRender)
 if(USE_DIRECT3D)
 set(app_libs ${app_libs} LibDirect3D LibHLSL LibDXGI)
 endif()

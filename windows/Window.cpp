@@ -99,7 +99,7 @@ namespace windows {
         if (_dc == nullptr) {
             throw std::runtime_error("No Bound context");
         }
-        bool swapRes = SwapBuffers(_dc);
+        BOOL swapRes = SwapBuffers(_dc);
         if (!swapRes) {
             throw std::system_error(GetLastError(), std::system_category());
         }

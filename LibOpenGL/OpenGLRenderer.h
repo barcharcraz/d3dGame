@@ -6,9 +6,15 @@ namespace LibOpenGL {
 	class OpenGLRenderer {
 	public:
         OpenGLRenderer(windowing::IGLWindow* win);
-        
+        OpenGLRenderer();
+        ~OpenGLRenderer();
+        OpenGLRenderer(const OpenGLRenderer& other) = delete;
+        OpenGLRenderer& operator=(const OpenGLRenderer& other) = delete;
         void Present();
         void Clear();
+
+        void Attach(windowing::IGLWindow* target);
+        void Detach();
 
 		GLuint ActiveProgram;
     private:

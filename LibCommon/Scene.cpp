@@ -15,13 +15,24 @@ namespace LibCommon {
         _delta = now - _lastUpdate;
         UpdateSystems();
     }
+    void Scene::EraseSystemsNow() {
+        _systems.erase(std::remove(begin(_systems), end(_systems), nullptr));
+    }
     void Scene::UpdateSystems() {
+        bool hasNulls = false;
         for (auto& sys : _systems) {
-            sys->PreProcess();
-            auto input = SelectEntities(sys->aspect);
-            for (auto ent : input) {
-                sys->Process(ent);
+            if (sys != nullptr) {
+                sys->PreProcess();
+                auto input = SelectEntities(sys->aspect);
+                for (auto ent : input) {
+                    sys->Process(ent);
+                }
+            } else {
+                hasNulls = true;
             }
+        }
+        if (hasNulls) {
+            EraseSystemsNow();
         }
     }
     Entity* Scene::AddEntity(Entity* e) {
@@ -45,25 +56,26 @@ namespace LibCommon {
         }
     }
 
-    void Scene::AddSystem(std::unique_ptr<System> && s) {
+    System* Scene::AddSystem(std::unique_ptr<System> && s) {
         auto insertPos = std::find_if(_systems.begin(), _systems.end(), [&](std::unique_ptr<System>& elm) {
-            if (s->priority > elm->priority) {
+            if (elm != nullptr && s->priority > elm->priority) {
                 return true;
             }
             return false;
         });
-        auto element = _systems.insert(insertPos, std::move(s));
-        element->get()->parent = this;
-        (*element)->Init();
+        auto element = _systems.insert(insertPos, std::move(s))->get();
+        element->parent = this;
+        element->Init();
         //we want to send add messages for the backlog of entities
-        auto backlog = SelectEntities((*element)->aspect);
+        auto backlog = SelectEntities(element->aspect);
         for(auto elm : backlog) {
-            (*element)->OnEntityAdd(elm);
+            element->OnEntityAdd(elm);
         }
+        return element;
         
     }
-    void Scene::AddSystem(System* s) {
-        AddSystem(std::unique_ptr<System>(s));
+    System* Scene::AddSystem(System* s) {
+        return AddSystem(std::unique_ptr<System>(s));
     }
     std::unique_ptr<System> Scene::RemoveSystem(System *s) {
         std::unique_ptr<System> rv = nullptr;
@@ -71,7 +83,6 @@ namespace LibCommon {
         for(auto i = _systems.begin(); i != _systems.end(); ++i) {
             if(i->get() == s) {
                 rv = std::move(*i);
-                _systems.erase(i);
                 return rv;
             }
         }

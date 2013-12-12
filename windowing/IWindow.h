@@ -1,5 +1,6 @@
 #ifndef WINDOWING_IWINDOW
 #define WINDOWING_IWINDOW
+#include <functional>
 namespace Input {
     class Input;
 }

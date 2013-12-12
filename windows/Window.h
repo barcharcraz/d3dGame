@@ -7,7 +7,7 @@ namespace windows {
     LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
     int Run();
 
-    class Window : public windowing::IDXWindow, public windowing::IGLWindow {
+    class Window : public windowing::IMultiWindow {
         friend LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
     public:
         Window();

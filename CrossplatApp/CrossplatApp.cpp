@@ -19,17 +19,11 @@
 #include <LibSystems/MovementController3D.h>
 #include <LibInput/Input.h>
 #include <windows/Window.h>
-#include <LibDirect3D/Direct3DRenderer.h>
-#include <LibDirect3D/ModelRenderer.h>
-#include <LibSystems/SystemSwapper.h>
+#include <LibMultiRender/MultiRenderSystem.h>
 static void load_effects();
 static std::unique_ptr<Input::Input> construct_input();
 int main(int, char**) {
     windows::Window window;
-    LibOpenGL::OpenGLRenderer glrend(&window);
-    LibDirect3D::Direct3DRenderer dxrend(&window);
-    auto dxrendsys = std::make_unique<LibDirect3D::ModelRenderer>(&dxrend);
-    auto glrendsys = std::make_unique<LibOpenGL::GLModelRenderer>(&glrend);
     auto input = construct_input();
     window.AttachInput(input.get());
     load_effects();
@@ -63,13 +57,13 @@ int main(int, char**) {
     scene->AddSystem<Systems::PremulVelocitySystem3D>();
     scene->AddEntity<Prefabs::DirectionalLight>(Eigen::Vector4f{ 1.0f, 1.0f, 1.0f, 1.0f }, Eigen::Vector3f{ 0.0f, 0.0f, -1.0f });
     
-    (*scene).AddSystem<Systems::SystemSwapper>(glrendsys, dxrendsys, "api_toggle");
+    scene->AddSystem<Systems::MultiRenderSystem>(&window);
     
     window.Show();
     window.update = [&]() {
         (*scene).Update();
-        rend.Present();
-        rend.Clear();
+        window.Present();
+        window.Clear();
         
     };
     return windows::Run();
@@ -98,6 +92,7 @@ std::unique_ptr<Input::Input> construct_input() {
     rv->AddAction("Right", Input::D);
     rv->AddAction("Forward", Input::W);
     rv->AddAction("Backward", Input::S);
+    rv->AddAction("SwapAPI", Input::Z);
     rv->AddAxisAction("Horizontal", Input::MouseType, Input::AxisName::X);
     rv->AddAxisAction("Vertical", Input::MouseType, Input::AxisName::Y);
     return rv;

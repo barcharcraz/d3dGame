@@ -3,4 +3,4 @@ set(multirender_files
 	MultiRenderSystem.cpp
 	)
 add_library(MultiRender STATIC ${multirender_files})
-target_link_libraries(MultiRender PUBLIC LibDirect3D LibOpenGL LibCommon)
+target_link_libraries(MultiRender LibDirect3D LibOpenGL LibCommon)

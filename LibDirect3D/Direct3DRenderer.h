@@ -15,8 +15,11 @@ namespace LibDirect3D {
         Direct3DRenderer();
         Direct3DRenderer(HWND target);
         Direct3DRenderer(windowing::IDXWindow* win);
+        ~Direct3DRenderer();
+        Direct3DRenderer(const Direct3DRenderer& other) = delete;
+        Direct3DRenderer& operator=(const Direct3DRenderer& other) = delete;
         void Attach(windowing::IDXWindow* target);
-        void Detach(windowing::IDXWindow* target);
+        void Detach();
         void Present();
         void Clear();
 
@@ -58,6 +61,7 @@ namespace LibDirect3D {
         CComPtr<ID3D11BlendState> _bsOn;
         CComPtr<ID3D11BlendState> _bsOff;
         mutable CComPtr<ID3D11Buffer> _transformBuffer;
+        windowing::IDXWindow* m_win = nullptr;
 
         
     };
