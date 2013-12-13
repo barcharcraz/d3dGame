@@ -7,8 +7,8 @@ namespace Systems {
     {
     }
     void MultiRenderSystem::Init() {
-        glrend = std::make_unique<LibOpenGL::OpenGLRenderer>(m_win);
-        renderSys = this->parent->AddSystem<LibOpenGL::GLModelRenderer>(glrend.get());
+        dxrend = std::make_unique<LibDirect3D::Direct3DRenderer>(m_win);
+        renderSys = this->parent->AddSystem<LibDirect3D::ModelRenderer>(dxrend.get());
 
     }
     void MultiRenderSystem::Process(LibCommon::Entity* ent) {

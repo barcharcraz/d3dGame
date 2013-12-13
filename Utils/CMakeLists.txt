@@ -12,7 +12,7 @@ set(util_src
 	event.h
 	maybe.h
     preprocess.h
+	lazy_container.h
 	)
 
-CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/config.h)
 add_custom_target(utils SOURCES ${util_src})

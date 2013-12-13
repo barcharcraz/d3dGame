@@ -18,7 +18,7 @@ namespace Systems {
         std::unique_ptr<LibDirect3D::Direct3DRenderer> dxrend = nullptr;
         std::unique_ptr<LibOpenGL::OpenGLRenderer> glrend = nullptr;
         LibCommon::System* renderSys = nullptr;
-        API active = API::GL;
+        API active = API::DX;
         windowing::IMultiWindow* m_win;
     };
 }

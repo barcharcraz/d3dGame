@@ -96,6 +96,9 @@ namespace windows {
         //onKeyDown = [input](Input::Keys k){input->ActivateKey(k); };
     }
     void Window::Present() {
+		if (m_presentOverride != nullptr) {
+			return m_presentOverride();
+		}
         if (_dc == nullptr) {
             throw std::runtime_error("No Bound context");
         }
@@ -105,6 +108,9 @@ namespace windows {
         }
     }
     void Window::Clear() {
+		if (m_clearOverride != nullptr) {
+			return m_clearOverride();
+		}
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     }
     void Window::MakeGLActive() {
