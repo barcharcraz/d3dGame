@@ -13,13 +13,14 @@ namespace LibCommon {
         using namespace std::chrono;
         auto now = _clock.now();
         _delta = now - _lastUpdate;
+        _systems.finalize_ops();
+        _entities.finalize_ops();
         UpdateSystems();
     }
     void Scene::EraseSystemsNow() {
         _systems.erase(std::remove(begin(_systems), end(_systems), nullptr));
     }
     void Scene::UpdateSystems() {
-        bool hasNulls = false;
         for (auto& sys : _systems) {
             if (sys != nullptr) {
                 sys->PreProcess();
@@ -27,12 +28,7 @@ namespace LibCommon {
                 for (auto ent : input) {
                     sys->Process(ent);
                 }
-            } else {
-                hasNulls = true;
             }
-        }
-        if (hasNulls) {
-            EraseSystemsNow();
         }
     }
     Entity* Scene::AddEntity(Entity* e) {
@@ -83,6 +79,7 @@ namespace LibCommon {
         for(auto i = _systems.begin(); i != _systems.end(); ++i) {
             if(i->get() == s) {
                 rv = std::move(*i);
+                _systems.erase(i);
                 return rv;
             }
         }

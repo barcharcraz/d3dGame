@@ -11,6 +11,7 @@
 #include <chrono>
 #include <functional>
 #include <Utils/make_unique.h>
+#include <Utils/lazy_container.h>
 namespace LibCommon {
     class Scene {
     public:
@@ -56,8 +57,8 @@ namespace LibCommon {
         Entity* SelectEntity(const std::set<std::type_index>& types);
     protected:
     private:
-        std::vector<std::unique_ptr<System>> _systems;
-        std::vector<std::unique_ptr<Entity>> _entities;
+        utils::lazy_container<std::unique_ptr<System>> _systems;
+        utils::lazy_container<std::unique_ptr<Entity>> _entities;
         std::multimap<std::type_index, System*> _eventRegistrations;
         //! \brief sends a removal message to all systems for the
         //! entity e
