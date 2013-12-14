@@ -1,6 +1,8 @@
 set(glslshaders_files
   DefaultPS.glsl
   DefaultVS.glsl
+  LightStructs.glslh
+  ForwardLighting.glslh
   )
 add_custom_target(GLSLShaders SOURCES ${glslshaders_files})
 foreach(var IN LISTS glslshaders_files)

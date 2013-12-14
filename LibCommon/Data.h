@@ -25,12 +25,18 @@ namespace LibCommon {
 	};
 	struct point_light {
 		Eigen::Vector4f diffuse;
+		Eigen::Vector4f specular;
 		Eigen::Vector4f position;
 	};
 	struct directional_light {
-		Eigen::Vector4f diffuse;
+		Eigen::Vector4f diffuse; 
+		Eigen::Vector4f specular;
 		Eigen::Vector4f direction;
 	};
+    //! \brief This function takes a vector of verts and returns a vector
+    //! of just the position components, this is an O(n) operation, please
+    //! refrain from doing it every frame
+    std::vector<Eigen::Vector4f> fuse_verts(const std::vector<Vertex>& verts);
 	//! \brief returns a list of point lights in a format that can be sent to the GPU
 	//!
 	//! this this function is needed because we would like to define a light as an
@@ -41,6 +47,7 @@ namespace LibCommon {
 	//! GPU
 	std::vector<directional_light> fuse_dir_lights(const std::vector<Entity*>& lights);
 }
+
 namespace std {
 	template<>
 	struct hash<LibCommon::Vertex> {
@@ -68,4 +75,5 @@ namespace std {
 		}
 	};
 }
+
 #endif

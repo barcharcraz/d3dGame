@@ -4,32 +4,34 @@
 #include <locale>
 #include <vector>
 #include <cwchar>
+#include <algorithm>
+#include <iterator>
 
 namespace utils {
-	inline void trim(std::string * in) {
-		//we dont want to try and trim anything if the
-		//string is empty, inded if we get somethign like
-		//'     ' we would return ''
-		if (in->empty()) {
-			return;
-		}
-		std::string::iterator end = in->end();
-		std::string::iterator begin = in->begin();
-		//++begin;
-		--end;
-		if (*end == ' ') {
-			in->erase(end);
-			--end;
-		}
-		if (*begin == ' ') {
-			in->erase(begin);
-			++begin;
-		}
-		if (*begin != ' ' && *end != ' ') {
-			return;
-		}
-		trim(in);
-	}
+    inline std::vector<const char*> convert_array(
+                const std::vector<std::string>& array) {
+        std::vector<const char*> rv;
+        rv.reserve(array.size());
+        for(auto& elm : array) {
+            rv.push_back(elm.c_str());
+        }
+        return rv;
+    }
+    inline void ltrim(std::string * in, char delim = ' ') {
+        in->erase(begin(*in), std::find_if(begin(*in), end(*in), [=](char a){
+            return a != delim;
+        }));
+    }
+    inline void rtrim(std::string * in, char delim = ' ') {
+        in->erase(std::find_if(in->rbegin(), in->rend(), [=](char a) {
+            return a != delim;
+        }).base(), end(*in));
+    }
+    inline void trim(std::string* in, char delim = ' ') {
+        rtrim(in, delim);
+        ltrim(in, delim);
+    }
+	
 #ifdef _WIN32
 #pragma warning( push )
 #pragma warning( disable:4996 )

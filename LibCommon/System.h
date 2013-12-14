@@ -33,7 +33,7 @@ namespace LibCommon {
 		virtual void OnEntityRemove(Entity*) {}
 		virtual void OnEntityUpdate(Entity*, Components::IComponent*) {}
 		virtual ~System() = 0;
-		Priority priority;
+		Priority priority = Priority::MEDIUM;
 	};
     inline System::~System() {}
 

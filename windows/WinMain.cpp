@@ -12,6 +12,10 @@ extern int main(int, char**);
 //do some major fucking around with strings here to narrow the array
 //of widestrings
 int CALLBACK wWinMain(HINSTANCE hinstance, HINSTANCE hPrevInstance, LPWSTR cmdLine, int nCmdShow) {
+	hinstance;
+	hPrevInstance;
+	cmdLine;
+	nCmdShow;
 	windows::ComInitialize com;
 	int argc = __argc;
 	std::vector<std::string> narrowParams;

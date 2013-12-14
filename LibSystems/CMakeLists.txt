@@ -3,6 +3,8 @@ set(system_files
 	AxisAlignedBBSystem.cpp
 	VelocitySystem3D.h
 	VelocitySystem3D.cpp
+	PremulVelocitySystem3D.h
+	PremulVelocitySystem3D.cpp
 	MovementController3D.h
 	MovementController3D.cpp
 	CollisionDetectionSystem.h
@@ -11,6 +13,8 @@ set(system_files
 	SimpleCollisionSystem.cpp
 	ProjectileSystem.h
 	ProjectileSystem.cpp
+	SystemSwapper.h
+	SystemSwapper.cpp
 	Group.h
 	Group.cpp
 	stdafx.h

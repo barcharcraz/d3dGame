@@ -4,7 +4,8 @@
 namespace Prefabs {
 	DirectionalLight::DirectionalLight(const Eigen::Vector4f& color, const Eigen::Vector3f& dir) {
 		using namespace Eigen;
-		AddComponent<Components::DirectionalLight>(color);
-		AddComponent<Components::Transform3D>(Affine3f(Quaternionf::FromTwoVectors(Vector3f::UnitY(), dir)));
+		Eigen::Vector4f newDir;
+		newDir << dir, 0;
+		AddComponent<Components::DirectionalLight>(color, color, newDir);
 	}
 }

@@ -8,10 +8,12 @@ namespace Components {
 	public:
 		PointLight();
 		explicit PointLight(const Eigen::Vector4f& diffuse);
-		explicit PointLight(unsigned int radius);
+		PointLight(const Eigen::Vector4f& diffuse, const Eigen::Vector4f& specular, unsigned int radius);
 		PointLight(const Eigen::Vector4f& diffuse, unsigned int radius);
+		explicit PointLight(unsigned int radius);
 		
 		Eigen::Vector4f Diffuse;
+		Eigen::Vector4f Specular;
 		unsigned int Radius;
 		
 	};

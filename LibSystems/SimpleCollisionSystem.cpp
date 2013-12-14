@@ -17,10 +17,10 @@ namespace Systems {
 	void SimpleCollisionSystem::Init() {
 		EnableUpdate({ typeid(Components::Collision) });
 	}
-	void SimpleCollisionSystem::OnEntityUpdate(LibCommon::Entity* ent, Components::IComponent* comp) {
+	void SimpleCollisionSystem::OnEntityUpdate(LibCommon::Entity* ent, Components::IComponent*) {
 		auto collisions = ent->Get<Components::Collision>();
 		auto velocity = ent->Get<Components::Velocity3D>();
-		auto transform = ent->Get<Components::Transform3D>();
+		//auto transform = ent->Get<Components::Transform3D>();
 		auto thisAABB = ent->Get<Components::AxisAlignedBB>();
 		if (collisions->with.size() != 0) {
 			//auto possiblePos = velocity->velocity * transform->transform;
@@ -36,7 +36,7 @@ namespace Systems {
 			collisions->with.clear();
 		}
 	}
-	void SimpleCollisionSystem::Process(LibCommon::Entity* ent) {
+	void SimpleCollisionSystem::Process(LibCommon::Entity*) {
 		
 	}
 }

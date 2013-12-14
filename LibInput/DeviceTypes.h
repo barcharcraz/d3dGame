@@ -22,6 +22,7 @@ namespace Input {
 	const DeviceType MouseType = { 0x01, 0x02 };
 	
 }
+
 namespace std {
 	template<>
 	struct hash<Input::DeviceType> {
@@ -33,4 +34,5 @@ namespace std {
 		}
 	};
 }
+
 #endif

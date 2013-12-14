@@ -2315,7 +2315,9 @@ namespace gl
 	inline void DeleteTextures(GLsizei n, const GLuint * textures){_detail::DeleteTextures(n, textures);}
 	inline void DisableClientState(GLenum ren_array){_detail::DisableClientState(ren_array);}
 	inline void DrawArrays(GLenum mode, GLint first, GLsizei count){_detail::DrawArrays(mode, first, count);}
-	inline void DrawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid * indices){_detail::DrawElements(mode, count, type, indices);}
+	inline void DrawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid * indices){
+        _detail::DrawElements(mode, count, type, indices);
+    }
 	inline void EdgeFlagPointer(GLsizei stride, const GLvoid * pointer){_detail::EdgeFlagPointer(stride, pointer);}
 	inline void EnableClientState(GLenum ren_array){_detail::EnableClientState(ren_array);}
 	inline void GenTextures(GLsizei n, GLuint * textures){_detail::GenTextures(n, textures);}

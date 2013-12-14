@@ -25,13 +25,27 @@ namespace utils {
 		}
 		std::string rv;
 		file.seekg(0, std::ios::end);
-		int size = file.tellg();
 		rv.reserve(file.tellg());
 		file.seekg(0, std::ios::beg);
 		rv.assign((std::istreambuf_iterator<char>(file)),
 				  (std::istreambuf_iterator<char>()));
 		return rv;
 	}
+    inline std::vector<std::string> slurpByLines(const std::string& filename) {
+        std::ifstream file(filename);
+        if(!file.is_open()) {
+            throw utils::file_not_found_error(filename);
+        }
+        std::vector<std::string> rv;
+        std::string next = "";
+        while(file) {
+            std::getline(file, next);
+            next += '\n';
+            rv.push_back(std::move(next));
+        }
+        rv.shrink_to_fit();
+        return rv;
+    }
 	inline std::string getFileExtension(const std::string& filename) {
 		using namespace std;
 		auto idx = filename.rfind('.');

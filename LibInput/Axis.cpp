@@ -4,17 +4,14 @@
 #include <cmath>
 namespace Input {
 	Axis::Axis()
-		: _ceil(100), _deadzone(0.00f), _pos(0)
+		: _pos(0)
 	{
 
 	}
-	Axis::operator float() const {
-		float cval = float(utils::clamp(_pos, -_ceil, _ceil));
-		float ceil = float(_ceil);
-		auto retval = cval / ceil;
-		return retval;
+	Axis::operator double() const {
+		return _pos;
 	}
-	void Axis::SetPosition(long newPos) {
+	void Axis::SetPosition(double newPos) {
 		_pos = newPos;
 	}
 }

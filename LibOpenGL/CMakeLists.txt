@@ -11,6 +11,12 @@ set(LibOpenGL_files
 	GLProgram.cpp
 	GLAttribArray.h
 	GLAttribArray.cpp
+	GLUniforms.h
+	GLUniforms.cpp
+	GLTexture.h
+	GLTexture.cpp
+	GLUtils.h
+	GLUtils.cpp
 	gl_core_3_1.hpp
 	gl_core_3_1.cpp
 	stdafx.h

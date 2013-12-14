@@ -12,7 +12,7 @@ namespace Systems {
 	void ProjectileSystem::Init() {
 		EnableUpdate({ typeid(Components::Collision) });
 	}
-	void ProjectileSystem::OnEntityUpdate(LibCommon::Entity* ent, Components::IComponent* comp) {
+	void ProjectileSystem::OnEntityUpdate(LibCommon::Entity* ent, Components::IComponent*) {
 		auto collision = ent->Get<Components::Collision>();
 		if (collision->with.size() > 0) {
 			parent->RemoveEntity(ent);
