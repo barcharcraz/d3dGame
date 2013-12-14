@@ -33,7 +33,6 @@ namespace LibCommon {
     }
     Entity* Scene::AddEntity(Entity* e) {
         return AddEntity(std::unique_ptr<Entity>(e));
-        
     }
     Entity* Scene::AddEntity(std::unique_ptr<Entity> && e) {
         _entities.push_back(std::move(e));

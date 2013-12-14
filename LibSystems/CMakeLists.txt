@@ -3,8 +3,8 @@ set(system_files
 	AxisAlignedBBSystem.cpp
 	VelocitySystem3D.h
 	VelocitySystem3D.cpp
-	PreMulVelocitySystem3D.h
-	PreMulVelocitySystem3D.cpp
+	PremulVelocitySystem3D.h
+	PremulVelocitySystem3D.cpp
 	MovementController3D.h
 	MovementController3D.cpp
 	CollisionDetectionSystem.h
