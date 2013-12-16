@@ -1,7 +1,7 @@
 #tell MSVC to use the static CRT
 set(CMAKE_USER_MAKE_RULES_OVERRIDE_CXX ${CMAKE_CURRENT_SOURCE_DIR}/cmake/cxx_flag_overrides.cmake)
 project (d3dgame)
-cmake_minimum_required(VERSION 2.8.11)
+cmake_minimum_required(VERSION 2.8.8)
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 include(output_set)
 if(NOT DEFINED DEPENDENCIES_DOWNLOADALL)

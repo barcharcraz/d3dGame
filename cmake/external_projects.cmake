@@ -2,8 +2,7 @@ include(ExternalProject)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 macro(install_eigen)
 	ExternalProject_Add(Eigen3
-						HG_REPOSITORY https://bitbucket.org/eigen/eigen/
-                        HG_TAG af634f1
+						URL https://bitbucket.org/eigen/eigen/get/default.tar.gz
 						CMAKE_ARGS -DEIGEN_INCLUDE_INSTALL_DIR:path=<INSTALL_DIR>
 										 -DCMAKE_INSTALL_PREFIX:path=<INSTALL_DIR>
 										 -DEIGEN_LEAVE_TEST_IN_ALL_TARGET:BOOL=OFF
