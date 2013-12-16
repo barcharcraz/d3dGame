@@ -11,3 +11,4 @@ set(ecs_files
 	World.cpp
 	)
 add_library(sparse_ecs STATIC ${ecs_files})
+target_include_directories(sparse_ecs INTERFACE ..)

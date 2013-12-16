@@ -69,7 +69,7 @@ ENDIF(WIN32)
 IF(APPLE)
 	set(CMAKE_EXE_LINKER_FLAGS "-framework OpenGL -framework IOKit -framework Cocoa")
 ENDIF(APPLE)
-add_custom_target(Glue SOURCES windowing.h Components2D.h Components3D.h Components.h Rendering.h)
+add_custom_target(Glue SOURCES ecs.h windowing.h Components2D.h Components3D.h Components.h Rendering.h)
 
 
 if(GTEST_FOUND)
