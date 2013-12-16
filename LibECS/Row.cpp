@@ -6,8 +6,16 @@ namespace sparse {
     namespace ecs {
         namespace {
             const size_t initial_capacity = 10;
-            void* erase_num(std::vector<unsigned char*>& vec, void* pos, std::size_t num) {
-
+            void* erase_num(std::vector<unsigned char>& vec, void* pos, std::size_t num) {
+                Component* comp = reinterpret_cast<Component*>(pos);
+                unsigned char* chr = reinterpret_cast<unsigned char*>(pos);
+                auto indexStart = chr - vec.data();
+                auto indexEnd = (chr + (comp->size * num)) - vec.data();
+                auto iterStart = vec.begin() + indexStart;
+                auto iterEnd = vec.begin() + indexEnd;
+                auto erased = vec.erase(iterStart, iterEnd);
+                auto erasedIndex = erased - vec.begin();
+                return vec.data() + erasedIndex;
             }
         }
         void Row::push_back(void* value) {
@@ -36,17 +44,16 @@ namespace sparse {
         void* Row::erase(void* pos) {
             Component* comp = reinterpret_cast<Component*>(pos);
             assert(comp->type == type && comp->size == item_size);
-            unsigned char* chr = reinterpret_cast<unsigned char*>(pos);
-            auto indexStart = chr - data.data();
-            auto indexEnd = (chr + comp->size) - data.data();
-            auto iterStart = data.begin() + indexStart;
-            auto iterEnd = data.begin() + indexEnd;
-            auto erased = data.erase(iterStart, iterEnd);
-            if (erased == data.end()) {
-                return end<void*>();
-            }
-            return &*erased;
+            return erase_num(data, pos, 1);
             
+        }
+        void* Row::erase(void* first, void* last) {
+            Component* comp = reinterpret_cast<Component*>(first);
+            assert(comp->type == type && comp->size == item_size);
+            auto numErase = 
+                reinterpret_cast<unsigned char*>(last) - 
+                reinterpret_cast<unsigned char*>(first);
+            return erase_num(data, first, numErase);
         }
         void* Row::erase(void* first, void* last) {
             Component* comp = reinterpret_cast<Component*>(first);

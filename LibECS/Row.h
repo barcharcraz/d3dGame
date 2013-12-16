@@ -23,6 +23,9 @@ namespace sparse {
 
             template<typename T> void push_back(const T& arg);
             template<typename T> iterator<T> insert(iterator<T> pos, const T& value);
+            template<typename T> iterator<T> erase(iterator<T> pos);
+            template<typename T> iterator<T> erase(iterator<T> first, iterator<T> last);
+
 
             std::size_t size() const;
             std::size_t capacity() const;
@@ -53,8 +56,18 @@ namespace sparse {
         template<typename T>
         auto Row::insert(iterator<T> pos, const T& value)->iterator<T> {
             static_assert(std::is_trivially_copyable<T>::value, "ALL COMPONENTS MUST BE TRIVIAL");
-            insert(pos &value);
+            return reinterpret_cast<iterator<T>>(insert(pos, &value));
         }
+
+        template<typename T>
+        auto Row::erase(iterator<T> pos)->iterator<T> {
+            return reinterpret_cast<iterator<T>>(erase(pos));
+        }
+        template<typename T>
+        auto Row::erase(iterator<T> first, iterator<T> last)->iterator<T> {
+            return reinterpret_cast<iterator<T>>(erase(first, last));
+        }
+
         template<typename T>
         auto Row::begin()->iterator<T> {
             assert(T::stype == this->type && item_size == sizeof(T));

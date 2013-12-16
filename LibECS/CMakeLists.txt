@@ -5,5 +5,9 @@ set(ecs_files
 	Row.cpp
 	Component.h
 	Component.cpp
+	System.h
+	System.cpp
+	World.h
+	World.cpp
 	)
 add_library(sparse_ecs STATIC ${ecs_files})
