@@ -55,8 +55,13 @@ namespace sparse {
                 reinterpret_cast<unsigned char*>(first);
             return erase_num(data, first, numErase);
         }
-        void* Row::erase(void* first, void* last) {
-            Component* comp = reinterpret_cast<Component*>(first);
+        void* Row::back() {
+            return reinterpret_cast<unsigned char*>(&data.back()) -
+                item_size;
+        }
+        const void* Row::back() const {
+            return reinterpret_cast<const unsigned char*>(&data.back()) -
+                item_size;
         }
         std::size_t Row::size() const {
             if (type == -1) {

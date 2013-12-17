@@ -10,6 +10,7 @@ namespace sparse {
                 data.resize(comp->type);
             }
             data[comp->type].push_back(value);
+            return data[comp->type].back();
         }
     }
 }

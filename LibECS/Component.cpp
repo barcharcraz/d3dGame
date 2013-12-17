@@ -12,8 +12,5 @@ namespace sparse {
             nextID += 1;
             return rv;
         }
-        ComponentType QueryType(std::type_info type) {
-
-        }
     }
 }

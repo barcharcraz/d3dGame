@@ -26,7 +26,8 @@ namespace sparse {
             template<typename T> iterator<T> erase(iterator<T> pos);
             template<typename T> iterator<T> erase(iterator<T> first, iterator<T> last);
 
-
+            void* back();
+            const void* back() const;
             std::size_t size() const;
             std::size_t capacity() const;
             //iterator stuff
@@ -44,7 +45,7 @@ namespace sparse {
             return begin<T>() + pos;
         }
         template<typename T>
-        const T& Row::operator[](std::size_t pos) {
+        const T& Row::operator[](std::size_t pos) const {
             return begin<T>() + pos;
         }
 
@@ -70,22 +71,22 @@ namespace sparse {
 
         template<typename T>
         auto Row::begin()->iterator<T> {
-            assert(T::stype == this->type && item_size == sizeof(T));
+            assert(item_size == sizeof(T));
             return reinterpret_cast<T*>(data.data());
         }
         template<typename T>
-        auto Row::begin()->const_iterator<T> const {
-            assert(T::stype == this->type && item_size == sizeof(T));
+        auto Row::begin() const->const_iterator<T> {
+            assert(item_size == sizeof(T));
             return reinterpret_cast<const T*>(data.data());
         }
         template<typename T>
         auto Row::end()->iterator<T> {
-            assert(T::stype == this->type && item_size == sizeof(T));
+            assert(item_size == sizeof(T));
             return begin<T>() + size;
         }
         template<typename T>
-        auto Row::end()->const_iterator<T> const {
-            assert(T::stype == this->type && item_size == sizeof(T));
+        auto Row::end() const->const_iterator<T> {
+            assert(item_size == sizeof(T));
             return begin<T>() + size;
         }
     }

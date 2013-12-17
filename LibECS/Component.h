@@ -6,7 +6,6 @@ namespace sparse {
         typedef int ComponentType;
         typedef int Entity;
         ComponentType GenID();
-        ComponentType QueryType(std::type_info type);
         struct Component {
             ComponentType type;
             std::size_t size;
