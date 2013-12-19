@@ -7,6 +7,7 @@
 #cmakedefine USE_WIN32
 #cmakedefine USE_GLFW
 #cmakedefine HAS_MAKE_UNIQUE
+#cmakedefine HAS_IS_TRIVIALLY_COPYABLE
 #cmakedefine USE_OPENGL
 #cmakedefine USE_DIRECT3D
 #cmakedefine Boost_FOUND

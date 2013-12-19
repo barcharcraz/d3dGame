@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <ecs.h>
+#include <type_traits>
 using namespace sparse::ecs;
 struct TestStruct {
     static ComponentType stype;
@@ -54,4 +55,18 @@ TEST(RowTests, TestBack) {
     r.push_back(t2);
     r.push_back(t3);
     ASSERT_EQ(((TestStruct*)r.back())->value, 3);
+}
+
+struct TrivialTest_struct {
+    static ComponentType stype;
+    ComponentType type = TrivialTest_struct::stype;
+    size_t size = sizeof(TrivialTest_struct);
+    Entity ent;
+    int val;
+};
+ComponentType TrivialTest_struct::stype = GenID();
+TEST(RowTests, TestTrivialCopy) {
+    ASSERT_TRUE(std::is_trivial<TrivialTest_struct>::value);
+
+
 }

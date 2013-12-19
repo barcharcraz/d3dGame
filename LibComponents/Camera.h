@@ -2,11 +2,12 @@
 #define LIBCOMPONENTS_CAMERA_H
 
 #include "stdafx.h"
-#include "IComponent.h"
+#include <ecs.h>
 
 namespace Components {
-	class Camera : public IComponent {
+	class Camera : public sparse::ecs::Component {
 	public:
+        static sparse::ecs::ComponentType stype;
 		Camera();
 		Camera(float near, float far);
 		Camera(float near, float far, float fov);

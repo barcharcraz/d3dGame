@@ -3,6 +3,7 @@
 #include <Eigen/Geometry>
 #include "Camera.h"
 namespace Components {
+    sparse::ecs::ComponentType Camera::stype = sparse::ecs::GenID();
 	Camera::Camera() {
 		init(1,100, 60);
 	}
@@ -16,6 +17,7 @@ namespace Components {
 		init(1, 100, fov);
 	}
 	void Camera::init(float near, float far, float fov) {
+        size = sizeof(Camera);
 		//m33 is the third column and third row
 		float m33 = ((far + near) / (far - near));
 		float m34 = ((far * near) / (far - near));

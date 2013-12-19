@@ -52,15 +52,9 @@ OPTION(USE_MULTIRENDER "enable support for runtime renderer switch" OFF)
 
 
 #config.h configuration
-INCLUDE(CheckCXXSourceCompiles)
-#check for make_unique
-CHECK_CXX_SOURCE_COMPILES(
-"
-#include <memory>
-int main() {
-	std::unique_ptr<int> foo = std::make_unique<int>(4);
-}
-" HAS_MAKE_UNIQUE)
+INCLUDE(feature_checks)
+check_make_unique()
+check_is_trivially_copyable()
 
 
 CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/config.h)
