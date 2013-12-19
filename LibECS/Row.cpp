@@ -18,15 +18,15 @@ namespace sparse {
                 return vec.data() + erasedIndex;
             }
         }
-        void Row::push_back(void* value) {
-            Component* comp = reinterpret_cast<Component*>(value);
+        void Row::push_back(const void* value) {
+            const Component* comp = reinterpret_cast<const Component*>(value);
             if (type == -1) {
                 type = comp->type;
                 item_size = comp->size;
             }
             assert(comp->type == type && comp->size == item_size);
-            auto inserted = data.insert(data.end(), item_size, 0);
-            std::memcpy(&*inserted, value, item_size);
+            data.insert(data.end(), item_size + 1, 0);
+            std::memcpy(back(), value, item_size);
         }
         void* Row::insert(void* pos, void* value) {
             Component* comp = reinterpret_cast<Component*>(value);
@@ -37,15 +37,14 @@ namespace sparse {
             assert(comp->type == type && comp->size == item_size);
             auto index = reinterpret_cast<unsigned char*>(pos) - data.data();
             auto insertionPoint = data.begin() + index;
-            auto inserted = data.insert(insertionPoint, comp->size, 0);
-            std::memcpy(&*inserted, value, item_size);
-            return &*inserted;
+            data.insert(insertionPoint, comp->size, 0);
+            std::memcpy(&data[index], value, item_size);
+            return &data[index];
         }
         void* Row::erase(void* pos) {
             Component* comp = reinterpret_cast<Component*>(pos);
             assert(comp->type == type && comp->size == item_size);
             return erase_num(data, pos, 1);
-            
         }
         void* Row::erase(void* first, void* last) {
             Component* comp = reinterpret_cast<Component*>(first);
