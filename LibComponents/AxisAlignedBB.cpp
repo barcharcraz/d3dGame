@@ -5,5 +5,6 @@ namespace Components {
 		: RestAABB(bbox), CurAABB(bbox)
 	{
         this->size = sizeof(AxisAlignedBB);
+        type = AxisAlignedBB::stype;
 	}
 }

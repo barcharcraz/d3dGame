@@ -6,6 +6,7 @@ namespace Components {
 		: width(width_arg), height(height_arg) 
 	{
         this->size = sizeof(Billboard);
+        type = Billboard::stype;
 	}
 
 }

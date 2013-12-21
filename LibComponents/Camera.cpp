@@ -18,6 +18,7 @@ namespace Components {
 	}
 	void Camera::init(float near, float far, float fov) {
         size = sizeof(Camera);
+        type = Camera::stype; 
 		//m33 is the third column and third row
 		float m33 = ((far + near) / (far - near));
 		float m34 = ((far * near) / (far - near));

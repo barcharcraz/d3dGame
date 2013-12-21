@@ -1,16 +1,15 @@
 #ifndef LIBCOMPONENTS_COLLISION_H
 #define LIBCOMPONENTS_COLLISION_H
-#include "IComponent.h"
-#include <LibCommon/Entity.h>
+#include <ecs.h>
 #include <vector>
 #include <Utils/event.h>
 namespace Components {
-	class Collision : public IComponent {
+	class Collision : public sparse::ecs::Component {
 	public:
+        static sparse::ecs::ComponentType stype;
 		Collision();
-		std::vector<LibCommon::Entity*> with;
+		std::vector<sparse::ecs::Entity> with;
 	};
-	class CollisionUpdate : public IComponent {};
 	
 }
 
