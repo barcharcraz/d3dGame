@@ -12,8 +12,6 @@ namespace Components {
 		Eigen::Vector4f Diffuse;
 		Eigen::Vector4f Specular;
 		Eigen::Vector4f Direction;
-    private:
-        void init();
 	};
 }
 
