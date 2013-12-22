@@ -6,7 +6,7 @@
 namespace Components {
 	class DirectionalLight : public sparse::ecs::Component {
 	public:
-        static sparse::ecs::ComponentType stype;
+        static sparse::ecs::ComponentInfo stype;
 		DirectionalLight(const Eigen::Vector4f& color, const Eigen::Vector4f& dir_arg);
 		DirectionalLight(const Eigen::Vector4f& diffuse_arg, const Eigen::Vector4f& specular_arg, const Eigen::Vector4f& dir_arg);
 		Eigen::Vector4f Diffuse;

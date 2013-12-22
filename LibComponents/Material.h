@@ -1,13 +1,14 @@
 #ifndef LIBCOMPONENTS_MATERIAL_H
 #define LIBCOMPONENTS_MATERIAL_H
-#include "IComponent.h"
+#include <ecs.h>
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 
 #include <memory>
 namespace Components {
-	class Material : public IComponent {
+	class Material : public sparse::ecs::Component {
 	public:
+        static sparse::ecs::ComponentInfo stype;
 		Material(const Eigen::Vector4f& ambiang_arg, const Eigen::Vector4f& diffuse_arg, const Eigen::Vector4f& specular_arg, float shine_arg);
 		struct Data {
 			Eigen::Vector4f ambiant;

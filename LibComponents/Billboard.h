@@ -4,7 +4,7 @@
 namespace Components {
 	class Billboard : public sparse::ecs::Component {
 	public:
-        static sparse::ecs::ComponentType stype;
+        static sparse::ecs::ComponentInfo stype;
 		Billboard(float width_arg, float height_arg);
 		float width;
 		float height;

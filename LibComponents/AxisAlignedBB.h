@@ -7,7 +7,7 @@
 namespace Components {
 	class AxisAlignedBB : public sparse::ecs::Component {
 	public:
-        static sparse::ecs::ComponentType stype;
+        static sparse::ecs::ComponentInfo stype;
 		AxisAlignedBB(const Eigen::AlignedBox3f& bbox);
 		Eigen::AlignedBox3f RestAABB;
 		Eigen::AlignedBox3f CurAABB;

@@ -1,16 +1,15 @@
 #ifndef LIBCOMPONENTS_EFFECT_H
 #define LIBCOMPONENTS_EFFECT_H
 #include <LibEffects/Effect.h>
+#include <ecs.h>
 namespace Components {
-	class Effect : public Effects::Effect, public IComponent {
+	class Effect : public sparse::ecs::Component {
 	public:
-		//fake inhereting constructor
-		template<typename... Args>
-		Effect(Args&&... args)
-			: Effects::Effect(std::forward<Args>(args)...)
-		{
-
-		}
+        static sparse::ecs::ComponentInfo stype;
+		Effect(const Effects::Effect& effect_arg);
+        Effects::Effect effect;
+    private:
+        void init();
 	};
 }
 

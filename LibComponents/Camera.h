@@ -7,7 +7,7 @@
 namespace Components {
 	class Camera : public sparse::ecs::Component {
 	public:
-        static sparse::ecs::ComponentType stype;
+        static sparse::ecs::ComponentInfo stype;
 		Camera();
 		Camera(float near, float far);
 		Camera(float near, float far, float fov);

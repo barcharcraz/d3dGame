@@ -1,10 +1,9 @@
 #include "Collision.h"
 
 namespace Components {
-    sparse::ecs::ComponentType Collision::stype = sparse::ecs::GenID();
+    sparse::ecs::ComponentInfo Collision::stype = sparse::ecs::GenDefCompInfo<Collision>();
 	Collision::Collision()
 	{
-        size = sizeof(Collision);
-        type = Collision::stype;
+        type = &Collision::stype;
 	}
 }

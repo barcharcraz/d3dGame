@@ -10,6 +10,7 @@ set(libcomponents_files
 	Texture.h
 	Texture.cpp
 	Effect.h
+    Effect.cpp
 	Material.h
 	Material.cpp
 	DirectionalLight.h
@@ -22,8 +23,6 @@ set(libcomponents_files
 	AxisAlignedBB.cpp
 	Collision.h
 	Collision.cpp
-	Messages.h
-	Messages.cpp
 	NullComponent.h
 	Billboard.h
 	Billboard.cpp

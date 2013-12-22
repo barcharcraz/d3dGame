@@ -3,22 +3,20 @@
 #include <type_traits>
 using namespace sparse::ecs;
 struct TestStruct {
-    static ComponentType stype;
-    ComponentType compType = TestStruct::stype;
-    size_t size = sizeof(TestStruct);
-    Entity ent;
+    static ComponentInfo sinfo;
+    ComponentInfo* info = &sinfo;
     double value;
 };
-ComponentType TestStruct::stype = GenID();
+ComponentInfo TestStruct::sinfo = {GenID(), sizeof(TestStruct), &sparse::ecs::DefCompInitFunc<TestStruct>, &sparse::ecs::DefCompCopyFunc<TestStruct>, &sparse::ecs::DefCompDeinitFunc<TestStruct>};
 struct TestStructD : public Component {
-    static ComponentType stype;
+    static ComponentInfo sinfo;
     TestStructD() {
-        size = sizeof(TestStructD);
-        type = TestStructD::stype;
+        info = &sinfo;
     }
     int value;
 };
-ComponentType TestStructD::stype = GenID();
+ComponentInfo TestStructD::sinfo = {GenID(), sizeof(TestStructD), &sparse::ecs::DefCompInitFunc<TestStructD>, &sparse::ecs::DefCompCopyFunc<TestStructD>, &sparse::ecs::DefCompDeinitFunc<TestStructD>};
+
 TEST(RowTests, TestPushPop) {
     Row r;
     TestStruct t;
@@ -26,9 +24,9 @@ TEST(RowTests, TestPushPop) {
     r.push_back(t);
     auto& val = *r.begin<TestStruct>();
     ASSERT_EQ(val.value, 42);
-    ASSERT_EQ(val.compType, t.compType);
-    ASSERT_EQ(val.size, t.size);
-    ASSERT_EQ(val.size, sizeof(TestStruct));
+    ASSERT_EQ(val.info->type, t.info->type);
+    ASSERT_EQ(val.info->size, t.info->size);
+    ASSERT_EQ(val.info->size, sizeof(TestStruct));
 }
 TEST(RowTests, TestIndexing) {
     Row r;
@@ -56,17 +54,41 @@ TEST(RowTests, TestBack) {
     r.push_back(t3);
     ASSERT_EQ(((TestStruct*)r.back())->value, 3);
 }
-
 struct TrivialTest_struct {
-    static ComponentType stype;
-    ComponentType type = TrivialTest_struct::stype;
-    size_t size = sizeof(TrivialTest_struct);
-    Entity ent;
+    static ComponentInfo sinfo;
+    ComponentInfo* info;
     int val;
 };
-ComponentType TrivialTest_struct::stype = GenID();
+ComponentInfo TrivialTest_struct::sinfo = {GenID(), sizeof(TrivialTest_struct), DefCompInitFunc<TrivialTest_struct>, DefCompCopyFunc<TestStruct>, DefCompDeinitFunc<TrivialTest_struct>};
 TEST(RowTests, TestTrivialCopy) {
     ASSERT_TRUE(std::is_trivial<TrivialTest_struct>::value);
-
-
+    TrivialTest_struct tstruct;
+    tstruct.info = &TrivialTest_struct::sinfo;
+    tstruct.val = 4;
+    Row r1;
+    Row r2;
+    r1.push_back(tstruct);
+    r2 = r1;
+    ASSERT_EQ(((TrivialTest_struct*)r1.back())->val, 4);
+    ASSERT_EQ(((TrivialTest_struct*)r2.back())->val, 4);
+}
+struct NonTrivialTest_struct {
+    static ComponentInfo sinfo;
+    ComponentInfo* info;
+    std::string value;
+};
+ComponentInfo NonTrivialTest_struct::sinfo = GenDefCompInfo<NonTrivialTest_struct>();
+TEST(RowTests, TestNonTrivialCopy) {
+    ASSERT_FALSE(std::is_trivial<NonTrivialTest_struct>::value);
+    NonTrivialTest_struct tests;
+    tests.value = "Initial Value";
+    tests.info = &NonTrivialTest_struct::sinfo;
+    Row r1;
+    Row r2;
+    r1.push_back(tests);
+    ASSERT_EQ(((NonTrivialTest_struct*)r1.back())->value, "Initial Value");
+    r2 = r1;
+    ((NonTrivialTest_struct*)r2.back())->value = "New Value";
+    ASSERT_EQ(((NonTrivialTest_struct*)r2.back())->value, "New Value");
+    ASSERT_EQ(((NonTrivialTest_struct*)r1.back())->value, "Initial Value");
 }

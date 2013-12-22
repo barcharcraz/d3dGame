@@ -14,6 +14,13 @@ namespace sparse {
             template<typename T> using iterator = T*;
             template<typename T> using const_iterator = const T*;
         public:
+            Row() = default;
+            Row(const Row& other);
+            Row& operator=(const Row& other);
+            Row(Row&& other);
+            Row& operator=(Row&& other);
+            ~Row();
+
             template<typename T> T& operator[](std::size_t pos);
             template<typename T> const T& operator[](std::size_t pos) const;
             

@@ -6,7 +6,7 @@
 namespace Components {
 	class Collision : public sparse::ecs::Component {
 	public:
-        static sparse::ecs::ComponentType stype;
+        static sparse::ecs::ComponentInfo stype;
 		Collision();
 		std::vector<sparse::ecs::Entity> with;
 	};
