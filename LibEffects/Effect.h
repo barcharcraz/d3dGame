@@ -13,6 +13,7 @@ namespace Effects {
         Effect(const std::string& vsfile, const std::string& psfile,
             const std::vector<ShaderDesc>& desc,
             const std::set<ShaderCaps>& scaps);
+        Effect() = default;
         std::set<ShaderCaps> caps;
         std::unordered_map<std::string, int> defines;
         VertexShader vs;

@@ -7,6 +7,7 @@ namespace Components {
 	public:
         static sparse::ecs::ComponentInfo stype;
 		Effect(const Effects::Effect& effect_arg);
+        Effect() = default;
         Effects::Effect effect;
     private:
         void init();

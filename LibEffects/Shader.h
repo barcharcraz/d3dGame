@@ -51,12 +51,14 @@ namespace Effects {
     };
     struct VertexShader {
         explicit VertexShader(const std::string& filename, const std::vector<ShaderDesc>& desc);
+        VertexShader() = default;
         std::string name;
         std::vector<ShaderDesc> inputDesc;
         
     };
     struct PixelShader {
         explicit PixelShader(const std::string& filename);
+        PixelShader() = default;
         std::string name;
     };
 }
