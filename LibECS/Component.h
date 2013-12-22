@@ -18,6 +18,8 @@ namespace sparse {
         void DefCompCopyFunc(const void* src, void* dest) {
             new(dest) T(*reinterpret_cast<const T*>(src));
         }
+#pragma warning( push )          //disable initialized not reffed, we do this
+#pragma warning( disable: 4189 ) //because there is a compiler bug that triggers it here
         template<typename T>
         void DefCompDeinitFunc(void* data) {
             T* comp = reinterpret_cast<T*>(data);
@@ -25,11 +27,11 @@ namespace sparse {
             //since it will not otherwise get called
             comp->~T();
         }
+#pragma warning( pop )
         ComponentType GenID();
         struct ComponentInfo {
             ComponentType type;
             std::size_t size;
-            CompInitFunc construct;
             CompCopyFunc copy;
             CompDeinitFunc destroy;
         };
@@ -38,7 +40,6 @@ namespace sparse {
             ComponentInfo rv;
             rv.type = GenID();
             rv.size = sizeof(T);
-            rv.construct = DefCompInitFunc<T>;
             rv.copy = DefCompCopyFunc<T>;
             rv.destroy = DefCompDeinitFunc<T>;
             return rv;

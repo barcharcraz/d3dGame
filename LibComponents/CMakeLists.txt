@@ -1,12 +1,12 @@
 set(libcomponents_files 
 	Transform.h
+	Transform.cpp
 	Model.h
+	Model.cpp
 	Velocity.h
+	Velocity.cpp
 	Camera.h
 	Camera.cpp
-	IComponent.h
-	Shaders.h
-	Shaders.cpp
 	Texture.h
 	Texture.cpp
 	Effect.h
@@ -23,7 +23,6 @@ set(libcomponents_files
 	AxisAlignedBB.cpp
 	Collision.h
 	Collision.cpp
-	NullComponent.h
 	Billboard.h
 	Billboard.cpp
 	stdafx.h
