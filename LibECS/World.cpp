@@ -9,7 +9,10 @@ namespace sparse {
         }
         void World::Update() {
             for (auto fun : systems) {
-                fun.func(&current, next.GetRow(fun.write_comp));
+                fun.update_func(
+					compState.GetRow(fun.state_comp),
+					&current, 
+					next.GetRow(fun.write_comp));
             }
             current = next;
         }

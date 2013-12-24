@@ -14,6 +14,7 @@ namespace sparse {
             std::vector<System> systems;
             Scene current;
             Scene next;
+			Scene compState;
         };
     }
 }

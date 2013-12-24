@@ -19,7 +19,8 @@ namespace sparse {
             //! size_t followed by a Entity
             void* AddComponent(void* comp);
 
-            Row*const GetRow(ComponentType type);
+            Row* GetRow(ComponentType type);
+			const Row* GetRow(ComponentType type) const;
         private:
             std::vector<Row> data;
         };

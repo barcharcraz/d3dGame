@@ -5,6 +5,7 @@
 #include <vector>
 #include <limits>
 namespace Systems {
+	using namespace sparse::ecs;
 	namespace {
 		Eigen::AlignedBox3f transformAABB(const Eigen::AlignedBox3f& lhs, const Eigen::Affine3f& trans) {
 			std::vector<Eigen::Vector3f> transformedPoints;
@@ -42,24 +43,27 @@ namespace Systems {
 	}
 	
 	AxisAlignedBBSystem::AxisAlignedBBSystem()
-		: System({ typeid(Components::AxisAlignedBB), typeid(Components::Transform3D)})
 	{
-		priority = LibCommon::Priority::LOW;
-		
+		write_comp = Components::AxisAlignedBB::stype.type;
+		update_func = AxisAlignedBBSystem::AABBUpdate;
+		state_comp = -1;
 	}
-	void AxisAlignedBBSystem::Init() {
-		EnableUpdate({ typeid(Components::Transform3D) });
-	}
-	void AxisAlignedBBSystem::OnEntityUpdate(LibCommon::Entity* ent, Components::IComponent*) {
-		auto model = ent->GetOptional<Components::Model>();
-		auto aabb = ent->Get<Components::AxisAlignedBB>();
-		auto transform = ent->Get<Components::Transform3D>();
-		if (model && aabb->RestAABB.isNull()) {
-			aabb->RestAABB = calculateBox(*model);
-			aabb->CurAABB = aabb->RestAABB;
+	void AxisAlignedBBSystem::AABBUpdate(Row*, const Scene* scene, Row* row) {
+		using namespace Components;
+		auto models = MakeAdapter<Model>(*scene->GetRow(Model::sinfo.type));
+		auto transforms = MakeAdapter<Transform3D>(*scene->GetRow(Transform3D::sinfo.type));
+		auto aabbs = MakeAdapter<AxisAlignedBB>(*scene->GetRow(AxisAlignedBB::stype.type));
+		auto output = MakeAdapter<AxisAlignedBB>(*row);
+		for (auto& elm : aabbs) {
+			Eigen::AlignedBox3f newAABB;
+			if (models.is_alive(elm.ent) && elm.RestAABB.isNull()) {
+				newAABB = calculateBox(models[elm.ent]);
+				output[elm.ent].RestAABB = newAABB;
+			} else {
+				newAABB = elm.RestAABB;
+			}
+			output[elm.ent].CurAABB = transformAABB(newAABB, transforms[elm.ent].transform);
 		}
-		aabb->CurAABB = transformAABB(aabb->RestAABB, transform->transform);
-		NotifyUpdate(ent, aabb);
 	}
 	Eigen::AlignedBox3f AxisAlignedBBSystem::calculateBox(const Components::Model& mod) {
 		Eigen::AlignedBox3f rv;

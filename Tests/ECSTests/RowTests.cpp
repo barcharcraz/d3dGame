@@ -7,7 +7,10 @@ struct TestStruct {
     ComponentInfo* info = &sinfo;
     double value;
 };
-ComponentInfo TestStruct::sinfo = {GenID(), sizeof(TestStruct), &sparse::ecs::DefCompInitFunc<TestStruct>, &sparse::ecs::DefCompCopyFunc<TestStruct>, &sparse::ecs::DefCompDeinitFunc<TestStruct>};
+ComponentInfo TestStruct::sinfo = {GenID(), 
+sizeof(TestStruct), 
+&sparse::ecs::DefCompCopyFunc<TestStruct>, 
+&sparse::ecs::DefCompDeinitFunc<TestStruct>};
 struct TestStructD : public Component {
     static ComponentInfo sinfo;
     TestStructD() {
@@ -15,7 +18,10 @@ struct TestStructD : public Component {
     }
     int value;
 };
-ComponentInfo TestStructD::sinfo = {GenID(), sizeof(TestStructD), &sparse::ecs::DefCompInitFunc<TestStructD>, &sparse::ecs::DefCompCopyFunc<TestStructD>, &sparse::ecs::DefCompDeinitFunc<TestStructD>};
+ComponentInfo TestStructD::sinfo = {
+	GenID(), sizeof(TestStructD), 
+	&sparse::ecs::DefCompCopyFunc<TestStructD>, 
+	&sparse::ecs::DefCompDeinitFunc<TestStructD>};
 
 TEST(RowTests, TestPushPop) {
     Row r;
@@ -59,7 +65,10 @@ struct TrivialTest_struct {
     ComponentInfo* info;
     int val;
 };
-ComponentInfo TrivialTest_struct::sinfo = {GenID(), sizeof(TrivialTest_struct), DefCompInitFunc<TrivialTest_struct>, DefCompCopyFunc<TestStruct>, DefCompDeinitFunc<TrivialTest_struct>};
+ComponentInfo TrivialTest_struct::sinfo = {GenID(), 
+sizeof(TrivialTest_struct), 
+DefCompCopyFunc<TrivialTest_struct>, 
+DefCompDeinitFunc<TrivialTest_struct>};
 TEST(RowTests, TestTrivialCopy) {
     ASSERT_TRUE(std::is_trivial<TrivialTest_struct>::value);
     TrivialTest_struct tstruct;

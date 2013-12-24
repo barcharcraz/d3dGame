@@ -12,5 +12,12 @@ namespace sparse {
             nextID += 1;
             return rv;
         }
+		ComponentType GenID(std::type_index info) {
+			if (typeMap.count(info) > 0) {
+				return typeMap[info];
+			} else {
+				typeMap[info] = GenID();
+			}
+		}
     }
 }
