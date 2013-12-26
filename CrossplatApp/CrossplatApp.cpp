@@ -17,6 +17,10 @@
 #include <LibSystems/VelocitySystem3D.h>
 #include <LibSystems/PremulVelocitySystem3D.h>
 #include <LibSystems/MovementController3D.h>
+#include <LibSystems/GunController.h>
+#include <LibSystems/ProjectileSystem.h>
+#include <LibComponents/GunDefinition.h>
+#include <LibDirect3D/BillboardRenderer.h>
 #include <LibInput/Input.h>
 static void load_effects();
 static std::unique_ptr<Input::Input> construct_input();
@@ -37,6 +41,7 @@ int main(int, char**) {
     auto bottomMod = std::make_unique<Prefabs::StaticModel>(cone, Image::ImageData(tex));
     auto camera = (*scene).AddEntity<Prefabs::Camera>();
     camera->AddComponent(std::move(input));
+	camera->AddComponent<Components::GunDefinition>("Textures/laser_test/diffuse.tga", 1, std::chrono::milliseconds(2000));
     mod->Get<Components::Transform3D>()->transform.translate(Eigen::Vector3f{ 0, 0, -10 });
     leftMod->Get<Components::Transform3D>()->transform.translate(Eigen::Vector3f{ -10, 0, -10 });
     rightMod->Get<Components::Transform3D>()->transform.translate(Eigen::Vector3f{ 10, 0, -10 });
@@ -51,13 +56,15 @@ int main(int, char**) {
     scene->AddEntity(std::move(topMod));
     scene->AddEntity(std::move(bottomMod));
     scene->AddSystem<Systems::MovementController3D>();
+	scene->AddSystem<Systems::GunController>();
     scene->AddSystem<Systems::VelocitySystem3D>();
     scene->AddSystem<Systems::PremulVelocitySystem3D>();
+	scene->AddSystem<Systems::ProjectileSystem>();
     scene->AddEntity<Prefabs::DirectionalLight>(Eigen::Vector4f{ 1.0f, 1.0f, 1.0f, 1.0f }, Eigen::Vector3f{ 0.0f, 0.0f, -1.0f });
-
 	auto renderer = std::make_unique<Rendering::Renderer>(&window);
 	scene->AddSystem<Rendering::ModelRenderer>(renderer.get());
-    
+	scene->AddSystem<LibDirect3D::BillboardRenderer>(renderer.get());
+
     window.Show();
     window.update = [&]() {
         (*scene).Update();
@@ -81,9 +88,11 @@ void load_effects() {
         ShaderCaps::TEXTURE_MAPPED,
         ShaderCaps::LIT_DIRECTIONAL
     };
-	Effects::Effect DefaultEffect{ "DefaultVS.glsl", "DefaultPS.glsl", defaultLayout, defaultCaps };
+	Effects::Effect DefaultEffect{ "DefaultVS.cso", "DefaultPS.cso", defaultLayout, defaultCaps };
+	Effects::Effect BillboardEffect{ "BillboardVS.cso", "BillboardPS.cso", defaultLayout, std::set<ShaderCaps>{ ShaderCaps::RENDER_BILLBOARD } };
     DefaultEffect.defines = std::unordered_map<std::string, int>{{ { "NUM_DIRECTIONAL", 8 }, { "NUM_POINT", 8 } }};
     Effects::AddEffect(DefaultEffect);
+	Effects::AddEffect(BillboardEffect);
 }
 std::unique_ptr<Input::Input> construct_input() {
     auto rv = std::make_unique<Input::Input>();
@@ -92,6 +101,7 @@ std::unique_ptr<Input::Input> construct_input() {
     rv->AddAction("Forward", Input::W);
     rv->AddAction("Backward", Input::S);
     rv->AddAction("SwapAPI", Input::Z);
+	rv->AddAction("Fire", Input::F);
     rv->AddAxisAction("Horizontal", Input::MouseType, Input::AxisName::X);
     rv->AddAxisAction("Vertical", Input::MouseType, Input::AxisName::Y);
     return rv;

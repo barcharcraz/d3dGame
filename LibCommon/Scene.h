@@ -18,6 +18,7 @@ namespace LibCommon {
         Scene();
         void Update();
         void EraseSystemsNow();
+		std::chrono::system_clock::duration FrameDelta();
         Entity* AddEntity(Entity* e);
         Entity* AddEntity(std::unique_ptr<Entity> && e);
         template<typename T, typename... Args>
@@ -44,7 +45,7 @@ namespace LibCommon {
         std::vector<T*> SelectComponents() {
             std::vector<T*> retval;
             for (auto& ent : _entities) {
-                if (ent->HasComponent(typeid(T))) {
+                if (ent != nullptr && ent->HasComponent(typeid(T))) {
                     retval.push_back(ent->Get<T>());
                 }
             }

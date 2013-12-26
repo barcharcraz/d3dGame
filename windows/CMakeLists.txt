@@ -9,8 +9,12 @@ set(windows_files
 	WinMain.h
 	ComUtils.h
 	ComUtils.cpp
-	WGLContext.h
-	WGLContext.cpp
 	)
+if(USE_OPENGL)
+	set(windows_files ${windows_files}
+		WGLContext.h
+		WGLContext.cpp
+		)
+endif(USE_OPENGL)
 add_library(windows ${windows_files})
 target_link_libraries(windows Input)

@@ -27,6 +27,8 @@ set(libcomponents_files
 	NullComponent.h
 	Billboard.h
 	Billboard.cpp
+	GunDefinition.h
+	GunDefinition.cpp
 	stdafx.h
 	stdafx.cpp
 	)

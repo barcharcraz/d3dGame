@@ -18,4 +18,14 @@ namespace Systems {
 			parent->RemoveEntity(ent);
 		}
 	}
+	void ProjectileSystem::Process(LibCommon::Entity* ent) {
+		using namespace std::chrono;
+		auto proj = ent->Get<Components::Projectile>();
+		auto delta = parent->FrameDelta();
+		auto mdelta = duration_cast<milliseconds>(delta);
+		proj->time_to_live -= mdelta;
+		if (proj->time_to_live <= milliseconds(0)) {
+			parent->RemoveEntity(ent);
+		}
+	}
 }
