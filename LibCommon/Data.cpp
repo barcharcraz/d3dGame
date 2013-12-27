@@ -20,7 +20,7 @@ namespace LibCommon {
 			auto light = elm->Get<Components::PointLight>();
 			point_light new_light;
 			new_light.diffuse = light->Diffuse;
-			new_light.position << transform->transform.translation(), 1.0f;
+			new_light.position << transform->position, 1.0f;
 			retval.push_back(std::move(new_light));
 		}
 		return retval;

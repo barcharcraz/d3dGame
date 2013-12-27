@@ -3,6 +3,8 @@ set(LibOpenGL_files
 	OpenGLRenderer.cpp
 	GLModelRenderer.h
 	GLModelRenderer.cpp
+	GLBillboardRenderer.h
+	GLBillboardRenderer.cpp
 	GLBuffer.h
 	GLBuffer.cpp
 	GLShader.h
@@ -17,6 +19,8 @@ set(LibOpenGL_files
 	GLTexture.cpp
 	GLUtils.h
 	GLUtils.cpp
+	GLData.cpp
+	GLData.h
 	gl_core_3_1.hpp
 	gl_core_3_1.cpp
 	stdafx.h

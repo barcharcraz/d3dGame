@@ -39,7 +39,7 @@ namespace LibOpenGL {
         auto cam = cament->Get<Components::Camera>();
         auto camTrans = cament->Get<Components::Transform3D>();
         _transforms.proj = cam->CameraMatrix;
-		_transforms.view = camTrans->transform.matrix();
+		_transforms.view = camTrans->GenMatrix();
 		//_transforms.view(0, 3) *= -1;
         _transforms.view(0,3) *= -1;
         _transforms.view(1,3) *= -1;
@@ -58,7 +58,7 @@ namespace LibOpenGL {
         auto effect = ent->Get<Components::Effect>();
         auto transform = ent->Get<Components::Transform3D>();
 		auto mat = ent->Get<Components::Material>();
-        _transforms.model = transform->transform.matrix();
+		_transforms.model = transform->GenMatrix();
         auto& buffer = updateBuffers(ent);
         auto& program = program_map.at(effect);
         auto& tex = tex_map.at(ent);
@@ -90,7 +90,7 @@ namespace LibOpenGL {
         gl::DrawElements(gl::TRIANGLES, static_cast<GLsizei>(mod->indices.size()), gl::UNSIGNED_INT, 0);
         CheckError(); 
     }
-    GLModelRenderer::buffers& GLModelRenderer::updateBuffers(LibCommon::Entity* ent) {
+    buffers& GLModelRenderer::updateBuffers(LibCommon::Entity* ent) {
         auto mod = ent->Get<Components::Model>();
         auto bufferItr = buffer_map.find(ent);
         if (bufferItr == buffer_map.end()) {

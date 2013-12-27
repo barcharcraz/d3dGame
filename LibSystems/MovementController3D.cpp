@@ -17,32 +17,32 @@ namespace Systems {
         using namespace Eigen;
         auto vel = e->Get<PremulVelocity3D>();
         auto inp = e->Get<In::Input>();
-        //auto trans = e->Get<Components::Transform3D>();
-        Affine3f newVel( Affine3f::Identity() );
+        auto trans = e->Get<Components::Transform3D>();
+		Vector3f newLinear = Vector3f::Zero();
+		Quaternionf newRot = Quaternionf::Identity();
         auto rotY = -inp->AxisAction("Horizontal");
         auto rotX = -inp->AxisAction("Vertical");
         float speed = 0.025f;
         
         if (inp->Action("Left")) {
-            newVel.translate(-Eigen::Vector3f::UnitX() * speed);
+            newLinear += (-Eigen::Vector3f::UnitX() * speed);
         }
         if (inp->Action("Right")) {
-            newVel.translate(Eigen::Vector3f::UnitX() * speed);
+            newLinear += (Eigen::Vector3f::UnitX() * speed);
         }
         if (inp->Action("Forward")) {
-            newVel.translate(-Eigen::Vector3f::UnitZ() * speed);
+            newLinear += (-Eigen::Vector3f::UnitZ() * speed);
         }
         if (inp->Action("Backward")) {
-            newVel.translate(Eigen::Vector3f::UnitZ() * speed);
+            newLinear += (Eigen::Vector3f::UnitZ() * speed);
         }
         //Eigen::Vector3f transUp = trans->transform.rotation() * Eigen::Vector3f::UnitY();
+        newRot *= Quaternionf(AngleAxisf(static_cast<float>(rotX), -Vector3f::UnitX()));
+        newRot *= Quaternionf(AngleAxisf(static_cast<float>(rotY), -Vector3f::UnitY()));
+		newLinear = trans->rotation.inverse() * newLinear;
         
-        newVel.rotate(AngleAxisf(static_cast<float>(rotX), -Vector3f::UnitX()));
-        newVel.rotate(AngleAxisf(static_cast<float>(rotY), -Vector3f::UnitY()));
-        
-        
-		vel->linear << newVel.translation(), 1;
-		vel->angular = newVel.rotation();
+		vel->linear = newLinear;
+		vel->angular = newRot;
 
     }
 }

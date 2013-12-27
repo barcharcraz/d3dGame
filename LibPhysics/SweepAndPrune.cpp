@@ -10,6 +10,15 @@ namespace Physics {
 		unsigned int boxIndex(unsigned int box) {
 			return box & ~EndPoint::max;
 		}
+		bool isSentinel(unsigned int box) {
+			if (box == std::numeric_limits<unsigned int>::max()) {
+				return true;
+			}
+			if ((box | EndPoint::max) == std::numeric_limits<unsigned int>::max()) {
+				return true;
+			}
+			return false;
+		}
 	}
 	SweepAndPrune::SweepAndPrune() {
 		//add sentinals to the end point vectors
@@ -43,7 +52,7 @@ namespace Physics {
 	void SweepAndPrune::AddObject(const Eigen::AlignedBox3f& box, void* obj) {
 		auto maxvec = box.max();
 		auto minvec = box.min();
-		BBox toAdd;
+		BBox toAdd = { 0 };
 		toAdd.userRef = obj;
 		_objects.push_back(toAdd);
 		unsigned int boxIdx = static_cast<unsigned int>(_objects.size() - 1);
@@ -61,10 +70,10 @@ namespace Physics {
 			//this stuff is slow as balls
 			_axis[i]->insert(_axis[i]->end() - 1, min);
 			_objects[boxIdx].min[i] = static_cast<unsigned int>(_axis[i]->size()) - 2;
-			updateAxis(i, static_cast<unsigned int>(_axis[i]->size()) - 2, minvec(i));
+			updateAxis(i, static_cast<int>(_axis[i]->size()) - 2, minvec(i));
 			_axis[i]->insert(_axis[i]->end() - 1, max);
 			_objects[boxIdx].max[i] = static_cast<unsigned int>(_axis[i]->size()) - 2;
-			updateAxis(i, static_cast<unsigned int>(_axis[i]->size()) - 2, maxvec(i));
+			updateAxis(i, static_cast<int>(_axis[i]->size()) - 2, maxvec(i));
 		}
 	}
 	void SweepAndPrune::RemoveObject(void* object) {
@@ -94,7 +103,11 @@ namespace Physics {
 		float oldval = axisvector->at(pos).value;
 		axisvector->at(pos).value = newval;
 		if (newval <= axisvector->at(pos + 1).value && newval >= axisvector->at(pos - 1).value) {
-			//we have changed but we are still in the correct place
+			//we have changed but we are still in the correct place,
+			//if there are other boxes in our axis we should check against those
+			//to make sure we never skip the last axis
+			checkAndAdd(boxIndex(axisvector->at(pos).box), boxIndex(axisvector->at(pos - 1).box));
+			checkAndAdd(boxIndex(axisvector->at(pos).box), boxIndex(axisvector->at(pos + 1).box));
 			return;
 		}
 		
@@ -138,7 +151,11 @@ namespace Physics {
 	}
 
 	void SweepAndPrune::checkAndAdd(handle box1, handle box2) {
-		if(box1 == box2) {
+		if (box1 == box2) {
+			return;
+		}
+		if (isSentinel(box1) || isSentinel(box2)) {
+			//one of the boxes is a sentinal so we will ignore it
 			return;
 		}
 		auto& bbox1 = _objects[box1];

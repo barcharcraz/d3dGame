@@ -9,6 +9,7 @@ namespace Components {
 		Transform3D(const Eigen::Vector3f& translation);
 		Transform3D(const Eigen::Quaternionf& rotation);
 		Transform3D(const Eigen::Vector3f& trans, const Eigen::Quaternionf& rotation);
+		Eigen::Matrix4f GenMatrix() const;
 		Eigen::Vector3f position;
 		Eigen::Quaternionf rotation;
 	};

@@ -42,14 +42,14 @@ int main(int, char**) {
     auto camera = (*scene).AddEntity<Prefabs::Camera>();
     camera->AddComponent(std::move(input));
 	camera->AddComponent<Components::GunDefinition>("Textures/laser_test/diffuse.tga", 0.1f, std::chrono::milliseconds(2000));
-    mod->Get<Components::Transform3D>()->transform.translate(Eigen::Vector3f{ 0, 0, -10 });
-    leftMod->Get<Components::Transform3D>()->transform.translate(Eigen::Vector3f{ -10, 0, -10 });
-    rightMod->Get<Components::Transform3D>()->transform.translate(Eigen::Vector3f{ 10, 0, -10 });
-    topMod->Get<Components::Transform3D>()->transform.translate(Eigen::Vector3f{ 0, 10, -10 });
-    bottomMod->Get<Components::Transform3D>()->transform.translate(Eigen::Vector3f{ 0, -10, -10 });
+    mod->Get<Components::Transform3D>()->position = Eigen::Vector3f{ 0, 0, -10 };
+    leftMod->Get<Components::Transform3D>()->position = Eigen::Vector3f{ -10, 0, -10 };
+    rightMod->Get<Components::Transform3D>()->position = Eigen::Vector3f{ 10, 0, -10 };
+	topMod->Get<Components::Transform3D>()->position = Eigen::Vector3f{ 0, 10, -10 };
+	bottomMod->Get<Components::Transform3D>()->position = Eigen::Vector3f{ 0, -10, -10 };
     mod->AddComponent<Components::Velocity3D>(Eigen::Affine3f{ Eigen::AngleAxisf{ 0.001f, Eigen::Vector3f::UnitZ() } });
 	topMod->AddComponent<Components::Velocity3D>(Eigen::Affine3f{ Eigen::AngleAxisf{ 0.01f, Eigen::Vector3f::UnitX() } });
-	topMod->Get<Components::Velocity3D>()->velocity.translate(Eigen::Vector3f{ 0.0f, 0.0f, -0.05f});
+	//topMod->Get<Components::Velocity3D>()->linear = Eigen::Vector3f{ 0.0f, 0.0f, -0.05f };
 
     scene->AddEntity(std::move(mod));
     scene->AddEntity(std::move(leftMod));

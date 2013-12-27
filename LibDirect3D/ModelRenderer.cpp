@@ -31,7 +31,7 @@ namespace LibDirect3D {
 		auto camcomp = camera->Get<Components::Camera>();
 		auto camtrans = camera->Get<Components::Transform3D>();
 		cameraTransform = camcomp->CameraMatrix;
-		camPos = (Eigen::Translation3f(camtrans->position) * camtrans->rotation).matrix();
+		camPos = (camtrans->rotation * Eigen::Translation3f(camtrans->position)).matrix();
         camPos(0, 3) *= -1;
         camPos(1, 3) *= -1;
         camPos(2, 3) *= -1;

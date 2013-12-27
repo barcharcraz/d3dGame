@@ -63,10 +63,11 @@ namespace LibDirect3D {
 			iter = entCache.emplace(ent, std::move(newRes)).first;
 		}
 		LibCommon::Transforms trans;
-		Eigen::Matrix4f invView = transform->transform.matrix();
+		Eigen::Matrix4f invView = view;
 		invView.rightCols<1>() = Eigen::Vector4f{ 0, 0, 0, 1 };
+
 		invView = invView.transpose().inverse().eval();
-		trans.model = transform->transform.matrix();
+		trans.model = transform->GenMatrix() * invView.inverse();
 		trans.view = view;
 		trans.proj = proj;
 		auto transformBuffer = render->GetTransforms(trans);

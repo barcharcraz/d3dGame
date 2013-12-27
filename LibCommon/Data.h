@@ -29,7 +29,7 @@ namespace LibCommon {
 		Eigen::Vector4f position;
 	};
 	struct directional_light {
-		Eigen::Vector4f diffuse; 
+		Eigen::Vector4f diffuse;
 		Eigen::Vector4f specular;
 		Eigen::Vector4f direction;
 	};

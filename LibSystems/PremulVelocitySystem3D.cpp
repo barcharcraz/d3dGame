@@ -10,7 +10,7 @@ namespace Systems {
         auto transform = e->Get<Transform3D>();
         auto velocity = e->Get<PremulVelocity3D>();
 		transform->position += velocity->linear;
-		transform->rotation = transform->rotation * velocity->angular;
+		transform->rotation = velocity->angular * transform->rotation;
         NotifyUpdate(e, e->Get<Transform3D>());
     }
 }

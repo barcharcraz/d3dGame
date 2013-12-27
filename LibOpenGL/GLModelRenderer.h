@@ -14,6 +14,7 @@
 #include <LibCommon/System.h>
 #include <LibCommon/Data.h>
 #include <unordered_map>
+#include "GLData.h"
 namespace Components {
 	struct Model;
 }
@@ -26,19 +27,7 @@ namespace LibOpenGL {
 		virtual void OnEntityAdd(LibCommon::Entity* ent) override;
         virtual void OnEntityRemove(LibCommon::Entity *ent) override;
 	private:
-		struct buffers {
-			buffers() = default;
-			buffers(const buffers&) = delete;
-			buffers(buffers&& other)
-				: Uniform(std::move(other.Uniform)),
-				Vertex(std::move(other.Vertex)),
-				Index(std::move(other.Index)),
-				vao(std::move(other.vao)) {}
-			GLBuffer Uniform;
-			GLBuffer Vertex;
-			GLBuffer Index;
-			GLAttribArray vao;
-		};
+		
 		buffers& updateBuffers( LibCommon::Entity* ent );
 		void bindUniforms(GLuint program);
 		void bindModel(GLuint program);
