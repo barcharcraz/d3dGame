@@ -25,7 +25,7 @@ namespace Systems {
 				Image::GetImageData(def->texPath),
 				vel.head<3>().eval(), def->time_to_live);
 			auto transform = ent->Get<Transform3D>();
-			transform->transform = position->transform;
+			transform = position;
 			
 		}
 	}

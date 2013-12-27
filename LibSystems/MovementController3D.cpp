@@ -41,7 +41,8 @@ namespace Systems {
         newVel.rotate(AngleAxisf(static_cast<float>(rotY), -Vector3f::UnitY()));
         
         
-        vel->velocity = std::move(newVel);
+		vel->linear << newVel.translation(), 1;
+		vel->angular = newVel.rotation();
 
     }
 }

@@ -27,10 +27,10 @@ namespace Systems {
 			for (auto& ents : collisions->with) {
 				auto aabb = ents->Get<Components::AxisAlignedBB>();
 				auto volume = thisAABB->CurAABB.intersection(aabb->CurAABB).volume();
-				auto possibleTransform = thisAABB->CurAABB.translate(velocity->velocity.translation());
+				auto possibleTransform = thisAABB->CurAABB.translate(velocity->linear);
 				auto possibleVolume = possibleTransform.intersection(aabb->CurAABB).volume();
 				if (possibleVolume < volume) {
-					velocity->velocity.translation() = Eigen::Vector3f{ 0, 0, 0 };
+					velocity->linear = Eigen::Vector3f{ 0, 0, 0 };
 				}
 			}
 			collisions->with.clear();

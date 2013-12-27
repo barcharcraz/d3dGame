@@ -17,8 +17,10 @@ namespace LibDirect3D {
 
 	}
 	void BillboardRenderer::PreProcess() {
+		using namespace Eigen;
 		auto camera = parent->SelectEntity({ typeid(Components::Camera), typeid(Components::Transform3D) });
-		view = camera->Get<Components::Transform3D>()->transform.matrix();
+		auto viewTrans = camera->Get<Components::Transform3D>();
+		view = (Translation3f(viewTrans->position) * viewTrans->rotation).matrix();
 		proj = camera->Get<Components::Camera>()->CameraMatrix;
 		view(0, 3) *= -1;
 		view(1, 3) *= -1;
