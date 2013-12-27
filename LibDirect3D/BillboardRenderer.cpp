@@ -20,6 +20,9 @@ namespace LibDirect3D {
 		auto camera = parent->SelectEntity({ typeid(Components::Camera), typeid(Components::Transform3D) });
 		view = camera->Get<Components::Transform3D>()->transform.matrix();
 		proj = camera->Get<Components::Camera>()->CameraMatrix;
+		view(0, 3) *= -1;
+		view(1, 3) *= -1;
+		view(2, 3) *= -1;
 
 	}
 	void BillboardRenderer::Process(LibCommon::Entity* ent) {
@@ -58,10 +61,14 @@ namespace LibDirect3D {
 			iter = entCache.emplace(ent, std::move(newRes)).first;
 		}
 		LibCommon::Transforms trans;
+		Eigen::Matrix4f invView = transform->transform.matrix();
+		invView.rightCols<1>() = Eigen::Vector4f{ 0, 0, 0, 1 };
+		invView = invView.transpose().inverse().eval();
 		trans.model = transform->transform.matrix();
-		trans.view = view.inverse();
+		trans.view = view;
 		trans.proj = proj;
 		auto transformBuffer = render->GetTransforms(trans);
+		
 		render->pCtx->IASetInputLayout(vs->getInputLayout(render->pDev.p));
 		render->pCtx->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		unsigned int stride = sizeof(LibCommon::Vertex);

@@ -5,8 +5,12 @@
 #include <Utils/event.h>
 namespace Components {
 	struct Transform3D : public IComponent {
-		Transform3D(const Eigen::Affine3f& trans) : transform(trans) {}
-		Eigen::Affine3f transform;
+		Transform3D(const Eigen::Affine3f& trans);
+		Transform3D(const Eigen::Vector4f& translation);
+		Transform3D(const Eigen::Quaternionf& rotation);
+		Transform3D(const Eigen::Vector4f& trans, const Eigen::Quaternionf& rotation);
+		Eigen::Vector4f position;
+		Eigen::Quaternionf rotation;
 	};
 	class Transform3DUpdate : public IComponent {};
 }

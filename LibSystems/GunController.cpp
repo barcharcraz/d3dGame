@@ -19,13 +19,14 @@ namespace Systems {
 		auto position = e->Get<Transform3D>();
 		auto def = e->Get<GunDefinition>();
 		auto inp = e->Get<Input::Input>();
-		Eigen::Vector3f vel = -Eigen::Vector3f::UnitZ();
-		vel = position->transform.rotation() * vel;
+		Eigen::Vector3f vel = -Eigen::Vector3f::UnitZ() * def->velocity;
 		if (inp->Action("Fire")) {
 			auto ent = parent->AddEntity<Prefabs::EnergyBullet>(5.0f, 5.0f,
 				Image::GetImageData(def->texPath),
-				(def->velocity * vel).head<3>(), def->time_to_live);
-			ent->Get<Transform3D>()->transform = position->transform;
+				vel.head<3>().eval(), def->time_to_live);
+			auto transform = ent->Get<Transform3D>();
+			transform->transform = position->transform;
+			
 		}
 	}
 }
