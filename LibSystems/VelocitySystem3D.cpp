@@ -9,11 +9,10 @@ namespace Systems {
 
     }
     void VelocitySystem3D::Process(Entity* e) {
-        auto& transform = e->Get<Transform3D>()->transform;
-        auto& velocity = e->Get<Velocity3D>()->velocity;
-        if (velocity.matrix() != velocity.Identity().matrix()) {
-            transform = transform * velocity;
-            NotifyUpdate(e, e->Get<Transform3D>());
-        }
+        auto transform = e->Get<Transform3D>();
+        auto velocity = e->Get<Velocity3D>();
+		transform->position += velocity->linear;
+		transform->rotation = velocity->angular * transform->rotation;
+		NotifyUpdate(e, transform);
     }
 }

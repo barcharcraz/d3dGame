@@ -8,12 +8,21 @@ namespace Components {
         Eigen::Affine2f velocity;
     };
     struct Velocity3D : public IComponent {
-        Velocity3D(const Eigen::Affine3f& vel) : velocity(vel) {}
-        Eigen::Affine3f velocity;
+		Velocity3D(const Eigen::Affine3f& vel);
+		Velocity3D(const Eigen::Vector4f& lin, const Eigen::Quaternionf& rot);
+		Velocity3D(const Eigen::Vector4f& lin);
+		Velocity3D(const Eigen::Quaternionf& ang);
+		Eigen::Vector4f linear;
+		Eigen::Quaternionf angular;
     };
     struct PremulVelocity3D : public IComponent {
-        PremulVelocity3D(const Eigen::Affine3f& vel) : velocity(vel) {}
-        Eigen::Affine3f velocity;
+		PremulVelocity3D(const Eigen::Affine3f& vel);
+		PremulVelocity3D(const Eigen::Vector4f& lin, const Eigen::Quaternionf& rot);
+		PremulVelocity3D(const Eigen::Vector4f& lin);
+		PremulVelocity3D(const Eigen::Quaternionf& rot);
+		Eigen::Vector4f linear;
+		Eigen::Quaternionf angular;
+
     };
 }
 #endif

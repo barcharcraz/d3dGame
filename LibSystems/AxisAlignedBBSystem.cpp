@@ -51,6 +51,7 @@ namespace Systems {
 		EnableUpdate({ typeid(Components::Transform3D) });
 	}
 	void AxisAlignedBBSystem::OnEntityUpdate(LibCommon::Entity* ent, Components::IComponent*) {
+		using namespace Eigen;
 		auto model = ent->GetOptional<Components::Model>();
 		auto aabb = ent->Get<Components::AxisAlignedBB>();
 		auto transform = ent->Get<Components::Transform3D>();
@@ -58,7 +59,8 @@ namespace Systems {
 			aabb->RestAABB = calculateBox(*model);
 			aabb->CurAABB = aabb->RestAABB;
 		}
-		aabb->CurAABB = transformAABB(aabb->RestAABB, transform->transform);
+		Affine3f fullTransform = Translation3f(transform->position.head<3>()) * transform->rotation;
+		aabb->CurAABB = transformAABB(aabb->RestAABB, fullTransform);
 		NotifyUpdate(ent, aabb);
 	}
 	Eigen::AlignedBox3f AxisAlignedBBSystem::calculateBox(const Components::Model& mod) {

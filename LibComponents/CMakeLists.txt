@@ -1,7 +1,9 @@
 set(libcomponents_files 
 	Transform.h
+	Transform.cpp
 	Model.h
 	Velocity.h
+	Velocity.cpp
 	Camera.h
 	Camera.cpp
 	IComponent.h
