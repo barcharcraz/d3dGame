@@ -39,7 +39,7 @@ namespace LibOpenGL {
         auto cam = cament->Get<Components::Camera>();
         auto camTrans = cament->Get<Components::Transform3D>();
         _transforms.proj = cam->CameraMatrix;
-		_transforms.view = camTrans->GenMatrix();
+		_transforms.view = (camTrans->rotation * Eigen::Translation3f(camTrans->position)).matrix();
 		//_transforms.view(0, 3) *= -1;
         _transforms.view(0,3) *= -1;
         _transforms.view(1,3) *= -1;

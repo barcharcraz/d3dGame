@@ -46,21 +46,40 @@ namespace LibOpenGL {
 		invView = invView.transpose().inverse().eval();
 		trans.model = transform->GenMatrix() * invView.inverse();
 		BindMVP(render->ActiveProgram, trans, "mvp");
+		CheckError();
 		gl::BindVertexArray(buffer.vao.name());
 		gl::EnableVertexAttribArray(0);
 		gl::EnableVertexAttribArray(1);
 		gl::EnableVertexAttribArray(2);
+		CheckError();
 		GLint posLoc = gl::GetAttribLocation(render->ActiveProgram, "pos");
 		GLint uvloc = gl::GetAttribLocation(render->ActiveProgram, "uv");
 		gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, buffer.Index.GetBuffer());
 		gl::BindBuffer(gl::ARRAY_BUFFER, buffer.Vertex.GetBuffer());
+		CheckError();
 		gl::VertexAttribPointer(posLoc, 4, gl::FLOAT, gl::FALSE_, sizeof(LibCommon::Vertex), 0);
-		gl::VertexAttribPointer(uvloc, 4, gl::FLAT, gl::FALSE_, sizeof(LibCommon::Vertex), 0);
+		gl::VertexAttribPointer(uvloc, 4, gl::FLOAT, gl::FALSE_, sizeof(LibCommon::Vertex), 0);
+		CheckError();
 		gl::DrawElements(gl::TRIANGLES, static_cast<GLsizei>(model->indices.size()), gl::UNSIGNED_INT, 0);
 		CheckError();
 	}
 	void GLBillboardRenderer::OnEntityAdd(LibCommon::Entity* ent) {
-
+		auto entEffect = ent->Get<Components::Effect>();
+		auto texture = ent->Get<Components::Texture>();
+		auto mod = ent->Get<Components::Model>();
+		m_progmap.emplace(ent, GLProgram{ *entEffect });
+		m_texmap.emplace(ent, GLTexture{ &texture->data() });
+		size_t vert_size = sizeof(LibCommon::Vertex) * mod->verts.size();
+		size_t idx_size = sizeof(unsigned int) * mod->indices.size();
+		buffers buf;
+		buf.Vertex.UpdateData(gl::ARRAY_BUFFER, vert_size, mod->verts.data(), gl::STATIC_DRAW);
+		buf.Index.UpdateData(gl::ELEMENT_ARRAY_BUFFER, idx_size, mod->indices.data(), gl::STATIC_DRAW);
+		m_bufmap.emplace(ent, std::move(buf));
+	}
+	void GLBillboardRenderer::OnEntityRemove(LibCommon::Entity* ent) {
+		m_progmap.erase(ent);
+		m_texmap.erase(ent);
+		m_bufmap.erase(ent);
 	}
 
 }

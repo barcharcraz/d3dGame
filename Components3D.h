@@ -8,3 +8,6 @@
 #include "LibComponents/Texture.h"
 #include "LibComponents/Transform.h"
 #include "LibComponents/Velocity.h"
+#include "LibComponents/GunDefinition.h"
+#include "LibComponents/AxisAlignedBB.h"
+#include "LibComponents/Collision.h"

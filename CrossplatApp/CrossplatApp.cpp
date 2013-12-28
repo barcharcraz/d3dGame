@@ -19,8 +19,9 @@
 #include <LibSystems/MovementController3D.h>
 #include <LibSystems/GunController.h>
 #include <LibSystems/ProjectileSystem.h>
-#include <LibComponents/GunDefinition.h>
-#include <LibDirect3D/BillboardRenderer.h>
+#include <LibSystems/CollisionDetectionSystem.h>
+#include <LibSystems/SimpleCollisionSystem.h>
+#include <LibSystems/AxisAlignedBBSystem.h>
 #include <LibInput/Input.h>
 static void load_effects();
 static std::unique_ptr<Input::Input> construct_input();
@@ -42,6 +43,8 @@ int main(int, char**) {
     auto camera = (*scene).AddEntity<Prefabs::Camera>();
     camera->AddComponent(std::move(input));
 	camera->AddComponent<Components::GunDefinition>("Textures/laser_test/diffuse.tga", 0.1f, std::chrono::milliseconds(2000));
+	camera->AddComponent<Components::Collision>();
+	camera->AddComponent<Components::AxisAlignedBB>(Eigen::AlignedBox3f{ Eigen::Vector3f{ -1.5f, -1.5f, -1.5f }, Eigen::Vector3f{ 1.5f, 1.5f, 1.5f } });
     mod->Get<Components::Transform3D>()->position = Eigen::Vector3f{ 0, 0, -10 };
     leftMod->Get<Components::Transform3D>()->position = Eigen::Vector3f{ -10, 0, -10 };
     rightMod->Get<Components::Transform3D>()->position = Eigen::Vector3f{ 10, 0, -10 };
@@ -60,11 +63,14 @@ int main(int, char**) {
 	scene->AddSystem<Systems::GunController>();
     scene->AddSystem<Systems::VelocitySystem3D>();
     scene->AddSystem<Systems::PremulVelocitySystem3D>();
+	scene->AddSystem<Systems::SimpleCollisionSystem>();
+	scene->AddSystem<Systems::CollisionDetectionSystem>();
 	scene->AddSystem<Systems::ProjectileSystem>();
+	scene->AddSystem<Systems::AxisAlignedBBSystem>();
     scene->AddEntity<Prefabs::DirectionalLight>(Eigen::Vector4f{ 1.0f, 1.0f, 1.0f, 1.0f }, Eigen::Vector3f{ 0.0f, 0.0f, -1.0f });
 	auto renderer = std::make_unique<Rendering::Renderer>(&window);
 	scene->AddSystem<Rendering::ModelRenderer>(renderer.get());
-	scene->AddSystem<LibDirect3D::BillboardRenderer>(renderer.get());
+	scene->AddSystem<Rendering::BillboardRenderer>(renderer.get());
 
     window.Show();
     window.update = [&]() {
@@ -89,8 +95,8 @@ void load_effects() {
         ShaderCaps::TEXTURE_MAPPED,
         ShaderCaps::LIT_DIRECTIONAL
     };
-	Effects::Effect DefaultEffect{ "DefaultVS.cso", "DefaultPS.cso", defaultLayout, defaultCaps };
-	Effects::Effect BillboardEffect{ "BillboardVS.cso", "BillboardPS.cso", defaultLayout, std::set<ShaderCaps>{ ShaderCaps::RENDER_BILLBOARD } };
+	Effects::Effect DefaultEffect{ "DefaultVS.glsl", "DefaultPS.glsl", defaultLayout, defaultCaps };
+	Effects::Effect BillboardEffect{ "BillboardVS.glsl", "BillboardPS.glsl", defaultLayout, std::set<ShaderCaps>{ ShaderCaps::RENDER_BILLBOARD } };
     DefaultEffect.defines = std::unordered_map<std::string, int>{{ { "NUM_DIRECTIONAL", 8 }, { "NUM_POINT", 8 } }};
     Effects::AddEffect(DefaultEffect);
 	Effects::AddEffect(BillboardEffect);

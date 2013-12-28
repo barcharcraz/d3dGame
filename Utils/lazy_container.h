@@ -61,7 +61,7 @@ namespace utils {
 		}
         iterator erase(const_iterator pos) {
             m_dirty[pos - cbegin()] = true;
-            int dist = pos - begin();
+            std::ptrdiff_t dist = pos - begin();
             return begin() + dist + 1;
         }
         iterator erase(const_iterator begin, const_iterator end) {
@@ -73,7 +73,7 @@ namespace utils {
         void finalize_ops() {
 			m_cont.erase(std::remove_if(m_cont.begin(), m_cont.end(),
 				[&](const T& type) {
-				int idx = &type - m_cont.data();
+				std::ptrdiff_t idx = &type - m_cont.data();
 				if (m_dirty[idx] == true) {
 					return true;
 				} else {

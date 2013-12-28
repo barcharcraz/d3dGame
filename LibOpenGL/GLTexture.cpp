@@ -56,6 +56,8 @@ namespace LibOpenGL {
 			return gl::RGBA8;
 		case Image::Formats::R8G8B8_UNORM:
 			return gl::RGB8;
+		case Image::Formats::A8R8G8B8_UNORM:
+			return gl::RGBA8;
         default:
             throw utils::unsupported_format_error("format is not supported");
 		}
@@ -66,6 +68,8 @@ namespace LibOpenGL {
 		case Image::Formats::R8G8B8_UNORM:
 			return gl::RGB;
 		case Image::Formats::R8G8B8A8_UNORM:
+			return gl::RGBA;
+		case Image::Formats::A8R8G8B8_UNORM:
 			return gl::RGBA;
         default:
             throw utils::unsupported_format_error("format is not supported");

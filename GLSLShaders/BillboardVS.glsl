@@ -13,5 +13,5 @@ out vec3 uvout;
 void main() {
 	mat4 concatmat = mvp.proj * mvp.view * mvp.model;
 	uvout = uv.xyz;
-	gl_position = concatmat * pos;
+	gl_Position = concatmat * pos;
 }
