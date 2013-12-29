@@ -22,17 +22,17 @@ namespace LibOpenGL {
 	void GLBillboardRenderer::PreProcess() {
 		auto camera = parent->SelectEntity({ typeid(Components::Camera), typeid(Components::Transform3D) });
 		auto viewTrans = camera->Get<Components::Transform3D>();
-		trans.view = viewTrans->GenMatrix();
+		trans.view = viewTrans->GenRotTransMatrix();
 		trans.proj = camera->Get<Camera>()->CameraMatrix;
 		trans.view(0, 3) *= -1;
 		trans.view(1, 3) *= -1;
 		trans.view(2, 3) *= -1;
+        trans.proj(2, 3) *= 2;
+        
 	}
 	void GLBillboardRenderer::Process(LibCommon::Entity* ent) {
 		auto model = ent->GetOptional<Model>();
-		auto effect = ent->Get<Effect>();
 		auto transform = ent->Get<Transform3D>();
-		auto texture = ent->GetOptional<Texture>();
 		auto& buffer = m_bufmap.at(ent);
 		auto& tex = m_texmap.at(ent);
 		auto& program = m_progmap.at(ent);
@@ -43,7 +43,6 @@ namespace LibOpenGL {
 		tex.Bind();
 		Matrix4f invView = trans.view;
 		invView.rightCols<1>() = Vector4f{ 0, 0, 0, 1 };
-		invView = invView.transpose().inverse().eval();
 		trans.model = transform->GenMatrix() * invView.inverse();
 		BindMVP(render->ActiveProgram, trans, "mvp");
 		CheckError();

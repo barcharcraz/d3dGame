@@ -13,4 +13,7 @@ namespace Components {
 	Eigen::Matrix4f Transform3D::GenMatrix() const {
 		return (Eigen::Translation3f(position) * rotation).matrix();
 	}
+    Eigen::Matrix4f Transform3D::GenRotTransMatrix() const {
+        return (rotation * Eigen::Translation3f(position)).matrix();
+    }
 }

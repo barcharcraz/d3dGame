@@ -3,12 +3,12 @@ set(hlsl_h
 	ForwardLighting.hlsl
 	)
 set(hlsl_ps
-	defaultPS.hlsl
+	DefaultPS.hlsl
 	DebugPS.hlsl
 	BillboardPS.hlsl
 	)
 set(hlsl_vs
-	defaultVS.hlsl
+	DefaultVS.hlsl
 	DebugVS.hlsl
 	BillboardVS.hlsl
 	)

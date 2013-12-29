@@ -12,6 +12,7 @@
 #include <LibPrefabs/Camera.h>
 #include <LibPrefabs/PointLight.h>
 #include <LibPrefabs/DirectionalLight.h>
+#include <LibPrefabs/SkyDome.h>
 #include <LibImage/image.h>
 #include <LibImage/targa.h>
 #include <LibSystems/VelocitySystem3D.h>
@@ -34,6 +35,7 @@ int main(int, char**) {
     Assets::ObjFile cone{ "Cone.obj" };
     Assets::ObjFile helix{ "Helix.obj" };
     Image::Targa::Targa tex{ "Textures/wood_light/diffuse.tga" };
+    Image::Targa::Targa background{ "Textures/starfield/diffuse1024x1024.tga"};
     std::unique_ptr<LibCommon::Scene> scene(new LibCommon::Scene());
     auto mod = std::make_unique<Prefabs::StaticModel>(cone, Image::ImageData(tex));
     auto leftMod = std::make_unique<Prefabs::StaticModel>(teapot, Image::ImageData(tex));
@@ -53,7 +55,7 @@ int main(int, char**) {
     mod->AddComponent<Components::Velocity3D>(Eigen::Affine3f{ Eigen::AngleAxisf{ 0.001f, Eigen::Vector3f::UnitZ() } });
 	topMod->AddComponent<Components::Velocity3D>(Eigen::Affine3f{ Eigen::AngleAxisf{ 0.01f, Eigen::Vector3f::UnitX() } });
 	//topMod->Get<Components::Velocity3D>()->linear = Eigen::Vector3f{ 0.0f, 0.0f, -0.05f };
-
+    scene->AddEntity<Prefabs::SkyDome>(5.0f, Image::ImageData(background));
     scene->AddEntity(std::move(mod));
     scene->AddEntity(std::move(leftMod));
     scene->AddEntity(std::move(rightMod));

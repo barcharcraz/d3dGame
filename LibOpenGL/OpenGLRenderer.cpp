@@ -33,12 +33,13 @@ namespace LibOpenGL {
     }
     //PRIVATE
     void OpenGLRenderer::init() {
-
         auto res = gl::sys::LoadFunctions();
         if(!res) {
             throw utils::graphics_api_error("could not load OGL functions");
         }
         EnableDepthBuffer();
+        gl::Enable(gl::CULL_FACE);
+        gl::FrontFace(gl::CW);
         //we are using zero as a "null" value, since
         //gl will not return that when creating a program
         ActiveProgram = 0;
