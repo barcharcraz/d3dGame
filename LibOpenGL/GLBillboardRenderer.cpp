@@ -57,7 +57,7 @@ namespace LibOpenGL {
 		gl::BindBuffer(gl::ARRAY_BUFFER, buffer.Vertex.GetBuffer());
 		CheckError();
 		gl::VertexAttribPointer(posLoc, 4, gl::FLOAT, gl::FALSE_, sizeof(LibCommon::Vertex), 0);
-		gl::VertexAttribPointer(uvloc, 4, gl::FLOAT, gl::FALSE_, sizeof(LibCommon::Vertex), 0);
+		gl::VertexAttribPointer(uvloc, 3, gl::FLOAT, gl::FALSE_, sizeof(LibCommon::Vertex), 0);
 		CheckError();
 		gl::DrawElements(gl::TRIANGLES, static_cast<GLsizei>(model->indices.size()), gl::UNSIGNED_INT, 0);
 		CheckError();
