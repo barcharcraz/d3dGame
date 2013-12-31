@@ -1,9 +1,11 @@
+
+#ifndef LIBOPENGL_GLTEXTURE_H
+#define LIBOPENGL_GLTEXTURE_H
 #include "stdafx.h"
 #include "GLProgram.h"
 #include <LibImage/image.h>
-#ifndef LIBOPENGL_GLTEXTURE_H
-#define LIBOPENGL_GLTEXTURE_H
-
+#include <Utils/cache.h>
+#include <unordered_map>
 namespace LibOpenGL {
 	//! \brief RAII handle to a openGL texture object
 	//! this is a non-copyable class
@@ -18,7 +20,7 @@ namespace LibOpenGL {
 		GLTexture& operator=(const GLTexture& other) = delete;
 
 		void Bind();
-
+        GLuint GLObject();
 		~GLTexture();
 	private:
 		void init();

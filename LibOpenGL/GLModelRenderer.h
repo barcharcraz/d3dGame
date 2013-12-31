@@ -39,7 +39,6 @@ namespace LibOpenGL {
 		GLBuffer dlights;
 		std::unordered_map<Components::Effect*, GLProgram> program_map;
 		std::unordered_map<LibCommon::Entity*, buffers> buffer_map;
-		std::unordered_map<LibCommon::Entity*, GLTexture> tex_map;
 		LibCommon::Transforms _transforms;
     };
 }

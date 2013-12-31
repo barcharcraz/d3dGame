@@ -58,10 +58,11 @@ namespace LibOpenGL {
         auto effect = ent->Get<Components::Effect>();
         auto transform = ent->Get<Components::Transform3D>();
 		auto mat = ent->Get<Components::Material>();
+        auto texcomp = ent->Get<Components::Texture>();
 		_transforms.model = transform->GenMatrix();
         auto& buffer = updateBuffers(ent);
         auto& program = program_map.at(effect);
-        auto& tex = tex_map.at(ent);
+        auto& tex = render->TexCache.Retrieve(&texcomp->data());
         CheckError();
         if(render->ActiveProgram != program.ProgramID()) {
             render->ActiveProgram = program.ProgramID();
@@ -158,9 +159,7 @@ namespace LibOpenGL {
     }
     void GLModelRenderer::OnEntityAdd(LibCommon::Entity* ent) {
         auto entEffect = ent->Get<Components::Effect>();
-        auto texture = ent->Get<Components::Texture>();
         program_map.emplace(entEffect, GLProgram{ *entEffect });
-        tex_map.emplace(ent, GLTexture{ &texture->data() });
     }
     void GLModelRenderer::OnEntityRemove(LibCommon::Entity *ent) {
         auto bufferIter = buffer_map.find(ent);
@@ -174,10 +173,7 @@ namespace LibOpenGL {
                 program_map.erase(effectItr);
             }
         }
-        auto texIter = tex_map.find(ent);
-        if (texIter != tex_map.end()) {
-            tex_map.erase(texIter);
-        }
+        
     }
 
     void GLModelRenderer::bindUniforms(GLuint program) {

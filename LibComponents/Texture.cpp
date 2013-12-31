@@ -1,8 +1,8 @@
 #include "Texture.h"
 #include <stdexcept>
 namespace Components {
-	Texture::Texture(Image::ImageData data)
-		: _imageData(std::move(data))
+	Texture::Texture(Image::ImageData& data)
+		: _imageData(data)
 	{
 		
 	}

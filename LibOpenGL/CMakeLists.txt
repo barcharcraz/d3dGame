@@ -27,4 +27,4 @@ set(LibOpenGL_files
 	stdafx.cpp
 )
 add_library(LibOpenGL STATIC ${LibOpenGL_files})
-target_link_libraries(LibOpenGL ${OPENGL_gl_LIBRARY} Systems LibCommon)
+target_link_libraries(LibOpenGL ${OPENGL_gl_LIBRARY} Systems LibCommon Image)

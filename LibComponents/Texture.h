@@ -5,11 +5,11 @@
 namespace Components {
 	class Texture : public IComponent {
 	public:
-		Texture(Image::ImageData data);
+		Texture(Image::ImageData& data);
 		const Image::ImageData& data() const;
 		Image::ImageData& data();
 	private:
-		Image::ImageData _imageData;
+		Image::ImageData& _imageData;
 	};
 }
 

@@ -24,6 +24,7 @@
 #include <LibSystems/SimpleCollisionSystem.h>
 #include <LibSystems/AxisAlignedBBSystem.h>
 #include <LibInput/Input.h>
+#include <LibImage/ImageLoader.h>
 static void load_effects();
 static std::unique_ptr<Input::Input> construct_input();
 int main(int, char**) {
@@ -34,14 +35,14 @@ int main(int, char**) {
     Assets::ObjFile teapot{ "TestObj.obj" };
     Assets::ObjFile cone{ "Cone.obj" };
     Assets::ObjFile helix{ "Helix.obj" };
-    Image::Targa::Targa tex{ "Textures/wood_light/diffuse.tga" };
-    Image::Targa::Targa background{ "Textures/starfield/diffuse1024x1024.tga"};
+    Image::ImageData& tex = Image::GetImageData( "Textures/wood_light/diffuse.tga" );
+    Image::ImageData& background = Image::GetImageData( "Textures/starfield/diffuse1024x1024.tga");
     std::unique_ptr<LibCommon::Scene> scene(new LibCommon::Scene());
-    auto mod = std::make_unique<Prefabs::StaticModel>(cone, Image::ImageData(tex));
-    auto leftMod = std::make_unique<Prefabs::StaticModel>(teapot, Image::ImageData(tex));
-    auto rightMod = std::make_unique<Prefabs::StaticModel>(cone, Image::ImageData(tex));
-    auto topMod = std::make_unique<Prefabs::StaticModel>(helix, Image::ImageData(tex));
-    auto bottomMod = std::make_unique<Prefabs::StaticModel>(cone, Image::ImageData(tex));
+    auto mod = std::make_unique<Prefabs::StaticModel>(cone, tex);
+    auto leftMod = std::make_unique<Prefabs::StaticModel>(teapot, tex);
+    auto rightMod = std::make_unique<Prefabs::StaticModel>(cone, tex);
+    auto topMod = std::make_unique<Prefabs::StaticModel>(helix, tex);
+    auto bottomMod = std::make_unique<Prefabs::StaticModel>(cone, tex);
     auto camera = (*scene).AddEntity<Prefabs::Camera>();
     camera->AddComponent(std::move(input));
 	camera->AddComponent<Components::GunDefinition>("Textures/laser_test/diffuse.tga", 0.1f, std::chrono::milliseconds(2000));
@@ -55,7 +56,7 @@ int main(int, char**) {
     mod->AddComponent<Components::Velocity3D>(Eigen::Affine3f{ Eigen::AngleAxisf{ 0.001f, Eigen::Vector3f::UnitZ() } });
 	topMod->AddComponent<Components::Velocity3D>(Eigen::Affine3f{ Eigen::AngleAxisf{ 0.01f, Eigen::Vector3f::UnitX() } });
 	//topMod->Get<Components::Velocity3D>()->linear = Eigen::Vector3f{ 0.0f, 0.0f, -0.05f };
-    scene->AddEntity<Prefabs::SkyDome>(5.0f, Image::ImageData(background));
+    scene->AddEntity<Prefabs::SkyDome>(5.0f, background);
     scene->AddEntity(std::move(mod));
     scene->AddEntity(std::move(leftMod));
     scene->AddEntity(std::move(rightMod));

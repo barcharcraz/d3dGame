@@ -12,13 +12,13 @@ namespace Image {
 		loaded[path] = std::move(data);
 
 	}
-	const ImageData& ImageCache::GetImageData(const std::string& path) {
+	ImageData& ImageCache::GetImageData(const std::string& path) {
 		if (loaded.count(path) == 0) {
 			LoadImage(path);
 		}
 		return loaded[path];
 	}
-	const ImageData& GetImageData(const std::string& path) {
+	ImageData& GetImageData(const std::string& path) {
 		return activeContext->GetImageData(path);
 	}
 	void ActivateCache(ImageCache* cache) {
