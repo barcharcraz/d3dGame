@@ -2,10 +2,11 @@
 #include <LibEffects/EffectsManagement.h>
 #include <RenderingUtils/ModelProcessing.h>
 #include <Components.h>
+#include <LibComponents/ParentLink.h>
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 namespace Prefabs {
-    SkyDome::SkyDome(float radius, const Components::Texture& tex) {
+    SkyDome::SkyDome(float radius, const Components::Texture& tex, Components::ParentLink* parent) {
         using namespace Components;
         using Effects::ShaderCaps;
         AddComponent<Transform3D>(Eigen::Affine3f::Identity());
@@ -20,7 +21,9 @@ namespace Prefabs {
             Eigen::Vector4f::Zero(),
             0
         );
-        AddComponent<Model>(utils::generate_icosahedron(radius));
+        Components::Model dome = utils::generate_icosahedron(radius);
+        AddComponent<Model>(dome);
+        AddComponent<ParentLink>(Get<Transform3D>(), parent);
         
         
         

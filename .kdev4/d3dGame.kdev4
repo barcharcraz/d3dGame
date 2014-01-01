@@ -38,12 +38,12 @@ Configured from ProjectItem=d3dGame,CrossplatApp,CrossplatApp
 Dependencies=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x00)
 Dependency Action=Nothing
 EnvironmentGroup=default
-Executable=
+Executable=file:///home/charlie/d3dGame/build/output/CrossplatApp
 External Terminal=konsole --noclose --workdir %workdir -e %exe
-Project Target=d3dGame,CrossplatApp,CrossplatApp
+Project Target=
 Use External Terminal=false
 Working Directory=file:///home/charlie/d3dGame/build/output/
-isExecutable=false
+isExecutable=true
 
 [Launch][Launch Configuration 1]
 Configured Launch Modes=debug

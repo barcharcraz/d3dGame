@@ -20,6 +20,8 @@ set(libcomponents_files
 	PointLight.cpp
 	Projectile.h
 	Projectile.cpp
+	ParentLink.h
+	ParentLink.cpp
 	AxisAlignedBB.h
 	AxisAlignedBB.cpp
 	Collision.h

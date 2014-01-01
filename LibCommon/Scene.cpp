@@ -32,6 +32,7 @@ namespace LibCommon {
                 for (auto ent : input) {
                     sys->Process(ent);
                 }
+                sys->PostProcess();
             }
         }
     }

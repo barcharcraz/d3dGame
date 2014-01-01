@@ -78,13 +78,11 @@ namespace utils {
             9,8,1 };
         for(auto& elm : verts) {
             Vertex v;
-            v.pos = elm.normalized() * radius;
+            v.pos = (elm.normalized() * radius);
             v.norm = elm.normalized();
             v.uv = elm.normalized().head<3>();
             rv.verts.push_back(v);
         }
         return rv;
-
-        
     }
 }
