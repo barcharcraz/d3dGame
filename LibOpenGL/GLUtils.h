@@ -7,6 +7,7 @@ namespace LibOpenGL {
     //converts a glenum to a string I should
     //not have to write this function
     const char* EnumString(GLenum val);
+
     
     
 }

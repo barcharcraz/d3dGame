@@ -86,8 +86,8 @@ namespace LibOpenGL {
         gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, buffer.Index.GetBuffer());
         gl::BindBuffer(gl::ARRAY_BUFFER, buffer.Vertex.GetBuffer());
         gl::VertexAttribPointer(posLoc, 4, gl::FLOAT, gl::FALSE_, sizeof(LibCommon::Vertex), 0);
-        gl::VertexAttribPointer(normLoc, 4, gl::FLOAT, gl::FALSE_, sizeof(LibCommon::Vertex), 0);
-        gl::VertexAttribPointer(uvLoc, 3, gl::FLOAT, gl::FALSE_, sizeof(LibCommon::Vertex), 0);
+        gl::VertexAttribPointer(normLoc, 4, gl::FLOAT, gl::FALSE_, sizeof(LibCommon::Vertex), (GLvoid*)sizeof(Eigen::Vector4f));
+        gl::VertexAttribPointer(uvLoc, 3, gl::FLOAT, gl::FALSE_, sizeof(LibCommon::Vertex), (GLvoid*)(2 * sizeof(Eigen::Vector4f)));
         gl::DrawElements(gl::TRIANGLES, static_cast<GLsizei>(mod->indices.size()), gl::UNSIGNED_INT, 0);
         CheckError(); 
     }

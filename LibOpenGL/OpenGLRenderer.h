@@ -5,7 +5,7 @@
 #include <Utils/cache.h>
 #include "GLTexture.h"
 namespace Image {
-    class ImageData;
+    struct ImageData;
 }
 namespace LibOpenGL {
 	class OpenGLRenderer {

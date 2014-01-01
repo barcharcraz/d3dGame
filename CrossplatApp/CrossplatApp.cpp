@@ -98,8 +98,8 @@ void load_effects() {
         ShaderCaps::TEXTURE_MAPPED,
         ShaderCaps::LIT_DIRECTIONAL
     };
-	Effects::Effect DefaultEffect{ "DefaultVS.glsl", "DefaultPS.glsl", defaultLayout, defaultCaps };
-	Effects::Effect BillboardEffect{ "BillboardVS.glsl", "BillboardPS.glsl", defaultLayout, std::set<ShaderCaps>{ ShaderCaps::RENDER_BILLBOARD } };
+	Effects::Effect DefaultEffect{ "DefaultVS", "DefaultPS", defaultLayout, defaultCaps };
+	Effects::Effect BillboardEffect{ "BillboardVS", "BillboardPS", defaultLayout, std::set<ShaderCaps>{ ShaderCaps::RENDER_BILLBOARD } };
     DefaultEffect.defines = std::unordered_map<std::string, int>{{ { "NUM_DIRECTIONAL", 8 }, { "NUM_POINT", 8 } }};
     Effects::AddEffect(DefaultEffect);
 	Effects::AddEffect(BillboardEffect);

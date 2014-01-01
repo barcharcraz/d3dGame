@@ -58,6 +58,29 @@ namespace utils {
 		std::ifstream file(filename);
 		return file.is_open();
 	}
+    //! \brief returns a string that is filename with the extension extension
+    //! if filename already has the correct extension than this function returns
+    //! that. If filename has a different extension an exception is raised, 
+    //! if filename has no extension than the new one is appended
+    inline std::string fixupExtensionInternal(std::string filename, std::string extension, bool optional) {
+        if (getFileExtension(filename) == "") {
+            return filename + "." + extension;
+        } else if (getFileExtension(filename) == extension) {
+            return filename;
+        } else if(optional){
+            return filename;
+        } else {
+            throw utils::precondition_error("filename extension is wrong");
+        }
+    }
+    inline std::string fixupExtensionOptional(std::string filename, std::string extension) {
+        return fixupExtensionInternal(filename, extension, true);
+    }
+    inline std::string fixupExtension(std::string filename, std::string extension) {
+        return fixupExtensionInternal(filename, extension, false);
+    }
+
+
 }
 
 #endif

@@ -16,6 +16,7 @@ macro(install_glfw3)
 	ExternalProject_Add(glfw3
 						GIT_REPOSITORY https://github.com/barcharcraz/glfw.git
 						CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
+								   -DGLFW_USE_DWM_SWAP_INTERVAL=ON
 								   -DUSE_MSVC_RUNTIME_LIBRARY_DLL:BOOL=OFF
 								   -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
 						)

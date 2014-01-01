@@ -17,6 +17,7 @@ namespace Prefabs {
 		AddComponent<Components::Billboard>(width, height);
 		AddComponent<Components::Model>(utils::generate_quad(width, height));
 		AddComponent<Components::Effect>(Effects::ChooseEffect({Effects::ShaderCaps::RENDER_BILLBOARD}));
+        AddComponent<Components::Projectile>(100, lifetime);
 		AddComponent<Components::Collision>();
 	}
 	EnergyBullet::EnergyBullet(float width, float height,

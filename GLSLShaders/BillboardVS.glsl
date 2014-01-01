@@ -8,10 +8,10 @@ struct matrices_t {
 uniform matrices_t mvp;
 in vec4 pos;
 in vec4 norm;
-in vec4 uv;
+in vec3 uv;
 out vec3 uvout;
 void main() {
 	mat4 concatmat = mvp.proj * mvp.view * mvp.model;
-	uvout = uv.xyz;
+	uvout = uv;
 	gl_Position = concatmat * pos;
 }

@@ -4,7 +4,8 @@
 #include <Utils/files.h>
 #include <Utils/strings.h>
 namespace Effects {
-	HLSLPixelShader::HLSLPixelShader(const std::string& filename) : _filename(filename) {
+	HLSLPixelShader::HLSLPixelShader(const std::string& filename) 
+        : _filename(utils::fixupExtensionOptional(filename, "cso")) {
 
 	}
 	CComPtr<ID3D11PixelShader> HLSLPixelShader::getShader(CComPtr<ID3D11Device> pDev) {
@@ -14,7 +15,7 @@ namespace Effects {
 				_pShader = loadCompiledFile(pDev);
 			} else if (ext == "hlsl" || ext == "ps") {
 				_pShader = loadTextFile(pDev);
-			}
+            }
 		}
 		return _pShader;
 	}

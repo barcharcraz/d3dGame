@@ -149,6 +149,7 @@ namespace windows {
 			ReleaseDC(_hwnd, newdc);
 			throw std::system_error(GetLastError(), std::system_category());
 		}
+        WinGLSwapInterval(1);
 		_glctx = ctx;
 		ctx = nullptr;
 		_dc = newdc;
