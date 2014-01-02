@@ -25,6 +25,7 @@
 #include <LibSystems/SimpleCollisionSystem.h>
 #include <LibSystems/AxisAlignedBBSystem.h>
 #include <LibInput/Input.h>
+#include <LibDirect3D/BoundingBoxRenderer.h>
 #include <LibImage/ImageLoader.h>
 static void load_effects();
 static std::unique_ptr<Input::Input> construct_input();
@@ -57,26 +58,29 @@ int main ( int, char** ) {
     mod->AddComponent<Components::Velocity3D> ( Eigen::Affine3f { Eigen::AngleAxisf{ 0.001f, Eigen::Vector3f::UnitZ() } } );
     topMod->AddComponent<Components::Velocity3D> ( Eigen::Affine3f { Eigen::AngleAxisf{ 0.01f, Eigen::Vector3f::UnitX() } } );
     //topMod->Get<Components::Velocity3D>()->linear = Eigen::Vector3f{ 0.0f, 0.0f, -0.05f };
-    scene->AddEntity<Prefabs::SkyDome> ( 1000.0f, background, nullptr );
+    scene->AddEntity<Prefabs::SkyDome> ( 50.0f, background, camera->Get<Components::ParentLink>() );
     scene->AddEntity ( std::move ( mod ) );
     scene->AddEntity ( std::move ( leftMod ) );
     scene->AddEntity ( std::move ( rightMod ) );
     scene->AddEntity ( std::move ( topMod ) );
     scene->AddEntity ( std::move ( bottomMod ) );
+    
     scene->AddSystem<Systems::MovementController3D>();
     scene->AddSystem<Systems::GunController>();
     scene->AddSystem<Systems::VelocitySystem3D>();
     scene->AddSystem<Systems::PremulVelocitySystem3D>();
     scene->AddSystem<Systems::SimpleCollisionSystem>();
     scene->AddSystem<Systems::ParentingSystem>();
+    scene->AddSystem<Systems::AxisAlignedBBSystem>();
     scene->AddSystem<Systems::CollisionDetectionSystem>();
     scene->AddSystem<Systems::ProjectileSystem>();
-    scene->AddSystem<Systems::AxisAlignedBBSystem>();
+    
+    
     scene->AddEntity<Prefabs::DirectionalLight> ( Eigen::Vector4f { 1.0f, 1.0f, 1.0f, 1.0f }, Eigen::Vector3f { 0.0f, 0.0f, -1.0f } );
     auto renderer = std::make_unique<Rendering::Renderer> ( &window );
     scene->AddSystem<Rendering::ModelRenderer> ( renderer.get() );
     scene->AddSystem<Rendering::BillboardRenderer> ( renderer.get() );
-
+    scene->AddSystem<LibDirect3D::BoundingBoxRenderer>(renderer.get());
     window.Show();
     window.update = [&]() {
         ( *scene ).Update();
@@ -101,10 +105,12 @@ void load_effects() {
         ShaderCaps::LIT_DIRECTIONAL
     };
     Effects::Effect DefaultEffect { "DefaultVS", "DefaultPS", defaultLayout, defaultCaps };
-    Effects::Effect BillboardEffect { "BillboardVS", "BillboardPS", defaultLayout, std::set<ShaderCaps>{ ShaderCaps::RENDER_BILLBOARD } };
+    Effects::Effect BillboardEffect{ "BillboardVS", "BillboardPS", defaultLayout, std::set<ShaderCaps>{ ShaderCaps::RENDER_BILLBOARD } };
+    Effects::Effect DebugEffect{ "DebugVS", "DebugPS", defaultLayout, { ShaderCaps::DEBUG_SOLID } };
     DefaultEffect.defines = std::unordered_map<std::string, int> {{ { "NUM_DIRECTIONAL", 8 }, { "NUM_POINT", 8 } }};
     Effects::AddEffect ( DefaultEffect );
     Effects::AddEffect ( BillboardEffect );
+    Effects::AddEffect(DebugEffect);
 }
 std::unique_ptr<Input::Input> construct_input() {
     auto rv = std::make_unique<Input::Input>();

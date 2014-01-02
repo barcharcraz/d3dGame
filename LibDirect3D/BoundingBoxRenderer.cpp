@@ -71,7 +71,10 @@ namespace LibDirect3D {
 		auto camera = parent->SelectEntity({ typeid(Components::Camera) });
 		auto camTrans = camera->Get<Components::Transform3D>();
 		trans.model = Eigen::Affine3f::Identity().matrix();
-		trans.view = (Translation3f(camTrans->position) * camTrans->rotation).matrix();
+        trans.view = camTrans->GenRotTransMatrix();
+        trans.view(0, 3) *= -1;
+        trans.view(1, 3) *= -1;
+        trans.view(2, 3) *= -1;
 		trans.proj = camera->Get<Components::Camera>()->CameraMatrix.matrix();
 	}
 	void BoundingBoxRenderer::Process(LibCommon::Entity* ent) {

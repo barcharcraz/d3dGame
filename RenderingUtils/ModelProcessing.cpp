@@ -78,7 +78,9 @@ namespace utils {
             9,8,1 };
         for(auto& elm : verts) {
             Vertex v;
-            v.pos = (elm.normalized() * radius);
+            v.pos = elm;
+            v.pos.head<3>().normalize();
+            v.pos.head<3>() *= radius;
             v.norm = elm.normalized();
             v.uv = elm.normalized().head<3>();
             rv.verts.push_back(v);

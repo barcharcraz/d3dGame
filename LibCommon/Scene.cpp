@@ -144,7 +144,9 @@ namespace LibCommon {
     }
     void Scene::sendAddMessage(Entity* e) {
         for (auto& elm : _systems) {
-            elm->OnEntityAdd(e);
+            if (e->HasAllComponents(elm->aspect)) {
+                elm->OnEntityAdd(e);
+            }
         }
     }
     void Scene::removeSystemEvents(System* s) {

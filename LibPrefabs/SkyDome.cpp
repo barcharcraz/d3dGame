@@ -19,11 +19,11 @@ namespace Prefabs {
             Eigen::Vector4f(1.0f, 1.0f, 1.0f, 1.0f),
             Eigen::Vector4f::Zero(),
             Eigen::Vector4f::Zero(),
-            0
+            0.0f
         );
         Components::Model dome = utils::generate_icosahedron(radius);
         AddComponent<Model>(dome);
-        AddComponent<ParentLink>(Get<Transform3D>(), parent);
+        AddComponent<ParentLink>(Get<Transform3D>(), parent, ParentLink::TRANSLATION);
         
         
         

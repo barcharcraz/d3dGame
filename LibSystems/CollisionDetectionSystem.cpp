@@ -8,26 +8,18 @@ namespace Systems {
 	}
 	CollisionDetectionSystem::CollisionDetectionSystem()
 		: System({ typeid(Components::AxisAlignedBB) },
-		LibCommon::Priority::HIGH)
+		LibCommon::Priority::MEDIUM)
 	{
 		
 	}
 	void CollisionDetectionSystem::Init() {
 		EnableUpdate({ typeid(Components::AxisAlignedBB) });
-		auto ents = parent->SelectEntities({ typeid(Components::AxisAlignedBB) });
-		for (auto elm : ents) {
-			sap.AddObject(elm->Get<Components::AxisAlignedBB>()->CurAABB, elm);
-		}
 	}
 	void CollisionDetectionSystem::OnEntityAdd(LibCommon::Entity* e) {
-		if (e->HasAllComponents({ typeid(Components::AxisAlignedBB) })) {
-			sap.AddObject(e->Get<Components::AxisAlignedBB>()->CurAABB, e);
-		}
+	    sap.AddObject(e->Get<Components::AxisAlignedBB>()->CurAABB, e);
 	}
 	void CollisionDetectionSystem::OnEntityRemove(LibCommon::Entity* e) {
-		if (e->HasAllComponents({ typeid(Components::AxisAlignedBB) })) {
-			sap.RemoveObject(e);
-		}
+		sap.RemoveObject(e);
 	}
 	void CollisionDetectionSystem::OnEntityUpdate(LibCommon::Entity* ent, Components::IComponent*) {
 		auto bbox = ent->Get<Components::AxisAlignedBB>();
