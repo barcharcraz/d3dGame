@@ -37,7 +37,7 @@ namespace Systems {
 				auto volume = thisAABB->CurAABB.intersection(aabb->CurAABB).volume();
 				auto possibleTransform = thisAABB->CurAABB.translate(velocity->linear);
 				auto possibleVolume = possibleTransform.intersection(aabb->CurAABB).volume();
-				if (possibleVolume < volume) {
+				if (possibleVolume > volume) {
 					velocity->linear = Eigen::Vector3f{ 0, 0, 0 };
 				}
 			}
