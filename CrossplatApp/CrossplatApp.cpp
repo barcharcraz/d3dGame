@@ -69,10 +69,10 @@ int main ( int, char** ) {
     scene->AddSystem<Systems::GunController>();
     scene->AddSystem<Systems::VelocitySystem3D>();
     scene->AddSystem<Systems::PremulVelocitySystem3D>();
+    scene->AddSystem<Systems::CollisionDetectionSystem>();
     scene->AddSystem<Systems::SimpleCollisionSystem>();
     scene->AddSystem<Systems::ParentingSystem>();
     scene->AddSystem<Systems::AxisAlignedBBSystem>();
-    scene->AddSystem<Systems::CollisionDetectionSystem>();
     scene->AddSystem<Systems::ProjectileSystem>();
     
     

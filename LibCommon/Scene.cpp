@@ -139,7 +139,9 @@ namespace LibCommon {
     }
     void Scene::sendRemoveMessage(Entity *e) {
         for(std::unique_ptr<System>& elm : _systems) {
-            elm->OnEntityRemove(e);
+            if (e->HasAllComponents(elm->aspect)) {
+                elm->OnEntityRemove(e);
+            }
         }
     }
     void Scene::sendAddMessage(Entity* e) {
