@@ -56,7 +56,7 @@ int main ( int, char** ) {
     topMod->Get<Components::Transform3D>()->position = Eigen::Vector3f { 0, 10, -10 };
     bottomMod->Get<Components::Transform3D>()->position = Eigen::Vector3f { 0, -10, -10 };
     mod->AddComponent<Components::Velocity3D> ( Eigen::Affine3f { Eigen::AngleAxisf{ 0.001f, Eigen::Vector3f::UnitZ() } } );
-    topMod->AddComponent<Components::Velocity3D> ( Eigen::Affine3f { Eigen::AngleAxisf{ 0.01f, Eigen::Vector3f::UnitX() } } );
+    //topMod->AddComponent<Components::Velocity3D> ( Eigen::Affine3f { Eigen::AngleAxisf{ 0.01f, Eigen::Vector3f::UnitX() } } );
     //topMod->Get<Components::Velocity3D>()->linear = Eigen::Vector3f{ 0.0f, 0.0f, -0.05f };
     scene->AddEntity<Prefabs::SkyDome> ( 50.0f, background, camera->Get<Components::ParentLink>() );
     scene->AddEntity ( std::move ( mod ) );

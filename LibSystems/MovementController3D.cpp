@@ -5,11 +5,12 @@
 #include <Utils/math.h>
 #include <LibInput/Input.h>
 #include <LibComponents/Transform.h>
+#include <LibComponents/Collision.h>
 namespace Systems {
     MovementController3D::MovementController3D()
         : System({ typeid(Components::PremulVelocity3D), typeid(Input::Input), typeid(Components::Transform3D) })
     {
-        priority = LibCommon::Priority::HIGH;
+        priority = LibCommon::Priority::LOW;
     }
     void MovementController3D::Process(LibCommon::Entity * e) {
         using namespace Components;
@@ -40,9 +41,10 @@ namespace Systems {
         newRot *= Quaternionf(AngleAxisf(static_cast<float>(rotX), -Vector3f::UnitX()));
         newRot *= Quaternionf(AngleAxisf(static_cast<float>(rotY), -Vector3f::UnitY()));
 		newLinear = trans->rotation.inverse() * newLinear;
-        
-		vel->linear = newLinear;
-		vel->angular = newRot;
+        auto collision = e->Get<Components::Collision>();
+        vel->linear = newLinear;
+        vel->angular = newRot;
+        NotifyUpdate(e, vel);
 
     }
 }

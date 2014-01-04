@@ -1,17 +1,14 @@
 #include "Texture.h"
 #include <stdexcept>
 namespace Components {
-	Texture::Texture(Image::ImageData& data)
-		: _imageData(data)
+	Texture::Texture(const Image::ImageData& data, utils::tex::texture_type_e tex_type)
+        : _imageData(&data), type(tex_type)
 	{
 		
 	}
 
 	const Image::ImageData& Texture::data() const {
-		return _imageData;
-	}
-	Image::ImageData& Texture::data() {
-		return _imageData;
+		return *_imageData;
 	}
 	
 	

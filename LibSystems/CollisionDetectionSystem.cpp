@@ -2,18 +2,19 @@
 #include <LibCommon/Scene.h>
 #include <LibComponents/Collision.h>
 #include <LibComponents/AxisAlignedBB.h>
+#include <LibComponents/Velocity.h>
 namespace Systems {
 	namespace {
 
 	}
 	CollisionDetectionSystem::CollisionDetectionSystem()
 		: System({ typeid(Components::AxisAlignedBB) },
-		LibCommon::Priority::MEDIUM)
+		LibCommon::Priority::LOW)
 	{
 		
 	}
 	void CollisionDetectionSystem::Init() {
-		EnableUpdate({ typeid(Components::AxisAlignedBB) });
+		EnableUpdate({ typeid(Components::AxisAlignedBB), typeid(Components::PremulVelocity3D) });
 	}
 	void CollisionDetectionSystem::OnEntityAdd(LibCommon::Entity* e) {
 	    sap.AddObject(e->Get<Components::AxisAlignedBB>()->CurAABB, e);
@@ -31,6 +32,7 @@ namespace Systems {
 			if (e != ent) {
 				if (collision) {
 					collision->with.push_back(e);
+                    NotifyUpdate(ent, collision);
 				}
 				Components::Collision* otherCollision = e->GetOptional<Components::Collision>();
 				if (otherCollision) {

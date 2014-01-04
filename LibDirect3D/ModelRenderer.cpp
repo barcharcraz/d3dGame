@@ -86,7 +86,7 @@ namespace LibDirect3D {
 			if (texCache.count(e) > 0) {
 				tex = &texCache.at(e);
 			} else {
-				tex = &texCache.emplace(e, texture->data()).first->second;
+				tex = &texCache.emplace(e, *texture).first->second;
 			}
 			auto srv = tex->SRV(pDev);
 			auto samp = tex->SamplerState(pDev);

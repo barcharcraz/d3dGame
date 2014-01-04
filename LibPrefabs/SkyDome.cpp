@@ -24,8 +24,7 @@ namespace Prefabs {
         Components::Model dome = utils::generate_icosahedron(radius);
         AddComponent<Model>(dome);
         AddComponent<ParentLink>(Get<Transform3D>(), parent, ParentLink::TRANSLATION);
-        
-        
-        
     }
+    SkyDome::SkyDome(float radius, const Image::ImageData& data, Components::ParentLink* parent)
+        : SkyDome(radius, Components::Texture(data, utils::tex::TEXTURE2D_CUBEMAP), parent) {}
 }

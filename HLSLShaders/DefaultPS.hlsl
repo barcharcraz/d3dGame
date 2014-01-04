@@ -2,7 +2,6 @@
 #include "ForwardLighting.hlsl"
 Texture2D tex;
 SamplerState samp;
-
 cbuffer objMat {
 	material mat;
 };

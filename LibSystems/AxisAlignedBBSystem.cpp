@@ -67,7 +67,7 @@ namespace Systems {
 	AxisAlignedBBSystem::AxisAlignedBBSystem()
 		: System({ typeid(Components::AxisAlignedBB), typeid(Components::Transform3D)})
 	{
-		priority = LibCommon::Priority::HIGH;
+		priority = LibCommon::Priority::LOW;
 		
 	}
 	void AxisAlignedBBSystem::Init() {

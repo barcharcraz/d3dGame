@@ -40,7 +40,7 @@ namespace LibDirect3D {
 			Direct3DTexture* tex = nullptr;
 			auto texIter = texCache.find(ent);
 			if (texIter == texCache.end()) {
-				tex = &texCache.emplace(ent, texture->data()).first->second;
+				tex = &texCache.emplace(ent, *texture).first->second;
 			} else {
 				tex = &texIter->second;
 			}

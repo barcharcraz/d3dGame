@@ -6,12 +6,12 @@ cbuffer constants {
 struct VertexInput {
 	float4 pos : POSITION;
 	float4 norm : NORMAL;
-	float4 uv : TEXCOORD;
+	float3 uv : TEXCOORD;
 };
 struct VertexOutput {
 	float4 pos : SV_POSITION;
 	float4 norm : NORMAL;
-	float4 uv : TEXCOORD1;
+	float3 uv : TEXCOORD1;
 };
 VertexOutput main(VertexInput input) {
 	VertexOutput retval;

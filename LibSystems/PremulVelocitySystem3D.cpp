@@ -4,7 +4,10 @@
 namespace Systems {
     using namespace Components;
     PremulVelocitySystem3D::PremulVelocitySystem3D()
-        : System({ typeid(PremulVelocity3D), typeid(Transform3D) }) {}
+        : System({ typeid(PremulVelocity3D), typeid(Transform3D) }) 
+    {
+        priority = LibCommon::Priority::LOW;
+    }
 
     void PremulVelocitySystem3D::Process(LibCommon::Entity* e) {
         auto transform = e->Get<Transform3D>();
