@@ -45,10 +45,11 @@ namespace LibDirect3D {
     //-------PRIVATE-----------
     void Direct3DTexture::initTexture(CComPtr<ID3D11Device> pDev) {
         using Image::ImageData;
+        using namespace utils::tex;
         ImageData dat = Image::Conversions::ConvertImage(m_tex->data(), Image::Formats::R8G8B8A8_UNORM);
         D3D11_TEXTURE2D_DESC desc;
-        desc.Width = dat.width;
-        desc.Height = dat.height;
+        desc.Width = texGetWidth(m_tex->type, dat.width);
+        desc.Height = texGetHeight(m_tex->type, dat.height);
         desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
         desc.MipLevels = 1;
         desc.ArraySize = utils::tex::numTexArrays(m_tex->type);

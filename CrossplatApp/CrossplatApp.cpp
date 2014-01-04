@@ -107,10 +107,12 @@ void load_effects() {
     Effects::Effect DefaultEffect { "DefaultVS", "DefaultPS", defaultLayout, defaultCaps };
     Effects::Effect BillboardEffect{ "BillboardVS", "BillboardPS", defaultLayout, std::set<ShaderCaps>{ ShaderCaps::RENDER_BILLBOARD } };
     Effects::Effect DebugEffect{ "DebugVS", "DebugPS", defaultLayout, { ShaderCaps::DEBUG_SOLID } };
+    Effects::Effect SkydomeEffect{ "BillboardVS", "CubemappedPS", defaultLayout, { ShaderCaps::TEXTURE_MAPPED, ShaderCaps::TEXTURE_CUBEMAPPED, ShaderCaps::MESH_INDEXED } };
     DefaultEffect.defines = std::unordered_map<std::string, int> {{ { "NUM_DIRECTIONAL", 8 }, { "NUM_POINT", 8 } }};
     Effects::AddEffect ( DefaultEffect );
     Effects::AddEffect ( BillboardEffect );
     Effects::AddEffect(DebugEffect);
+    Effects::AddEffect(SkydomeEffect);
 }
 std::unique_ptr<Input::Input> construct_input() {
     auto rv = std::make_unique<Input::Input>();

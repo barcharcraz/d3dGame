@@ -8,14 +8,14 @@ Direct3DRenderer::Direct3DRenderer() {
 #ifdef _DEBUG
     creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
-    init(nullptr, D3D_DRIVER_TYPE_REFERENCE, 0, creationFlags, defaultFeatureLevels, defaultNumFeatureLevels, D3D11_SDK_VERSION, nullptr);
+    init(nullptr, D3D_DRIVER_TYPE_WARP, 0, creationFlags, defaultFeatureLevels, defaultNumFeatureLevels, D3D11_SDK_VERSION, nullptr);
 }
 Direct3DRenderer::Direct3DRenderer(HWND target) {
     UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 #ifdef _DEBUG
     creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
-    init(nullptr, D3D_DRIVER_TYPE_REFERENCE, 0, creationFlags, defaultFeatureLevels, defaultNumFeatureLevels, D3D11_SDK_VERSION, nullptr);
+    init(nullptr, D3D_DRIVER_TYPE_WARP, 0, creationFlags, defaultFeatureLevels, defaultNumFeatureLevels, D3D11_SDK_VERSION, nullptr);
     bindToHwnd(target);
 }
 Direct3DRenderer::Direct3DRenderer(windowing::IDXWindow* win)

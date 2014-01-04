@@ -13,7 +13,8 @@ namespace Prefabs {
         AddComponent<Texture>(tex);
         AddComponent<Effect>(Effects::ChooseEffect({
             ShaderCaps::MESH_INDEXED,
-            ShaderCaps::TEXTURE_MAPPED
+            ShaderCaps::TEXTURE_MAPPED,
+            ShaderCaps::TEXTURE_CUBEMAPPED
         }));
         AddComponent<Material>(
             Eigen::Vector4f(1.0f, 1.0f, 1.0f, 1.0f),

@@ -33,5 +33,28 @@ namespace utils {
             int faceoffset = faceOnRow * cubemapSquareWidth(full_tex_size);
             return rowoffset + faceoffset;
         }
+        int texGetWidth(texture_type_e type, int sourceWidth) {
+            switch (type) {
+            case utils::tex::TEXTURE2D:
+                return sourceWidth;
+            case utils::tex::TEXTURE2D_CUBEMAP:
+                return cubemapSquareWidth(sourceWidth);
+            default:
+                throw utils::invalid_enum_error("invalid texture type int texGetWidth");
+            }
+        }
+        int texGetHeight(texture_type_e type, int sourceHeight) {
+            switch (type)
+            {
+            case utils::tex::TEXTURE2D:
+                return sourceHeight;
+            case utils::tex::TEXTURE2D_CUBEMAP:
+                //we are assuming square textures so this actually
+                //makes sense
+                return cubemapSquareWidth(sourceHeight);
+            default:
+                throw utils::invalid_enum_error("invalid texture type in texGetHeight");
+            }
+        }
     }
 }
