@@ -6,7 +6,7 @@ namespace sparse {
         }
         void* Scene::AddComponent(void* value) {
             Component* comp = reinterpret_cast<Component*>(value);
-            if (data.size() <= comp->type) {
+            if (data.size() <= static_cast<std::size_t>(comp->type)) {
                 data.resize(comp->type);
             }
             data[comp->type].push_back(value);
