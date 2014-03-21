@@ -1,14 +1,16 @@
 set(hlsl_h
 	LightStructs.hlsl
 	ForwardLighting.hlsl
+	BasicFunctions.hlsl
 	)
 set(hlsl_ps
-	defaultPS.hlsl
+	DefaultPS.hlsl
 	DebugPS.hlsl
 	BillboardPS.hlsl
+	CubemappedPS.hlsl
 	)
 set(hlsl_vs
-	defaultVS.hlsl
+	DefaultVS.hlsl
 	DebugVS.hlsl
 	BillboardVS.hlsl
 	)

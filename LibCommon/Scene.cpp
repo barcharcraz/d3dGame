@@ -16,10 +16,14 @@ namespace LibCommon {
         _systems.finalize_ops();
         _entities.finalize_ops();
         UpdateSystems();
+		_lastUpdate = _clock.now();
     }
     void Scene::EraseSystemsNow() {
         _systems.erase(std::remove(begin(_systems), end(_systems), nullptr));
     }
+	std::chrono::system_clock::duration Scene::FrameDelta() {
+		return _delta;
+	}
     void Scene::UpdateSystems() {
         for (auto& sys : _systems) {
             if (sys != nullptr) {
@@ -28,6 +32,7 @@ namespace LibCommon {
                 for (auto ent : input) {
                     sys->Process(ent);
                 }
+                sys->PostProcess();
             }
         }
     }
@@ -49,6 +54,7 @@ namespace LibCommon {
                 return rv;
             }
         }
+		return rv;
     }
 
     System* Scene::AddSystem(std::unique_ptr<System> && s) {
@@ -102,15 +108,21 @@ namespace LibCommon {
         //^| this function could really use some caching at some point
         std::vector<Entity*> retval;
         for (auto& ent : _entities) {
-            if (ent->HasAllComponents(info)) {
+            if (ent != nullptr && ent->HasAllComponents(info)) {
                 retval.push_back(ent.get());
             }
         }
+		for (auto i = _entities.cache_begin(); i != _entities.cache_end(); ++i) {
+			if ((*i)->HasAllComponents(info)) {
+				retval.push_back(i->get());
+			}
+		}
+
         return retval;
     }
     Entity* Scene::SelectEntity(const std::set<std::type_index>& info) {
         for (auto& ent : _entities) {
-            if (ent->HasAllComponents(info)) {
+            if (ent != nullptr && ent->HasAllComponents(info)) {
                 return ent.get();
             }
         }
@@ -127,12 +139,16 @@ namespace LibCommon {
     }
     void Scene::sendRemoveMessage(Entity *e) {
         for(std::unique_ptr<System>& elm : _systems) {
-            elm->OnEntityRemove(e);
+            if (e->HasAllComponents(elm->aspect)) {
+                elm->OnEntityRemove(e);
+            }
         }
     }
     void Scene::sendAddMessage(Entity* e) {
         for (auto& elm : _systems) {
-            elm->OnEntityAdd(e);
+            if (e->HasAllComponents(elm->aspect)) {
+                elm->OnEntityAdd(e);
+            }
         }
     }
     void Scene::removeSystemEvents(System* s) {

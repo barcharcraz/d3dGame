@@ -8,6 +8,7 @@
 #include <LibCommon/Data.h>
 namespace utils {
 	Components::Model generate_quad(float width, float height);
+    Components::Model generate_icosahedron(float radius);
 }
 
 

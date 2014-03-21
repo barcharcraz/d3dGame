@@ -28,8 +28,9 @@ namespace LibCommon {
 		void NotifyUpdate(Entity*, Components::IComponent*);
 		virtual void OnEntityAdd(Entity*) {}
 		virtual void Init(){}
-        virtual void PreProcess() {}
+                virtual void PreProcess() {}
 		virtual void Process(Entity*) {}
+		virtual void PostProcess() {}
 		virtual void OnEntityRemove(Entity*) {}
 		virtual void OnEntityUpdate(Entity*, Components::IComponent*) {}
 		virtual ~System() = 0;

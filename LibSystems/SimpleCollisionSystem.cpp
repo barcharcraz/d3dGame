@@ -7,8 +7,7 @@
 #include <vector>
 namespace Systems {
 	SimpleCollisionSystem::SimpleCollisionSystem()
-		: System({ typeid(Components::Velocity3D),
-		typeid(Components::Transform3D),
+		: System({typeid(Components::Transform3D),
 		typeid(Components::AxisAlignedBB),
 		typeid(Components::Collision) })
 	{
@@ -19,7 +18,16 @@ namespace Systems {
 	}
 	void SimpleCollisionSystem::OnEntityUpdate(LibCommon::Entity* ent, Components::IComponent*) {
 		auto collisions = ent->Get<Components::Collision>();
-		auto velocity = ent->Get<Components::Velocity3D>();
+		auto premulvel = ent->GetOptional<Components::PremulVelocity3D>();
+		auto postmulvel = ent->GetOptional<Components::Velocity3D>();
+		Components::VelocityBase3D* velocity;
+		if (nullptr != premulvel) {
+			velocity = premulvel;
+		} else if (nullptr != postmulvel) {
+			velocity = postmulvel;
+		} else {
+			return;
+		}
 		//auto transform = ent->Get<Components::Transform3D>();
 		auto thisAABB = ent->Get<Components::AxisAlignedBB>();
 		if (collisions->with.size() != 0) {
@@ -27,10 +35,10 @@ namespace Systems {
 			for (auto& ents : collisions->with) {
 				auto aabb = ents->Get<Components::AxisAlignedBB>();
 				auto volume = thisAABB->CurAABB.intersection(aabb->CurAABB).volume();
-				auto possibleTransform = thisAABB->CurAABB.translate(velocity->velocity.translation());
+				auto possibleTransform = thisAABB->CurAABB.translate(velocity->linear);
 				auto possibleVolume = possibleTransform.intersection(aabb->CurAABB).volume();
-				if (possibleVolume < volume) {
-					velocity->velocity.translation() = Eigen::Vector3f{ 0, 0, 0 };
+				if (possibleVolume > volume) {
+					velocity->linear = Eigen::Vector3f{ 0, 0, 0 };
 				}
 			}
 			collisions->with.clear();

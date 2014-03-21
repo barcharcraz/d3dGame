@@ -2,32 +2,25 @@
 #include <LibCommon/Scene.h>
 #include <LibComponents/Collision.h>
 #include <LibComponents/AxisAlignedBB.h>
+#include <LibComponents/Velocity.h>
 namespace Systems {
 	namespace {
 
 	}
 	CollisionDetectionSystem::CollisionDetectionSystem()
 		: System({ typeid(Components::AxisAlignedBB) },
-		LibCommon::Priority::HIGH)
+		LibCommon::Priority::LOW)
 	{
 		
 	}
 	void CollisionDetectionSystem::Init() {
-		EnableUpdate({ typeid(Components::AxisAlignedBB) });
-		auto ents = parent->SelectEntities({ typeid(Components::AxisAlignedBB) });
-		for (auto elm : ents) {
-			sap.AddObject(elm->Get<Components::AxisAlignedBB>()->CurAABB, elm);
-		}
+		EnableUpdate({ typeid(Components::AxisAlignedBB), typeid(Components::PremulVelocity3D) });
 	}
 	void CollisionDetectionSystem::OnEntityAdd(LibCommon::Entity* e) {
-		if (e->HasAllComponents({ typeid(Components::AxisAlignedBB) })) {
-			sap.AddObject(e->Get<Components::AxisAlignedBB>()->CurAABB, e);
-		}
+	    sap.AddObject(e->Get<Components::AxisAlignedBB>()->CurAABB, e);
 	}
 	void CollisionDetectionSystem::OnEntityRemove(LibCommon::Entity* e) {
-		if (e->HasAllComponents({ typeid(Components::AxisAlignedBB) })) {
-			sap.RemoveObject(e);
-		}
+		sap.RemoveObject(e);
 	}
 	void CollisionDetectionSystem::OnEntityUpdate(LibCommon::Entity* ent, Components::IComponent*) {
 		auto bbox = ent->Get<Components::AxisAlignedBB>();
@@ -39,6 +32,7 @@ namespace Systems {
 			if (e != ent) {
 				if (collision) {
 					collision->with.push_back(e);
+                    NotifyUpdate(ent, collision);
 				}
 				Components::Collision* otherCollision = e->GetOptional<Components::Collision>();
 				if (otherCollision) {

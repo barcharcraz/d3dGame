@@ -14,44 +14,32 @@
 #include <LibCommon/System.h>
 #include <LibCommon/Data.h>
 #include <unordered_map>
+#include "GLData.h"
 namespace Components {
-	struct Model;
+    struct Model;
 }
 namespace LibOpenGL {
     class GLModelRenderer : public LibCommon::System {
     public:
-        GLModelRenderer( LibOpenGL::OpenGLRenderer* render_arg );
-		virtual void PreProcess() override;
-        virtual void Process(LibCommon::Entity * ent) override;
-		virtual void OnEntityAdd(LibCommon::Entity* ent) override;
-        virtual void OnEntityRemove(LibCommon::Entity *ent) override;
-	private:
-		struct buffers {
-			buffers() = default;
-			buffers(const buffers&) = delete;
-			buffers(buffers&& other)
-				: Uniform(std::move(other.Uniform)),
-				Vertex(std::move(other.Vertex)),
-				Index(std::move(other.Index)),
-				vao(std::move(other.vao)) {}
-			GLBuffer Uniform;
-			GLBuffer Vertex;
-			GLBuffer Index;
-			GLAttribArray vao;
-		};
-		buffers& updateBuffers( LibCommon::Entity* ent );
-		void bindUniforms(GLuint program);
-		void bindModel(GLuint program);
-		void bindTextures(GLuint program);
-        void bindDirLights(GLuint program, int numLights);
-        void bindPointLights(GLuint program, int numLights);
-		OpenGLRenderer* render;
-		GLBuffer plights;
-		GLBuffer dlights;
-		std::unordered_map<Components::Effect*, GLProgram> program_map;
-		std::unordered_map<LibCommon::Entity*, buffers> buffer_map;
-		std::unordered_map<LibCommon::Entity*, GLTexture> tex_map;
-		LibCommon::Transforms _transforms;
+        GLModelRenderer ( LibOpenGL::OpenGLRenderer* render_arg );
+        virtual void PreProcess() override;
+        virtual void Process ( LibCommon::Entity * ent ) override;
+        virtual void OnEntityAdd ( LibCommon::Entity* ent ) override;
+        virtual void OnEntityRemove ( LibCommon::Entity *ent ) override;
+    private:
+
+        buffers& updateBuffers ( LibCommon::Entity* ent );
+        void bindUniforms ( GLuint program );
+        void bindModel ( GLuint program );
+        void bindTextures ( GLuint program );
+        void bindDirLights ( GLuint program, int numLights );
+        void bindPointLights ( GLuint program, int numLights );
+        OpenGLRenderer* render;
+        GLBuffer plights;
+        GLBuffer dlights;
+        std::unordered_map<Components::Effect*, GLProgram> program_map;
+        std::unordered_map<LibCommon::Entity*, buffers> buffer_map;
+        LibCommon::Transforms _transforms;
     };
 }
 

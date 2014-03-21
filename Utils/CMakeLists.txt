@@ -1,5 +1,6 @@
 set(util_src
 	files.h
+	cache.h
 	strings.h
 	math.h
 	exceptions.h

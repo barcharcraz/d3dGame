@@ -3,6 +3,8 @@ set(LibOpenGL_files
 	OpenGLRenderer.cpp
 	GLModelRenderer.h
 	GLModelRenderer.cpp
+	GLBillboardRenderer.h
+	GLBillboardRenderer.cpp
 	GLBuffer.h
 	GLBuffer.cpp
 	GLShader.h
@@ -17,10 +19,12 @@ set(LibOpenGL_files
 	GLTexture.cpp
 	GLUtils.h
 	GLUtils.cpp
+	GLData.cpp
+	GLData.h
 	gl_core_3_1.hpp
 	gl_core_3_1.cpp
 	stdafx.h
 	stdafx.cpp
 )
 add_library(LibOpenGL STATIC ${LibOpenGL_files})
-target_link_libraries(LibOpenGL ${OPENGL_gl_LIBRARY} Systems LibCommon)
+target_link_libraries(LibOpenGL ${OPENGL_gl_LIBRARY} Systems LibCommon Image)

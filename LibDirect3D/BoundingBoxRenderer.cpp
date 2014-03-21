@@ -67,9 +67,14 @@ namespace LibDirect3D {
 
 	}
 	void BoundingBoxRenderer::PreProcess() {
+		using namespace Eigen;
 		auto camera = parent->SelectEntity({ typeid(Components::Camera) });
+		auto camTrans = camera->Get<Components::Transform3D>();
 		trans.model = Eigen::Affine3f::Identity().matrix();
-		trans.view = camera->Get<Components::Transform3D>()->transform.matrix().inverse();
+        trans.view = camTrans->GenRotTransMatrix();
+        trans.view(0, 3) *= -1;
+        trans.view(1, 3) *= -1;
+        trans.view(2, 3) *= -1;
 		trans.proj = camera->Get<Components::Camera>()->CameraMatrix.matrix();
 	}
 	void BoundingBoxRenderer::Process(LibCommon::Entity* ent) {

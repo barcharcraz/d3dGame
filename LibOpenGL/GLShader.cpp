@@ -29,7 +29,7 @@ namespace LibOpenGL {
     GLShader::GLShader ( GLenum type, const std::string& filename )
         : _type(type) {
             _shader = gl::CreateShader(_type);
-            shader_src = utils::load_source_file(filename);
+            shader_src = utils::load_source_file(utils::fixupExtension(filename, "glsl"));
             
     }
     void GLShader::SetDefine(std::string define, std::string value) {

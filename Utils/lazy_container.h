@@ -20,6 +20,10 @@ namespace utils {
 		const_iterator end() const { return m_cont.end(); }
         const_iterator cbegin() const { return m_cont.cbegin(); }
         const_iterator cend() const { return m_cont.cend(); }
+		iterator cache_begin() { return m_cache.begin(); }
+		iterator cache_end() { return m_cache.end(); }
+		const_iterator cache_begin() const { return m_cache.begin(); }
+		const_iterator cache_end() const { return m_cache.end(); }
 		size_type size() const { return m_cont.size(); }
         T& front() { return m_cont.front(); }
         const T& front() const { return m_cont.front(); }
@@ -38,9 +42,13 @@ namespace utils {
             }
         }
 		iterator insert(iterator pos, const T& value) {
+			auto idx = pos - m_cont.begin();
+			m_dirty.insert(m_dirty.begin() + idx, false);
 			return m_cont.insert(pos, value);
 		}
 		iterator insert(iterator pos, T&& value) {
+			auto idx = pos - m_cont.begin();
+			m_dirty.insert(m_dirty.begin() + idx, false);
 			return m_cont.insert(pos, std::move(value));
 		}
 		void push_back(const T& value) {
@@ -53,7 +61,7 @@ namespace utils {
 		}
         iterator erase(const_iterator pos) {
             m_dirty[pos - cbegin()] = true;
-            int dist = pos - begin();
+            std::ptrdiff_t dist = pos - begin();
             return begin() + dist + 1;
         }
         iterator erase(const_iterator begin, const_iterator end) {
@@ -63,16 +71,20 @@ namespace utils {
             return end + 1;
         }
         void finalize_ops() {
-            for (unsigned i = 0; i < m_dirty.size(); ++i) {
-                if (m_dirty[i]) {
-                    m_cont.erase(m_cont.begin() + i);
-                }
-            }
+			m_cont.erase(std::remove_if(m_cont.begin(), m_cont.end(),
+				[&](const T& type) {
+				std::ptrdiff_t idx = &type - m_cont.data();
+				if (m_dirty[idx] == true) {
+					return true;
+				} else {
+					return false;
+				}
+			}), m_cont.end());
 			m_cont.insert(m_cont.end(),
 						  std::make_move_iterator(m_cache.begin()),
 						  std::make_move_iterator(m_cache.end()));
             m_cache.clear();
-            m_dirty = std::vector<bool>(m_cont.size(), false);
+			m_dirty = std::vector<bool>(m_cont.size(), false);
         }
 
 	private:

@@ -1,10 +1,13 @@
 #include "stdafx.h"
 #include "Window.h"
 #include "Keys.h"
-#include "WGLContext.h"
+#include <config.h>
 #include <LibInput/Axis.h>
 #include <LibInput/DeviceTypes.h>
+#ifdef USE_OPENGL
+#include "WGLContext.h"
 #include <gl/GL.h>
+#endif
 namespace windows {
     //----NON CLASS---------
     int Run() {
@@ -107,42 +110,7 @@ namespace windows {
             throw std::system_error(GetLastError(), std::system_category());
         }
     }
-    void Window::Clear() {
-		if (m_clearOverride != nullptr) {
-			return m_clearOverride();
-		}
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-    }
-    void Window::MakeGLActive() {
-        HDC newdc = GetDC(_hwnd);
-        HGLRC ctx = nullptr;
-        if (nullptr == newdc) {
-            throw std::system_error(GetLastError(), std::system_category());
-        }
-        ctx = WinGLCreateContext(newdc);
-        if (!wglMakeCurrent(newdc, ctx)) {
-            wglMakeCurrent(newdc, ctx);
-            wglDeleteContext(ctx);
-            ReleaseDC(_hwnd, newdc);
-            throw std::system_error(GetLastError(), std::system_category());
-        }
-        _glctx = ctx;
-        ctx = nullptr;
-        _dc = newdc;
-        newdc = nullptr;
 
-    }
-    void Window::MakeGLInactive() {
-        if (wglGetCurrentContext() == _glctx) {
-            wglMakeCurrent(_dc, nullptr);
-        }
-        if (_glctx != nullptr) {
-            wglDeleteContext(_glctx);
-        }
-        if (nullptr != _dc) {
-            ReleaseDC(_hwnd, _dc);
-        }
-    }
     void Window::SetPresentOverride(std::function<void()> present) {
         m_presentOverride = std::move(present);
     }
@@ -159,6 +127,48 @@ namespace windows {
     void* Window::Handle() {
         return Hwnd();
     }
+	void Window::Clear() {
+		if (m_clearOverride != nullptr) {
+			return m_clearOverride();
+		}
+#ifdef USE_OPENGL
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+#endif
+	}
+	void Window::MakeGLActive() {
+#ifdef USE_OPENGL
+		HDC newdc = GetDC(_hwnd);
+		HGLRC ctx = nullptr;
+		if (nullptr == newdc) {
+			throw std::system_error(GetLastError(), std::system_category());
+		}
+		ctx = WinGLCreateContext(newdc);
+		if (!wglMakeCurrent(newdc, ctx)) {
+			wglMakeCurrent(newdc, ctx);
+			wglDeleteContext(ctx);
+			ReleaseDC(_hwnd, newdc);
+			throw std::system_error(GetLastError(), std::system_category());
+		}
+        WinGLSwapInterval(1);
+		_glctx = ctx;
+		ctx = nullptr;
+		_dc = newdc;
+		newdc = nullptr;
+#endif
+	}
+	void Window::MakeGLInactive() {
+#ifdef USE_OPENGL
+		if (wglGetCurrentContext() == _glctx) {
+			wglMakeCurrent(_dc, nullptr);
+		}
+		if (_glctx != nullptr) {
+			wglDeleteContext(_glctx);
+		}
+		if (nullptr != _dc) {
+			ReleaseDC(_hwnd, _dc);
+		}
+#endif
+	}
     //-----------PRIVATE-------------------
     void Window::init(int w, int h) {
         _hwnd = CreateWindowEx(

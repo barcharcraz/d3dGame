@@ -1,6 +1,8 @@
 set(glslshaders_files
   DefaultPS.glsl
   DefaultVS.glsl
+  BillboardPS.glsl
+  BillboardVS.glsl
   LightStructs.glslh
   ForwardLighting.glslh
   )

@@ -41,6 +41,7 @@ namespace Effects {
         MESH_INDEXED,
         MESH_UNINDEXED,
         TEXTURE_MAPPED,
+        TEXTURE_CUBEMAPPED,
         LIT_DIRECTIONAL,
         LIT_POINT,
         MAT_DIFFUSE,

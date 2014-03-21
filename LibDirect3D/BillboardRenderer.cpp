@@ -17,9 +17,14 @@ namespace LibDirect3D {
 
 	}
 	void BillboardRenderer::PreProcess() {
+		using namespace Eigen;
 		auto camera = parent->SelectEntity({ typeid(Components::Camera), typeid(Components::Transform3D) });
-		view = camera->Get<Components::Transform3D>()->transform.matrix();
+		auto viewTrans = camera->Get<Components::Transform3D>();
+		view = (Translation3f(viewTrans->position) * viewTrans->rotation).matrix();
 		proj = camera->Get<Components::Camera>()->CameraMatrix;
+		view(0, 3) *= -1;
+		view(1, 3) *= -1;
+		view(2, 3) *= -1;
 
 	}
 	void BillboardRenderer::Process(LibCommon::Entity* ent) {
@@ -35,7 +40,7 @@ namespace LibDirect3D {
 			Direct3DTexture* tex = nullptr;
 			auto texIter = texCache.find(ent);
 			if (texIter == texCache.end()) {
-				tex = &texCache.emplace(ent, texture->data()).first->second;
+				tex = &texCache.emplace(ent, *texture).first->second;
 			} else {
 				tex = &texIter->second;
 			}
@@ -58,10 +63,15 @@ namespace LibDirect3D {
 			iter = entCache.emplace(ent, std::move(newRes)).first;
 		}
 		LibCommon::Transforms trans;
-		trans.model = transform->transform.matrix();
-		trans.view = view.inverse();
+		Eigen::Matrix4f invView = view;
+		invView.rightCols<1>() = Eigen::Vector4f{ 0, 0, 0, 1 };
+
+		invView = invView.transpose().inverse().eval();
+		trans.model = transform->GenMatrix() * invView.inverse();
+		trans.view = view;
 		trans.proj = proj;
 		auto transformBuffer = render->GetTransforms(trans);
+		
 		render->pCtx->IASetInputLayout(vs->getInputLayout(render->pDev.p));
 		render->pCtx->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		unsigned int stride = sizeof(LibCommon::Vertex);

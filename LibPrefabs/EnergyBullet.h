@@ -5,7 +5,13 @@
 namespace Prefabs {
 	class EnergyBullet : public LibCommon::Entity {
 	public:
-		EnergyBullet(float width, float height, const Components::Texture& tex);
+		EnergyBullet(float width, float height, 
+			const Components::Texture& tex, 
+			std::chrono::milliseconds lifetime);
+		EnergyBullet(float width, float height,
+			const Components::Texture& tex,
+			const Eigen::Vector3f& vel,
+			std::chrono::milliseconds lifetime);
 	};
 }
 

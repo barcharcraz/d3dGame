@@ -6,11 +6,13 @@
 #include <LibComponents/Camera.h>
 #include <LibComponents/Transform.h>
 #include <LibComponents/Velocity.h>
+#include <LibComponents/ParentLink.h>
 namespace Prefabs {
 	Camera::Camera() {
 		namespace comp = Components;
 		AddComponent(std::make_unique<comp::Camera>());
 		AddComponent(std::make_unique<comp::Transform3D>(Eigen::Affine3f::Identity()));
 		AddComponent(std::make_unique<comp::PremulVelocity3D>(Eigen::Affine3f::Identity()));
+                AddComponent<Components::ParentLink>(Get<Components::Transform3D>(), nullptr);
 	}
 }

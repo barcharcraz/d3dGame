@@ -4,7 +4,7 @@
 
 namespace LibOpenGL {
 	void BindTexture(GLuint program, const std::string& name,
-		GLuint texture) 
+		GLuint texture)
 	{
 		gl::UseProgram(program);
 		GLuint baseLoc = gl::GetUniformLocation(program, name.c_str());
@@ -28,6 +28,19 @@ namespace LibOpenGL {
 		gl::Uniform4fv(diffuseidx, 1, mat.data.diffuse.data());
 		gl::Uniform4fv(specularidx, 1, mat.data.specular.data());
 		gl::Uniform1fv(shineidx, 1, &mat.data.shine);
+		CheckError();
+	}
+	void BindMVP(GLuint program, const LibCommon::Transforms& trans, const std::string& name) {
+		std::string modelname = name + ".model";
+		std::string viewname = name + ".view";
+		std::string projname = name + ".proj";
+		GLuint modelidx = gl::GetUniformLocation(program, modelname.c_str());
+		GLuint viewidx = gl::GetUniformLocation(program, viewname.c_str());
+		GLuint projidx = gl::GetUniformLocation(program, projname.c_str());
+		CheckError();
+		gl::UniformMatrix4fv(modelidx, 1, gl::FALSE_, trans.model.data());
+		gl::UniformMatrix4fv(viewidx, 1, gl::FALSE_, trans.view.data());
+		gl::UniformMatrix4fv(projidx, 1, gl::FALSE_, trans.proj.data());
 		CheckError();
 	}
 }

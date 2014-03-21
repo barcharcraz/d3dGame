@@ -1,7 +1,9 @@
 set(libcomponents_files 
 	Transform.h
+	Transform.cpp
 	Model.h
 	Velocity.h
+	Velocity.cpp
 	Camera.h
 	Camera.cpp
 	IComponent.h
@@ -18,6 +20,8 @@ set(libcomponents_files
 	PointLight.cpp
 	Projectile.h
 	Projectile.cpp
+	ParentLink.h
+	ParentLink.cpp
 	AxisAlignedBB.h
 	AxisAlignedBB.cpp
 	Collision.h
@@ -27,6 +31,8 @@ set(libcomponents_files
 	NullComponent.h
 	Billboard.h
 	Billboard.cpp
+	GunDefinition.h
+	GunDefinition.cpp
 	stdafx.h
 	stdafx.cpp
 	)

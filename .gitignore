@@ -50,4 +50,6 @@ config.h
 #ignore temp files
 *.swp
 *~
-
+#ycm files
+.ycm_extra_conf.pyc
+.ycm_extra_conf.py

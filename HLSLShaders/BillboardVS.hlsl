@@ -6,17 +6,17 @@ cbuffer constants {
 struct VertexInput {
 	float4 pos : POSITION;
 	float4 norm : NORMAL;
-	float4 uv : TEXCOORD;
+	float3 uv : TEXCOORD;
 };
 struct VertexOutput {
 	float4 pos : SV_POSITION;
 	float4 norm : NORMAL;
-	float4 uv : TEXCOORD1;
+	float3 uv : TEXCOORD1;
 };
 VertexOutput main(VertexInput input) {
 	VertexOutput retval;
 	retval.pos = mul(world, input.pos);
-	retval.pos.xyz = mul((float3x3)transpose(view), retval.pos.xyz);
+	//retval.pos.xyz = mul((float3x3)transpose(view), retval.pos.xyz);
 	retval.pos = mul(view, retval.pos);
 	
 	retval.pos = mul(proj, retval.pos);

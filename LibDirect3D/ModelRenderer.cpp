@@ -31,7 +31,7 @@ namespace LibDirect3D {
 		auto camcomp = camera->Get<Components::Camera>();
 		auto camtrans = camera->Get<Components::Transform3D>();
 		cameraTransform = camcomp->CameraMatrix;
-		camPos = camtrans->transform.matrix();
+        camPos = camtrans->GenRotTransMatrix();
         camPos(0, 3) *= -1;
         camPos(1, 3) *= -1;
         camPos(2, 3) *= -1;
@@ -86,7 +86,7 @@ namespace LibDirect3D {
 			if (texCache.count(e) > 0) {
 				tex = &texCache.at(e);
 			} else {
-				tex = &texCache.emplace(e, texture->data()).first->second;
+				tex = &texCache.emplace(e, *texture).first->second;
 			}
 			auto srv = tex->SRV(pDev);
 			auto samp = tex->SamplerState(pDev);
@@ -103,7 +103,7 @@ namespace LibDirect3D {
 		auto& material = e->Get<Components::Material>()->data;
 		updateBuffer(render->pCtx, _materials, &material, sizeof(Components::Material::Data));
 		LibCommon::Transforms trans;
-		trans.model = transform->transform.matrix();
+        trans.model = transform->GenMatrix();
 		trans.view = camPos;
 		trans.proj = cameraTransform;
 		auto transformBuffer = render->GetTransforms(trans);

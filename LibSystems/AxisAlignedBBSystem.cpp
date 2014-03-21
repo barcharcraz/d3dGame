@@ -38,7 +38,30 @@ namespace Systems {
 				}
 			}
 			return Eigen::AlignedBox3f(Eigen::Vector3f{ minx, miny, minz }, Eigen::Vector3f{ maxx, maxy, maxz });
-		}
+        }	
+        Eigen::AlignedBox3f calculateBox(const Components::Model& mod) {
+            Eigen::AlignedBox3f rv;
+            for (auto& vert : mod.verts) {
+                Eigen::Vector3f threePos{ vert.pos.x(), vert.pos.y(), vert.pos.z() };
+                if (!rv.contains(threePos)) {
+                    rv.extend(threePos);
+                }
+            }
+            return rv;
+        }
+        void updateAABB(LibCommon::Entity* ent) {
+            using namespace Eigen;
+            using namespace Components;
+            auto aabb = ent->Get<AxisAlignedBB>();
+            auto model = ent->GetOptional<Model>();
+            auto transform = ent->Get<Transform3D>();
+            if (model && aabb->RestAABB.isNull()) {
+                aabb->RestAABB = calculateBox(*model);
+                aabb->CurAABB = aabb->RestAABB;
+            }
+            Affine3f fullTransform = Translation3f(transform->position.head<3>()) * transform->rotation;
+            aabb->CurAABB = transformAABB(aabb->RestAABB, fullTransform);
+        }
 	}
 	
 	AxisAlignedBBSystem::AxisAlignedBBSystem()
@@ -50,27 +73,17 @@ namespace Systems {
 	void AxisAlignedBBSystem::Init() {
 		EnableUpdate({ typeid(Components::Transform3D) });
 	}
+    void AxisAlignedBBSystem::OnEntityAdd(LibCommon::Entity* e) {
+        updateAABB(e);
+        auto aabb = e->Get<Components::AxisAlignedBB>();
+        NotifyUpdate(e, aabb);
+    }
 	void AxisAlignedBBSystem::OnEntityUpdate(LibCommon::Entity* ent, Components::IComponent*) {
-		auto model = ent->GetOptional<Components::Model>();
-		auto aabb = ent->Get<Components::AxisAlignedBB>();
-		auto transform = ent->Get<Components::Transform3D>();
-		if (model && aabb->RestAABB.isNull()) {
-			aabb->RestAABB = calculateBox(*model);
-			aabb->CurAABB = aabb->RestAABB;
-		}
-		aabb->CurAABB = transformAABB(aabb->RestAABB, transform->transform);
+        updateAABB(ent);
+        auto aabb = ent->Get<Components::AxisAlignedBB>();
 		NotifyUpdate(ent, aabb);
 	}
-	Eigen::AlignedBox3f AxisAlignedBBSystem::calculateBox(const Components::Model& mod) {
-		Eigen::AlignedBox3f rv;
-		for (auto& vert : mod.verts) {
-			Eigen::Vector3f threePos{vert.pos.x(), vert.pos.y(), vert.pos.z()};
-			if (!rv.contains(threePos)) {
-				rv.extend(threePos);
-			}
-		}
-		return rv;
-	}
+
 	
 	
 

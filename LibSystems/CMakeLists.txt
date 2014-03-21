@@ -15,6 +15,10 @@ set(system_files
 	ProjectileSystem.cpp
 	SystemSwapper.h
 	SystemSwapper.cpp
+	GunController.h
+	GunController.cpp
+	ParentingSystem.h
+	ParentingSystem.cpp
 	Group.h
 	Group.cpp
 	stdafx.h

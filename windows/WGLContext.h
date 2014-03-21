@@ -9,4 +9,7 @@ namespace windows {
     */
     HGLRC WinGLCreateInitialContext(HDC wnd);
     HGLRC WinGLCreateContext(HDC wnd);
+    BOOL WinGLSwapInterval(int interval);
+
+
 }

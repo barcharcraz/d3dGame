@@ -1,6 +1,8 @@
 #include "ModelProcessing.h"
 #include <Eigen/Core>
 #include <Eigen/Geometry>
+#include <cmath>
+#include <vector>
 namespace utils {
 	Components::Model generate_quad(float width, float height) {
 		using namespace Components;
@@ -31,4 +33,58 @@ namespace utils {
 		rv.indices = { 0, 1, 2, 2, 1, 3 };
 		return rv;
 	}
+    Components::Model generate_icosahedron(float radius) {
+        using namespace Components;
+        using LibCommon::Vertex;
+        Model rv;
+        //the golden ratio
+        float phi = (1.0f + std::sqrt(5.0f)) / 2.0f;
+        std::vector<Eigen::Vector4f> verts;
+        std::vector<int> indicies;
+        verts.push_back({-1, phi, 0, 1});
+        verts.push_back({1, phi, 0, 1});
+        verts.push_back({-1, -phi, 0, 1});
+        verts.push_back({1, -phi, 0, 1});
+
+        verts.push_back({0, -1, phi, 1});
+        verts.push_back({0, 1, phi, 1});
+        verts.push_back({0, -1, -phi, 1});
+        verts.push_back({0, 1, -phi, 1});
+
+        verts.push_back({phi, 0, -1, 1});
+        verts.push_back({phi, 0, 1, 1});
+        verts.push_back({-phi, 0, -1, 1});
+        verts.push_back({-phi, 0, 1, 1});
+        rv.indices = {
+            0, 11, 5,
+            0, 5, 1,
+            0, 1, 7,
+            0, 7, 10,
+            0, 10, 11,
+            1,5,9,
+            5,11,4,
+            11,10,2,
+            10,7,6,
+            7,1,8,
+            3,9,4,
+            3,4,2,
+            3,2,6,
+            3,6,8,
+            3,8,9,
+            4,9,5,
+            2,4,11,
+            6,2,10,
+            8,6,7,
+            9,8,1 };
+        for(auto& elm : verts) {
+            Vertex v;
+            v.pos = elm;
+            v.pos.head<3>().normalize();
+            v.pos.head<3>() *= radius;
+            v.norm = elm.normalized();
+            v.uv = elm.normalized().head<3>();
+            rv.verts.push_back(v);
+        }
+        return rv;
+    }
 }

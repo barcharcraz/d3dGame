@@ -4,12 +4,16 @@
 namespace Systems {
     using namespace Components;
     PremulVelocitySystem3D::PremulVelocitySystem3D()
-        : System({ typeid(PremulVelocity3D), typeid(Transform3D) }) {}
+        : System({ typeid(PremulVelocity3D), typeid(Transform3D) }) 
+    {
+        priority = LibCommon::Priority::LOW;
+    }
 
     void PremulVelocitySystem3D::Process(LibCommon::Entity* e) {
-        auto& transform = e->Get<Transform3D>()->transform;
-        auto& velocity = e->Get<PremulVelocity3D>()->velocity;
-        transform = velocity * transform;
+        auto transform = e->Get<Transform3D>();
+        auto velocity = e->Get<PremulVelocity3D>();
+		transform->position += velocity->linear;
+		transform->rotation = velocity->angular * transform->rotation;
         NotifyUpdate(e, e->Get<Transform3D>());
     }
 }

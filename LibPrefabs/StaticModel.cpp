@@ -5,6 +5,7 @@
 #include <LibComponents/Material.h>
 #include <LibEffects/EffectsManagement.h>
 #include <LibComponents/AxisAlignedBB.h>
+#include <LibComponents/ParentLink.h>
 namespace Prefabs {
 	StaticModel::StaticModel(const Components::Model& mod, const Components::Texture& tex) {
 		using Effects::ShaderCaps;
@@ -18,5 +19,6 @@ namespace Prefabs {
 			Eigen::Vector4f(0.5f, 0.5f, 0.5f, 1.0f),
 			1.0f);
 		AddComponent<Components::AxisAlignedBB>(Eigen::AlignedBox3f{});
+                AddComponent<Components::ParentLink>(Get<Components::Transform3D>(), nullptr);
 	}
 }

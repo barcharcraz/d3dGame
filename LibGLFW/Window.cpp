@@ -102,7 +102,9 @@ namespace LibGLFW {
         SetAsActive();
     }
     void Window::MakeGLInactive() {
-        glfwMakeContextCurrent(nullptr);
+		if (_win != nullptr) {
+			glfwMakeContextCurrent(nullptr);
+		}
     }
     void Window::SetAsActive() {
         glfwMakeContextCurrent(_win);

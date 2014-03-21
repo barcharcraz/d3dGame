@@ -4,7 +4,7 @@
 #include <cassert>
 namespace Effects {
 	HLSLVertexShader::HLSLVertexShader(const std::string& filename, const std::vector<Effects::ShaderDesc>& inputDesc)
-		: _filename(filename)
+		: _filename(utils::fixupExtensionOptional(filename, "cso"))
 	{
 		for (auto& desc : inputDesc) {
 			D3D11_INPUT_ELEMENT_DESC curDesc;

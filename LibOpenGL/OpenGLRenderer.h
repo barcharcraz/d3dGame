@@ -2,6 +2,11 @@
 #define LIBOPENGL_RENDERER_H
 #include "stdafx.h"
 #include <windowing.h>
+#include <Utils/cache.h>
+#include "GLTexture.h"
+namespace Image {
+    struct ImageData;
+}
 namespace LibOpenGL {
 	class OpenGLRenderer {
 	public:
@@ -15,7 +20,7 @@ namespace LibOpenGL {
 
         void Attach(windowing::IGLWindow* target);
         void Detach();
-
+        utils::Cache<Image::ImageData*, GLTexture> TexCache; 
 		GLuint ActiveProgram;
     private:
         void init();

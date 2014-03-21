@@ -61,6 +61,11 @@ namespace utils {
 			
 		}
 	};
+    class invalid_enum_error : public std::logic_error {
+    public:
+        explicit invalid_enum_error(const std::string& what_arg)
+            : logic_error(what_arg) {}
+    };
 	
 }
 

@@ -11,6 +11,8 @@ set(prefab_files
 	PointLight.cpp
 	EnergyBullet.h
 	EnergyBullet.cpp
+    SkyDome.h
+    SkyDome.cpp
 	)
 add_library(Prefabs STATIC ${prefab_files})
-target_link_libraries(Prefabs LibComponents Effects)
+target_link_libraries(Prefabs LibComponents Effects RenderingUtils)
